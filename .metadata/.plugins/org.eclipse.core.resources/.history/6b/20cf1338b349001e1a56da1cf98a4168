@@ -1,0 +1,13 @@
+package com.example.demo.service;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.example.demo.model.RecruitDTO;
+
+@Mapper
+public interface RecruitMapper {
+	List<RecruitDTO> recruitList(RecruitDTO dto);
+	int recruitListCnt();
+}

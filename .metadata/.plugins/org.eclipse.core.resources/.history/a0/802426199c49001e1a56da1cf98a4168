@@ -1,0 +1,15 @@
+package com.example.demo.recruit;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/recruit/calendar")
+public class RecruitController {
+	
+	@RequestMapping("calendar")
+	String calendar() {
+		return "calendar";
+	}
+	
+}

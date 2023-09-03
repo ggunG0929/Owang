@@ -1,0 +1,30 @@
+package com.example.demo.recruit;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.demo.model.RecruitDTO;
+import com.example.demo.service.RecruitMapper;
+
+import jakarta.annotation.Resource;
+
+@Controller
+@RequestMapping("/recruit")
+public class RecruitController {
+	
+	@Resource
+	RecruitMapper recruitMapper;
+	
+	@RequestMapping("calendar")
+	String calendar() {
+		return "recruit/recruit_calendar";
+	}
+	@RequestMapping("list")
+	String list(Model mm, RecruitDTO dto) {
+		
+		
+		return "recruit/recruit_list";
+	}
+	
+}
