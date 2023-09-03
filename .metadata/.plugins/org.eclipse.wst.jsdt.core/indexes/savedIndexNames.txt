@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+INDEX VERSION 1.4+C:\final\Final_Team\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+=======
 INDEX VERSION 1.4+E:\BackEnd_hakwon\Spring_Team\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
 0.index
+>>>>>>> 7e2307ba15d044d1536d22814dd9de06c285ec18
 1186529875.index
+2555001080.index
+160311051.index
+0.index
+1264033014.index
+2077971829.index
+3832120399.index

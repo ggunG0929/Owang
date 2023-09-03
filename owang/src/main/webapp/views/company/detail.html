@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>기업 마이페이지</title>
+</head>
+<body>
+<h1>기업 마이페이지</h1>
+
+	
+		<tr>
+			<td>id</td><td th:text="${dto.id}"/>
+		</tr><tr>
+			<td>기업이름</td><td th:text="${dto.cname}"/>
+			<td>기업소개</td>
+			<td>채용중</td>
+		</tr>
+		
+		<h2>기업개요</h2>
+		
+		<tr>
+			<td>업력 n년차</td><td th:text="${dto.year}"/>
+		</tr><tr>
+			<td>기업형태</td><td th:text="${dto.form}"/>
+		</tr><tr>
+			<td>사원수</td><td th:text="${dto.employees}"/>
+		</tr><tr>
+			<td>매출액</td><td th:text="${dto.sales}"/>
+		</tr>
+		<tr>
+			<td>내용</td><textarea th:text="${dto.content}"/>
+		</tr>
+</body>
+</html>
