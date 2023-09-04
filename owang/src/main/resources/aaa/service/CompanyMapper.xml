@@ -10,12 +10,8 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 	
 	<select id="detail" resultType="cDTO" parameterType="Integer">
-		select * from board where id = #{id}
+		select * from company where cid = #{cid}
 	</select>
-
-
-
-
 
 
 

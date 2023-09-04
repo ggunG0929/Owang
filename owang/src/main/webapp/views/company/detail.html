@@ -2,16 +2,14 @@
 <html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>기업 마이페이지</title>
+<title>기업 상세</title>
 </head>
 <body>
-<h1>기업 마이페이지</h1>
+<h1>기업 상세</h1>
 
 	
 		<tr>
-			<td>id</td><td th:text="${dto.id}"/>
-		</tr><tr>
-			<td>기업이름</td><td th:text="${dto.cname}"/>
+			<td>기업이름</td><td th:text="${cname}"/>
 			<td>기업소개</td>
 			<td>채용중</td>
 		</tr>
@@ -19,16 +17,16 @@
 		<h2>기업개요</h2>
 		
 		<tr>
-			<td>업력 n년차</td><td th:text="${dto.year}"/>
+			<td>업력 n년차</td><td th:text="${cbuild}"/>
 		</tr><tr>
-			<td>기업형태</td><td th:text="${dto.form}"/>
+			<td>기업형태</td><td th:text="${ccategory}"/>
 		</tr><tr>
-			<td>사원수</td><td th:text="${dto.employees}"/>
+			<td>사원수</td><td th:text="${cstaff}"/>
 		</tr><tr>
-			<td>매출액</td><td th:text="${dto.sales}"/>
+			<td>매출액</td><td th:text="${csales}"/>
 		</tr>
 		<tr>
-			<td>내용</td><textarea th:text="${dto.content}"/>
+			<td>내용</td><textarea th:text="${ccontent}"/>
 		</tr>
 </body>
 </html>

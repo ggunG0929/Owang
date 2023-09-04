@@ -11,6 +11,6 @@ public interface CompanyMapper {
 	
 	List<CompanyDTO> mypage(CompanyDTO dto);
 	
-	CompanyDTO detail(int id);
+	CompanyDTO detail(String cid);
 	
 }

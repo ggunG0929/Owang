@@ -8,26 +8,20 @@
 <h1>기업 마이페이지</h1>
 
 		<tr>
-			<td>id</td>
-		</tr><tr>
-			<td>기업이름</td><td><a th:href="@{/company/detail/}"></a></td>
+			<td>기업이름</td>
 			<td>기업소개</td>
 			<td>채용중</td>
 		</tr>
 		
 		<h2>기업개요</h2>
 		
-		<tr>
-			<td>업력 n년차</td>
-		</tr><tr>
-			<td>기업형태</td>
-		</tr><tr>
-			<td>사원수</td>
-		</tr><tr>
-			<td>매출액</td>
-		</tr>
-		<tr>
-			<td>내용</td>
+		<tr th:each="dto : ${mainData}">
+			<td th:text="${dto.cname}"/>
+			<td th:text="${dto.cbuild}"/>
+			<td th:text="${dto.ccategory}"/>
+			<td th:text="${dto.cstaff}"/>
+			<td th:text="${dto.csales}"/>
+			<td th:text="${dto.ccontent}"/>
 		</tr>
 	
 </body>

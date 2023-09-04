@@ -28,9 +28,9 @@ public class ComController {
 	}
 	
 	@RequestMapping("detail")
-	String detail(Model mm, @PathVariable int id) {
-		CompanyDTO dto = mapper.detail(id);
-		mm.addAttribute("dto", dto);
+	String detail(Model mm, CompanyDTO dto) {
+		
+		mm.addAttribute("dto", mapper.detail(cid));
 		return "company/detail";
 	}
 	

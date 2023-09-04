@@ -1,5 +1,5 @@
 server :
-  port : 8128
+  port : 8468
 spring :
   thymeleaf:
     prefix : views/
