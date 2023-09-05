@@ -1,5 +1,9 @@
 server :
+<<<<<<< HEAD
   port : 8468
+=======
+  port : 80
+>>>>>>> 8bd68bb398d7866c23810243622df4e0dd8ea394
 spring :
   thymeleaf:
     prefix : views/

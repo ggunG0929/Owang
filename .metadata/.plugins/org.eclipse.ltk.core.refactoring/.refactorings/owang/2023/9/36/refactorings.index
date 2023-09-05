@@ -22,4 +22,19 @@
 1693720852380	Rename resource 'test.sql'
 1693720862536	Rename resource 'red.sql'
 1693721945810	Move 'aaa' to 'resources'
+<<<<<<< HEAD
+<<<<<<< HEAD
+1693736632106	Rename resource 'ㅕㅔ'
+1693759467546	Delete elements
+=======
 >>>>>>> 7e2307ba15d044d1536d22814dd9de06c285ec18
+>>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
+=======
+1693730187423	Copy compilation unit
+1693739766153	Rename resource 'company_write.html'
+1693739786207	Rename resource 'company.html'
+1693749472490	Copy compilation unit
+1693749476510	Delete element
+1693749486898	Rename type 'RecruitDTO2'
+1693750919089	Copy file
+>>>>>>> 5ee8a3d557027ab2aeccfd5cb54ed07e5be9b894

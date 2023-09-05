@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table>
+		<tr>
+			<td>id</td>
+			<td th:text="${recruitDTO.id}"/>
+		</tr>
+		<tr>
+			<td>제목</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>작성자</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>등록일</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>조회수</td>
+			<td></td>
+		</tr>
+	</table>
+	
+</body>
+</html>

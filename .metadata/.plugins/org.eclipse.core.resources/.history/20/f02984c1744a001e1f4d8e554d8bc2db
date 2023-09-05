@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>board/list</title>
+</head>
+<body>
+<h1>recruit/list</h1>
+
+	<table border="">
+		<tr>
+			<td>번호</td>
+			<td>제목</td>
+			<td>작성자</td>
+			<td>등록일</td>
+			<td>조회수</td>
+		</tr>
+		<tr th:each="dto, dtoStat : ${mainData}">
+			<td th:text="${dtoStat.count + recruitDTO.start}"/>
+			<td >
+				<a th:href="|/recruit/detail/${recruitDTO.page}/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
+			</td>
+			<td th:text="${dto.recruitName}"/>
+			<td th:text="${dto.regDate}"/>
+			<td th:text="${dto.cnt}"/>
+		</tr>
+		<tr>
+			<td colspan="5" align="center">
+				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.pageStart}" th:text="'[처음]'"/>
+				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.pageStart - 1}" th:text="'[이전]'"/>		
+				<th:block th:each="no: ${#numbers.sequence(recruitDTO.pageStart, recruitDTO.pageEnd)}" >
+					<span th:if="${no==recruitDTO.page}" th:text="${no}"/>
+					<a th:unless="${no==recruitDTO.page}" th:href="${no}" th:text="${no}"/>
+				</th:block>
+				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageEnd + 1}" th:text="'[다음]'"/>
+				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageTotal}" th:text="'[맨끝]'"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="5" align="right">
+				<a th:href="|/recruit/insert/${recruitDTO.page}|">글쓰기</a>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
