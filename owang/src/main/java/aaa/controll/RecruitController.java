@@ -32,7 +32,10 @@ public class RecruitController {
 	
 	// path 정의 다같이 쓰는거라 위에 빼둠 받으시고 테스트할때 폴더 경로 바꾸시면되여!!
 	// 승우꺼
-	static String path = "E:\\BackEnd_hakwon\\Spring_Team\\owang\\src\\main\\webapp\\up";
+	//static String path = "E:\\BackEnd_hakwon\\Spring_Team\\owang\\src\\main\\webapp\\up";
+	// 은별이
+	static String path = "C:\\Users\\콩쥐\\Desktop\\final\\Final_Team\\owang\\src\\main\\webapp";
+	
 	
 	
 	
@@ -245,5 +248,41 @@ public class RecruitController {
 		
 		return "recruit/recruit_alert";
 	}
+	
+	//채용 수정페이지  
+	@GetMapping("modify/{page}/{id}")
+	String modify(Model mm, @PathVariable int page, @PathVariable int id) {
+		
+		RecruitDTO dto = recruitMapper.recruitDetail(id); //mapper라는 객체의 recruitDetail메서드 호출
+														//수정하려는 상세 정보 가져오기위해 detail메서드 사용 - 여기서 detail은 mapper.xml의 detail
+		mm.addAttribute("dto",dto);
+		
+		
+		return "recruit/recruit_modifyform";
+	}
+	
+	@PostMapping("modify/{page}/{id}")
+	String modifyReg(RecruitDTO dto, HttpServletRequest request) {
+		
+		dto.setMsg("수정 실패입니다.");
+	    dto.setGoUrl("recruit/modify" + dto.getPage() + "/" + dto.getRecruitId());
+	    
+	   
+
+	    // 수정된 데이터를 데이터베이스에 저장
+	    int cnt = recruitMapper.recruitModify(dto);
+	    System.out.println("cnt"+cnt);
+	    
+	    if (cnt > 0) {
+	        dto.setMsg("수정되었습니다.");
+	        dto.setGoUrl("/recruit/detail/" + dto.getPage() + "/" + dto.getRecruitId());
+	    }
+		
+		
+		return "recruit/alert"; 
+	}
+	
+	
+	
 	
 }
