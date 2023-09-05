@@ -87,6 +87,10 @@
 		<item value="org.eclipse.wst.xml_ui.feature:3.30.0.v202305230750"/>
 		<item value="org.eclipse.wst.xsl.feature:1.3.1500.v202305221615"/>
 		<item value="org.jboss.tools.m2e.wro4j.feature:1.2.1.202301111328"/>
+		<item value="org.jkiss.dbeaver.ext.office.feature:1.1.150.202309031556"/>
+		<item value="org.jkiss.dbeaver.ext.ui.svg.feature:1.0.149.202309031556"/>
+		<item value="org.jkiss.dbeaver.ide.feature:23.2.0.202309031556"/>
+		<item value="org.jkiss.dbeaver.runtime.feature:23.2.0.202309031556"/>
 		<item value="org.sonatype.m2e.egit.feature:0.17.0.202209271423"/>
 	</list>
 	<section name="NewWizardAction">

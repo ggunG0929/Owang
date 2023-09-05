@@ -1,139 +1,175 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>회원가입 폼</title>
-<style>
-    td>div {
-        background-color: #ff0;
-        color: #f00;
-    }
-</style>
+	<meta charset="UTF-8">
+	<title>회원가입 폼</title>
+	<style>
+		td>div {
+			background-color: #ff0;
+			color: #f00;
+		}
+	</style>
 </head>
+
 <body>
-<h1>회원가입</h1>
+	<h1>회원가입</h1>
 
-<form method="post">
-   <table border="">
-    <label>재직자라면 클릭하세요<input type="button" onclick="toggleFields()" value="재직정보입력"/></label>
-    <!-- 회사 이름 필드 -->
-    <tr id="companyNameMenu" style="display:none;">
-        <td>회사 이름</td>
-        <td><input type="text" name="scompanyName"/>
-        </td>
-    </tr>
-    
-    <!-- 회사 재직증명서 파일 업로드 필드 -->
-    <tr id="companyFileMenu" style="display:none;">
-        <td>회사 재직증명서</td>
-        <td><input type="file" name="scompanyFile"/>
-        </td>
-    </tr>
-    </table> <!-- 나머지 필드들 -->
-    <br>
-     <table border="">
-        <tr>
-            <td>아이디</td>
-            <td><input type="text" name="id"/>
-            </td>
-        </tr>
-        <tr>
-			<td>비밀번호</td>
-			<td><input type="text"  name="pw1" ></td>
-		</tr>
-		<tr>
-			<td>암호확인</td>
-			<td><input type="text"  name="pw2"/>
-		</tr>
-		<tr>
-        <tr>
-            <td>이름</td>
-            <td><input type="text" name="name"/>
-            </td>
-        </tr>
-        <tr>
-		    <td>주민등록번호 앞자리</td>
-		    <td><input type="text" id="jumin" name="jumin" onchange="calculateAgeAndBirth()"/></td>
-		</tr>
-		<tr>
-		    <td>생년월일</td>
-		    <td><input type="text" id="birth" name="birth" readonly/></td>
-		</tr>
-		<tr>
-		    <td>나이</td>
-		    <td><input type="text" id="age" name="age" readonly/></td>
-		</tr>
-        <tr>
-            <td>성별</td>
-            <td>
-                <label><input type="radio" name="gender" value="남성"> 남성</label>
-                <label><input type="radio" name="gender" value="여성"> 여성</label>
-            </td>
-        </tr>
-        <tr>
-            <td>번호</td>
-            <td><input type="text" name="phoneNumber"/></td>
-        </tr>
-        <tr>
-            <td>이메일</td>
-            <td><input type="text" name="email"/>
-            </td>
-        </tr>
-        <tr>
-            <td>주소</td>
-            <td><input type="text" name="address"/>
-            </td>
-        </tr>
-        
-    </table>
-    
-             <input type="submit" value="가입" />
-            
-     
-</form>
+	<form method="post" enctype="multipart/form-data">
 
-<script>
-    function toggleFields() {
-        const scompanyName = document.getElementById("companyNameMenu");
-        const scompanyFile = document.getElementById("companyFileMenu");
+		<br>
+		<table border="">
+			<tr>
+				<td>아이디</td>
+				<td><input type="text" name="sid" required/>
+				</td>
+			</tr>
+			<tr>
+				<td>비밀번호</td>
+				<td><input type="password" name="spw"></td>
+			</tr>
+			<tr>
+				<td>암호확인</td>
+				<td><input type="password" name="spw2" />
+			</tr>
+			<tr>
+			<tr>
+				<td>이름</td>
+				<td><input type="text" name="sname" />
+				</td>
+			</tr>
+			<tr>
+				<td>주민등록번호 앞자리</td>
+				<td>
+					<input type="text" id="jumin" name="sjumin" />
+					<input type="button" onclick="Birth()" value="클릭!" />
+				</td>
+			</tr>
+			<tr>
+				<td>생년월일</td>
+				<td><input type="text" id="birth" name="sbirth" readonly /></td>
+			</tr>
+			<tr>
+				<td>나이</td>
+				<td><input type="number" id="age" name="sage" readonly /></td>
+			</tr>
+			<tr>
+				<td>성별</td>
+				<td>
+					<label><input type="radio" name="sgender" value="남성" checked> 남성</label>
+					<label><input type="radio" name="sgender" value="여성"> 여성</label>
+				</td>
+			</tr>
+			<tr>
+				<td>휴대폰번호</td>
+				<td><input type="text" name="sphone" /></td>
+			</tr>
+			<tr>
+				<td>이메일</td>
+				<td>
+					<input type="text" id="email" name="email" />
+					@
+					<select id="emailDomain">
+						<option value="naver.com">naver.com</option>
+						<option value="gmail.com">gmail.com</option>
+						<option value="daum.net">daum.net</option>
+						<option value="hanmail.net">hanmail.net</option>
+						<option value="nate.com">nate.com</option>
+					</select>
 
-        if (companyName.style.display === "none") {
-            companyName.style.display = "table-row";
-            companyFile.style.display = "table-row";
-        } else {
-            companyNameField.style.display = "none";
-            companyFile.style.display = "none";
-        }
-    }
+					<input type="hidden" id="semail" name="semail" />
+				</td>
 
-    function calculateAgeAndBirth() {
-        const jumin = document.getElementById("jumin").value;
-        const birthField = document.getElementById("birth");
-        const ageField = document.getElementById("age");
+			</tr>
+			<tr>
+				<td>주소</td>
+				<td><input type="text" name="saddress" />
+				</td>
+			</tr>
 
-        if (jumin.length !== 6) {
-            alert("주민등록번호 앞자리는 6자리여야 합니다.");
-            return;
-        }
+		</table>
 
-        const year = parseInt(jumin.substr(0, 2));
-        const month = parseInt(jumin.substr(2, 2));
-        const day = parseInt(jumin.substr(4, 2));
 
-        let birthYear = year;
-        if (year < 24) {
-            birthYear += 2000;
-        } else {
-            birthYear += 1900;
-        }
+		<table border="">
+			<label>재직자라면 클릭하세요<input type="button" onclick="toggleFields()" value="재직정보입력" /></label>
+			<!-- 회사 이름 필드 -->
+			<tr id="companyNameMenu" style="display:none;">
+				<td>회사 이름</td>
+				<td><input type="text" name="scompanyName" />
+				</td>
+			</tr>
 
-        const birthDate = `${birthYear}-${month}-${day}`;
-        const today = new Date();
-        const age = today.getFullYear() - birthYear +1;
+			<!-- 회사 재직증명서 파일 업로드 필드 -->
+			<tr id="companyFileMenu" style="display:none;">
+				<td>회사 재직증명서</td>
+				<td><input type="file" name="mmff" />
+				</td>
+			</tr>
+		</table> <!-- 나머지 필드들 -->
+		<input type="submit" value="가입" />
+	</form>
 
-        birthField.value = birthDate;
-        ageField.value = age;
-    }
-</script>
+	<script>
+		// 이메일 셀렉트 박스의 값을 변경할 때마다 호출되는 함수
+		document.getElementById("emailDomain").addEventListener("change", function () {
+			updateEmailField();
+		});
+
+		// 이메일 입력 필드에 사용자가 직접 입력할 때 호출되는 함수
+		document.getElementById("email").addEventListener("input", function () {
+			updateEmailField();
+		});
+
+		// 이메일 입력 필드와 이메일 도메인을 조합하여 hidden 필드에 값을 설정하는 함수
+		function updateEmailField() {
+			const emailField = document.getElementById("email");
+			const domainSelect = document.getElementById("emailDomain");
+			const selectedDomain = domainSelect.value;
+			const enteredEmail = emailField.value;
+			const combinedEmail = enteredEmail + "@" + selectedDomain;
+			document.getElementById("semail").value = combinedEmail;
+		}
+
+		function toggleFields() {
+			const companyName = document.getElementById("companyNameMenu");
+			const companyFile = document.getElementById("companyFileMenu");
+
+			if (companyName.style.display == "none") {
+				companyName.style.display = "table-row";
+				companyFile.style.display = "table-row";
+			} else {
+				companyName.style.display = "none";
+				companyFile.style.display = "none";
+			}
+		}
+
+		function Birth() {
+			const jumin = document.getElementById("jumin").value;
+			const birthField = document.getElementById("birth");
+			const ageField = document.getElementById("age");
+
+			if (jumin.length !== 6) {
+				alert("주민등록번호 앞자리는 6자리여야 합니다.");
+				return;
+			}
+
+			const year = parseInt(jumin.substr(0, 2));
+			const month = parseInt(jumin.substr(2, 2));
+			const day = parseInt(jumin.substr(4, 2));
+
+			let birthYear = year;
+			if (year < 24) {
+				birthYear += 2000;
+			} else {
+				birthYear += 1900;
+			}
+
+			const birthDate = `${birthYear}-${month}-${day}`;
+			const today = new Date();
+			ageField.value = today.getFullYear() - birthYear + 1;
+			birthField.value = birthDate;
+		}
+	</script>
 </body>
+
 </html>
