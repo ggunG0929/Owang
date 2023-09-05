@@ -9,21 +9,24 @@
 	var IMP = window.IMP;
 	IMP.init('imp65726445');	// 회원당 하나씩 부여받은 아이디 넣기
 	// 주문번호 생성 예시
-        var today = new Date();	// 현재
-        var year = String(today.getYear());
-        // 날짜를 가져와서 2자리로 만들어 string으로 저장
-		var month = String(today.getMonth() + 1).padStart(2, '0');
-		var date = String(today.getDate()).padStart(2, '0');
-		var hours = String(today.getHours()).padStart(2, '0');
-		var minutes = String(today.getMinutes()).padStart(2, '0');
-		var seconds = String(today.getSeconds()).padStart(2, '0');
-		// 밀리초는 3자리로 만들어 string으로 저장
-		var milliseconds = String(today.getMilliseconds()).padStart(3, '0');
-		var nowtime = year +  month + date + hours + minutes + seconds + milliseconds;
-		var member = s;
-		var code = "00";
-		// 시간 + 개인회원s + 상품코드
-		var uidnum = nowtime + member + code;
+    var today = new Date();	// 현재
+    var year = String(today.getFullYear() % 100);
+    // 날짜를 가져와서 2자리로 만들어 string으로 저장
+	var month = String(today.getMonth() + 1).padStart(2, '0');
+	var date = String(today.getDate()).padStart(2, '0');
+	var hours = String(today.getHours()).padStart(2, '0');
+	var minutes = String(today.getMinutes()).padStart(2, '0');
+	var seconds = String(today.getSeconds()).padStart(2, '0');
+	// 밀리초는 3자리로 만들어 string으로 저장
+	var milliseconds = String(today.getMilliseconds()).padStart(3, '0');
+	var nowdate = year +  month + date;
+	var nowtime = hours + minutes + seconds + milliseconds;
+	// 개인회원 s / 기업회원 c
+	var member = "c";
+	// 상품이 만들어지는 대로 00부터 번호올리기
+	var code = "00";
+	// 시간 + 개인회원c + 상품코드
+	var uidnum = nowdate + nowtime + member + code;
 		
 
     function requestPay(pg, pay_method) {
@@ -59,17 +62,6 @@
         IMP.request_pay(options, function(rsp) { // callback
 		    if (rsp.success) {
 		        console.log(rsp + " 성공");
-		        var responseJson = JSON.parse(rsp.responseText);
-		        // 결과 메시지 표시
-		        var resultDiv = document.createElement('div');
-		        resultDiv.innerHTML = responseJson.message;
-		        document.body.appendChild(resultDiv);
-		        
-		        // 결제 정보 표시
-		        var paymentInfoDiv = document.createElement('div');
-		        paymentInfoDiv.innerHTML = "고유 번호: " + responseJson.paymentInfo.imp_uid + "<br>" +
-		                                   "주문 번호: " + responseJson.paymentInfo.merchant_uid;
-		        document.body.appendChild(paymentInfoDiv);
 		    } else {
 		        alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
 		        console.log(rsp + " 실패");

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상품 정산 그래프</title>
+<!-- jQuery 및 Chart.js 라이브러리 포함 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+<body>
+<div>	
+    <canvas id="myChart" width="500" height="300"></canvas>
+</div>
+우측에는 기간동안 탑 5 사용자를 띄울까?<br>
+7일간 하루하루 / 한달간 한주한주 / 일년간 한달한달
+<script>
+    // 그래프 데이터
+    var graphData = {
+        labels: ["9월1일", "9월2일", "9월3일", "9월4일", "9월5일", "9월6일", "9월7일"],
+        datasets: [{
+            label: "일매출",
+            data: [23 * 15000, 26 * 15000, 26 * 15000, 29 * 15000, 26 * 15000, 28 * 15000, 25 * 15000],
+            backgroundColor: 'orange', // 그래프 색상 설정
+            borderColor: 'orange', // 선 색상 설정
+            borderWidth: 3 // 선 두께 설정
+        }]
+    };
+
+    // 캔버스에 그래프 그리기
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line', // 꺾은선 그래프
+        data: graphData,
+        options: {
+	        responsive: false, // 반응형 해제
+            scales: {
+                y: {
+                    beginAtZero: true, // y축 시작값 0으로 설정
+                    min: 330000, // y축 최소값 설정
+                    max: 450000,
+                }
+            },
+	        plugins: {
+	            title: {
+	                display: true,
+	                text: '일주일간 일매출',
+	                padding: {
+	                    top: 10,
+	                    bottom: 30
+	                }
+        		},
+	            legend: {
+	                display: false // 범례 표시 해제
+	            }
+	        }
+        }
+    });
+</script>
+</body>
+</html>

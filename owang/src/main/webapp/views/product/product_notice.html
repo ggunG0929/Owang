@@ -1,17 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>상품안내 및 신청</title>
 </head>
 <body>
 <div>
-	비로그인으로 들어왔을때
-	개인을 위해서는 리뷰열람권이 있고
-	기업을 위해서는 채용공고권이 있습니다.
-	둘 다 기간제고요 30일 기준으로만 일단 하겠습니당
+	<table border="">
+		<tr>
+			<td>상품명</td>
+			<td>금액</td>
+		</tr>
+		<tr th:each="dto : ${data}" align="center">
+			<td th:text="${dto.productName}"></td>
+			<td th:text="${dto.productPrice}"></td>
+		</tr>
+	</table>
+	비로그인으로 들어왔을때<br>
+	개인을 위해서는 리뷰열람권이 있고<br>
+	기업을 위해서는 채용공고권이 있습니다.<br>
+	둘 다 기간제고요 7일 기준으로만 일단 하겠습니당<br>
 </div>
-<a href="/product/solo">리뷰열람권</a>
+<a href="/product/solo">리뷰열람권</a><br>
 <a href="/product/company">채용공고권</a>
 </body>
 </html>
