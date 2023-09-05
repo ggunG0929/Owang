@@ -9,11 +9,11 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select * from company 
 	</select>
 	
-	<select id="detail" resultType="cDTO" parameterType="Integer">
-		select * from company where cid = #{cid}
-	</select>
-
-
-
+	<update id="modifffy" parameterType="cDTO">
+		update company set 
+		cname = #{cname}, cbuild= #{cbuild}, ccategory= #{ccategory},
+		cstaff = #{cstaff}, csales = #{csales}, ccontent = #{ccontent}
+		where cid = #{cid} and cpw= #{cpw}
+	</update>
 
 </mapper>

@@ -9,8 +9,18 @@ import aaa.model.CompanyDTO;
 @Mapper
 public interface CompanyMapper {
 	
-	List<CompanyDTO> mypage(CompanyDTO dto);
+	List<CompanyDTO> mypage(CompanyDTO cdto);
 	
-	CompanyDTO detail(String cid);
+	CompanyDTO detail(int cno);
+	
+	int modifffy(CompanyDTO cdto);
+	
+	int mypageCnt();
+	
+	int maxId();
+	
+	void addCount(int cid);
+	
+	int idPwChk(CompanyDTO dto);
 	
 }

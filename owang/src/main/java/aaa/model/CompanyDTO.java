@@ -17,7 +17,7 @@ public class CompanyDTO {
 	int cno;        	//무결성
 	int cstaff;     	//직원수
 	int cbcnt;      	//블랙경고
-	long csales;    	//1년매출액
+	long csales;    	//매출액
 	int page;			
 	String cid;        	//기업아이디
 	String cpw;     	//기업 비밀번호
@@ -31,6 +31,7 @@ public class CompanyDTO {
 	String cemail;		//이메일
 	String ccontent;	//내용
 	Date cdate;			//공고상품 종료기간
+	
 	
 	int cnt, seq, lev, gid, start, limit = 3,pageLimit=4, pageStart, pageEnd, pageTotal;
 	String title, upfile, msg, goUrl ;
