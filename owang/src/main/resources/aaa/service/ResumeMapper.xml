@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="aaa.service.ResumeMapper">
+	<select id="resumelist" resultType="rDTO">
+   	 	select * from resume
+	</select>
+	
+	<select id="resumedetail" resultType="rDTO" parameterType="Integer">
+		select * from resume where rsid = #{rsid}
+	</select>
+	
+	<insert id="resumeinsert"  parameterType="rDTO">
+		insert into resume (rstitle, rscareer, rscompany, rsworkstart, rsworkend, rswork, rseducational, rsintroduce,
+		rslisence, rslisenceorg, rslisenceyear, rslanguage, rslanguagelevel, rsregdate)
+		values
+		(#{rstitle}, #{rscareer}, #{rscompany}, #{rsworkstart}, #{rsworkend}, #{rswork}, #{rseducational}, #{rsintroduce}, 
+		#{rslicense}, #{rslicenseorg},#{rslicenseyear},#{rslanguage}, #{rslanguagelevel}, sysdate())
+	</insert>
+	
+	<select id="resumecnt">
+		select count(*) from resume
+	</select>
+	
+	<delete id="resumedelete"  parameterType="rDTO">
+		delete from resume where rsid = #{rsid}
+	</delete>
+</mapper>
