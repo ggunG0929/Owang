@@ -1,15 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>상품 추가</title>
+<title>상품 </title>
 </head>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+	    const pform = document.getElementById("pform");
+	    const del = document.querySelectorAll(".dbtn");
+	
+	    // 상품 추가 폼 제출 시
+	    pform.addEventListener("submit", function (event) {
+	        event.preventDefault(); // 폼 기본 동작 방지
+	
+	        // 사용자에게 동작 확인을 물어보기
+	        const confirmed = confirm("정말로 상품을 추가하시겠습니까?");
+	
+	        if (confirmed) {
+	            this.submit(); // 폼 제출
+	        }
+	    });
+	
+	    // 상품 삭제 버튼 클릭 시
+	    del.forEach(function (button) {
+	        button.addEventListener("click", function () {
+	            // 사용자에게 동작 확인을 물어보기
+	            const confirmed = confirm("정말로 상품을 삭제하시겠습니까?");
+	
+	            if (confirmed) {
+                    const productCode = this.getAttribute("id"); // 버튼의 아이디 가져오기
+                    const deleteUrl = `/admin_product/deleteProduct?productCode=${productCode}`;
+
+                    window.location.href = deleteUrl; // 지정된 URL로 이동
+	            }
+	        });
+	    });
+	});
+</script>
 <body>
-<h1>상품 추가</h1>
-폼이어야겠군
-<h3>기업상품</h3>
-코드: c00 채용공고권 7일권 가격 15000
-<h3>개인상품</h3>
-코드: s00 리뷰열람권 7일권 가격 15000
+<h1>상품 변경</h1>
+<form action="insertProduct" method="post" th:object="${ProductDTO}" id="pform">
+	<table border="">
+		<tr>
+			<td>대상</td>
+			<td>상품코드</td>
+			<td>유효일</td>
+			<td>상품명</td>
+			<td>금액</td>
+			<td></td>
+		</tr>
+		<tr th:each="dto : ${data}" align="center">
+			<td th:text="${dto.productClient}"></td>
+			<td th:text="${dto.productCode}"></td>
+			<td th:text="${dto.productValid}"></td>
+			<td th:text="${dto.productName}"></td>
+			<td th:text="${dto.productPrice}"></td>
+			<td><input type="button" value="삭제" class="dbtn" th:attr="id=${dto.productCode}"></td>
+		</tr>
+		<tr>
+			<td><input type="text" th:field="*{productClient}"></td>
+			<td><input type="text" th:field="*{productCode}"></td>
+			<td><input type="text" th:field="*{productValid}"></td>
+			<td><input type="text" th:field="*{productName}"></td>
+			<td><input type="text" th:field="*{productPrice}"></td>
+			<td><input type="submit" value="추가"></td>
+		</tr>
+	</table>
+</form>
 </body>
 </html>

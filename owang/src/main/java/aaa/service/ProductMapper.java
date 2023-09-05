@@ -14,7 +14,7 @@ public interface ProductMapper {
 	// 상품생성
 	int insert(ProductDTO dto);
 	// 상품삭제
-	int delete(ProductDTO dto);
+	int delete(String code);
 	// 상품수정
 	int modify(ProductDTO dto);
 }

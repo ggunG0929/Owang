@@ -8,10 +8,12 @@
 <div>
 	<table border="">
 		<tr>
+			<td>대상</td>
 			<td>상품명</td>
 			<td>금액</td>
 		</tr>
 		<tr th:each="dto : ${data}" align="center">
+			<td th:text="${dto.productClient}"></td>
 			<td th:text="${dto.productName}"></td>
 			<td th:text="${dto.productPrice}"></td>
 		</tr>
@@ -21,7 +23,7 @@
 	기업을 위해서는 채용공고권이 있습니다.<br>
 	둘 다 기간제고요 7일 기준으로만 일단 하겠습니당<br>
 </div>
-<a href="/product/solo">리뷰열람권</a><br>
+<a href="/product/solo">리뷰열람권</a>
 <a href="/product/company">채용공고권</a>
 </body>
 </html>
