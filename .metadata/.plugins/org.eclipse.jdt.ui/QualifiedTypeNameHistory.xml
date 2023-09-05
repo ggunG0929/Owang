@@ -8,13 +8,29 @@
     <fullyQualifiedTypeName name="jakarta.validation.constraints.Pattern"/>
     <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
 <<<<<<< HEAD
+    <fullyQualifiedTypeName name="groovyjarjarantlr.collections.List"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.type.Alias"/>
+=======
+<<<<<<< HEAD
     <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Mapper"/>
 =======
 >>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
     <fullyQualifiedTypeName name="groovyjarjarantlr.collections.List"/>
+>>>>>>> b2448d52422b73b8c12ff27ce675a9b2ce621e58
     <fullyQualifiedTypeName name="com.example.demo.service.RecruitMapper"/>
     <fullyQualifiedTypeName name="com.example.demo.model.RecruitDTO"/>
     <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<<<<<<< HEAD
+    <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="aaa.controll.JoinController"/>
+    <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
+    <fullyQualifiedTypeName name="lombok.Data"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Mapper"/>
+    <fullyQualifiedTypeName name="aaa.service.SoloJoinMapper"/>
+    <fullyQualifiedTypeName name="jakarta.annotation.Resource"/>
+    <fullyQualifiedTypeName name="aaa.model.SoloData"/>
+=======
     <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
     <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
@@ -50,4 +66,5 @@
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
     <fullyQualifiedTypeName name="org.apache.ibatis.type.Alias"/>
 >>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
+>>>>>>> b2448d52422b73b8c12ff27ce675a9b2ce621e58
 </qualifiedTypeNameHistroy>

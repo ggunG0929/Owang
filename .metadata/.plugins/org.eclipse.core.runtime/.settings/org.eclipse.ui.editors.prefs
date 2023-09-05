@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+STS4BootMarkerIndicationColor=56,84,26
+=======
+<<<<<<< HEAD
 AbstractTextEditor.Color.Background=25,29,31
 AbstractTextEditor.Color.Background.SystemDefault=false
 AbstractTextEditor.Color.FindScope=17,17,17
@@ -26,4 +29,5 @@ deletionIndicationColor=210,82,82
 =======
 STS4BootMarkerIndicationColor=56,84,26
 >>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
+>>>>>>> b2448d52422b73b8c12ff27ce675a9b2ce621e58
 eclipse.preferences.version=1

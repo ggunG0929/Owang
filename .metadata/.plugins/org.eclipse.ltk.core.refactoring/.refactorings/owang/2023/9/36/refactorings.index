@@ -23,8 +23,26 @@
 1693720862536	Rename resource 'red.sql'
 1693721945810	Move 'aaa' to 'resources'
 <<<<<<< HEAD
+1693788472674	Delete element
+1693817778773	Copy compilation unit
+1693817785862	Copy compilation unit
+1693828814839	Copy file
+1693828852179	Copy compilation unit
+1693829172497	Copy compilation unit
+1693829212387	Delete element
+1693829225752	Rename resource 'CompanyJoinMapper.xml'
+1693874546972	Delete element
+1693874550955	Delete element
+1693875590434	Rename resource 'SoloJoinMapper.xml'
+1693877056273	Copy compilation unit
+1693878157867	Copy file
+1693883964041	Rename resource 'solo'
+1693883972566	Rename resource 'company'
+=======
+<<<<<<< HEAD
 1693736632106	Rename resource 'ㅕㅔ'
 1693759467546	Delete elements
 =======
 >>>>>>> 7e2307ba15d044d1536d22814dd9de06c285ec18
 >>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
+>>>>>>> b2448d52422b73b8c12ff27ce675a9b2ce621e58

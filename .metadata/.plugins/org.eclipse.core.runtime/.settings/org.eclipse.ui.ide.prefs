@@ -4,9 +4,13 @@ IMPORT_FILES_AND_FOLDERS_TYPE=23,1\:7,1
 IMPORT_FILES_AND_FOLDERS_VIRTUAL_FOLDER_MODE=prompt
 eclipse.preferences.version=1
 <<<<<<< HEAD
+platformState=1691852083024
+=======
+<<<<<<< HEAD
 platformState=1691503355512
 =======
 platformState=1691828313712
 >>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
+>>>>>>> b2448d52422b73b8c12ff27ce675a9b2ce621e58
 quickStart=false
 tipsAndTricks=true
