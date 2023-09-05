@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import aaa.model.CompanyDTO;
+
+import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
 import aaa.model.SoloDTO;
-import aaa.service.CompanyMapper;
+
+import aaa.service.MCompanyMapper;
 import aaa.service.SoloMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +28,7 @@ public class JoinController {
 	@Resource
 	SoloMapper smapper;
 	@Resource
-	CompanyMapper cmapper;
+	MCompanyMapper cmapper;
 	
 	//개인회원가입
 	@GetMapping("solo")
@@ -51,14 +53,14 @@ public class JoinController {
 	}
 	//기업고객
 	@GetMapping("company")
-	String joincompanyForm(CompanyDTO company) {
+	String joincompanyForm(MCompanyDTO company) {
 		
 		
 		return "join/join_company";
 	}
 	
 	@PostMapping("company")
-	String joincompanyReg(CompanyDTO company, PageData pd,HttpServletRequest request) {
+	String joincompanyReg(MCompanyDTO company, PageData pd,HttpServletRequest request) {
 		fileSavecompany(company,request);
 		pd.setMsg("기업회원가입이 완료되었습니다.");
 		pd.setGoUrl("/join/join_ok");
@@ -112,7 +114,7 @@ public class JoinController {
 	      
 	   }
 	//사업자등록증파일저장
-	void fileSavecompany(CompanyDTO cto, HttpServletRequest request) {
+	void fileSavecompany(MCompanyDTO cto, HttpServletRequest request) {
 		
 		//파일 업로드 유무 확인
 		if(cto.getMmff().isEmpty()) {

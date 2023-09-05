@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="aaa.service.RecruitMapper">
+
+	<select id="recruitList" resultType="recruitDTO" parameterType="recruitDTO">
+		select * from recruit order by recruit_id desc limit #{start}, #{limit}
+	</select>
+	
+	<select id="recruitListCnt" resultType="Integer">
+		select count(*) from recruit
+	</select>
+	
+	<update id="recruitAddCont" parameterType="Integer">
+		update recruit set cnt = cnt + 1 where recruit_id = #{recruit_id}
+	</update>
+	
+	<select id="recruitDetail">
+		select * from recruit where recruit_id = #{recruit_id}
+	</select>
+	
+	<select id="recruitMaxId">
+		select max(recruit_id) from recruit 
+	</select>
+	
+	<insert id="recruitInsert" parameterType="recruitDTO">
+    	insert into recruit( recruit_title, recruit_name, recruit_content, recruit_upfile, reg_date, recruit_magam , cnt )
+    	values
+    	(#{recruitTitle}, #{recruitName}, #{recruitContent},#{recruitUpfile}, sysdate(), #{recruitMagam},0)
+	</insert>
+	
+	<delete id="recruitDelete" parameterType="Integer">
+		delete from recruit where recruit_id = #{id}
+	</delete>
+	
+	
+	
+	
+</mapper>

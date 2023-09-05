@@ -4,11 +4,22 @@
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
+<<<<<<< HEAD
 		<item key="selection" value=""/>
 		<item key="wrap" value="true"/>
 		<item key="incremental" value="false"/>
 		<list key="findhistory">
 			<item value="semail"/>
+=======
+		<item key="selection" value="Img"/>
+		<list key="findhistory">
+			<item value="recruitListCnt"/>
+			<item value="cnt"/>
+			<item value="img"/>
+			<item value="upfile"/>
+			<item value="dto"/>
+			<item value="each"/>
+>>>>>>> b2448d52422b73b8c12ff27ce675a9b2ce621e58
 		</list>
 		<list key="replacehistory">
 		</list>

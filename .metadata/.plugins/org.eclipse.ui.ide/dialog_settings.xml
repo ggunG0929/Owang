@@ -87,8 +87,11 @@
 		<item value="org.eclipse.wst.xml_ui.feature:3.30.0.v202305230750"/>
 		<item value="org.eclipse.wst.xsl.feature:1.3.1500.v202305221615"/>
 		<item value="org.jboss.tools.m2e.wro4j.feature:1.2.1.202301111328"/>
+<<<<<<< HEAD
 		<item value="org.jkiss.dbeaver.ext.office.feature:1.1.150.202309031556"/>
 		<item value="org.jkiss.dbeaver.ext.ui.svg.feature:1.0.149.202309031556"/>
+=======
+>>>>>>> b2448d52422b73b8c12ff27ce675a9b2ce621e58
 		<item value="org.jkiss.dbeaver.ide.feature:23.2.0.202309031556"/>
 		<item value="org.jkiss.dbeaver.runtime.feature:23.2.0.202309031556"/>
 		<item value="org.sonatype.m2e.egit.feature:0.17.0.202209271423"/>
@@ -103,6 +106,7 @@
 		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="false"/>
 		<item key="SmartImportRootWizardPage.STORE_CLOSE_IMPORTED" value="false"/>
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
+<<<<<<< HEAD
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="false"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
 			<item value="C:\Final_Team"/>
@@ -114,6 +118,11 @@
 	</section>
 	<section name="WORKBENCH_SETTINGS">
 		<list key="ENABLED_TRANSFERS">
+=======
+		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
+		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\final\Final_Team"/>
+>>>>>>> b2448d52422b73b8c12ff27ce675a9b2ce621e58
 		</list>
 	</section>
 </section>

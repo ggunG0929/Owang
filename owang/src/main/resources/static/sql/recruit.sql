@@ -13,6 +13,7 @@
 # recruit_upfile 체용 게시판에 업로드한 이미지 파일
 # recruit_content 체용 게시판에 작성한 내용
 # reg_date 체용 게시판 작성일
+#  recruit_magam 채용 게시판 마감일 선택한 수,
 # cnt 체용 게시판 조회수
 CREATE TABLE recruit (
     recruit_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,6 +22,7 @@ CREATE TABLE recruit (
     recruit_upfile VARCHAR(100),
     recruit_content VARCHAR(9999),
     reg_date TIMESTAMP,
+    recruit_magam int,
     cnt INT
 );
 
@@ -33,11 +35,14 @@ insert into recruit(
     cnt
     )
 values
-('첫글이다','첫승우','첫글내용','2023-05-05',1),
-('두글이다','두승우','두글내용','2023-05-07',2),
-('세글이다','삼승우','세글내용','2023-05-10',3),
-('네글이다','넷승우','네글내용','2023-05-12',4),
-('오글이다','오승우','오글내용','2023-05-19',5);
+('육글이다','첫승우','첫글내용','2023-05-05',1),
+('칠글이다','두승우','두글내용','2023-05-07',2),
+('팔글이다','삼승우','세글내용','2023-05-10',3),
+('구글이다','넷승우','네글내용','2023-05-12',4),
+('십글이다','오승우','오글내용','2023-05-19',5);
 
+select * from recruit order by recruit_id desc limit 0, 5;
 select * from recruit;
+select max(recruit_id) from recruit; 
 select count(*) from recruit;
+drop table recruit;
