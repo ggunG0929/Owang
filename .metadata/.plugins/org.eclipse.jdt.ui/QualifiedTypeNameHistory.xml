@@ -20,6 +20,7 @@
     <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
     <fullyQualifiedTypeName name="lombok.Data"/>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <fullyQualifiedTypeName name="aaa.service.RecruitMapper"/>
     <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
     <fullyQualifiedTypeName name="org.springframework.web.multipart.MultipartFile"/>
@@ -50,4 +51,7 @@
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
     <fullyQualifiedTypeName name="org.apache.ibatis.type.Alias"/>
 >>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
+=======
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
+>>>>>>> 5ee8a3d557027ab2aeccfd5cb54ed07e5be9b894
 </qualifiedTypeNameHistroy>

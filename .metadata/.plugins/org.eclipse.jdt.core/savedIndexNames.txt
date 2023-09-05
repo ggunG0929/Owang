@@ -67,7 +67,6 @@ INDEX VERSION 1.134+C:\Users\콩쥐\Desktop\final\Final_Team\.metadata\.plugins\
 1818279923.index
 3058673770.index
 1943954582.index
-1186529875.index
 4083648346.index
 2202573116.index
 849708075.index
