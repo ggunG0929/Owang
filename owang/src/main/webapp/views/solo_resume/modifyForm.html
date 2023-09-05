@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>이력서 수정</h2>
+<div>
+	<div th:object="${rdto}">
+		<div>
+			<h2>기본정보</h2>
+		</div>
+		<input type="hidden" th:field="*{rsid}"/>
+		<!-- 이력서 제목 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>이력서 제목</p>
+			<input type="text" th:value="*{rstitle}" />
+		</div>
+		<!-- 경력 사항 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>경력</p>
+			<input type="text" th:value="*{rscareer}" />
+		</div>
+		<!-- 학력 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>학력</p>
+			<input type="text"th:value="*{rseducational}" />
+		</div>
+		<!-- 자기소개 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+		    <p>자기소개서</p>
+		    <input type="text" th:value="*{rsintroduce}" />
+		</div>
+		<!-- 자격증 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>자격증</p>
+			<table>
+				<tr>
+					<td>자격증 명</td>
+					<td th:value="*{rslicense}" />
+				</tr>
+				<tr>
+					<td>발행처</td>
+					<td th:value="*{rslicenseorg}" />
+					<td th:value="*{rslicenseyear}" />
+				</tr>
+			</table>
+		</div>
+		<!-- 어학 능력 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>어학능력</p>
+			<p th:value="*{rslanguage}" />
+		</div>
+		<div>
+			<input type="submit" value="저장"/>
+		</div>
+	</div>
+</div>
+</body>
+</html>

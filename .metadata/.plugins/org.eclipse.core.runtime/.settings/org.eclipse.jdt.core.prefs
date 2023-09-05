@@ -1,9 +1,8 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=b2448d52422b73b8c12ff27ce675a9b2ce621e58
 eclipse.preferences.version=1
-<<<<<<< HEAD
-org.eclipse.jdt.core.classpathVariable.M2_REPO=C\:/Users/aefaf/.m2/repository
-=======
-org.eclipse.jdt.core.classpathVariable.M2_REPO=C\:/Users/User/.m2/repository
->>>>>>> b2448d52422b73b8c12ff27ce675a9b2ce621e58
+org.eclipse.jdt.core.classpathVariable.M2_REPO=C\:/Users/Administrator/.m2/repository
 org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=17
