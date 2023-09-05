@@ -13,6 +13,6 @@ public interface SoloMapper {
 
 
 		void insertSolo(SoloDTO solo);
-	
+		
 	
 }
