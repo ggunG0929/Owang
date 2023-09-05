@@ -28,4 +28,6 @@ values
 ('(주)그렉터','업력 8년차','중소기업','50명','90억 1602만원','스마트시티 혁신기업');
 
 select * from company;
+
+
 select count(*) from company;

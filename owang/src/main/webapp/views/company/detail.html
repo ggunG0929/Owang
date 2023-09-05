@@ -2,33 +2,32 @@
 <html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>기업 마이페이지</title>
+<title>company/detail</title>
 </head>
 <body>
-<h1>기업 마이페이지</h1>
-
-	
+<h1>company/detail</h1>
+	<table border="">
 		<tr>
-			<td>id</td><td th:text="${dto.id}"/>
+			<td>cid</td><td th:text="${dto.cid}"/>
 		</tr><tr>
 			<td>기업이름</td><td th:text="${dto.cname}"/>
-			<td>기업소개</td>
-			<td>채용중</td>
-		</tr>
-		
-		<h2>기업개요</h2>
-		
-		<tr>
-			<td>업력 n년차</td><td th:text="${dto.year}"/>
 		</tr><tr>
-			<td>기업형태</td><td th:text="${dto.form}"/>
+			<td>설립연도</td><td th:text="${dto.cbuild}"/>
 		</tr><tr>
-			<td>사원수</td><td th:text="${dto.employees}"/>
+			<td>업종</td><td th:text="${dto.ccategory}"/>
 		</tr><tr>
-			<td>매출액</td><td th:text="${dto.sales}"/>
+			<td>직원수</td><td th:text="${dto.cstaff}"/>
+		</tr><tr>
+			<td>매출액</td><td th:text="${dto.csales}"/>
 		</tr>
 		<tr>
-			<td>내용</td><textarea th:text="${dto.content}"/>
+			<td>내용</td><td th:text="${dto.ccontent}"/>
+		</tr><tr>
+			<td colspan="2" align="right">
+				<a th:href="|/company/modify/${dto.page}/${dto.cid}|">수정</a>
+				<a th:href="|/company/mypage/${dto.page}|">목록으로</a>
+			</td>
 		</tr>
+	</table>
 </body>
 </html>
