@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
+<<<<<<< HEAD
     <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
+=======
+>>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
     <fullyQualifiedTypeName name="java.sql.Date"/>
     <fullyQualifiedTypeName name="jakarta.validation.constraints.Pattern"/>
     <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
+<<<<<<< HEAD
     <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Mapper"/>
+=======
+>>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
     <fullyQualifiedTypeName name="groovyjarjarantlr.collections.List"/>
-    <fullyQualifiedTypeName name="org.apache.ibatis.type.Alias"/>
-    <fullyQualifiedTypeName name="jakarta.annotation.Resource"/>
     <fullyQualifiedTypeName name="com.example.demo.service.RecruitMapper"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="com.example.demo.model.RecruitDTO"/>
     <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
+    <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
     <fullyQualifiedTypeName name="lombok.Data"/>
+<<<<<<< HEAD
     <fullyQualifiedTypeName name="aaa.service.RecruitMapper"/>
     <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
     <fullyQualifiedTypeName name="org.springframework.web.multipart.MultipartFile"/>
@@ -34,4 +41,13 @@
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ResponseBody"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
+=======
+    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Mapper"/>
+    <fullyQualifiedTypeName name="aaa.model.CompanyDTO"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="jakarta.annotation.Resource"/>
+    <fullyQualifiedTypeName name="aaa.service.CompanyMapper"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.type.Alias"/>
+>>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
 </qualifiedTypeNameHistroy>
