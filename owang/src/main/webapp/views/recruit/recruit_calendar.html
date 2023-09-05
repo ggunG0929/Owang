@@ -1,127 +1,100 @@
 <!DOCTYPE html>
 <html>
- <head>
-    <meta charset='utf-8' />
-    <link rel="stylesheet" href="">
-    <script src="./dist/index.global.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js" 
-    integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" 
-    crossorigin="anonymous"></script>
 
-    <script>
-    //     $(document).ready(function(){
+<head>
+	<meta charset='utf-8' />
+	<link rel="stylesheet" href="">
+	<script src="./dist/index.global.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.0.js"
+		integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 
-   
-    //     var Calendar = FullCalendar.Calendar;
-    //     var Draggable = FullCalendar.Draggable;
+	<script>
 
-    //     var containerEl = document.getElementById('external-events');
-    //     var calendarEl = document.getElementById('calendar');
-    //     var checkbox = document.getElementById('drop-remove');
 
-    //     // 드래그를 담당하는 객체입니다.
-    //     // -----------------------------------------------------------------
+		document.addEventListener('DOMContentLoaded', function () {
+			var calendarEl = document.getElementById('calendar');
 
-    //     new Draggable(containerEl, {
-    //     itemSelector: '.fc-event',
-    //     eventData: function(eventEl) {
-    //         return {
-    //         title: eventEl.innerText
-    //         };
-    //     }
-    //     });
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				initialView: 'dayGridMonth',
+				headerToolbar: {
+					left: 'prevYear,prev,next,nextYear today',
+					center: 'title',
+					right: 'dayGridMonth,dayGridWeek,dayGridDay'
+				},
 
-    //     // 달력의 순서를 설정할수있는 버튼
-    //     // -----------------------------------------------------------------
+				selectable: true,   // 달력 일자 선택 기능
+				selectMirror: true, // 달력 일자 드래그 기능
 
-    //     var calendar = new Calendar(calendarEl, {
-    //     headerToolbar: {
-    //         left: 'prev,next today',
-    //         center: 'title',
-    //         right: 'dayGridMonth,timeGridWeek,timeGridDay'
-    //     },
-    //     editable: true,
-    //     droppable: true, // 삭제
-    //     drop: function(info) {
-    //         // "remove after drop" 체크되면?
-    //         if (checkbox.checked) {
-    //         // 삭제 이벤트 실행
-    //         info.draggedEl.parentNode.removeChild(info.draggedEl);
-    //         }
-    //     }
-    //     });
+				dayMaxEvents: true, // 해당 날짜 이벤트가 오버되면 높이 제한
+				
 
-    //     calendar.render();
-    // });
+				
+				events: {
+					url: '/recruit/calendar23', // JSON 데이터를 제공하는 엔드포인트 경로
+					method: 'post', // HTTP GET 요청
+					success: function (Info) {
+						console.log(Info)
 
-     document.addEventListener('DOMContentLoaded', function() {
-                var calendarEl = document.getElementById('calendar');
-                
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    headerToolbar: {
-                        left: 'prevYear,prev,next,nextYear today',
-                        center: 'title',
-                        right: 'dayGridMonth,dayGridWeek,dayGridDay'
-                    },
-                    
-                    selectable: true,   // 달력 일자 선택 기능
-                    selectMirror: true, // 달력 일자 드래그 기능
-                    
-                    dayMaxEvents: true, // 해당 날짜 이벤트가 오버되면 높이 제한
+						return Info
+					},
+					failure: function () {
+						alert("gd")
+					}
+				},
+			    eventContent: function (info) {
+					var eventTitle = info.event.title;
+					var eventBackgroundColor = '';
 
-                    
+					if (eventTitle.startsWith("마감")) {
+						eventBackgroundColor = 'rgb(255, 99, 71)'; // "마감" 이벤트는 빨간색 배경
+					} else if (eventTitle.startsWith("시작")) {
+						eventBackgroundColor = 'rgb(70, 130, 180)'; // "시작" 이벤트는 파란색 배경
+					}
 
-            });
-            calendar.render();
-        });
-    
+					// 이벤트의 내용과 배경색을 설정합니다.
+					return {
+						html: '<div style="background-color: ' + eventBackgroundColor + ';">' + eventTitle + '</div>'
+					};
+				},
+		
+				eventClick: function (eventInfo) {
+					// 클릭한 이벤트의 ID를 가져옵니다. 이벤트 ID는 서버에서 생성한 고유한 값이어야 합니다.
+					var eventId = eventInfo.event.id;
+					
+					// 상세 페이지로 이동할 URL을 생성합니다. 여기서는 "/recruit/detail"로 이동하는 예제입니다.
+					var detailURL = '/recruit/detail/1/' + eventId;
 
-    </script>
-     <style>
-        .calendar {
-            width: 70%;
-            height: 70%;
-            margin: 20px auto;
-        }
+					// 생성한 URL로 이동합니다.
+					window.location.href = detailURL;
+				}
 
-        .fc-event{
-            margin-top: 5px;
-            cursor: move;
-        }
+			});
 
-    </style>
-  </head>
-  <body>
-   
-    <!-- <div id='external-events' style="float: left; width: 15%; padding-right: 30px;padding-left: 20px;">
-        <p>
-          <strong>Draggable Events</strong>
-        </p>
-    
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 1</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 2</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 3</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 4</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 5</div>
-        </div>
-    
-        <p>
-          <input type='checkbox' id='drop-remove' />
-          <label for='drop-remove'>remove after drop</label>
-        </p>
-      </div> -->
-      <div style="float: left; width: 80%;">
-        <div id='calendar'></div>
-    </div>
-  </body>
+			calendar.render();
+		});
+
+
+	</script>
+	<style>
+		.calendar {
+			width: 70%;
+			height: 70%;
+			margin: 20px auto;
+		}
+
+		.fc-event {
+			margin-top: 5px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	[[${calendar}]]
+
+	<div style="float: left; width: 80%;">
+		<div id='calendar'></div>
+	</div>
+</body>
+
 </html>

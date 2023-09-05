@@ -3,11 +3,16 @@
     <launchGroup id="org.eclipse.debug.ui.launchGroup.debug">
         <mruHistory>
 <<<<<<< HEAD
+            <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;owang - OwangApplication (1)&quot;/&gt;&#13;&#10;"/>
+            <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;owang - OwangApplication&quot;/&gt;&#13;&#10;"/>
+=======
+<<<<<<< HEAD
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;New_configuration&quot;/&gt;&#13;&#10;"/>
 =======
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;owang - OwangApplication&quot;/&gt;&#13;&#10;"/>
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;owang - OwangApplication (1)&quot;/&gt;&#13;&#10;"/>
 >>>>>>> 7e2307ba15d044d1536d22814dd9de06c285ec18
+>>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
         </mruHistory>
         <favorites/>
     </launchGroup>
@@ -22,11 +27,16 @@
     <launchGroup id="org.eclipse.debug.ui.launchGroup.run">
         <mruHistory>
 <<<<<<< HEAD
+            <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;owang - OwangApplication (1)&quot;/&gt;&#13;&#10;"/>
+            <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;owang - OwangApplication&quot;/&gt;&#13;&#10;"/>
+=======
+<<<<<<< HEAD
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;New_configuration&quot;/&gt;&#13;&#10;"/>
 =======
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;owang - OwangApplication&quot;/&gt;&#13;&#10;"/>
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;true&quot; path=&quot;owang - OwangApplication (1)&quot;/&gt;&#13;&#10;"/>
 >>>>>>> 7e2307ba15d044d1536d22814dd9de06c285ec18
+>>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512
         </mruHistory>
         <favorites/>
     </launchGroup>

@@ -22,4 +22,9 @@
 1693720852380	Rename resource 'test.sql'
 1693720862536	Rename resource 'red.sql'
 1693721945810	Move 'aaa' to 'resources'
+<<<<<<< HEAD
+1693736632106	Rename resource 'ㅕㅔ'
+1693759467546	Delete elements
+=======
 >>>>>>> 7e2307ba15d044d1536d22814dd9de06c285ec18
+>>>>>>> 53efb1dbe67dcdf69bd9daf663604862a937c512

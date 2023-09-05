@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border="">
+			<tr>
+			<td>id</td>
+			<td th:text="${dto.recruitId}" />
+		</tr>
+		<tr>
+			<td>제목</td>
+			<td th:text="${dto.recruitTitle}" />
+		</tr>
+		<tr>
+			<td>작성자</td>
+			<td th:text="${dto.recruitName}" />
+		</tr>
+		<tr>
+			<td>등록일</td>
+			<td th:text="${dto.regDate}" />
+		</tr>
+		<tr>
+			<td>조회수</td>
+			<td th:text="${dto.cnt}" />
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td th:text="${dto.recruitContent}" />
+		</tr>
+		<tr>
+			<td colspan="2" align="right">
+				<a th:href="|/board/delete/${dto.page}/${dto.id}|">삭제</a>
+				<a th:href="|/board/modify/${dto.page}/${dto.id}|">수정</a>
+				<a th:href="|/board/list/${dto.page}|">목록으로</a>
+			</td>
+		</tr>
+	</table>
+	
+</body>
+</html>
