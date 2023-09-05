@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import aaa.model.PageData;
-import aaa.model.ResumeDTO;
-import aaa.service.ResumeMapper;
+import aaa.model.SoloResumeDTO;
+import aaa.service.SoloResumeMapper;
 import jakarta.annotation.Resource;
 
 @Controller
@@ -22,14 +22,14 @@ import jakarta.annotation.Resource;
 public class SoloResumeController {
 	
 	@Resource
-	ResumeMapper rsmapper;
+	SoloResumeMapper rsmapper;
 	
 	// 이력서 리스트
 	@RequestMapping("home") // 리스트 임
-	String solo_resume(Model mm, ResumeDTO rdto) {
+	String solo_resume(Model mm, SoloResumeDTO rdto) {
 		// 이력서 총 개수
 		int cnt = rsmapper.resumecnt();
-		List<ResumeDTO> data = rsmapper.resumelist();
+		List<SoloResumeDTO> data = rsmapper.resumelist();
 		System.out.println(rdto.getCnt());
 		mm.addAttribute("mainData", data);
 		System.out.println(data);
@@ -50,14 +50,14 @@ public class SoloResumeController {
 
 	// 이력서 등록
 	@GetMapping("write")
-	String solo_resume_write(ResumeDTO rdto) {
+	String solo_resume_write(SoloResumeDTO rdto) {
 		
 		return "solo_resume/write";
 	}
 	
 	// 이력서 제출
 	@PostMapping("write")
-	String solo_resume_writeReg(ResumeDTO rdto, PageData pd) {
+	String solo_resume_writeReg(SoloResumeDTO rdto, PageData pd) {
 		rsmapper.resumeinsert(rdto);
 		pd.setMsg("이력서가 등록되었습니다.");
 		pd.setGoUrl("home");
@@ -66,7 +66,7 @@ public class SoloResumeController {
 
 	// 이력서 수정
 	@GetMapping("modify/{rsid}")
-	String modify(ResumeDTO rdto, Model mm, @PathVariable int rsid) { 
+	String modify(SoloResumeDTO rdto, Model mm, @PathVariable int rsid) { 
 		// 일단 디테일 정보 가져와 줌
 
 		mm.addAttribute("rdto", rsmapper.resumedetail(rsid));
@@ -93,7 +93,7 @@ public class SoloResumeController {
 
     @DeleteMapping("/deleteReg/{rsid}")
     public ResponseEntity<String> solo_resume_deleteReg(@PathVariable int rsid) {
-        ResumeDTO delDTO = rsmapper.resumedetail(rsid);
+        SoloResumeDTO delDTO = rsmapper.resumedetail(rsid);
         if (delDTO != null) {
             int cnt = rsmapper.resumedelete(rsid);
             if (cnt > 0) {

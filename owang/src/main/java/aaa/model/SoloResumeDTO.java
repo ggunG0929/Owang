@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Alias("rDTO")
-public class ResumeDTO {
+public class SoloResumeDTO {
 	
 	MultipartFile rsprofile; // 증명사진
 	

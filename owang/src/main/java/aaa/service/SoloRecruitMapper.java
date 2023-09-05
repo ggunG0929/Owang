@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import aaa.model.RecruitDTO;
+import aaa.model.SoloRecruitDTO;
 
 @Mapper
-public interface RecruitMapper {
+public interface SoloRecruitMapper {
 	
 	// 지원서 리스트
-	List<RecruitDTO> recruitlist();
+	List<SoloRecruitDTO> recruitlist();
 }

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import aaa.model.RecruitDTO;
-import aaa.service.RecruitMapper;
+import aaa.model.SoloRecruitDTO;
+import aaa.service.SoloRecruitMapper;
 import jakarta.annotation.Resource;
 
 @Controller
@@ -15,13 +15,13 @@ import jakarta.annotation.Resource;
 public class SoloRecruitController {
 	
 	@Resource
-	RecruitMapper rcmapper;
+	SoloRecruitMapper rcmapper;
 	
 	// 지원서 리스트
 	@RequestMapping("home")
-	String solo_recruit(Model mm, RecruitDTO rcdto) {
+	String solo_recruit(Model mm, SoloRecruitDTO rcdto) {
 	
-		List<RecruitDTO> data = rcmapper.recruitlist();
+		List<SoloRecruitDTO> data = rcmapper.recruitlist();
 		mm.addAttribute("mainData", data);
 		System.out.println(data);
 		return "solo_recruit/home";

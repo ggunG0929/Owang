@@ -4,19 +4,19 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import aaa.model.ResumeDTO;
+import aaa.model.SoloResumeDTO;
 
 @Mapper
-public interface ResumeMapper {
+public interface SoloResumeMapper {
 	
 	// 이력서 리스트
-	List<ResumeDTO> resumelist();
+	List<SoloResumeDTO> resumelist();
 	
 	// 이력서 디테일
-	ResumeDTO resumedetail(int rsid);
+	SoloResumeDTO resumedetail(int rsid);
 
 	// 이력서 글쓰기
-	int resumeinsert(ResumeDTO rdto);	
+	int resumeinsert(SoloResumeDTO rdto);	
 	
 	// 이력서 총 개수
 	int resumecnt();
