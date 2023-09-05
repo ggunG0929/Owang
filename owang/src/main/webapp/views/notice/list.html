@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">	
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/notice/css.css}">
+</head>
+
+<body>
+    <div class="notice_wrap">
+        <div class="notice_title">
+            <strong>공지사항</strong>
+        </div>
+
+        <div class="notice_list_wrap">
+
+            <div class="notice_list">
+                <div class="top">
+                    <div class="num">번호</div>
+                    <div class="title">제목</div>
+                    <div class="writer">글쓴이</div>
+                    <div class="date">작성일</div>
+                    <div class="count">조회</div>
+                </div>
+                
+                <tr th:each="ndto, dtoStat : ${mainData}">
+					<td th:text="${dtoStat.count + noticeDTO.start}"/>
+					<td>
+						<a th:href="|/notice/detail/${noticeDTO.page}/${ndto.id}|" th:text="${ndto.title}"></a>
+					</td>
+					<td th:text="${ndto.pname}"/>
+					<td th:text="${ndto.regDate}"/>
+					<td th:text="${ndto.cnt}"/>
+				</tr>
+				<tr>
+					<td colspan="5" align="center">
+				
+				<a th:if="${noticeDTO.pageStart > 1}" th:href="${noticeDTO.pageStart - 1}" th:text="'[이전]'"/>		
+						
+				<th:block th:each="no: ${#numbers.sequence(noticeDTO.pageStart, noticeDTO.pageEnd)}" >
+					
+					<span th:if="${no==noticeDTO.page}" th:text="${no}"/>
+					<a th:unless="${no==noticeDTO.page}" th:href="${no}" th:text="${no}"/>
+				</th:block>
+				<a th:if="${noticeDTO.pageEnd < noticeDTO.pageTotal}" th:href="${noticeDTO.pageEnd + 1}" th:text="'[다음]'"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5" align="right">
+						<a th:href="|/notice/insert/${noticeDTO.page}|">글쓰기</a>
+					</td>
+				</tr>
+            </div>
+        </div>
+    </div>  
+</body>
+</html>

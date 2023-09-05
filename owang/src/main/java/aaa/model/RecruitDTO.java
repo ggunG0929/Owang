@@ -44,7 +44,7 @@ public class RecruitDTO {
 		}
 		return recruitUpfile;
 	}
-
+	
 	public boolean isImg() {
 		if(getRecruitUpfile()==null) {
 			return false;

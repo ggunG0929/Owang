@@ -29,6 +29,9 @@ public interface RecruitMapper {
 	// 게시글 삭제
 	int recruitDelete(int id);
 	
+	// 게시글 수정
+	int recruitModify(RecruitDTO dto);
+	
 	// 달력 데이ㅣ터 삽입 테스트
 	List<RecruitDTO> recruitTest();
 	

@@ -39,6 +39,16 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select recruit_title, reg_date,recruit_id,  recruit_magam from recruit
 	</select>
 	
+		<!-- 수정하기 -->
+	<update id="recruitModify" parameterType="recruitDTO">
+		update recruit set 
+			recruit_title = #{recruitTitle},
+		    recruit_name = #{recruitName},
+		    recruit_content = #{recruitContent},
+		    recruit_upfile = #{recruitUpfile},
+		    recruit_magam = #{recruitMagam}
+		    where recruit_id = #{recruitId}
+	</update>
 	
 	
 	
