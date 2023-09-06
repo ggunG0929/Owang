@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>상품안내 및 신청</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--iamport.payment.js-->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script type="text/javascript">
@@ -62,15 +63,46 @@
         IMP.request_pay(options, function(rsp) { // callback
 		    if (rsp.success) {
 		        console.log(rsp.imp_uid + " 성공");
+		        var paymentData = {
+		            impUid: rsp.imp_uid,
+		            merchantUid: rsp.merchant_uid,
+		            pname: rsp.name,
+		            paidAmount: rsp.paid_amount,
+		            buyerName: rsp.buyer_name,
+		            buyerTel: rsp.buyer_tel,
+		            pstatus: rsp.status,
+		            paidAt: new Date(rsp.paid_at* 1000),
+		        };
+                // vbank 결제 시에만 추가 정보를 설정
+		        if (pay_method === 'vbank') {
+					paymentData.paidAt = null;
+		            paymentData.vbankName = rsp.vbank_name;
+		            paymentData.vbankNum = rsp.vbank_num;
+		            paymentData.vbankHolder = rsp.vbank_holder;
+		        }
+		        $.ajax({
+		            url: '/test/complete',
+		            type: 'POST',
+		            dataType: 'json',
+		            contentType: 'application/json',
+		            data: JSON.stringify(paymentData)
+		        })
+		        .done(function (res) {
+		            if (res) {
+		                alert('주문정보 저장 성공');
+		            } else {
+		                alert('주문정보 저장 실패');
+		            }
+	            // 리다이렉트할 URL 설정
+	            var redirectUrl = "/test/result2/" + rsp.imp_uid;
+	            window.location.href = redirectUrl;
+		        });
 		    } else {
 		        alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
 		        console.log(rsp + " 실패");
-		        var resultDiv = document.createElement('div');
-		        resultDiv.innerHTML = "결제가 실패하였습니다.";
-		        document.body.appendChild(resultDiv);
 		    }
-		        });
-		    }
+        });
+    }
 </script>
 </head>
 <body>

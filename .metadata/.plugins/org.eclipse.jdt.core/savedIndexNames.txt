@@ -60,7 +60,6 @@ INDEX VERSION 1.134+C:\coding0\Final_Team\.metadata\.plugins\org.eclipse.jdt.cor
 4112627361.index
 2002280649.index
 2067283034.index
-1186529875.index
 2020499257.index
 578221171.index
 4048794896.index
