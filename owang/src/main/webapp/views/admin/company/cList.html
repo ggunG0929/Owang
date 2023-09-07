@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	[[${mainData}]]
+	<table border="">
+		<tr>
+			<td>번호</td>
+			<td>제목</td>
+			<td>작성자</td>
+			<td>등록일</td>
+			<td>조회수</td>
+		</tr>
+		<tr th:each="dto, dtoStat : ${mainData}">
+			<td th:text="${dtoStat.count + MCompanyDTO.start}"/>
+			<td >
+				<a th:href="|/recruit/detail/${dto.cid}/${MCompanyDTO.page}/${dto.cname}|" th:text="${dto.cname}"></a>
+			</td>
+			<td >
+				<a th:text="${dto.cid}"></a>
+			</td>
+			<td th:text="${dto.cdate}"/>
+			<td th:text="${dto.cnt}"/>
+		</tr>
+		<tr>
+			<td colspan="5" align="center">
+				<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
+				<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.page-MCompanyDTO.page}+1" th:text="'[처음]'"/>
+				
+				<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.pageStart - 1}" th:text="'[이전]'"/>			
+				<th:block th:each="no: ${#numbers.sequence(MCompanyDTO.pageStart, MCompanyDTO.pageEnd)}" >
+					<span th:if="${no==MCompanyDTO.page}" th:text="${no}"/>
+					<a th:unless="${no==MCompanyDTO.page}" th:href="${no}" th:text="${no}"/>
+				</th:block>
+				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageEnd + 1}" th:text="'[다음]'"/>
+				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageTotal}" th:text="'[맨끝]'"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="5" align="right" th:if="${session['cid']}" >
+				<a th:href="|/recruit/insert/${MCompanyDTO.page}|">글쓰기</a>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>관리자 로그인</title>
+</head>
+
+<body>
+	
+	<!-- method post를 추가해서 오게할 예정 -->
+	
+	<form action="admin" method="post" >
+		<h2>로그인</h2>
+		<div class="inputbox">
+			<input type="text" name="id" required="required">
+			<span>이름</span>
+			<i></i>
+		</div>
+		<div>
+			<div class="inputbox">
+				<input type="password" name="pw" required="required">
+				<span>비밀번호</span>
+				<i></i>
+				<!-- span과 i를 input css로 맨위로 올려줌 -->
+			</div>
+		</div>
+		<div class="links">
+			<a href="#">회원가입</a>
+		</div>
+		<input type="submit" value="로그인">
+	</form>
+</body>
+
+</html>

@@ -11,8 +11,8 @@ CREATE TABLE product (
 
 # 삽입 테스트
 insert into product (product_name, product_client, product_code, product_valid, product_price) values
-("[오왕]리뷰열람권 7일권", "개인", "s01", 7, 15000),
-("[오왕]채용공고권 7일권", "기업", "c01", 7, 15000);
+("[오왕]리뷰열람권 7일권", "개인", "S01", 7, 15000),
+("[오왕]채용공고권 7일권", "기업", "C01", 7, 15000);
 
 select * from product;
 

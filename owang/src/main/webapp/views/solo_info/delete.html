@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>delete</title>
+</head>
+<body>
+
+<form method="post" >
+	<input type="hidden" th:value="${sid}" name="sid"/>
+	<table border="">
+		<tr>
+			<td>암호</td>
+			<td><input type="text" name="spw"/></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<input type="submit" value="삭제" />
+				<a href="/solo/solo_info" th:text="뒤로"/>
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>지원서 관리</h2>
+<table border="">
+	<tr>
+		<td>.no</td>
+		<td>지원일</td>
+		<td>기업명</td>
+		<td>공고제목</td>
+		<td>이력서 관리</td>
+		<td>지원 취소</td>
+	</tr>
+	<tr th:each="srdto : ${mainData}">
+		<td th:text="${srcdto.recruitId}" />
+		<td th:text="${srcdto.recruitRegdate}" />
+		<td>
+		    <a th:if="${srdto.cid}" th:href="기업페이지가들어가요" th:text="${srdto.cid}"></a>
+		</td>
+		<td th:text="${srcdto.recruitTitle}" />
+		<td>
+			<!--<a th:href="|detail/${rdto.rsid}|" />-->
+		</td>
+		<td>
+			<button type="submit">취소</button>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>board/detail</title>
+</head>
+<body>
+<h1>notice/detail</h1>
+	<table border="">
+		<tr>
+			<td>id</td><td th:text="${ndto.id}"/>
+		</tr><tr>
+			<td>제목</td><td th:text="${ndto.title}"/>
+		</tr><tr>
+			<td>작성자</td><td th:text="${ndto.pname}"/>
+		</tr><tr>
+			<td>등록일</td><td th:text="${ndto.regDate}"/>
+		</tr><tr>
+			<td>조회수</td><td th:text="${ndto.cnt}"/>
+		</tr>
+		
+		<tr>
+			<td>내용</td><td th:text="${ndto.content}"/>
+		</tr><tr>
+			<td colspan="2" align="right">
+				<a th:href="|/notice/delete/${ndto.page}/${ndto.id}|">삭제</a>
+				<a th:href="|/notice/modify/${ndto.page}/${ndto.id}|">수정</a>
+				<a th:href="|/notice/notice/${ndto.page}|">목록으로</a>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

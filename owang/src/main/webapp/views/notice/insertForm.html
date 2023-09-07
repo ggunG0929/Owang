@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>board/insertForm</title>
+</head>
+<body>
+<h1>notice/insertForm</h1>
+<form method="post" enctype="multipart/form-data" th:object="${noticeDTO}">
+	<table border="">
+		<tr>
+			<td>제목</td>
+			<td><input type="text" th:field="*{title}" /></td>
+		</tr>
+		<tr>
+			<td>작성자</td>
+			<td><input type="text" th:field="*{pname}"/></td>
+		</tr>
+		<!--<tr>
+			<td>암호</td>
+			<td><input type="text" th:field="*{pw}" /></td>
+		</tr>-->
+		<!--<tr>
+			<td>파일</td>
+			<td><input type="file" th:field="*{mmff}"/></td>
+		</tr>-->
+		<tr>
+			<td>내용</td>
+			<td><textarea th:field="*{content}" /></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<input type="submit" value="작성" />
+				<a th:href="|/notice/list/${noticeDTO.page}|">목록으로</a>
+			</td>
+		</tr>
+	</table>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="aaa.service.CompanyMapper">
+	
+	<select id="mypage" resultType="cDTO" parameterType="cDTO">
+		select * from company 
+	</select>
+	
+	<update id="modifffy" parameterType="cDTO">
+		update company set 
+		cname = #{cname}, cbuild= #{cbuild}, ccategory= #{ccategory},
+		cstaff = #{cstaff}, csales = #{csales}, ccontent = #{ccontent}
+		where cid = #{cid} and cpw= #{cpw}
+	</update>
+
+</mapper>

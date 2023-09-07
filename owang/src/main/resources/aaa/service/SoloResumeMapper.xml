@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="aaa.service.SoloResumeMapper">
+	<select id="resumelist" resultType="rDTO">
+   	 	select * from resume where sid = #{sid}
+	</select>
+	
+	<select id="resumedetail" resultType="rDTO">
+		select * from resume where sid = #{sid}
+	</select>
+	
+	
+	<insert id="resumeinsert"  parameterType="rDTO">
+		insert into resume (sid, rsphoto, rstitle, rscareer, rscompany, rsworkstart, rsworkend, rswork, rsacademic, rsacademicstat, rsintroduce,
+		rslisence, rslisenceorg, rslisenceyear, rslanguage, rslanguagelevel, rsregdate)
+		values
+		(#{sid}, #{rsphoto}, #{rstitle}, #{rscareer}, #{rscompany}, #{rsworkstart}, #{rsworkend}, #{rswork}, #{rsacademic}, #{rsacademicstat}, #{rsintroduce}, 
+		#{rslicense}, #{rslicenseorg},#{rslicenseyear},#{rslanguage}, #{rslanguagelevel}, sysdate())
+	</insert>
+	
+	<select id="resumecnt" >
+		select count(*) from resume where sid = #{sid}
+	</select>
+	
+	<delete id="resumedelete"  parameterType="rDTO">
+		delete from resume where rsid = #{rsid}
+	</delete>
+	
+	<select id="resumebysid" resultType="rDTO">
+    	SELECT * FROM resume WHERE sid = #{sid}
+	</select>
+</mapper>

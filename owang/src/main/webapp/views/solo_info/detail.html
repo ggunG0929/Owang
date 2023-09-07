@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>개인정보상세</title>
+</head>
+
+<body>
+
+	<h1>개인 정보 상세</h1>
+
+	<table border="">
+		<tr>
+			<th>아이디</th>
+			<td th:text="${dto.sid}"></td>
+		</tr>
+		<tr>
+			<th>이름</th>
+			<td th:text="${dto.sname}"></td>
+		</tr>
+		<tr>
+			<th>생년월일</th>
+			<td th:text="${dto.sbirth}"></td>
+		</tr>
+		<tr>
+			<th>나이</th>
+			<td th:text="${dto.sage}"></td>
+		</tr>
+		<tr>
+			<th>성별</th>
+			<td th:text="${dto.sgender}"></td>
+		</tr>
+		<tr>
+			<th>전화번호</th>
+			<td th:text="${dto.sphone}"></td>
+		</tr>
+		<tr>
+			<th>이메일</th>
+			<td th:text="${dto.semail}"></td>
+		</tr>
+		<tr>
+			<th>주소</th>
+			<td th:text="${dto.saddress}"></td>
+		</tr>
+		<tr th:if="${dto.scompanyName != null && dto.scompanyName != ''}">
+			<th>재직중인 회사이름</th>
+			<td th:text="${dto.scompanyName}"></td>
+		</tr>
+		<tr th:if="${dto.scompanyFile != null && dto.scompanyFile != '' && dto.scompanyFile != 'null' }">
+			<th>재직증명서</th>
+			<td th:text="${dto.scompanyFile}"></td>
+		</tr>
+
+
+
+	</table>
+
+	<a href="/solo/modify">수정</a>
+	<a href="/solo/delete">삭제</a>
+
+</body>
+
+</html>

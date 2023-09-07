@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원가입 폼</title>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+
+<body>
+	<h1>회원가입 폼</h1>
+	<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
+		<table border="">
+			<div id="checkcId"></div>
+			<tr>
+				<td>아이디:</td>
+				<td><input type="text" name="cid" id="cid" required><input type="button" value="ID 중복체크"
+						onclick="checkDuplicateID()"></td>
+
+
+			</tr>
+			<tr>
+				<td>비밀번호1:</td>
+				<td><input type="password" name="cpw"></td>
+			</tr>
+			<tr>
+				<td>비밀번호2:</td>
+				<td><input type="password" name="cpw2"></td>
+			</tr>
+			<tr>
+				<td>회사명:</td>
+				<td><input type="text" name="cname"></td>
+			</tr>
+			<tr>
+				<td>설립년도:</td>
+				<td><input type="text" name="cbuild"></td>
+			</tr>
+			<tr>
+				<td>업종:</td>
+				<td><input type="text" name="ccategory"></td>
+			</tr>
+			<tr>
+				<td>직원수:</td>
+				<td><input type="number" name="cstaff" required></td>
+			</tr>
+			<tr>
+				<td>1년 매출액:(만원기준)</td>
+				<td>
+					<input type="number" id="csales" name="csales" oninput="updateText(this)" required>
+					<span id="csalesText"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>회사 전화번호:</td>
+				<td><input type="text" name="ccall"></td>
+			</tr>
+			<tr>
+				<td>대표 이름:</td>
+				<td><input type="text" name="cceo"></td>
+			</tr>
+			<tr>
+				<td>주소:</td>
+				<td><input type="text" name="caddress"></td>
+			</tr>
+			<tr>
+				<td>사업자 등록증 파일(필수):</td>
+				<td><input type="file" name="mmff" required></td>
+			</tr>
+			<tr>
+				<td>회사 소개:</td>
+				<td>
+					<textarea name="ccontent" required rows="5" cols="40"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+
+					<input type="submit" value="가입">
+				</td>
+			</tr>
+		</table>
+	</form>
+	<script>
+		function updateText(input) {
+			var csalesText = document.getElementById("csalesText");
+			var value = input.value;
+
+			if (!isNaN(value) && value !== "") {
+				csalesText.innerText = value + "0000원";
+			} else {
+				csalesText.innerText = "null";
+			}
+		}
+
+		
+	</script>
+</body>
+
+</html>

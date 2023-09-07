@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>board/deleteForm</title>
+</head>
+<body>
+<form method="post" >
+	<input type="hidden" th:value="${resumeId}" name="resumeId"/>
+	<table border="">
+		<tr>
+			<td colspan="2" align="center">
+				<input type="submit" value="삭제" />
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

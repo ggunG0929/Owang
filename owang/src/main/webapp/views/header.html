@@ -1,0 +1,80 @@
+
+
+	<header>
+	<link rel="stylesheet" th:href="@{/css/header/header.css}">	
+		<nav>
+			<ul>
+				<li>한식요리사 채용
+					<div class="submenu">
+						<ul>
+							<li><a href="/recruit/list/1">채용</a></li>
+							<li><a href="/recruit/calendar">캘린더</a></li>
+						</ul>
+					</div>
+				</li>
+
+				<li>상품 안내
+					<div class="submenu">
+						<ul>
+							<a href="/product/notice">상품안내</a>
+							
+							
+							
+						</ul>
+					</div>
+				</li>
+				<li th:if="${session['sid']}">개인서비스
+					<div class="submenu">
+						<ul>
+							<li><a href="/solo_resume/home">이력서 관리</a></li>
+							<li><a href="/solo_recruit/home">지원서 관리</a></li>
+							<li><a href="/solo/solo_info">개인 마이페이지</a></li>
+							<li><a href="/solo/product">개인 결제내역</a></li>
+						</ul>
+					</div>
+				</li>
+				
+				<li th:if="${session['cid']}">기업서비스
+					<div class="submenu">
+						<ul>
+							<li><a href="/recruit/insert/1">공고 등록</a></li>
+							<li><a href="#">공고 관리</a></li>
+							<li><a href="#">기업 마이페이지</a></li>
+							<li><a href="#">기업 리뷰</a></li>
+							<li><a href="/company/product">기업 결제내역</a></li>
+						</ul>
+					</div>
+				</li>
+
+				<li>고객지원
+					<div class="submenu">
+						<ul>
+							<li><a href="/qna/qna/1">QnA</a></li>
+							<li><a href="/notice/notice/1">공지사항</a></li>
+						</ul>
+					</div>
+				</li>
+
+			</ul>
+
+			<!-- 로그인/로그아웃 링크 -->
+			<div th:if="${session['cid'] == null and session['sid'] == null}">
+				<a href="/join/company"> 기업회원가입</a>
+				<a href="/join/solo"> 개인회원가입</a>
+				<a href="/login/main">로그인</a>
+			</div>
+			<div th:if="${session['cid'] != null or session['sid'] != null}">
+				<a href="/login/logout">로그아웃</a>
+			</div>
+			<a href="/admin/adminLogin">관리자 로그인</a>
+		</nav>
+    </header>
+
+	<h1>권지혜</h1>
+<h3>상품안내</h3>
+	<a href="/product/notice">상품안내</a>
+<h3>관리자 상품관리</h3>
+	<a href="/admin_product/modify">관리자 상품추가</a>
+	<a href="/admin_product/graph">관리자 상품정산</a>
+	<a href="/admin_product/payment">관리자 결제내역</a>
+

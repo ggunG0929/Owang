@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<h1>solo/ModifyForm</h1>
+
+	<form method="post" enctype="multipart/form-data" th:object="${dto}">
+		<input type="hidden" th:field="*{sid}" />
+		<table border="">
+
+			<tr>
+				<td>이름</td>
+				<td><input type="text" th:field="*{sname}" /></td>
+			</tr>
+			<tr>
+				<td>생년월일</td>
+				<td><input type="text" th:field="*{sbirth}" /></td>
+			</tr>
+			<tr>
+				<td>나이</td>
+				<td><input type="number" th:field="*{sage}" /></td>
+			</tr>
+			<tr>
+				<td>성별</td>
+				<td>
+					<label><input type="radio" name="sgender" value="남성" th:checked="${dto.sgender == '남성'}"> 남성</label>
+					<label><input type="radio" name="sgender" value="여성" th:checked="${dto.sgender == '여성'}"> 여성</label>
+				</td>
+			</tr>
+			<tr>
+				<td>전화번호</td>
+				<td><input type="text" th:field="*{sphone}" /></td>
+			</tr>
+			<tr>
+				<td>이메일</td>
+				<td><input type="text" th:field="*{semail}" /></td>
+				</td>
+
+			</tr>
+			<tr>
+				<td>주소</td>
+				<td><input type="text" th:field="*{saddress}" />
+				</td>
+			</tr>
+
+
+			<label>재직자라면 클릭하세요<input type="button" onclick="toggleFields()" value="재직정보입력" /></label>
+			<!-- 회사 이름 필드 -->
+			<tr id="companyNameMenu" style="display:none;">
+				<td>회사 이름</td>
+				<td><input type="text" th:field="*{scompanyName}"  />
+				</td>
+			</tr>
+
+			<!-- 회사 재직증명서 파일 업로드 필드 -->
+			<tr id="companyFileMenu" style="display:none;">
+				<td>회사 재직증명서</td>
+				<td><input type="file" th:field="*{mmff}" />
+				</td>
+			</tr>
+			<tr>
+				<td>암호변경</td>
+				<td><input type="text" name="spw" /></td>
+			</tr>
+			<tr>
+				<td>암호재확인</td>
+				<td><input type="text" name="spw2" /></td>
+			</tr>
+			<tr>
+
+				<td colspan="2" align="center">
+					<input type="submit" value="수정" />
+				</td>
+				<td colspan="2" align="center">
+					<input type="reset" value="리셋" />
+				</td>
+				<td colspan="2" align="center">
+					<a href="/solo/solo_info">뒤로</a>
+				</td>
+			</tr>
+
+
+		</table>
+	</form>
+	<script>
+		function toggleFields() {
+			const companyName = document.getElementById("companyNameMenu");
+			const companyFile = document.getElementById("companyFileMenu");
+
+			if (companyName.style.display == "none") {
+				companyName.style.display = "table-row";
+				companyFile.style.display = "table-row";
+			} else {
+				companyName.style.display = "none";
+				companyFile.style.display = "none";
+			}
+		}
+	</script>
+</body>
+
+</html>

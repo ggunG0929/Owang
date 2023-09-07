@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>company/detail</title>
+</head>
+<body>
+<h1>company/detail</h1>
+	<table border="">
+		<tr>
+			<td>cid</td><td th:text="${dto.cid}"/>
+		</tr><tr>
+			<td>기업이름</td><td th:text="${dto.cname}"/>
+		</tr><tr>
+			<td>설립연도</td><td th:text="${dto.cbuild}"/>
+		</tr><tr>
+			<td>업종</td><td th:text="${dto.ccategory}"/>
+		</tr><tr>
+			<td>직원수</td><td th:text="${dto.cstaff}"/>
+		</tr><tr>
+			<td>매출액</td><td th:text="${dto.csales}"/>
+		</tr>
+		<tr>
+			<td>내용</td><td th:text="${dto.ccontent}"/>
+		</tr><tr>
+			<td colspan="2" align="right">
+				<a th:href="|/company/modify/${dto.page}/${dto.cid}|">수정</a>
+				<a th:href="|/company/mypage/${dto.page}|">목록으로</a>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

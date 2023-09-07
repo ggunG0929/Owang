@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	[[${session['cid']}]]<br>
+	[[${recruitDTO}]]
+	
+	<p><input type="text" th:value="${session['cid']}" readonly/></p>
+	<h1>recruit/insert</h1>
+	<form action="" method="post" enctype="multipart/form-data" th:object="${recruitDTO}">
+		<table border="">
+			<tr>
+				<td>공고제목</td>
+				<td><input type="text" th:field="*{recruitTitle}" required /></td>
+			</tr>
+			<tr>
+				<td>회사명</td>
+				<td><input type="text" th:value="${session['cid']}" name="cid" readonly /></td>
+			</tr>
+			<!--정규직만있어서 readonly로 설정했습니다.-->
+			<tr>
+				<td>근무형태</td>
+				<td><input type="text" readonly value="정규직"/></td>
+			</tr>
+			<tr>
+				<td>급여(*만원)</td>
+				<td><input type="text" th:field="*{recruitMoney}" required /></td>
+			</tr>
+			<tr>
+				<td>근무지역</td>
+				<!--카테고리추가예정-->
+				<td><select>
+				     <option value="서울특별시">서울특별시</option>
+				     <option value="경기도">경기도</option>
+				      <option value="부산광역시">부산광역시</option>
+				      <option value="대구광역시">대구광역시</option>
+				      <option value="인천광역시">인천광역시</option>
+				      <option value="광주광역시">광주광역시</option>
+				      <option value="대전광역시">대전광역시</option>
+				      <option value="제주도">제주도</option>
+	    				</select>
+    				</td>
+			</tr>
+			<tr>
+				<td>파일</td>
+				<td><input type="file" th:field="*{mmff}" /></td>
+			</tr>
+			<select name="마감일" th:field="*{recruitMagam}">
+				<option value="7" selected>7일 후</option>
+				<option value="30">30일 후</option>
+				<option value="300">300일 후</option>
+			</select>
+			<tr>
+				<td>내용</td>
+				<td><textarea type="text" th:field="*{recruitContent}" rows="10" cols="30" required /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="작성" />
+					<a th:href="|/recruit/list/${recruitDTO.page}|">뒤로가기</a>
+				</td>
+
+			</tr>
+		</table>
+
+
+	</form>
+</body>
+
+</html>
