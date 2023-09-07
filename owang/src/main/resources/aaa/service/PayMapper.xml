@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="aaa.service.PayMapper">
+
+	<select id="list" resultType="payDTO">
+		select * from payment order by pay_id desc
+	</select>
+	<select id="detail" resultType="payDTO" parameterType="String">
+		select * from payment where imp_uid = #{impUid}
+	</select>
+    <select id="idget" resultType="String">
+        select 
+            CASE 
+                WHEN cid IS NOT NULL THEN cid
+                WHEN sid IS NOT NULL THEN sid
+                Else ''
+            END AS result
+        from payment where imp_uid = #{impUid}
+    </select>
+    <!-- sid로 imp_uid 리스트 가져오기 -->
+	<select id="impuidbys" parameterType="String" resultType="String">
+	    SELECT imp_uid
+	    FROM payment
+	    WHERE sid = #{sid}
+	</select>
+	<!-- cid로 imp_uid 리스트 가져오기 -->
+	<select id="impuidbyc" parameterType="String" resultType="String">
+	    SELECT imp_uid
+	    FROM payment
+	    WHERE cid = #{cid}
+	</select>
+
+	<insert id="insert" parameterType="payDTO">
+		insert into payment (sid, cid, imp_uid, merchant_uid, pname, buyer_name, buyer_tel, pstatus, paid_amount, paid_at, vbank_name, vbank_num, vbank_holder) 
+		values (#{sid}, #{cid}, #{impUid}, #{merchantUid}, #{pname}, #{buyerName}, #{buyerTel}, #{pstatus}, #{paidAmount}, #{paidAt}, #{vbankName}, #{vbankNum}, #{vbankHolder})
+	</insert>
+	
+	<delete id="delete" parameterType="payDTO">
+		delete from payment where product_code = #{product_code}
+	</delete>
+	
+	<update id="modify" parameterType="payDTO">
+		update payment set 
+		product_name = #{product_name}, product_valid = #{product_valid}, product_price = #{product_price}
+		where product_code = #{product_code}
+	</update>
+</mapper>

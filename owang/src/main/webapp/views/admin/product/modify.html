@@ -6,31 +6,24 @@
 </head>
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
-	    const pform = document.getElementById("pform");
-	    const del = document.querySelectorAll(".dbtn");
-	
-	    // 상품 추가 폼 제출 시
-	    pform.addEventListener("submit", function (event) {
-	        event.preventDefault(); // 폼 기본 동작 방지
-	
-	        // 사용자에게 동작 확인을 물어보기
-	        const confirmed = confirm("정말로 상품을 추가하시겠습니까?");
-	
-	        if (confirmed) {
-	            this.submit(); // 폼 제출
+	    let addForm = document.getElementById("addForm");
+	    let del = document.querySelectorAll(".delbtn");
+	    // 상품추가폼 제출(submit)시
+	    addForm.addEventListener("submit", function (event) {
+	        event.preventDefault(); // 폼 기본동작 방지
+			// confirm 확인받고 상폼추가폼 제출
+	        if (confirm("정말로 상품을 추가하시겠습니까?")) {
+	            this.submit();
 	        }
 	    });
-	
-	    // 상품 삭제 버튼 클릭 시
+	    // 상품 삭제 버튼 각각
 	    del.forEach(function (button) {
+			// 버튼 클릭시 이벤트
 	        button.addEventListener("click", function () {
-	            // 사용자에게 동작 확인을 물어보기
-	            const confirmed = confirm("정말로 상품을 삭제하시겠습니까?");
-	
-	            if (confirmed) {
-                    const productCode = this.getAttribute("id"); // 버튼의 아이디 가져오기
-                    const deleteUrl = `/admin_product/deleteProduct?productCode=${productCode}`;
-
+	            // confirm 확인받고 상품삭제
+	            if (confirm("정말로 상품을 삭제하시겠습니까?")) {
+                    let productCode = this.getAttribute("id"); // 버튼의 아이디(상품코드) 가져오기
+                    let deleteUrl = `/admin_product/deleteProduct?productCode=${productCode}`;
                     window.location.href = deleteUrl; // 지정된 URL로 이동
 	            }
 	        });
@@ -39,7 +32,8 @@
 </script>
 <body>
 <h1>상품 변경</h1>
-<form action="insertProduct" method="post" th:object="${ProductDTO}" id="pform">
+<!-- 폼제출시 동작은 상품추가 -->
+<form action="insertProduct" method="post" th:object="${ProductDTO}" id="addForm">
 	<table border="">
 		<tr>
 			<td>대상</td>
@@ -55,7 +49,8 @@
 			<td th:text="${dto.productValid}"></td>
 			<td th:text="${dto.productName}"></td>
 			<td th:text="${dto.productPrice}"></td>
-			<td><input type="button" value="삭제" class="dbtn" th:attr="id=${dto.productCode}"></td>
+			<!-- 삭제버튼 아이디를 해당상품의 상품코드로 -->
+			<td><input type="button" value="삭제" class="delbtn" th:attr="id=${dto.productCode}"></td>
 		</tr>
 		<tr>
 			<td><input type="text" th:field="*{productClient}"></td>

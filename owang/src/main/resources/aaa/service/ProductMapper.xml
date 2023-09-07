@@ -6,7 +6,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <mapper namespace="aaa.service.ProductMapper">
 
 	<select id="list" resultType="pDTO">
-		select * from product order by product_price
+		select * from product order by product_client, product_price
+	</select>
+	<select id="detail" resultType="pDTO" parameterType="String">
+		select * from product where product_code = #{productCode}
 	</select>
 
 	<insert id="insert" parameterType="pDTO">

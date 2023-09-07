@@ -22,3 +22,11 @@
 1693887172623	Rename resource 'admin_product_payment.html'
 1693887180446	Rename resource 'admin_product_modify.html'
 1693892875713	Delete element
+1693993388834	Rename resource 'result2.html'
+1694007321307	Rename resource 'product_company_form.html'
+1694007328577	Delete element
+1694074292545	Rename type 'PaymentMember'
+1694074540637	Rename type 'PaymentRespondMember'
+1694074707775	Delete element
+1694074712121	Delete element
+1694074779385	Rename resource 'payment.html'

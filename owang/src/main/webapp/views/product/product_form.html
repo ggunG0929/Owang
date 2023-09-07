@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>상품안내 및 신청</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--iamport.payment.js-->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<!-- 자바스크립트에 타임리프 적용 -->
+<!-- 빨간줄 생김... 아주 보기 싫다ㅠㅠ -->
+<script th:inline="javascript">
+	var IMP = window.IMP;
+	IMP.init('imp65726445');	// 회원당 하나씩 부여받은 아이디 넣기
+	// 주문번호 생성 예시
+    var today = new Date();	// 현재
+    var year = String(today.getFullYear() % 100);
+    // 날짜를 가져와서 2자리로 만들어 string으로 저장
+	var month = String(today.getMonth() + 1).padStart(2, '0');
+	var date = String(today.getDate()).padStart(2, '0');
+	var hours = String(today.getHours()).padStart(2, '0');
+	var minutes = String(today.getMinutes()).padStart(2, '0');
+	var seconds = String(today.getSeconds()).padStart(2, '0');
+	// 밀리초는 3자리로 만들어 string으로 저장
+	var milliseconds = String(today.getMilliseconds()).padStart(3, '0');
+	
+	var nowdate = year +  month + date;
+	var nowtime = hours + minutes + seconds + milliseconds;
+	
+	// 타임리프로 dto에서 가져오기
+	var code = [[${dto.productCode}]];
+	
+	// 주문번호 = 시간 + 상품코드
+	var uidnum = nowdate + nowtime + code;
+
+	// 결제요청(pg사, 결제수단)
+    function requestPay(pg, pay_method) {
+		var payForm = document.getElementById("paymentForm");
+    	// 결제정보
+	    var options = {
+	        merchant_uid: uidnum,
+	        name: [[${dto.productName}]], // 상품명 입력값
+	        amount: [[${dto.productPrice}]], // 상품전체가격 입력값
+	        buyer_name: payForm.querySelector("[name=buyer_name]").value,
+	        buyer_email: payForm.querySelector("[name=buyer_email]").value,
+	        buyer_tel: payForm.querySelector("[name=buyer_tel]").value
+	    };
+		// {===} : 자료형까지 동일한지 확인함
+		// pg사 선택 - 카카오페이, 이니시스
+        if(pg === 'kakaopay') {
+            options.pg = "kakaopay.TC0ONETIME";
+        } else if(pg === 'inicis') {
+            options.pg = "html5_inicis.INIpayTest";
+        }
+        // 결제방식 선택 - 카드, 계좌이체, 가상계좌
+        if(pay_method === 'card') {
+            options.pay_method = "card";
+        }else if(pay_method === 'trans') {
+			options.pay_method = "trans";
+		}else if(pay_method === 'vbank') {
+			options.pay_method = "vbank";
+			// 가상계좌 제한기각 - 미작성시 한달
+//			options.vbank_due = ivdue;
+		}
+
+		// 결제 후 콜백함수
+        IMP.request_pay(options, function(callback) {
+			// 결제 성공
+		    if (callback.success) {
+		        console.log(JSON.stringify(callback, null, 2) + " 성공");
+		        // db에 담을 주문정보
+		        var paymentData = {
+					// 거래고유번호
+		            impUid: callback.imp_uid,
+		            // 주문번호
+		            merchantUid: callback.merchant_uid,
+		            // 상품명
+		            pname: callback.name,
+		            // 결제금액
+		            paidAmount: callback.paid_amount,
+		            // 주문인
+		            buyerName: callback.buyer_name,
+		            // 주문인 연락처
+		            buyerTel: callback.buyer_tel,
+		            // 결제상태(가상계좌를 뺀다면 필요없음)
+		            pstatus: callback.status,
+		            // 결제시간
+		            paidAt: new Date(callback.paid_at* 1000),
+		        };
+                // vbank 결제 시에만 추가 정보를 설정(가상계좌를 뺀다면 필요없음)
+		        if (pay_method === 'vbank') {
+					paymentData.paidAt = null;
+		            paymentData.vbankName = callback.vbank_name;
+		            paymentData.vbankNum = callback.vbank_num;
+		            paymentData.vbankHolder = callback.vbank_holder;
+		        }
+		        // 주문정보를 post형식으로 complete로 보냄
+		        $.ajax({
+		            url: '/product/complete',
+		            type: 'POST',
+		            dataType: 'json',
+		            contentType: 'application/json',
+		            // JavaScript 객체를 JSON 문자열로 변환
+		            data: JSON.stringify(paymentData)
+		        })
+		        .done(function (res) {
+		            if (res>0) {
+		                alert('결제금액 검증 성공');
+		            } else {
+		                alert('결제금액 검증 실패, 결제를 취소합니다.');
+		            }
+	            // 리다이렉트할 URL 설정
+	            var redirectUrl = "/product/result/" + callback.imp_uid;
+	            window.location.href = redirectUrl;
+		        });
+	        // 결제 실패
+		    } else {
+		        alert("결제에 실패하였습니다. \n이유: " + callback.error_msg);
+		        console.log(JSON.stringify(callback, null, 2) + " 실패");
+		    }
+        });
+    }
+</script>
+</head>
+<body>
+<div>
+	상품에 대한 설명입니다.
+</div>
+<form id="paymentForm" method="post" onsubmit="return false;">
+	<table border="">
+		<!--회원정보와 연결하기-->
+		<input type="hidden" name="buyer_name" placeholder="구매자이름" value="테스터">
+		<input type="hidden" name="buyer_email" placeholder="이메일" value="">
+		<input type="hidden" name="buyer_tel" placeholder="전화번호" value="01012345678">
+		<tr>
+			<td>구매상품</td>
+			<td th:text="${dto.productName}"></td>
+		</tr>
+		<tr>
+			<td>상품가격</td>
+			<td th:text="${dto.productPrice}"></td>
+		</tr>
+		<tr>
+			<td>유효기간</td>
+			<!--<td th:text="|${endDate} 자정까지|"></td>-->
+			<td th:text="|결제시부터 +${dto.productValid}일 후 자정까지|"></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<button onclick="requestPay('inicis', 'trans')">이니시스(실시간계좌이체)</button>
+				<!-- 가상계좌의 경우 종료일을 주기가 애매해서 빼야할 듯 -->
+				<button onclick="requestPay('inicis', 'vbank')">이니시스(가상계좌)</button>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<button onclick="requestPay('inicis', 'card')">이니시스(카드)</button>
+				<button onclick="requestPay('kakaopay', 'card')">카카오페이</button>
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

@@ -9,6 +9,9 @@ import lombok.Data;
 @Data
 @Alias("payDTO")
 public class PaymentDTO {
+	// 사이트 아이디
+	String sid;
+	String cid;
 	// 아임포트 거래고유번호
 	String impUid;
 	// 자체생성한 주문번호
