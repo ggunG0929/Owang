@@ -36,4 +36,11 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <select id="resumeSolo" resultType="soloDTO">
 	 select * from solo where sid = #{userid}
 </select>
+
+
+<update id="paysmember" parameterType="soloDTO">
+	update solo set
+	stype = #{stype}, sdate = #{sdate}
+	where sid = #{sid}
+</update>
 </mapper>

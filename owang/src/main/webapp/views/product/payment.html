@@ -2,10 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>회원결제내역</title>
+<title>회원상품관리</title>
 </head>
 <body>
-   <h1>회원 결제내역</h1>
+	<!-- 유효기간이 오늘보다 이후일 경우 -->
+	<th:block th:if="${sdate != null or cdate != null}">				
+	<h3>현재 적용중인 상품은 [[${#dates.format(sdate, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
+	<!-- 여기까지 -->
+	</th:block>
+
+	<h1>회원 결제내역</h1>
+	<th:block th:if="${paymentData}!=null">
     <table border="">
         <thead>
             <tr>
@@ -14,17 +21,6 @@
                 <th>결제일</th>
                 <th>상품명</th>
                 <th>결제금액</th>
-                <th>은행명</th>
-                <th>카드명</th>
-                <th>카드번호</th>
-                <th>가상계좌 은행</th>
-                <th>가상계좌 계좌번호</th>
-                <th>가상계좌 예금주</th>
-                <th>가상계좌 기한</th>
-                <!--<th>취소금액</th>-->
-<!--                <th>주문자명</th>
-                <th>주문자이메일</th>
-                <th>주문자연락처</th>-->
                 <th></th>
             </tr>
         </thead>
@@ -35,20 +31,10 @@
 				<td th:text="${payment.paid_at}"></td>
 				<td th:text="${payment.name}"></td>
 				<td th:text="${payment.amount}"></td>
-				<td th:text="${payment.bank_name}"></td>
-				<td th:text="${payment.card_name}"></td>
-				<td th:text="${payment.card_number}"></td>
-				<td th:text="${payment.vbank_name}"></td>
-				<td th:text="${payment.vbank_num}"></td>
-				<td th:text="${payment.vbank_holder}"></td>
-				<td th:text="${payment.vbank_date}"></td>
-				<!--<td th:text="${payment.cancel_amount}"></td>-->
-<!--				<td th:text="${payment.buyer_name}"></td>
-				<td th:text="${payment.buyer_email}"></td>
-				<td th:text="${payment.buyer_tel}"></td>-->
                 <td><a th:href="${payment.receipt_url}">매출전표</a></td>
             </tr>
         </tbody>
     </table>
+	</th:block>
 </body>
 </html>

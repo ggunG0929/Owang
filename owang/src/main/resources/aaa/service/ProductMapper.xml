@@ -9,7 +9,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select * from product order by product_client, product_price
 	</select>
 	<select id="detail" resultType="pDTO" parameterType="String">
-		select * from product where product_code = #{productCode}
+		select * from product where product_id = #{productId}
+	</select>
+	<select id="period" resultType="int" parameterType="String">
+		select product_valid from product where product_id = #{productId}
 	</select>
 
 	<insert id="insert" parameterType="pDTO">
@@ -18,12 +21,12 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</insert>
 	
 	<delete id="delete" parameterType="pDTO">
-		delete from product where product_code = #{code}
+		delete from product where product_id = #{productId}
 	</delete>
 	
 	<update id="modify" parameterType="pDTO">
 		update product set 
-		product_name = #{product_name}, product_valid = #{product_valid}, product_price = #{product_price}
-		where product_code = #{product_code}
+		product_name = #{productName}, product_valid = #{productValid}, product_price = #{productPrice}
+		where product_id = #{productId}
 	</update>
 </mapper>

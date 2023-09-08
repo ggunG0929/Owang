@@ -6,23 +6,26 @@
 </head>
 <body>
 <div>
-	비로그인으로 들어왔을때<br>
 	개인을 위해서는 리뷰열람권이 있고<br>
 	기업을 위해서는 채용공고권이 있습니다.<br>
-	둘 다 기간제고요 7일 기준으로만 일단 하겠습니당<br>
+	둘 다 기간제고요 7일 기준으로 일단 하겠습니당<br>
 </div>
 <table border="">
 	<tr>
 		<td>대상</td>
 		<td>상품명</td>
 		<td>금액</td>
-		<td></td>
 	</tr>
 	<tr th:each="dto : ${data}" align="center">
 		<td th:text="${dto.productClient}"></td>
 		<td th:text="${dto.productName}"></td>
 		<td th:text="${dto.productPrice}"></td>
-		<td><a th:href="|/product/${dto.productCode}|">바로가기</a></td>
+		<th:block th:if="${session.cid != null and dto.productClient == '기업'}">			
+		<td><a th:href="|/product/${dto.productId}|">바로가기</a></td>
+		</th:block>
+		<th:block th:if="${session.sid != null and dto.productClient == '개인'}">			
+		<td><a th:href="|/product/${dto.productId}|">바로가기</a></td>
+		</th:block>
 	</tr>
 </table>
 </body>

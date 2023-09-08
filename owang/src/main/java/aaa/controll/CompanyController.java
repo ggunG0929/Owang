@@ -15,6 +15,7 @@ import aaa.model.PaymentResponseMember;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("company")
@@ -24,10 +25,9 @@ public class CompanyController {
 	PayMapper paym;
 	
 	@RequestMapping("/product")
-	String product(Model mm) throws Exception {
-    	// b부분을 세션아이디로 바꿔주면 됨
-//    	List<String> impuidList = paym.impuidbyc("b");
-    	List<String> impuidList = paym.impuidbyc("b");
+	String product(Model mm, HttpSession session) throws Exception {
+		String cid = (String) session.getAttribute("cid");
+    	List<String> impuidList = paym.impuidbyc(cid);
         String token = PayService.getToken(); // PayService를 통해 토큰을 가져옴
         // API에 대한 요청을 위한 URL 생성
         String apiUrl = "https://api.iamport.kr/payments?"

@@ -12,11 +12,13 @@ public interface ProductMapper {
 	// 리스트보기
 	List<ProductDTO> list();
 	// 상품보기
-	ProductDTO detail(String productCode);
+	ProductDTO detail(String productId);
+	// 상품 유효기간
+	int period(String productId);
 	// 상품생성
 	int insert(ProductDTO dto);
 	// 상품삭제
-	int delete(String code);
+	int delete(String productId);
 //	// 상품수정
 //	int modify(ProductDTO dto);
 }

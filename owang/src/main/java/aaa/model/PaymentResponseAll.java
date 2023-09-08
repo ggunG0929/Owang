@@ -4,6 +4,7 @@ import java.util.List;
 
 import lombok.Data;
 
+// 결제상태로 모든 결제내역 가져오기
 @Data
 public class PaymentResponseAll {
     private int code;
@@ -77,7 +78,7 @@ public class PaymentResponseAll {
         private String status;
         // 결제시작 시간
         private int started_at;
-        // 결제된 시간
+        // 결제완료 시간
 //        private int paid_at;
         private String paid_at;
         // 결제실패 시간
@@ -99,11 +100,11 @@ public class PaymentResponseAll {
         public static class CancelHistory {
             private String pg_tid;
             // 취소금액
-//            private int amount;
+            private int amount;
             private int cancelled_at;
             private String reason;
             // 취소 매출전표 링크
-//            private String receipt_url;
+            private String receipt_url;
         }
     }
 }

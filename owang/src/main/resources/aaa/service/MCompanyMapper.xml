@@ -26,4 +26,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	select * from company where cid = #{userid}
 </select>
 
+<update id="paycmember" parameterType="mcDTO">
+	update company set
+	ctype = #{ctype}, cdate = #{cdate}
+	where cid = #{cid}
+</update>
 </mapper>

@@ -1,5 +1,7 @@
 package aaa.service;
 
+import java.util.Date;
+
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -24,4 +26,7 @@ public interface SoloMapper {
 	
 	// 세션받아오기 객체
 	SoloDTO resumeSolo(String userid);
+	
+	// 결제회원처리
+	void paysmember(SoloDTO dto);
 }

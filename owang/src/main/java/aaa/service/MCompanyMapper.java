@@ -31,4 +31,6 @@ public interface MCompanyMapper {
 		 * company); int delettt(MCompanyDTO company);
 		 */
 		
+		// 결제회원처리
+		void paycmember(MCompanyDTO dto);
 }

@@ -29,7 +29,6 @@ CREATE TABLE solo (
     stype Int,
     sdate date,
     sbcnt int
-    
 );
 
 use solo;
