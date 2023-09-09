@@ -7,41 +7,21 @@
 <body>
 <script th:inline="javascript">
     // 서버에서 받아온 cnt 값
-    var cnt = /*[[${cnt}]]*/ 0;
+    var cnt = /*[[${mainData.size()}]]*/ 0;
 
     // 이력서 등록 제한 확인 함수
-    function checkResumeCount() {
+    function checkResumeCount(event) {
         if (cnt >= 5) {
             alert("이력서는 최대 5개까지 등록할 수 있습니다.");
             event.preventDefault(); // 링크 이동 취소
         }
     }
-    
-    function deleteResume(rsid) {
-    // 확인 다이얼로그 표시
-    if (confirm("이력서를 삭제하시겠습니까?")) {
-        // AJAX 요청 설정
-        var xhr = new XMLHttpRequest();
-        xhr.open("DELETE", "deleteReg/" + rsid, true); // 삭제 요청을 보낼 URL 설정
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // 삭제 성공한 경우
-                alert("이력서가 삭제되었습니다.");
-                // 페이지 새로 고침 또는 삭제한 데이터를 화면에서 갱신하는 로직 추가
-            } else if (xhr.readyState == 4 && xhr.status != 200) {
-                // 삭제 실패한 경우
-                alert("이력서 삭제에 실패했습니다.");
-            }
-        };
-        xhr.send();
-    }
-}
 </script>
 <h2>이력서 관리</h2>
 <div>
 	<a href="write" onclick="checkResumeCount(event)">이력서 등록하기</a>
 	<p>이력서는 최대 5개까지 등록할 수 있습니다.</p>
-	<span th:text="${'총 ' + cnt + ' 건'}"></span>
+	<span th:text="${'총 ' + mainData.size() + ' 건'}"></span>
 <table border="">
 	<tr>
 		<td>no.</td>
@@ -56,10 +36,10 @@
 			<a th:href="|detail/${rdto.rsid}|" th:text="${rdto.rstitle}" />
 		</td>
 		<td th:text="${rdto.rsregdate}"></td>
-		<td text="">수정일</td>
+		<td th:text="${rdto.rsmoddate}"></td>
 		<input type="hidden" th:value="${rdto.rsid}" name="rsid"/>
 		<td>
-    		<input type="submit" value="삭제" th:onclick="'deleteResume(' + ${rdto.rsid} + ')'" />
+    		<a th:href="|delete/${rdto.rsid}|">삭제</a>
 		</td>
 	</tr>
 </table>

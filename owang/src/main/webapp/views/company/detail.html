@@ -24,8 +24,9 @@
 			<td>내용</td><td th:text="${dto.ccontent}"/>
 		</tr><tr>
 			<td colspan="2" align="right">
-				<a th:href="|/company/modify/${dto.page}/${dto.cid}|">수정</a>
-				<a th:href="|/company/mypage/${dto.page}|">목록으로</a>
+				<a th:href="|/review/list/${dto.cid}/1|">리뷰</a>
+				<a href="/company/modify" >수정</a>
+				<a href="/company/delete" >삭제</a>
 			</td>
 		</tr>
 	</table>

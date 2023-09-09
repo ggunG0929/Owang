@@ -32,6 +32,7 @@ public class MCompanyDTO {
 	int ctype=1;
 	Date cdate;
 	int cbcnt;
+	boolean capproval;
 	
 	int start, limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
 	

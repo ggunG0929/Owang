@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>이력서 확인</h2>
+<div>
+	<div>
+        <div style="border: 1px solid #ccc; width:700px;">
+			<h2>기본정보</h2>
+			<div>
+				<table style="width:450px;">
+					<input type="hidden" th:value="${solosession.sid}" name="sid" />
+			        <tr>
+			            <td th:text="${solosession.sname}"></td>
+			            <td th:text="${solosession.sgender}"></td>
+			            <td th:text="${solosession.sage}"></td>
+					</tr>
+					<tr>
+						<td>주소</td>
+						<td th:text="${solosession.saddress}"></td>
+						<td>이메일</td>
+						<td th:text="${solosession.semail}"></td>
+					</tr>
+					<tr>
+						<td >전화번호</td>
+						<td th:text="${solosession.sphone}"></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<img th:if="${sdto.img}" th:src="|/up/${sdto.rsphoto}|"
+				style="width:160px; height:200px; border: 1px solid #ccc;"/>
+			</div>
+		</div>
+		<!-- 이력서 제목 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>이력서 제목</p>
+			<p th:text="${sdto.rstitle}" />
+		</div>
+		<!-- 경력 사항 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>경력</p>
+			<p th:text="${sdto.rscareer}" />
+		</div>
+		<!-- 학력 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>학력</p>
+			<p th:text="${sdto.rsacademic}" />
+			<p th:text="${sdto.rsacademicstat}" />			
+		</div>
+		<!-- 자기소개 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+		    <p>자기소개서</p>
+		    <p th:text="${sdto.rsintroduce}" />
+		</div>
+		<!-- 자격증 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>자격증</p>
+			<table>
+
+				<tr th:field="${sdto.rslicense == null and sdto.rslicenseorg == null and sdto.rslicenseyear == null}">
+				    <td>자격증 명</td>
+				    <td th:text="${sdto.rslicense}" />
+				    <td th:text="${sdto.rslicenseorg}" />
+				    <td th:text="${sdto.rslicenseyear}" />
+				</tr>
+			</table>
+		</div>
+		<!-- 어학 능력 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>어학능력</p>
+			<p th:text="${sdto.rslanguage}" />
+			<p th:text="${sdto.rslanguagelevel}" />
+		</div>
+	</div>
+</div>
+</body>
+</html>

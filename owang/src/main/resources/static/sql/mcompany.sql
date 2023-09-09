@@ -40,6 +40,5 @@ VALUES
     ('company5', 'password5', 'RetailMart', 'Mall Plaza', 'Retail', 30, 300000, '444-555-6666', 'Eve Brown', 'Shop 5, Mall Street', 'file5.txt', 'This is a retail company.', 1, '2023-09-04', 6);
 
 select * from company;
-select * from company where cid = "company4" and cpw = "password4";
 
 drop table company;

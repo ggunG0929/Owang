@@ -18,14 +18,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import aaa.model.RecruitDTO;
+import aaa.model.SoloDTO;
 import aaa.model.SoloResumeDTO;
 import aaa.service.RecruitMapper;
 import aaa.service.SoloResumeMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/recruit")
@@ -44,6 +48,41 @@ public class RecruitController {
 	// 지원하기때문에 넣었음
 	@Resource
 	SoloResumeMapper rsmapper;
+	
+	@GetMapping("/search")
+	public String search(@RequestParam("keyword") String keyword, 
+			@RequestParam("searchOption") String searchOption,
+			@ModelAttribute RecruitDTO dto,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			Model model) {
+		
+		    List<RecruitDTO> data = recruitMapper.searchRecruit(keyword, searchOption);
+		    
+		    // 페이징 정보 설정
+		    dto.setPage(page); // 페이지 설정
+		    dto.calc(data.size()); // 페이지 계산 메서드 호출
+		    
+		    // 해당 페이지에 필요한 데이터만 가져오기
+		    int startIndex = dto.getStart();
+		    int endIndex = startIndex + dto.getLimit();
+		    if (endIndex > data.size()) {
+		        endIndex = data.size();
+		    }
+		    List<RecruitDTO> paginatedData = data.subList(startIndex, endIndex);
+		
+		
+		try {
+		
+			model.addAttribute("mainData", paginatedData);
+			
+		} catch (Exception e) {
+			model.addAttribute("mainData", "검색결과가 없습니다");
+		}
+
+		return "recruit/searchResult";
+	}
+
+	
 	
 	@RequestMapping("calendar")
 	String calendar() {
@@ -305,35 +344,54 @@ public class RecruitController {
 			return "recruit/recruit_alert"; 
 		}
 	
-	// 지원서 제출 페이지
-	@GetMapping("submit/{page}/{id}")
-	String submit(Model mm, SoloResumeDTO rdto, @PathVariable int page, @PathVariable int id) {
-		RecruitDTO dto = recruitMapper.recruitDetail(id);
-		mm.addAttribute("dto",dto);
-		System.out.println(dto);
-		// 일단 이력서 가져옴
-		//List<SoloResumeDTO> data = rsmapper.resumelist(rdto.rsid);
-		//mm.addAttribute("mainData", rsmapper.resumedetail(rdto.rsid));
-		//mm.addAttribute("mainData", data);
-		//System.out.println(data + "data왔니?");
-		return "recruit/recruit_submitform";
-	}
-	
-	// 지원서 제출 시 이력서 열람
-	@RequestMapping("submit/{page}/{id}/{rsid}")
-	String submitResume(Model mm, @PathVariable int rsid) {
-		
-		mm.addAttribute("rdto", rsmapper.resumedetail(rsid));
-		// 이력서 열람만 가능
-		return "solo_resume/recruit_resume";
-	}
-	
-	// 지원서 제출 완료
-	@PostMapping("submit/{page}/{id}/{rsid}")
-	String submitReg(RecruitDTO dto, HttpServletRequest request,  @PathVariable int rsid) {
-		dto.setMsg("접수가 완료되었습니다.");
-	    dto.setGoUrl("recruit/list" + dto.getPage() + "/" + dto.getRecruitId());
-		return "recruit/alert";
-	}
+		// 지원서 제출 페이지
+		@RequestMapping("submit/{page}/{rsid}")
+		String submit(Model mm, SoloResumeDTO rdto, @PathVariable int page, 
+				@PathVariable int rsid, HttpSession session) {
+			String sid = (String)session.getAttribute("sid");
+			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+			List<SoloResumeDTO> data = rsmapper.resumelist(sid);
+			mm.addAttribute("mainData", data);
 
+			// 일단 이력서 가져옴
+			//List<SoloResumeDTO> data = rsmapper.resumelist(rdto.rsid);
+			//mm.addAttribute("mainData", rsmapper.resumedetail(rdto.rsid));
+			//mm.addAttribute("mainData", data);
+			//System.out.println(data + "data왔니?");
+			return "recruit/recruit_submitform";
+		}
+		
+		
+		// 지원서 제출 완료 (SoloResumeDTO를 가져와서 applicant에 넣는다)
+		// 1. SoloResumeDTO를 가져온다
+		// 2. applicant에 삽입 메서드 넣음
+		@RequestMapping("submit/{page}/{id}/{rsid}")
+		String submitReg(RecruitDTO dto, HttpServletRequest request,  @PathVariable int rsid
+				,HttpSession session) {
+			// SoloResumeDTO 한개 불러옴
+			//String sid = (String)session.getAttribute("sid");
+			//SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+			dto.setMsg("접수가 완료되었습니다.");
+		    dto.setGoUrl("recruit/list");
+			
+		    return "recruit/recruit_alert";
+		}
+		
+
+		// 지원서 제출 시 이력서 열람
+		@RequestMapping("submit/{rsid}")
+		String submitResume(Model mm, SoloResumeDTO rdto, HttpSession session, @PathVariable int rsid) {
+			
+			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+			SoloResumeDTO sdto = rsmapper.resumedetail(rdto.rsid, solosession.sid);
+
+			mm.addAttribute("sdto", sdto);
+			mm.addAttribute("solosession", solosession);
+			System.out.println(sdto);
+			System.out.println(solosession);
+			System.out.println(solosession.sid);
+			// 이력서 열람만 가능
+			return "solo_resume/recruit_resume";
+		}
 }
+

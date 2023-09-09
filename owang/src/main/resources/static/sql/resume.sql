@@ -11,14 +11,16 @@ CREATE TABLE resume (
     rsacademic VARCHAR(100),
 	rsacademicstat VARCHAR(100),
     rsintroduce VARCHAR(100),
-    rslisence VARCHAR(100),
-    rslisenceorg VARCHAR(100),
-    rslisenceyear VARCHAR(100),
+    rslicense VARCHAR(100),
+    rslicenseorg VARCHAR(100),
+    rslicenseyear VARCHAR(100),
     rslanguage VARCHAR(100),
     rslanguagelevel VARCHAR(100),
     rsregdate TIMESTAMP,
+    rsmoddate TIMESTAMP,
     cnt INT
 ) AUTO_INCREMENT = 1;
 
 select * from resume;
+
 drop table resume;

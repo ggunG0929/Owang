@@ -46,7 +46,7 @@ public class LoginController {
 			pd.setGoUrl("/login/main");
 			pd.setMsg("아이디나 비밀번호가 일치하지 않습니다.");
 			if (result == 1) {
-				MCompanyDTO companysession = ccmapper.deatilCompany(userid);
+				MCompanyDTO companysession = ccmapper.deatilaaaCompany(userid);
 				
 				session.setAttribute("cid",userid);
 				// 객체세션발급

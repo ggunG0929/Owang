@@ -93,8 +93,11 @@ public class RecruitDTO {
 		this.recruitName = recruitName;
 		this.recruitContent = recruitContent;
 	}
+	public RecruitDTO() {
+		super();
+	}
 
-
+	
 	
 	
 	

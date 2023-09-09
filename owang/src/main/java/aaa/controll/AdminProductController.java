@@ -35,20 +35,24 @@ public class AdminProductController {
 	// 상품 추가삭제 목록
 	@RequestMapping("/modify")
 	String admin_product_modify(Model mm)  {
+		// 상품 목록
 		List<ProductDTO> data= pm.list();
-		mm.addAttribute("ProductDTO", new ProductDTO());
 		mm.addAttribute("data", data);
+		// 상품 추가 위한 DTO
+		mm.addAttribute("ProductDTO", new ProductDTO());
 		return "admin/product/modify";
 	}
     @PostMapping("/insertProduct")
     public String addProduct(@ModelAttribute ProductDTO productDTO) {
+    	// DTO정보를 db에 저장(상품추가)
         pm.insert(productDTO);
-        return "redirect:/admin_product/modify"; // 목록 페이지로 리다이렉션
+        return "redirect:/admin_product/modify"; // 목록 페이지로 리다이렉트
     }
     @RequestMapping("/deleteProduct")
     public String deleteProduct(@RequestParam("productId") String productId) {
+    	// 상품id로 db 삭제(상품삭제)
         pm.delete(productId);
-        return "redirect:/admin_product/modify"; // 목록 페이지로 리다이렉션
+        return "redirect:/admin_product/modify"; // 목록 페이지로 리다이렉트
     }
 
     

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>리뷰 게시판</title>
+    <style>
+		/* 리뷰 게시판 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.pagination li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.pagination a.active {
+    background-color: #555;
+    cursor: default;
+}
+
+		
+	</style>
+</head>
+<body>
+	[[${mainData}]]
+    <h1>리뷰 게시판</h1>
+
+    <!-- 리뷰 목록 -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>장점</th>
+                <th>단점</th>
+                <th>작성일</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <!-- 리뷰 목록을 반복하여 표시 -->
+            <tr th:each="review, iterStat : ${mainData}">
+                <td th:text="${iterStat.count}"></td>
+                <td>
+                
+                        <span th:text="${review.rvtitle}"></span>
+                    
+                </td>
+                <td th:text="${review.cid}"></td>
+                <td th:text="${review.rvjang}"></td>
+                <td th:text="${review.rvdan}"></td>
+                <td th:text="${review.regDate}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination">
+        <ul>
+ 	<!-- 맨처음 페이지 링크 -->
+            <li th:if="${reviewDTO.pageStart > 1}">
+                <a th:href="${reviewDTO.page - reviewDTO.page}+1" th:text="'<<'"  />
+            </li>
+			
+            <!-- 이전 페이지 링크 -->
+            <li th:if="${reviewDTO.pageStart > 1}">
+                <a th:href="${reviewDTO.pageStart - 1}" th:text="'<'"  />
+            </li>
+
+            <!-- 페이지 번호 링크 -->
+            <li th:each="no : ${#numbers.sequence(reviewDTO.pageStart, reviewDTO.pageEnd)}">
+                <a th:if="${no==(reviewDTO.page)}" th:href="${no}" th:text="${no}" class="active"/>
+                <a th:unless="${no==(reviewDTO.page)}" th:href="${no}" th:text="${no}" />
+              
+            </li>
+
+            <!-- 다음 페이지 링크 -->
+            <li th:if="${reviewDTO.pageEnd < reviewDTO.pageTotal}" >
+            	<a th:href="${reviewDTO.pageEnd + 1}" th:text="'>'"/>
+            </li>
+            
+            <li th:if="${reviewDTO.pageEnd < reviewDTO.pageTotal}" >
+            	<a th:href="${reviewDTO.pageTotal}" th:text="'>>'"/>
+            </li>
+
+
+            
+            
+        </ul>
+    </div>
+</body>
+</html>

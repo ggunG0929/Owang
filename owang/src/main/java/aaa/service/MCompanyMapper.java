@@ -18,18 +18,16 @@ public interface MCompanyMapper {
 		void insertCompany(MCompanyDTO company);
 		//기업 로그인
 		int loginCompany(String userid, String userpw);
+		MCompanyDTO deatilaaaCompany(String cid);
 		//기업 아이디체크
 		int idChk(String cid);
 		// 기업 가져오기
 		// 게시글 상세보기
-		MCompanyDTO deatilCompany(String userid);
 		
-		
-		
-		/*
-		 * //기업 정보 상세 수정 삭제 MCompanyDTO detail(String cid); int modifffy(MCompanyDTO
-		 * company); int delettt(MCompanyDTO company);
-		 */
+		//기업 정보 상세 수정 삭제 
+		MCompanyDTO deatilCompany(String cid);
+		int modifffy(MCompanyDTO dto); 
+		int delettt(MCompanyDTO company);
 		
 		// 결제회원처리
 		void paycmember(MCompanyDTO dto);

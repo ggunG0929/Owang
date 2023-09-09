@@ -174,15 +174,12 @@ $("#file").on('change',function(){
 </style>
 <body>
 <h2>이력서 작성</h2>
-
-
 <div>
 	<form method="post" enctype="multipart/form-data" th:object="${soloResumeDTO}">
 		<div>
-			
 			<div style="border: 1px solid #ccc; width:700px;">
 			    <h3>기본정보</h3>
-			    			    <table style="width:450px;">
+			    <table style="width:450px;">
 					<input type="hidden" th:value="${solosession.sid}" name="sid" />
 			        <tr>
 			            <td th:text="${solosession.sname}"></td>
@@ -330,19 +327,42 @@ $("#file").on('change',function(){
 				</p>
 				<table id="language">
 					<tr>
-						<td>어학</td>
+						<td>어학명</td>
 						<td>
-						    <select>
-						        <option th:each="language : ${languageList}"
-						                th:value="${language.value}"
-						                th:text="${language.key}"/>
+							<select th:field="*{rslanguage}">
+						        <option value="" disabled selected>어학명</option>
+							    <option value="그리스어">그리스어</option>
+							    <option value="네덜란드어">네덜란드어</option>
+							    <option value="노르웨이어">노르웨이어</option>
+							    <option value="독일어">독일어</option>
+							    <option value="러시아어">러시아어</option>
+							    <option value="몽골어">몽골어</option>
+							    <option value="미얀마어">미얀마어</option>
+							    <option value="베트남어">베트남어</option>
+							    <option value="스웨덴어">스웨덴어</option>
+							    <option value="스페인어">스페인어</option>
+							    <option value="아랍어">아랍어</option>
+							    <option value="영어">영어</option>
+							    <option value="이탈리아어">이탈리아어</option>
+							    <option value="일본어">일본어</option>
+							    <option value="중국어">중국어</option>
+							    <option value="태국어">태국어</option>
+							    <option value="터키어">터키어</option>
+							    <option value="포르투갈어">포르투갈어</option>
+							    <option value="폴란드어">폴란드어</option>
+							    <option value="프랑스어">프랑스어</option>
+							    <option value="히브리어">히브리어</option>
+							    <option value="힌디어">힌디어</option>
+							    <option value="기타">기타</option>
 						    </select>
 						</td>
+						<td>어학수준</td>
 						<td>
-						    <select>
-						        <option th:each="level : ${languageLevelList}"
-						                th:value="${level.value}"
-						                th:text="${level.key}"/>
+   							<select th:field="*{rslanguagelevel}">
+						        <option value="" disabled selected>어학수준</option>
+							    <option value="회화 능숙">회화 능숙</option>
+							    <option value="일상 대화">일상 대화</option>
+							    <option value="간단 대화">간단 대화</option>
 						    </select>
 						</td>
 					</tr>

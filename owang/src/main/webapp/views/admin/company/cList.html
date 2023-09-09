@@ -11,13 +11,13 @@
 			<td>번호</td>
 			<td>제목</td>
 			<td>작성자</td>
-			<td>등록일</td>
+			<td>결제일</td>
 			<td>조회수</td>
 		</tr>
 		<tr th:each="dto, dtoStat : ${mainData}">
 			<td th:text="${dtoStat.count + MCompanyDTO.start}"/>
 			<td >
-				<a th:href="|/recruit/detail/${dto.cid}/${MCompanyDTO.page}/${dto.cname}|" th:text="${dto.cname}"></a>
+				<a th:href="|/admin_company/detail/${MCompanyDTO.page}/${dto.cno}|" th:text="${dto.cname}"></a>
 			</td>
 			<td >
 				<a th:text="${dto.cid}"></a>

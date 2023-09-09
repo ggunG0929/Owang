@@ -9,20 +9,20 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 	
 	<select id="resumedetail" resultType="rDTO">
-		select * from resume where sid = #{sid}
+		select * from resume where rsid = #{rsid} and sid = #{sid}
 	</select>
 	
 	
 	<insert id="resumeinsert"  parameterType="rDTO">
 		insert into resume (sid, rsphoto, rstitle, rscareer, rscompany, rsworkstart, rsworkend, rswork, rsacademic, rsacademicstat, rsintroduce,
-		rslisence, rslisenceorg, rslisenceyear, rslanguage, rslanguagelevel, rsregdate)
+		rslicense, rslicenseorg, rslicenseyear, rslanguage, rslanguagelevel, rsregdate, rsmoddate)
 		values
 		(#{sid}, #{rsphoto}, #{rstitle}, #{rscareer}, #{rscompany}, #{rsworkstart}, #{rsworkend}, #{rswork}, #{rsacademic}, #{rsacademicstat}, #{rsintroduce}, 
-		#{rslicense}, #{rslicenseorg},#{rslicenseyear},#{rslanguage}, #{rslanguagelevel}, sysdate())
+		#{rslicense}, #{rslicenseorg},#{rslicenseyear},#{rslanguage}, #{rslanguagelevel}, sysdate(), sysdate())
 	</insert>
 	
-	<select id="resumecnt" >
-		select count(*) from resume where sid = #{sid}
+	<select id="resumecnt" resultType="Integer" >
+		select count(*) from resume where rsid = #{rsid} and  sid = #{sid}
 	</select>
 	
 	<delete id="resumedelete"  parameterType="rDTO">
@@ -32,4 +32,19 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="resumebysid" resultType="rDTO">
     	SELECT * FROM resume WHERE sid = #{sid}
 	</select>
+	
+	<!-- 이력서 수정 -->
+	<update id="resumemodify" parameterType="rDTO">
+		update resume set 
+		sid = #{sid}, rsphoto = #{rsphoto}, rstitle = #{rstitle}, rscareer = #{rscareer},rscompany = #{rscompany},rsworkstart = #{rsworkstart},rsworkend = #{rsworkend}, rswork= #{rswork}, rsacademic= #{rsacademic}, rsacademicstat= #{rsacademicstat}, rsintroduce= #{rsintroduce},rslicense = #{rslicense},rslicenseorg = #{rslicenseorg}, rslicenseyear= #{rslicenseyear}, rslanguage= #{rslanguage}, rslanguagelevel= #{rslanguagelevel}, rsmoddate= #{rsmoddate} 
+		where rsid = #{rsid} and sid = #{sid}
+	</update>
+	
+	<select id="resumefiledetail" resultType="rDTO">
+		select * from resume where rsid = #{rsid}
+	</select>
+	
+	<update id="fileDelete" parameterType="rDTO">
+		update board set rsphoto = null where rsid = #{rsid}
+	</update>
 </mapper>

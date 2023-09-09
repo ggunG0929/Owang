@@ -3,12 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-	
 </head>
 <body>
     <header>
        <div th:include="header :: header"></div>
     </header>
+
     <th:blcok th:if="${session.companysession}">
 	<h1>기업세션</h1>
 	[[${session.companysession}]]	
@@ -18,5 +18,4 @@
 	<h1>사용자 세션</h1>
 	[[${session.solosession}]]
 	</th:block>
-
 </html>

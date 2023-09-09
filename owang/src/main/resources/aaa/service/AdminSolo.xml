@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="aaa.service.AdminSolo">
+
+	<select id="soloList" resultType="soloDTO"
+		parameterType="soloDTO">
+		select * from solo order by sno desc limit #{start},
+		#{limit}
+	</select>
+
+	<select id="soloListCnt" resultType="Integer">
+		select count(*) from solo
+	</select>
+
+
+
+	<select id="soloMaxId">
+		select max(sno) from solo
+	</select>
+
+	<select id="solocomList" resultType="soloDTO"
+		parameterType="soloDTO">
+		select * from solo where sinjueng=false order by sno desc limit #{start},
+		#{limit} 
+	</select>
+	
+	<update id="checkoutFile"  parameterType="Integer">
+	    update solo set sinjueng = true where sno = #{sno}
+	</update>
+	<select id="solocomListCnt" resultType="Integer">
+		select count(*) from solo  where sinjueng=false
+	</select>
+	
+	<sql id="plz_1">
+   
+        <if test="searchOption == 'id'">
+            and sid like concat('%', #{keyword} ,'%')
+        </if>
+        <if test="searchOption == 'name'">
+            and sname like concat('%', #{keyword} ,'%')
+        </if>
+        
+        <!-- "전체" 옵션인 경우 WHERE 절을 추가하지 않음 -->
+        <if test="searchOption == 'all'">
+            or 1=1
+        </if>
+    
+</sql>
+
+<!-- 검색 테스트 -->
+<select id="searchRecruit" resultType="soloDTO" parameterType="map">
+    select * from solo
+    <where>
+        <include refid="plz_1"></include>
+    </where>
+</select>
+
+	
+</mapper>

@@ -33,17 +33,10 @@ public class SoloRecruitController {
 	
 	// 지원서 리스트
 	@RequestMapping("home")
-	String solo_recruit(Model mm, RecruitDTO rcdto, MCompanyDTO mcdto) {
+	String solo_recruit() {
 	
-		List<SoloRecruitDTO> data = rcmapper.recruitlist();
-		//List<MCompanyDTO> data1 = mcmapper.selectMCompany();
-		mm.addAttribute("mainData", data);
-		//mm.addAttribute("mainData1", data1);
-		System.out.println("data는"+data);
-		//System.out.println("data1는"+data1);
 		
-		return "solo_recruit/home";
+		return "solo_applicant/home";
 	}
-	
-	// 기업 디테일 링크
+
 }

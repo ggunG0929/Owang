@@ -11,23 +11,23 @@
         <div style="border: 1px solid #ccc; width:700px;" >
 			<h3>기본정보</h3>
 			<div>
-				<table th:if="${session['sid']}">
-					<tr>
-						<td>안재훈</td>
-						<td>남자</td>
-						<td>만 26세</td>
+				<table style="width:450px;">
+					<input type="hidden" th:value="${solosession.sid}" name="sid" />
+			        <tr>
+			            <td th:text="${solosession.sname}"></td>
+			            <td th:text="${solosession.sgender}"></td>
+			            <td th:text="${solosession.sage}"></td>
 					</tr>
 					<tr>
 						<td>주소</td>
-						<td>경기도 용인시</td>
+						<td th:text="${solosession.saddress}"></td>
 						<td>이메일</td>
-						<td>jhoon0211@gmail.com</td>
+						<td th:text="${solosession.semail}"></td>
 					</tr>
 					<tr>
-						<td>전화번호</td>
-						<td>010-2521-0999</td>
+						<td >전화번호</td>
+						<td th:text="${solosession.sphone}"></td>
 					</tr>
-					<tr>
 				</table>
 			</div>
 			<div>
@@ -60,14 +60,12 @@
         <div style="border: 1px solid #ccc; width:500px;">
 			<p>자격증</p>
 			<table>
-				<tr>
-					<td>자격증 명</td>
-					<td th:text="${rdto.rslicense}" />
-				</tr>
-				<tr>
-					<td>발행처</td>
-					<td th:text="${rdto.rslicenseorg}" />
-					<td th:text="${rdto.rslicenseyear}" />
+
+				<tr th:field="${rdto.rslicense == null and rdto.rslicenseorg == null and rdto.rslicenseyear == null}">
+				    <td>자격증 명</td>
+				    <td th:text="${rdto.rslicense}" />
+				    <td th:text="${rdto.rslicenseorg}" />
+				    <td th:text="${rdto.rslicenseyear}" />
 				</tr>
 			</table>
 		</div>
@@ -75,6 +73,7 @@
         <div style="border: 1px solid #ccc; width:500px;">
 			<p>어학능력</p>
 			<p th:text="${rdto.rslanguage}" />
+			<p th:text="${rdto.rslanguagelevel}" />
 		</div>
 		<div>
 			<a th:href="@{|/solo_resume/modify/${rdto.rsid}|}">수정</a>

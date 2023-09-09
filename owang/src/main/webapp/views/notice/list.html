@@ -11,7 +11,7 @@ h4{text-align: center;}
 </style>
 
 <body>
-	000000
+
 	<h4>notice / list</h4>
 	<h4>이곳은 공지사항입니다. </h4>
 	<hr>
@@ -64,7 +64,8 @@ h4{text-align: center;}
 				</tr>
 				<tr>
 					<td colspan="5" align="right">
-						<a th:href="|/notice/insert/${noticeDTO.page}|">글쓰기</a>
+						<!--현재 기업일때 되도록-->
+						<a th:href="|/notice/insert/${noticeDTO.page}|" th:if="${session['cid']}">글쓰기</a>
 					</td>
 				</tr>
             </div>

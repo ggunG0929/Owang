@@ -3,6 +3,7 @@ package aaa.service;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import aaa.model.SoloResumeDTO;
 
@@ -12,15 +13,24 @@ public interface SoloResumeMapper {
 	// 이력서 리스트
 	List<SoloResumeDTO> resumelist(String sid);
 	
+	// 이력서 세션 디테일
+	SoloResumeDTO resumedetail(int rsid, String sid);
+	
 	// 이력서 디테일
-	SoloResumeDTO resumedetail(int rsid);
+	SoloResumeDTO resumefiledetail(int rsid);
 
 	// 이력서 글쓰기
 	int resumeinsert(SoloResumeDTO rdto);	
 	
 	// 이력서 총 개수
-	int resumecnt();
+	int resumecnt(int rsid, String sid);
 	
 	// 이력서 삭제
 	int resumedelete(int rsid);
+	
+	// 이력서 수정
+	int resumemodify(SoloResumeDTO rdto, String sid);
+	
+	// 파일 삭제
+	int fileDelete(@Param("rsid") int rsid);
 }

@@ -3,6 +3,7 @@ package aaa.service;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import aaa.model.RecruitDTO;
 
@@ -34,6 +35,10 @@ public interface RecruitMapper {
 
 	// 달력 데이ㅣ터 삽입 테스트
 	List<RecruitDTO> recruitTest();
+	
+	// 검색기능 테스트
+	List<RecruitDTO> searchRecruit(@Param("keyword") String keyword, @Param("searchOption") String searchOption);
+
 	
 	
 }

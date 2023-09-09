@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <mapper namespace="aaa.service.AdminCompanyMapper">
 	
 	<select id="companyList" resultType="mcDTO" parameterType="mcDTO">
-		select * from company order by cno desc limit #{start}, #{limit}
+		select * from company where capproval = false  order by cno desc limit #{start}, #{limit}
 	</select>
 	
 		
@@ -15,7 +15,11 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 
 	<select id="adminCDetail">
-		select * from recruit where cid = #{cid}
+		select * from company where cno = #{cno}
 	</select>
+	
+	<update id="checkoutFile"  parameterType="Integer">
+	    update company set capproval = true where cno = #{cno}
+	</update>
 
 </mapper>

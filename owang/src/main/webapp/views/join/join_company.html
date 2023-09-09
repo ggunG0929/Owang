@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>기업회원가입 폼</title>
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<meta charset="UTF-8">
+	<title>기업회원가입 폼</title>
+	<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<style>
+		td>div {
+			background-color: #ff0;
+			color: #f00;
+		}
+	</style>
 </head>
 
 <body>
 	<h1>기업회원가입</h1>
+	<button id="showTermsButton">이용약관 보기</button>
 	<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
 		<table border="">
-			<div id="checkcId"></div>
+			
 			<tr>
-				<td>아이디:</td>
-				<td><input type="text" name="cid" id="cid" required><input type="button" value="ID 중복체크"
-						onclick="checkDuplicateID()"></td>
-
-
-			</tr>
+					<td>아이디:</td>
+					<td><input type="text" name="cid" id="cid" required><input type="button" value="ID 중복체크" onclick="checkDuplicateID()"></td>
+					<div id="checkcId"></div>
+					
+				</tr>
 			<tr>
 				<td>비밀번호1:</td>
 				<td><input type="password" name="cpw"></td>
@@ -73,14 +80,12 @@
 					<textarea name="ccontent" required rows="5" cols="40"></textarea>
 				</td>
 			</tr>
-			<tr>
-				<td colspan="3">
-
-					<input type="submit" value="가입">
-				</td>
-			</tr>
+			
 		</table>
+		
+		<input type="submit" value="가입">
 	</form>
+		
 	<script>
 		function updateText(input) {
 			var csalesText = document.getElementById("csalesText");
@@ -122,6 +127,18 @@
 			}
 			return true; // 양식 제출 허용
 		}
+		document.getElementById('showTermsButton').addEventListener('click', function () {
+			// 이용약관 페이지를 팝업 창으로 엽니다.
+			var popup = window.open('cterms.html', '이용약관', 'width=600,height=400');
+
+			// 팝업 창이 차단되지 않도록 팝업 창 객체를 검사합니다.
+			if (popup && !popup.closed) {
+				// 팝업 창이 열려 있으면 포커스를 설정합니다.
+				popup.focus();
+			} else {
+				alert('팝업 창을 열 수 없습니다. 팝업 창이 차단되었을 수 있습니다.');
+			}
+		});
 	</script>
 </body>
 

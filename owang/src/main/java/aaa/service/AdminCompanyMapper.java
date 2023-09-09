@@ -20,8 +20,9 @@ public interface AdminCompanyMapper {
 	int adminAddCont();
 	
 	// 기업 회원 상세보기
-	MCompanyDTO adminCDetail(int cid);
+	MCompanyDTO adminCDetail(int cno);
 
-	
+	// 기업 체크
+	int checkoutFile(int cno);
 	
 }

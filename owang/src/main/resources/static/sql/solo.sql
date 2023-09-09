@@ -2,7 +2,6 @@
 -- user 계정 
 show databases;  /* db 보기 */
 
-
 use owang; /* db 사용 */
 show tables;  /* 테이블 보기 */
 

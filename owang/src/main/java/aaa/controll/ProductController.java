@@ -34,12 +34,13 @@ public class ProductController {
 	
 	@RequestMapping("/notice")
 	String product_notice(Model mm) {
-		// 전체상품
+		// 전체 상품 목록
 		List<ProductDTO> data= pm.list();
 		mm.addAttribute("data", data);
 		return "product/product_notice";
 	}
 	
+	// 상품 결제 폼
 	@RequestMapping("/{productId}")
 	String product_form(@PathVariable String productId, Model mm, HttpSession session) {
 		// 세션으로 사용자정보 채워주기
@@ -53,21 +54,15 @@ public class ProductController {
 			name = companysession.getCname();
 			tel = companysession.getCcall();
 		}
-		
 		// 상품정보 채워주기
 		ProductDTO dto = pm.detail(productId);
 		
-//		Date today = new Date();
-//		Calendar calendar = Calendar.getInstance();
-//		calendar.setTime(today);
-//		calendar.add(Calendar.DAY_OF_MONTH, dto.getProductValid()); // 현재 날짜에 유효일을 더함
-//		Date endDate = calendar.getTime();
 		mm.addAttribute("name", name);
 		mm.addAttribute("tel", tel);
 		mm.addAttribute("dto", dto);
-//		mm.addAttribute("endDate", endDate);	// 포맷팅 필요
 		return "product/product_form";
 	}
+	
 	
 	@Resource
 	SoloMapper sm;
@@ -78,83 +73,88 @@ public class ProductController {
 	@RequestMapping(value ="/complete", method = RequestMethod.POST)
 	@ResponseBody
 	public int paymentComplete(@RequestBody PaymentDTO payDTO, HttpSession session) throws Exception {
-//		    System.out.println("dto: " + payDTO);
-			// 서비스에서 토큰 가져옴
-		    String token = PayService.getToken();
+//		System.out.println("dto: " + payDTO);
+		
+		// 결제정보 검증(주문정보와 금액 비교)
+		// 서비스에서 토큰 가져옴
+	    String token = PayService.getToken();
 //		    System.out.println("토큰가져옴: " + token);
-		    // 결제된 금액	// 서비스에서 imp_uid와 토큰으로 결제내역 가져옴
-		    String amount = PayService.paymentInfo(payDTO.getImpUid(), token);
+	    // 결제된 금액	// 서비스에서 imp_uid와 토큰으로 결제내역 가져옴
+	    String amount = PayService.paymentInfo(payDTO.getImpUid(), token);
 //		    System.out.println("금액가져옴: "+amount);
-		    int res = 1;
-		    // 주문정보 금액과 결제된 금액이 다를 경우 - 0
-		    if (payDTO.getAmount() != Integer.parseInt(amount)) {
-		    	res = 0;
+	    int res = 1;
+	    // 주문정보 금액과 결제된 금액이 다를 경우 - 0
+	    if (payDTO.getAmount() != Integer.parseInt(amount)) {
+	    	res = 0;
 //		    	System.out.println("검증실패");
-				// 결제 취소
-				PayService.paymentCancle(token, payDTO.getImpUid(), amount, "결제 금액 오류");
-				return res;
-			}
-		    // 상품 유효기간 가져오기
-		    int valid = pm.period(payDTO.getProductId());
-		    // 현재 날짜 구하기
-		    Date today = new Date();
-		    if(session.getAttribute("sid")!=null) {
-		    	SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
-		    	// 세션으로 아이디를 주문정보에 담기
-		    	payDTO.setSid(solosession.getSid());
-		    	SoloDTO soloinfo = new SoloDTO();
-		    	soloinfo.setSid(solosession.getSid());
-		    	// 타입을 2로 바꾸기
-		    	soloinfo.setStype(2);
-		    	// 유효기간 가져오기
-		    	Date sdate = solosession.getSdate();
-		        // sdate가 오늘 이전인 경우
-		        if(sdate.before(today)) {
-		            Calendar calendar = Calendar.getInstance();
-		            calendar.setTime(today);
-		            calendar.add(Calendar.DATE, valid); // 현재 날짜에 valid일을 더합니다.
-		            sdate = calendar.getTime();
-		         // sdate가 오늘 이후이거나 오늘인 경우
-		        }else { 
-		            // sdate에 valid일을 더함
-		            Calendar calendar = Calendar.getInstance();
-		            calendar.setTime(sdate);
-		            calendar.add(Calendar.DATE, valid);
-		            sdate = calendar.getTime();
-		        }
-		        soloinfo.setSdate(sdate);
-		        sm.paysmember(soloinfo);
-		    }else if(session.getAttribute("cid")!=null) {
-				MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-		    	// 세션으로 아이디를 주문정보에 담기
-		    	payDTO.setCid(companysession.getCid());
-		    	MCompanyDTO compinfo = new MCompanyDTO();
-		    	compinfo.setCid(companysession.getCid());
-		    	// 타입을 2로 바꾸기
-		    	compinfo.setCtype(2);
-		    	// 유효기간 가져오기
-		    	Date cdate = companysession.getCdate();
-		        // cdate가 오늘 이전인 경우
-		        if(cdate.before(today)) {
-		            Calendar calendar = Calendar.getInstance();
-		            calendar.setTime(today);
-		            calendar.add(Calendar.DATE, valid); // 현재 날짜에 valid일을 더합니다.
-		            cdate = calendar.getTime();
-		         // cdate가 오늘 이후이거나 오늘인 경우
-		        }else { 
-		            // cdate에 valid일을 더함
-		            Calendar calendar = Calendar.getInstance();
-		            calendar.setTime(cdate);
-		            calendar.add(Calendar.DATE, valid);
-		            cdate = calendar.getTime();
-		        }
-		        compinfo.setCdate(cdate);
-		        mcm.paycmember(compinfo);
-		    }
-//		    System.out.println("주문정보 저장시도: "+payDTO);
-		    paym.insert(payDTO);  // 매퍼로 주문정보를 db에 저장)
+			// 결제 취소
+			PayService.paymentCancle(token, payDTO.getImpUid(), amount, "결제 금액 오류");
 			return res;
+		}
+	    
+	    // 결제 회원 정보 변경하기
+	    // 상품 유효기간 가져오기
+	    int valid = pm.period(payDTO.getProductId());
+	    // 현재 날짜 구하기
+	    Date today = new Date();
+	    // 개인회원 세션이 존재할 경우
+	    if(session.getAttribute("sid")!=null) {
+	    	SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+	    	// 세션 아이디를 주문정보에 담기
+	    	payDTO.setSid(solosession.getSid());
+	    	// 변경될 내용을 담을 dto 만들기
+	    	SoloDTO soloinfo = new SoloDTO();
+	    	// 아이디 세팅
+	    	soloinfo.setSid(solosession.getSid());
+	    	// 타입을 2로 바꾸기
+	    	soloinfo.setStype(2);
+	    	// 회원 유효기간 가져오기
+	    	Date sdate = solosession.getSdate();
+	        // 유효기간이 오늘 이전인 경우 - 오늘날짜에 상품 유효기간 더하기
+	        if(sdate.before(today)) {
+	            Calendar calendar = Calendar.getInstance();
+	            calendar.setTime(today);
+	            calendar.add(Calendar.DATE, valid);
+	            sdate = calendar.getTime();
+	         // 유효기간이 오늘 이후거나 오늘인 경우 - 유효기간에 상품 유효기간 더하기
+	        }else { 
+	            Calendar calendar = Calendar.getInstance();
+	            calendar.setTime(sdate);
+	            calendar.add(Calendar.DATE, valid);
+	            sdate = calendar.getTime();
+	        }
+	        // 회원 유효기간 세팅
+	        soloinfo.setSdate(sdate);
+	        // 회원 정보 변경
+	        sm.paysmember(soloinfo);
+        // 기업회원 세션이 존재할 경우
+	    }else if(session.getAttribute("cid")!=null) {
+			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
+	    	payDTO.setCid(companysession.getCid());
+	    	MCompanyDTO compinfo = new MCompanyDTO();
+	    	compinfo.setCid(companysession.getCid());
+	    	compinfo.setCtype(2);
+	    	Date cdate = companysession.getCdate();
+	        if(cdate.before(today)) {
+	            Calendar calendar = Calendar.getInstance();
+	            calendar.setTime(today);
+	            calendar.add(Calendar.DATE, valid);
+	            cdate = calendar.getTime();
+	        }else {
+	            Calendar calendar = Calendar.getInstance();
+	            calendar.setTime(cdate);
+	            calendar.add(Calendar.DATE, valid);
+	            cdate = calendar.getTime();
+	        }
+	        compinfo.setCdate(cdate);
+	        mcm.paycmember(compinfo);
+	    }
+//	    System.out.println("주문정보 저장시도: "+payDTO);
+	    // 주문정보를 db에 저장
+	    paym.insert(payDTO);
+		return res;
 	}
+
 	
 	@Resource
 	PayMapper paym;
@@ -167,5 +167,5 @@ public class ProductController {
 		mm.addAttribute("dto", dto);
 		return "product/product_result";
 	}
-
+	
 }

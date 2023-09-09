@@ -1,0 +1,49 @@
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ask/답글 작성</title>
+</head>
+<body>
+    <h1>1:1 문의 답글 작성++</h1>
+
+    <form method="post" th:action="|/ask/reply/${askdto.page}/${askdto.id}|" th:object="${askdto}">
+        <!-- 페이지 번호와 부모 글의 ID를 전달 -->
+        <input type="hidden" name="page" th:value="${askdto.page}" />
+        <input type="hidden" name="id" th:value="${askdto.id}" />
+        
+        <table border="">
+			<tr>
+                <td>문의글 제목 *</td>
+                <td><input type="text" name="title" th:value="${askdto.title}"  /></td>
+            </tr>
+            <tr>
+                <td>작성자 *</td>
+                <td><input type="text" name="pname" th:value="${askdto.pname}"  /></td>
+            </tr>
+            <tr>
+                <td>암호 *</td>
+                <td><input type="text" name="pw" th:field="*{pw}" />
+
+                </td>
+            </tr>
+            <tr>
+                <td>답글 내용 *</td>
+                <td><textarea name="content" th:field="*{content}"
+                              placeholder="관리자 작성페이지입니다. "></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="답글 작성" />
+                    <a th:href="@{|/ask/detail/${askdto.page}/${askdto.id}|}">돌아가기</a>
+                    <a th:href="@{|/ask/detail/${askdto.page}/${askdto.id}|}">돌아가기2</a>
+                    <a th:href="@{|/ask/detail/${page}/${id}|}">돌아가기</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+</html>

@@ -40,7 +40,6 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 
 	<!-- 수정하기 -->
-
 	<update id="recruitModify" parameterType="recruitDTO">
 		update recruit set 
 			recruit_title = #{recruitTitle},
@@ -50,5 +49,32 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		    recruit_magam = #{recruitMagam}
 		    where recruit_id = #{recruitId}
 	</update>
+	
+	<sql id="plz_1">
+		
+		<if test="searchOption == 'all'">
+			 (recruit_title like concat('%', #{keyword} ,'%')
+	        or recruit_content like concat('%', #{keyword} ,'%')
+	        or cid like concat('%', #{keyword} ,'%') )
+		</if>
+		<if test="searchOption == 'title'">
+            and recruit_title like concat('%', #{keyword} ,'%')
+	    </if>
+	    <if test="searchOption == 'content'">
+	        and recruit_content like concat('%' , #{keyword} ,'%')
+	    </if>
+        <if test="searchOption == 'name'">
+	        and cid like concat('%' , #{keyword} , '%')
+	    </if>
+   </sql>
+	
+	<!-- 검색 테스트 -->
+	<select id="searchRecruit" resultType="recruitDTO" parameterType="string">
+        select * from recruit
+        <where>
+  			<include refid="plz_1"></include>
+  		</where>
+  		order by recruit_id desc
+    </select>
 
 </mapper>

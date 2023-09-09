@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지 수정</title>
+    <!-- jQuery 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>마이페이지 수정</h1>
+    <form method="post" enctype="multipart/form-data" th:object="${dto}">
+        <input type="hidden" th:field="*{cid}" />
+        <table border="">
+            <tr>
+                <td>기업이름</td>
+                <td><input type="text" th:field="*{cname}" /></td>
+            </tr>
+            <tr>
+                <td>설립연도</td>
+                <td><input type="text" th:field="*{cbuild}" /></td>
+            </tr>
+            <tr id="zpassword">
+                <td>기존비밀번호</td>
+                <td>
+                    <input type="password" th:value="*{cpw}" id="cpw" readonly />
+                    <input type="button" value="비밀번호 변경" id="changePasswordButton" />
+                </td>
+            </tr>
+            <tr id="passwordChangeRow" style="display: none;">
+                <td>새 비밀번호</td>
+                <td><input type="password" th:field="*{cpw}" id="newCpw" /></td>
+            </tr>
+            <tr id="passwordConfirmationRow" style="display: none;">
+                <td>비밀번호 확인</td>
+                <td><input type="password" name="cpw2" id="cpw2" /></td>
+            </tr>
+            <tr>
+                <td>업종</td>
+                <td><input type="text" th:field="*{ccategory}" /></td>
+            </tr>
+            <tr>
+                <td>직원수</td>
+                <td><input type="text" th:field="*{cstaff}" /></td>
+            </tr>
+            <tr>
+                <td>매출액</td>
+                <td><input type="text" th:field="*{csales}" /></td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td><textarea th:field="*{ccontent}" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="수정" />
+                    <a href="/company/mypage" />
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <!-- JavaScript 코드 추가 -->
+ <!-- JavaScript 코드 추가 -->
+<script>
+    $(document).ready(function () {
+        // 페이지 로드 시, 기존 비밀번호 필드의 값을 새 비밀번호 필드에 설정
+        var oldPassword = $("#cpw").val();
+        $("#newCpw").val(oldPassword);
+    });
+
+    // 비밀번호 변경 버튼 클릭 시
+    $("#changePasswordButton").click(function () {
+        $("#zpassword").hide(); // 기존 비밀번호 필드 숨김
+        $("#newCpw").val(""); // 새 비밀번호 필드 리셋
+        $("#passwordConfirmationRow").show(); // 비밀번호 확인 필드 표시
+        $("#passwordChangeRow").show(); // 비밀번호 확인 필드 표시
+    });
+</script>
+
+</body>
+</html>

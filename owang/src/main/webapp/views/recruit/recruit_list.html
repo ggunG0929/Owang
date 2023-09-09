@@ -7,7 +7,17 @@
 <body>
 <h1>recruit/list</h1>
 	[[${mainData}]]]
-	
+	<form action="/recruit/search" method="get">
+    <select name="searchOption">
+        <option value="all">전체</option>
+        <option value="title">제목</option>
+        <option value="content">내용</option>
+        <option value="name">회사 이름</option>
+    </select>
+    <input type="text" name="keyword" placeholder="검색어 입력">
+    <button type="submit">검색</button>
+</form>
+
 	<table border="">
 		<tr>
 			<td>번호</td>
@@ -22,7 +32,7 @@
 				<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
 			</td>
 			<td >
-				<a th:href="기업페이지가들어가요" th:text="${dto.cid}"></a>
+				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cid}"></a>
 			</td>
 			<td th:text="${dto.regDate}"/>
 			<td th:text="${dto.cnt}"/>
@@ -37,7 +47,7 @@
 					<span th:if="${no==recruitDTO.page}" th:text="${no}"/>
 					<a th:unless="${no==recruitDTO.page}" th:href="${no}" th:text="${no}"/>
 				</th:block>
-				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageEnd + 1}" th:text="'[다음]'"/>
+				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageEnd + 1}" th:text="'[다음]'"/>======21
 				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageTotal}" th:text="'[맨끝]'"/>
 			</td>
 		</tr>

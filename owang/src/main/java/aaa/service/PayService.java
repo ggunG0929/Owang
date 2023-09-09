@@ -81,33 +81,39 @@ public class PayService {
 	
     // 결제검증
 	public static String paymentInfo(String imp_uid, String access_token) throws Exception {
-//		System.out.println("검증합니다. 검증할 거래의 imp_uid = " + imp_uid + ", access_token = " + access_token);
+		System.out.println("검증합니다. 검증할 거래의 imp_uid = " + imp_uid + ", access_token = " + access_token);
 		HttpsURLConnection conn = null;
 		// 단건정보 - 결제금액확인 목적
 		URL url = new URL("https://api.iamport.kr/payments/" + imp_uid);
+		// url 정보를 바탕으로 원격서버 통신을 위한 연결 오픈
 		conn = (HttpsURLConnection) url.openConnection();
-		
+
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Authorization", access_token);
 		conn.setDoOutput(true);
-		
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-		
+
 		JSONParser parser = new JSONParser();
+
 		JSONObject p = (JSONObject) parser.parse(br.readLine());
+		
 		String response = p.get("response").toString();
+		
 		p = (JSONObject) parser.parse(response);
+		
 		String amount = p.get("amount").toString();
 		// br과 conn을 닫아 주었더니 자바스크립트문 해석을 못해서 db저장과 리다이렉트가 발생하지 않음
 		return amount;
 	}
 
 	// 결제취소
-	public static void paymentCancle(String access_token, String reason, String imp_uid, String amount) throws Exception {
-//		System.out.println("취소합니다. 취소할 거래의 imp_uid = " + imp_uid);
+	public static void paymentCancle(String access_token, String imp_uid, String amount,String reason) throws Exception {
+		System.out.println("취소합니다. 취소할 거래의 imp_uid = " + imp_uid);
 		HttpsURLConnection conn = null;
 		// 결제취소
 		URL url = new URL("https://api.iamport.kr/payments/cancel");
+
 		conn = (HttpsURLConnection) url.openConnection();
 
 		conn.setRequestMethod("POST");
@@ -117,11 +123,13 @@ public class PayService {
 		conn.setDoOutput(true);
 		
 		JsonObject json = new JsonObject();
+
 		json.addProperty("reason", reason);
 		json.addProperty("imp_uid", imp_uid);
 		json.addProperty("amount", amount);
 		
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+
 		bw.write(json.toString());
 		bw.flush();
 		bw.close();

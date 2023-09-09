@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>페이지 이동 템플릿</title>
+</head>
+
+<body>
+	<h2>전체회원관리</h2>
+	<!-- soloData는 솔로 데이터가 들어있는 객체입니다. -->
+	<!-- 페이지 이동 관련 정보는 soloDTO 객체에 있어야 합니다. -->
+	[[${soloData}]]
+	<form action="/admin_solo/search" method="get">
+		<select name="searchOption">
+			<option value="all">전체</option>
+			
+			<option value="id">아이디</option>
+			<option value="name">이름</option>
+			<option value="1" >일반회원</option>
+			<option value="2" >결제회원</option>
+		</select>
+		<input type="text" name="keyword" placeholder="검색어 입력">
+		<button type="submit">검색</button>
+	</form>
+	<table border="">
+		<tr>
+			<td>회원번호</td>
+			<td>이름</td>
+			<td>아이디</td>
+			<td>결제마감일</td>
+			
+			<td>인증여부</td>
+			<td>재직증명서확인</td>
+			<td>수락</td>
+			<td>삭제</td>
+
+		</tr>
+		<tr th:each="dto, dtostat : ${soloData}">
+			<td th:text="${dto.sno}"></td>
+			<td>
+				<a th:text="${dto.sid}"></a>
+			</td>
+			<td>
+				<a th:text="${dto.sname}"></a>
+			</td>
+			<td th:text="${dto.sdate}"></td>
+			
+			<td th:text="${dto.sinjueng}"></td>
+			<td>
+				<a th:href="@{|/admin_solo/soloup/download/${dto.scompanyFile}|}" th:text="${dto.scompanyFile}">다운로드</a>
+			</td>
+			<td>
+				<a th:href="@{|/admin_solo/checkId/${dto.sno}|}"
+					th:onclick="return confirm('[[${dto.sname}]]님의 [[${dto.scompanyName}]] 재직증명을 승인하시겠습니까?')"
+					th:text="수락"></a>
+
+
+			</td>
+			<td th:text="삭제"></td>
+
+		</tr>
+		<<tr>
+			<td colspan="9" align="center">
+				
+				<a th:if="${soloDTO.pageStart > 1}" th:href="${soloDTO.page-soloDTO.page}+1" th:text="'[처음]'" />
+
+				<a th:if="${soloDTO.pageStart > 1}" th:href="${soloDTO.pageStart - 1}" th:text="'[이전]'" />
+				<th:block th:each="no: ${#numbers.sequence(soloDTO.pageStart, soloDTO.pageEnd)}">
+					<span th:if="${no==soloDTO.page}" th:text="${no}" />
+					<a th:unless="${no==soloDTO.page}" th:href="${no}" th:text="${no}" />
+				</th:block>
+				<a th:if="${soloDTO.pageEnd < soloDTO.pageTotal}" th:href="${soloDTO.pageEnd + 1}" th:text="'[다음]'" />
+				<a th:if="${soloDTO.pageEnd < soloDTO.pageTotal}" th:href="${soloDTO.pageTotal}" th:text="'[맨끝]'" />
+			</td>
+		</tr>
+		<tr align="center">
+			<td colspan="2"><a href="/admin/admin">목록으로</a></td>
+		</tr> 
+	</table>
+</body>
+
+</html>

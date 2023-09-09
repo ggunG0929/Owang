@@ -23,8 +23,24 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 </select>
 
 <select  id="deatilCompany">
+	select * from company where cid = #{cid}
+</select>
+
+<select  id="deatilaaaCompany">
 	select * from company where cid = #{userid}
 </select>
+
+<update id="modifffy" parameterType="mcDTO">
+		update company set 
+		cname = #{cname}, cbuild= #{cbuild}, ccategory= #{ccategory},
+		cstaff = #{cstaff}, csales = #{csales}, ccontent = #{ccontent},cpw=#{cpw}
+		where cid = #{cid} 
+</update>
+
+<delete id="delettt" parameterType="mcDTO">
+	delete from company where cid =
+	#{cid} and cpw = #{cpw}
+</delete>
 
 <update id="paycmember" parameterType="mcDTO">
 	update company set

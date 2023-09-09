@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">	
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>질문게시판</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/notice/css.css}">
+</head>
+<style>
+h4{text-align: center;}	
+</style>
+
+<body>
+
+	<h4>ask / list</h4>
+	<h4>이곳은 질문 리스트입니다. </h4>
+	<hr>
+	<table border="">
+				<tr>
+					<td>번호</td>
+					<td>제목</td>
+					<td>작성자</td>
+					<td>등록일</td>
+					<td>조회수</td>
+				</tr>
+                
+                <tr th:each="askdto, dtoStat : ${mainData}">
+					<td th:text="${dtoStat.count + askDTO.start}"/>
+					<td>
+						<span th:utext="${'&nbsp;&nbsp;' * askdto.lev}"></span>
+						<span th:if="${askdto.lev > 0}">└</span>
+						<a th:href="|/ask/detail/${askDTO.page}/${askdto.id}|" th:text="${askdto.title}"></a>
+					</td>
+					<td th:text="${askdto.pname}"/>
+					<td th:text="${askdto.regDate}"/>
+					<td th:text="${askdto.cnt}"/>
+				</tr>
+				<tr>
+					<td colspan="5" align="center">
+				
+				<a th:if="${askDTO.pageStart > 1}" th:href="${askDTO.pageStart - 1}" th:text="'[이전]'"/>		
+						
+				<th:block th:each="no: ${#numbers.sequence(askDTO.pageStart, askDTO.pageEnd)}" >
+					
+					<span th:if="${no==askDTO.page}" th:text="${no}"/>
+					<a th:unless="${no==askDTO.page}" th:href="${no}" th:text="${no}"/>
+				</th:block>
+				<a th:if="${askDTO.pageEnd < askDTO.pageTotal}" th:href="${askDTO.pageEnd + 1}" th:text="'[다음]'"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5" align="right">
+						<a th:href="|/ask/insert/${askDTO.page}|">글쓰기</a>
+					</td>
+				</tr>
+	</table>
+</body>
+</html>

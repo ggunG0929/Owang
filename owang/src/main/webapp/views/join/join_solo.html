@@ -15,17 +15,18 @@
 
 <body>
 	<h1>개인회원가입</h1>
-
+<button id="showTermsButton">이용약관 보기</button>
 	<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
 
-		<br>
+		
 		<table border="">
 			<tr>
-					<td>아이디:</td>
-					<td><input type="text" name="sid" id="sid" required><input type="button" value="ID 중복체크" onclick="checkDuplicateID()"></td>
-					<div id="checksId"></div>
-					
-				</tr>
+				<td>아이디:</td>
+				<td><input type="text" name="sid" id="sid" required><input type="button" value="ID 중복체크"
+						onclick="checkDuplicateID()"></td>
+				<div id="checksId"></div>
+
+			</tr>
 			<tr>
 				<td>비밀번호</td>
 				<td><input type="password" name="spw"></td>
@@ -108,6 +109,8 @@
 				</td>
 			</tr>
 		</table> <!-- 나머지 필드들 -->
+		
+
 		<input type="submit" value="가입" />
 	</form>
 
@@ -154,7 +157,7 @@
 				alert("주민등록번호 앞자리는 6자리여야 합니다.");
 				return;
 			}
-			
+
 
 			const year = parseInt(jumin.substr(0, 2));
 			const month = parseInt(jumin.substr(2, 2));
@@ -174,33 +177,45 @@
 		}
 		function checkDuplicateID() {
 
-				var sid = document.getElementById("sid").value;
-				
-				$.ajax({
-					type: "POST",
-					url: "/join/checksId",
-					data: "sid=" + sid,
-					error: function (response) {
-						$("#checkcId").text("실패");
-					},
-					success: function (response) {
-						if (response === "중복") {
-							$("#checksId").text("이미 사용 중인 ID입니다.");
+			var sid = document.getElementById("sid").value;
 
-						} else {
-							$("#checksId").text("사용 가능한 ID입니다.");
-						}
+			$.ajax({
+				type: "POST",
+				url: "/join/checksId",
+				data: "sid=" + sid,
+				error: function (response) {
+					$("#checkcId").text("실패");
+				},
+				success: function (response) {
+					if (response === "중복") {
+						$("#checksId").text("이미 사용 중인 ID입니다.");
+
+					} else {
+						$("#checksId").text("사용 가능한 ID입니다.");
 					}
-				});
-			}
-			function submitForm() {
-				var checksId = document.getElementById("checksId").innerText;
-				if (checksId === "이미 사용 중인 ID입니다.") {
-					alert("아이디 중복을 확인하세요.");
-					return false; // 양식 제출 방지
 				}
-				return true; // 양식 제출 허용
+			});
+		}
+		function submitForm() {
+			var checksId = document.getElementById("checksId").innerText;
+			if (checksId === "이미 사용 중인 ID입니다.") {
+				alert("아이디 중복을 확인하세요.");
+				return false; // 양식 제출 방지
 			}
+			return true; // 양식 제출 허용
+		}
+		document.getElementById('showTermsButton').addEventListener('click', function () {
+			// 이용약관 페이지를 팝업 창으로 엽니다.
+			var popup = window.open('sterms.html', '이용약관', 'width=600,height=400');
+
+			// 팝업 창이 차단되지 않도록 팝업 창 객체를 검사합니다.
+			if (popup && !popup.closed) {
+				// 팝업 창이 열려 있으면 포커스를 설정합니다.
+				popup.focus();
+			} else {
+				alert('팝업 창을 열 수 없습니다. 팝업 창이 차단되었을 수 있습니다.');
+			}
+		});
 	</script>
 </body>
 

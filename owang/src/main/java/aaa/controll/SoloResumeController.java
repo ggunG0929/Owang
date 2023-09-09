@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import aaa.model.PageData;
+import aaa.model.RecruitDTO;
 import aaa.model.SoloDTO;
 import aaa.model.SoloResumeDTO;
 import aaa.service.SoloMapper;
@@ -22,6 +23,7 @@ import aaa.service.SoloResumeMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import retrofit2.http.Path;
 
 @Controller
 @RequestMapping("solo_resume")
@@ -41,24 +43,31 @@ public class SoloResumeController {
 		String sid = (String)session.getAttribute("sid");
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 		
-		int cnt = rsmapper.resumecnt();
+		System.out.println(rdto.rsid);
 		List<SoloResumeDTO> data = rsmapper.resumelist(sid);
-		System.out.println(rdto.getCnt());
+		
+		int cnt = rsmapper.resumecnt(rdto.rsid, solosession.sid);
+		//System.out.println(rdto.getCnt());
 		mm.addAttribute("mainData", data);
-		System.out.println(data);
-		System.out.println(cnt);
-		System.out.println(sid);
 		mm.addAttribute("cnt", cnt);
-		//mm.addAttribute("cnt", data);
+		System.out.println(solosession);
+		System.out.println("cnt : "+cnt);
+		System.out.println(rsmapper.resumecnt(rdto.rsid, solosession.sid));
 		return "solo_resume/home";
 	}
 	
 	// 이력서 디테일
 	@RequestMapping("detail/{rsid}") 
-	String solo_resume_detail(Model mm, HttpSession session) {
+	String solo_resume_detail(Model mm, HttpSession session, SoloResumeDTO rdto) {
+
+		// 세션
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		mm.addAttribute("solosession", solosession);
 		
-		
-		//mm.addAttribute("rdto", rsmapper.resumedetail(sid));
+		// 
+		mm.addAttribute("rdto", rsmapper.resumedetail(rdto.rsid, solosession.sid));
+		System.out.println(solosession);
+		System.out.println(rdto);
 		return "solo_resume/detail";
 	}
 	
@@ -71,7 +80,7 @@ public class SoloResumeController {
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 		
 		mm.addAttribute("solosession", solosession);
-		System.out.println("solosession : " + solosession);
+		System.out.println(solosession);
 		return "solo_resume/write";
 	}
 	
@@ -89,49 +98,91 @@ public class SoloResumeController {
 
 	// 이력서 수정
 	@GetMapping("modify/{rsid}")
-	String modify(SoloResumeDTO rdto, Model mm, @PathVariable int rsid) { 
-		// 일단 디테일 정보 가져와 줌
+	String solo_resume_modify(SoloResumeDTO rdto, Model mm ,HttpSession session,
+			@PathVariable int rsid) { 
+		
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		SoloResumeDTO sdto = rsmapper.resumedetail(rdto.rsid, solosession.sid);
+		mm.addAttribute("solosession", solosession);
+		mm.addAttribute("sdto", sdto);
+		System.out.println(sdto);
 
-		// mm.addAttribute("rdto", rsmapper.resumedetail(rsid));
 		return "solo_resume/modifyForm";
 	}
 	
 	
-	@DeleteMapping("/delete/{rsid}")
-	public ResponseEntity<String> solo_resume_delete(@PathVariable int rsid) {
-	    try {
-	        // 이력서 삭제 로직 구현
-	        int deletedRows = rsmapper.resumedelete(rsid);
+	// 이력서 수정 제출
+	@PostMapping("modify/{rsid}")
+	String modifyReg(SoloResumeDTO rdto, PageData pd, HttpSession session,
+			HttpServletRequest request) {
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 
-	        if (deletedRows > 0) {
-	            return ResponseEntity.ok("이력서가 삭제되었습니다.");
-	        } else {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이력서 삭제 실패");
-	        }
-	    } catch (Exception e) {
-	        // 예외 처리: 삭제 과정 중에 예외가 발생한 경우
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이력서 삭제 중 오류 발생");
-	    }
+		pd.setMsg("수정실패");
+		pd.setGoUrl("/solo_resume/modify/" + rdto.rsid);
+		
+		int cnt = rsmapper.resumemodify(rdto, solosession.sid);
+		System.out.println("modifyReg:"+cnt);
+		if(cnt>0) {
+			
+			// 수정이 되었을때 파일을 저장해야 함 (파일 저장)
+			fileSave(rdto, request);
+			rsmapper.resumemodify(rdto, solosession.sid);
+			pd.setMsg("수정되었습니다.");
+			pd.setGoUrl("/solo_resume/detail/"+rdto.getRsid());
+		}
+
+		return "solo_resume/alert";
 	}
+	/*
+	// 수정폼에서 파일 삭제
+	@PostMapping("fileDelete")
+	String fileDelete(SoloResumeDTO rdto, PageData pd, HttpServletRequest request) {
+		
+		SoloResumeDTO delDTO = rsmapper.resumefiledetail(rdto.getRsid());
+		pd.setMsg("파일 삭제실패");
+		// 삭제 실패하면 수정페이지로
+		pd.setGoUrl("/solo_resume/modify/" + rdto.getRsid());
+		
+		// 파일 삭제 mapper 추가
+		int cnt = rsmapper.fileDelete(rdto);
+		System.out.println("fileDelete:"+cnt);
+		if(cnt>0) {
+			
+			fileDeleteModule(delDTO, request);
+			pd.setMsg("파일 삭제되었습니다.");
+			pd.setGoUrl("/solo_resume/modify/" + rdto.getRsid());
+		}
+		return "solo_resume/alert";
+	}
+	*/
 
-    @DeleteMapping("/deleteReg/{rsid}")
-    public ResponseEntity<String> solo_resume_deleteReg(@PathVariable int rsid) {
-        SoloResumeDTO delDTO = rsmapper.resumedetail(rsid);
-        if (delDTO != null) {
-            int cnt = rsmapper.resumedelete(rsid);
-            if (cnt > 0) {
-                // 삭제 성공 시
-                return ResponseEntity.ok("삭제되었습니다.");
-            } else {
-                // 삭제 실패 시
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 실패");
-            }
-        } else {
-            // 해당 이력서를 찾을 수 없는 경우
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("삭제할 이력서를 찾을 수 없습니다.");
-        }
-    }
-    
+	// 이력서 삭제
+	@RequestMapping("delete/{rsid}")
+	String delete(SoloResumeDTO rdto, HttpServletRequest request, PageData pd 
+			, @PathVariable int rsid, HttpSession session) {
+		// 일단 삭제이벤트 생성
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		SoloResumeDTO sdto = rsmapper.resumedetail(rdto.rsid, solosession.sid);
+		System.out.println(sdto);
+		
+		pd.setMsg("삭제실패");
+		pd.setGoUrl("/solo_resume/home/" + rsid);
+		
+		int cnt = rsmapper.resumedelete(rsid);
+		System.out.println("deleteTest" + cnt);
+		
+		if (cnt>0) {
+			fileDeleteModule(rdto, request);
+			System.out.println();
+			System.out.println(rdto);
+			pd.setMsg("삭제되었습니다.");
+			pd.setGoUrl("/solo_resume/home");
+		}
+		
+		
+		return "solo_resume/alert";
+	}
+	
     // 파일 저장
 	void fileSave(SoloResumeDTO rdto, HttpServletRequest request) {
 		
@@ -181,7 +232,7 @@ public class SoloResumeController {
 	void fileDeleteModule(SoloResumeDTO delDTO, HttpServletRequest request) {
 		if(delDTO.getRsphoto()!=null) {
 			String path = request.getServletContext().getRealPath("up");
-			path = "C:\\Final_Team\\owang\\src\\main\\webapp\\up";
+			path = "C:\\Spring_Team\\owang\\src\\main\\webapp\\up";
 			
 			new File(path+"\\"+delDTO.getRsphoto()).delete();
 		}

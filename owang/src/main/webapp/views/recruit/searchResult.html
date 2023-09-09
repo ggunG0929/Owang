@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<h1 th:text="${param.searchOption + ' 검색 결과'}"></h1>
+	[[${mainData}]]
+
+
+	<table border="">
+		<tr>
+			<td>번호</td>
+			<td>제목</td>
+			<td>작성자</td>
+			<td>등록일</td>
+			<td>조회수</td>
+		</tr>
+		<tr th:each="dto, dtoStat : ${mainData}">
+			<td th:text="${dtoStat.count + recruitDTO.start}" />
+			<td>
+				<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|"
+					th:text="${dto.recruitTitle}"></a>
+			</td>
+			<td>
+				<a th:href="기업페이지가들어가요" th:text="${dto.cid}"></a>
+			</td>
+			<td th:text="${dto.regDate}" />
+			<td th:text="${dto.cnt}" />
+		</tr>
+
+
+		<tr>
+			<td colspan="5" align="center">
+				<!-- [처음] 링크 -->
+				<a th:if="${recruitDTO.pageStart > 1}"
+					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=1)}"
+					th:text="'[처음]'" />
+
+				<!-- [이전] 링크 -->
+				<a th:if="${recruitDTO.page > 1}"
+					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.page - 1})}"
+					th:text="'[이전]'" />
+
+				<!-- 페이지 번호 링크 -->
+				<th:block th:each="no: ${#numbers.sequence(recruitDTO.pageStart, recruitDTO.pageEnd)}">
+					<span th:if="${no == recruitDTO.page}" th:text="${no}" />
+					<a th:unless="${no == recruitDTO.page}"
+						th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${no})}"
+						th:text="${no}" />
+				</th:block>
+
+				<!-- [다음] 링크 -->
+				<a th:if="${recruitDTO.page < recruitDTO.pageTotal}"
+					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.page + 1})}"
+					th:text="'[다음]'" />
+
+				<!-- [맨끝] 링크 -->
+				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}"
+					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.pageTotal})}"
+					th:text="'[맨끝]'" />
+				</td>
+		</tr>
+		
+		<tr align="center">
+			<td colspan="5"><a th:href="|/recruit/list/1|">목록으로</a></td>
+		</tr>
+
+
+	</table>
+
+</body>
+
+</html>
