@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>수락버튼등장</title>
+</head>
+<body>
+	<h1>기업 수락 상세 보기</h1>
+	
+	[[${dto}]]
+	
+	 <table border="">
+
+        <tr>
+            <td>ID</td>
+            <td th:text="${dto.cid}" />
+        </tr>
+        <tr>
+            <td>이름</td>
+            <td th:text="${dto.cname}" />
+        </tr>
+        <tr>
+            <td>설립 년도</td>
+            <td th:text="${dto.cbuild}" />
+        </tr>
+        <tr>
+            <td>카테고리</td>
+            <td th:text="${dto.ccategory}" />
+        </tr>
+        <tr>
+            <td>직원 수</td>
+            <td th:text="${dto.cstaff}" />
+        </tr>
+        <tr>
+            <td>연매출</td>
+            <td th:text="${dto.csales}" />
+        </tr>
+        <tr>
+            <td>전화번호</td>
+            <td th:text="${dto.ccall}" />
+        </tr>
+        <tr>
+            <td>대표자</td>
+            <td th:text="${dto.cceo}" />
+        </tr>
+        <tr>
+            <td>주소</td>
+            <td th:text="${dto.caddress}" />
+        </tr>
+        <tr>
+			<td>회사 파일</td>
+				<td>
+					<a th:href="@{|/admin_company/companyup/download/${dto.ccompanyFile}|}" th:text="${dto.ccompanyFile}">다운로드</a>
+				</td>
+			</tr>
+        <tr>
+            <td>회사 소개</td>
+            <td th:text="${dto.ccontent}" />
+        </tr>
+        <tr>
+        	<td>수락버튼</td>
+        	<td>
+				<a th:href="|/admin_company/checkId/{dto.cno}|" th:onclick="return confirm('회원가입을 [[${dto.cno}]] 허락하시겠습니까?')" th:text="수락"></a>
+			    <a th:href="@{|/admin_company/checkId/${dto.cno}|}" onclick="return confirm('회원가입을 허락하시겠습니까?')" th:text="수락"></a>
+			</td>
+        </tr>
+    	<tr align="center">
+    		<td colspan="2"><a th:href="|/admin_company/list/${dto.page}|">목록으로</a></td>
+    	</tr> 
+    </table>
+	
+</body>
+</html>

@@ -6,7 +6,8 @@
 </head>
 <body>
     <header>
-       <div th:include="header :: header"></div>
+		<!-- 스프링 오류메시지에 따라 수정 -->
+       <div th:insert="~{header :: header}"></div>
     </header>
 
     <th:blcok th:if="${session.companysession}">

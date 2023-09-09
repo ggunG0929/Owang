@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -138,4 +140,10 @@ public class PayService {
 		br.close();
 		conn.disconnect();
 	}
+	
+	// 날짜 포맷팅 메서드
+    public static String dateformat(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date);
+    }
 }

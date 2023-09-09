@@ -2,7 +2,7 @@
 <html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>상품 </title>
+<title>상품 관리</title>
 </head>
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
@@ -22,7 +22,9 @@
 	        button.addEventListener("click", function () {
 	            // confirm 확인받고 상품삭제
 	            if (confirm("정말로 상품을 삭제하시겠습니까?")) {
-                    let productCode = this.getAttribute("id"); // 버튼의 아이디(상품아이디) 가져오기
+					// 버튼의 아이디(=상품아이디) 가져오기
+                    let productId = this.getAttribute("id");
+                    // 파라미터로 상품아이디 보내기
                     let deleteUrl = `/admin_product/deleteProduct?productId=${productId}`;
                     window.location.href = deleteUrl; // 지정된 URL로 이동
 	            }
@@ -49,7 +51,7 @@
 			<td th:text="${dto.productValid}"></td>
 			<td th:text="${dto.productName}"></td>
 			<td th:text="${dto.productPrice}"></td>
-			<!-- 삭제버튼 아이디를 해당상품의 상품아이디로 -->
+			<!-- 삭제버튼 아이디를 해당상품의 상품아이디로. th:attr로 동적으로 할당, 그렇지 않으면 동작 안됨 -->
 			<td><input type="button" value="삭제" class="delbtn" th:attr="id=${dto.productId}"></td>
 		</tr>
 		<tr>

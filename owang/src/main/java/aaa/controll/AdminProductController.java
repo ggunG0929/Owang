@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +34,7 @@ public class AdminProductController {
 	@Resource
 	ProductMapper pm;
 	
-	// 상품 추가삭제 목록
+	// 상품 관리
 	@RequestMapping("/modify")
 	String admin_product_modify(Model mm)  {
 		// 상품 목록
@@ -44,15 +46,15 @@ public class AdminProductController {
 	}
     @PostMapping("/insertProduct")
     public String addProduct(@ModelAttribute ProductDTO productDTO) {
-    	// DTO정보를 db에 저장(상품추가)
+    	// DTO 정보를 db에 저장(상품추가)
         pm.insert(productDTO);
-        return "redirect:/admin_product/modify"; // 목록 페이지로 리다이렉트
+        return "redirect:/admin_product/modify"; // 목록 페이지로 리다이렉트(새로고침)
     }
     @RequestMapping("/deleteProduct")
     public String deleteProduct(@RequestParam("productId") String productId) {
-    	// 상품id로 db 삭제(상품삭제)
+    	// 파라미터로 전달받은 상품 id를 통해 db 삭제(상품삭제)
         pm.delete(productId);
-        return "redirect:/admin_product/modify"; // 목록 페이지로 리다이렉트
+        return "redirect:/admin_product/modify";
     }
 
     
@@ -61,40 +63,68 @@ public class AdminProductController {
 
     // 정산그래프
 	@RequestMapping("/graph")
-	String admin_product_graph(Model mm)  {
-        List<Map<String, Object>> dailytotal = paym.dailytotal();
+	String admin_product_graph(Model mm,
+			@RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate)  {
+		
+		// db에서 일매출 합산	// 그래프자료
+        List<Map<String, Object>> dailytotal = paym.dailytotal(startDate, endDate);
+//        System.out.println("dailytotal = "+dailytotal);
 
-        // 첫 인덱스는 총 매출로 따로 처리
-        BigDecimal totalAmount = (BigDecimal) dailytotal.get(0).get("totalAmount");
-        // 나머지는 그래프 데이터로 사용
-        List<Map<String, Object>> graphData = dailytotal.subList(1, dailytotal.size());
-
-        // 순위리스트
-        List<Map<String, Object>> totalbys = paym.totalbys();
-        List<Map<String, Object>> totalbyc = paym.totalbyc();
+        // db에서 회원종류별 매출액 순위리스트
+        List<Map<String, Object>> totalbys = paym.totalbys(startDate, endDate);
+        List<Map<String, Object>> totalbyc = paym.totalbyc(startDate, endDate);
+//        System.out.println("totalbys = "+totalbys);
+//        System.out.println("totalbyc = "+totalbyc);
         
-        List<Map<String, Object>> slist = new ArrayList<>();
-        List<Map<String, Object>> clist = new ArrayList<>();
-
-        for (Map<String, Object> map : totalbys) {
-            if (!map.containsKey("sid")) {
-                map.put("sid", ""); // 만약 'sid' 키가 없다면 빈 문자열로 추가
-            }
-            slist.add(map);
-        }
-        for (Map<String, Object> map : totalbyc) {
-        	if (!map.containsKey("cid")) {
-        		map.put("cid", ""); // 만약 'cid' 키가 없다면 빈 문자열로 추가
-        	}
-        	clist.add(map);
-        }
-        mm.addAttribute("totalAmount", totalAmount);
-        mm.addAttribute("graphData", graphData);
-        mm.addAttribute("slist", slist);
-        mm.addAttribute("clist", clist);
-//        System.out.println(graphData);
-//        System.out.println(totalbys);
-//        System.out.println(totalbyc);
+        // db에서 상품별 매출액 순위리스트
+        List<Map<String, Object>> totalbyp = paym.totalbyp(startDate, endDate);
+//        System.out.println("totalbyp = "+totalbyp);
+        
+        // 회원자료 중 sid나 cid가 없는 자료 제외하기
+        totalbys = totalbys.stream()
+        		.filter(map -> map.containsKey("sid"))
+                .collect(Collectors.toList());
+        totalbyc = totalbyc.stream()
+                .filter(map -> map.containsKey("cid"))
+                .collect(Collectors.toList());
+        
+        // 기간내 값들 합산
+        int totalSum = dailytotal.stream()
+        		.mapToInt(entry -> ((BigDecimal) entry.get("totalAmount")).intValue())
+    	    	.sum();
+		int sSum = totalbys.stream()
+				.mapToInt(entry -> ((BigDecimal) entry.get("total")).intValue())
+    	    	.sum();
+		int cSum = totalbyc.stream()
+				.mapToInt(entry -> ((BigDecimal) entry.get("total")).intValue())
+				.sum();
+		int pSum = totalbyp.stream()
+				.mapToInt(entry -> ((BigDecimal) entry.get("total")).intValue())
+				.sum();
+//    	System.out.println(totalSum);
+        
+    	// 오늘날짜	// 날짜 선택시 오늘 이후 날짜는 선택 불가하도록
+    	String today = PayService.dateformat(new Date());        
+    	// 선택한 날짜 뜨도록
+    	String strStartDate = null;
+    	String strEndDate = null;
+    	if(startDate != null && endDate != null) {        	
+    		strStartDate = PayService.dateformat(startDate);
+    		strEndDate = PayService.dateformat(endDate);
+    	}
+        mm.addAttribute("graphData", dailytotal);
+        mm.addAttribute("slist", totalbys);
+        mm.addAttribute("clist", totalbyc);
+        mm.addAttribute("plist", totalbyp);
+        mm.addAttribute("totalSum", totalSum);
+        mm.addAttribute("sSum", sSum);
+        mm.addAttribute("cSum", cSum);
+        mm.addAttribute("pSum", pSum);
+        mm.addAttribute("today", today);
+        mm.addAttribute("startDate", strStartDate);
+        mm.addAttribute("endDate", strEndDate);        
+        
 		return "admin/product/graph";
 	}
 	
@@ -125,7 +155,6 @@ public class AdminProductController {
         }
         int total = responseEntity.getBody().getResponse().getTotal();
         int totalPages = (int)Math.ceil((double)total / 15);
-        
 //        System.out.println(responseEntity);
         mm.addAttribute("paymentData", paymentData);
         mm.addAttribute("page", page);
