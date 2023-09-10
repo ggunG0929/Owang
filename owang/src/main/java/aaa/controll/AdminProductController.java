@@ -2,7 +2,6 @@ package aaa.controll;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -61,16 +60,21 @@ public class AdminProductController {
     @Resource
     PayMapper paym;
 
-    // 정산그래프
+    // 결제정산
 	@RequestMapping("/graph")
 	String admin_product_graph(Model mm,
 			@RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
             @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate)  {
 		
-		// db에서 일매출 합산	// 그래프자료
+		// 그래프 데이타
+		// db에서 일매출 합산
         List<Map<String, Object>> dailytotal = paym.dailytotal(startDate, endDate);
 //        System.out.println("dailytotal = "+dailytotal);
 
+        
+        
+        
+        // 리스트 데이타
         // db에서 회원종류별 매출액 순위리스트
         List<Map<String, Object>> totalbys = paym.totalbys(startDate, endDate);
         List<Map<String, Object>> totalbyc = paym.totalbyc(startDate, endDate);
@@ -90,22 +94,15 @@ public class AdminProductController {
                 .collect(Collectors.toList());
         
         // 기간내 값들 합산
-        int totalSum = dailytotal.stream()
-        		.mapToInt(entry -> ((BigDecimal) entry.get("totalAmount")).intValue())
-    	    	.sum();
-		int sSum = totalbys.stream()
-				.mapToInt(entry -> ((BigDecimal) entry.get("total")).intValue())
-    	    	.sum();
-		int cSum = totalbyc.stream()
-				.mapToInt(entry -> ((BigDecimal) entry.get("total")).intValue())
-				.sum();
-		int pSum = totalbyp.stream()
-				.mapToInt(entry -> ((BigDecimal) entry.get("total")).intValue())
-				.sum();
+        int totalSum = mapSum(dailytotal, "totalAmount");
+        int sSum = mapSum(totalbys, "total");
+        int cSum = mapSum(totalbys, "total");
+        int pSum = mapSum(totalbys, "total");
 //    	System.out.println(totalSum);
         
     	// 오늘날짜	// 날짜 선택시 오늘 이후 날짜는 선택 불가하도록
-    	String today = PayService.dateformat(new Date());        
+    	String today = PayService.dateformat(new Date()); 
+    	System.out.println(today);
     	// 선택한 날짜 뜨도록
     	String strStartDate = null;
     	String strEndDate = null;
@@ -113,6 +110,8 @@ public class AdminProductController {
     		strStartDate = PayService.dateformat(startDate);
     		strEndDate = PayService.dateformat(endDate);
     	}
+    	System.out.println(startDate);
+    	System.out.println(endDate);
         mm.addAttribute("graphData", dailytotal);
         mm.addAttribute("slist", totalbys);
         mm.addAttribute("clist", totalbyc);
@@ -126,6 +125,12 @@ public class AdminProductController {
         mm.addAttribute("endDate", strEndDate);        
         
 		return "admin/product/graph";
+	}
+	// 맵리스트에서 키 값들을 합하는 메서드
+	public int mapSum(List<Map<String, Object>> list, String key) {
+	    return list.stream()
+	            .mapToInt(entry -> ((BigDecimal) entry.get(key)).intValue())
+	            .sum();
 	}
 	
 	

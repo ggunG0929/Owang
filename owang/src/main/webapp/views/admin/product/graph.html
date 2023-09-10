@@ -7,6 +7,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
 <body>
+	<button onclick="rangedays(180)">최근 180일</button>
+	<button onclick="rangedays(30)">최근 30일</button>
+	<button onclick="rangedays(7)">최근 7일</button>
 <form action="">
 	<input type="date" name="startDate" th:value="${startDate}" th:max="${today}">
 	~
@@ -21,9 +24,37 @@
     <canvas id="graphCanvas" width="500" height="300"></canvas>
 </div>
 <script th:inline="javascript">
+	
+    let inputSd = document.querySelector('input[name="startDate"]');
+    let inputEd = document.querySelector('input[name="endDate"]');
+	// 최근 range 매출보기
+	function rangedays(range) {
+	    let endDate = new Date();
+	    let startDate = new Date();
+	    startDate.setDate(startDate.getDate() - range);
+	    // 시작일과 종료일 값을 설정
+	    inputEd.valueAsDate = endDate;
+	    inputSd.valueAsDate = startDate;
+	    // 서브밋
+	    document.querySelector('form').submit();
+	}	
+	// startDate 선택시 endDate는 그 이후가 선택되도록
+	document.addEventListener('DOMContentLoaded', function() {
+	    inputSd.addEventListener('input', function() {
+	        inputEd.min = this.value;
+	    });
+	});
+	
+	
     // 그래프 데이터
     let graphDatas = [[${graphData}]];
+ //   console.log(graphDatas);
     
+    // 데이터 가공
+    let startDate = new Date([[${startDate}]]);
+    let endDate = new Date([[${endDate}]]);
+    // 함수 호출
+    let allDates = getDates(startDate, endDate);
      // 시작 날짜와 끝 날짜 사이의 모든 날짜를 가져오는 함수
     function getDates(startDate, endDate) {
         let dates = [];
@@ -36,17 +67,13 @@
         return dates;
     }
 
-    // 데이터 가공
-    let startDate = new Date([[${startDate}]]);
-    let endDate = new Date([[${endDate}]]);
-    let allDates = getDates(startDate, endDate);
+    // 데이터를 tempMap에 넣기(복사)
     let tempMap = new Map();
-
-    // 데이터를 tempMap에 넣기(옮김)
     graphDatas.forEach(item => {
         tempMap.set(item.date, item.totalAmount);
     });
-    // 누락된 날짜를 0으로 채우기
+//    console.log(tempMap);
+    // tempMap과 비교하여 누락된 날짜를 채우기
     allDates.forEach(date => {
 		// 날짜를 iso문자열로 변환하고 T를 기준으로 나눠 날짜를 yyyy-mm-dd 형식으로 가져옴
         let isoDate = date.toISOString().split('T')[0];
@@ -56,8 +83,109 @@
             graphDatas.push({ date: isoDate, totalAmount: 0 });
         }
     });
+
     // graphDatas의 정렬기준(a, b를 날짜로 변환해서 빼기: a가 크면 양수- 뒤로 감, a가 작으면 음수- 앞으로 감) - 날짜순
     graphDatas.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+
+
+
+	
+	// 특정일이 속해있는 주 중에 첫 날(일요일) 가져오기
+	Date.prototype.getStartOfWeek = function() {
+		// 연 월 일 정보 가져와서 요일 정보 빼기 - 요일이 0(일요일)으로 됨
+	    let startOfWeek = new Date(this.getFullYear(), this.getMonth(), this.getDate() - this.getDay());
+	    return startOfWeek;
+	}
+	
+	// 1주씩 그룹화한 데이타
+	function groupDataByWeek(gdata) {
+	    let groupedData = [];
+	    let currentWeekStart = null;
+	    let weekTotal = 0;
+	
+	    gdata.forEach(item => {
+	        let itemDate = new Date(item.date);
+	        let startOfWeek = itemDate.getStartOfWeek();
+	
+	        if (currentWeekStart != null && (currentWeekStart.getTime() != startOfWeek.getTime())) {
+	            // 현재 주의 첫날이 변경되면 그 주의 데이터를 groupedData에 추가
+	            let formattedDate = (currentWeekStart.getMonth() + 1) + "월 " 
+						            + (Math.ceil(currentWeekStart.getDate() / 7) + 1) + "주차(" + 
+						            currentWeekStart.getDate() + "일~ )" ;
+	            groupedData.push({ date: formattedDate, totalAmount: weekTotal });
+	            // 초기화
+	            weekTotal = 0;
+	        }
+	        weekTotal += item.totalAmount;
+	        currentWeekStart = startOfWeek;
+	    });
+	    if (currentWeekStart !== null) {
+	        // 마지막 주의 데이터를 groupedData에 추가
+	        let formattedDate = (currentWeekStart.getMonth() + 1) + "월 " 
+						        + (Math.ceil(currentWeekStart.getDate() / 7)+1) + "주차(" + 
+						        currentWeekStart.getDate() + "일~" + endDate.getDate()+"일)";
+	        groupedData.push({ date: formattedDate, totalAmount: weekTotal });
+	    }
+		    // 첫 번째 주의 데이터를 수정
+		if (groupedData.length > 0) {
+		    let firstData = groupedData[0];
+		    let currentWeekStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() - startDate.getDay());
+		    firstData.date = (currentWeekStart.getMonth() + 1) + "월 " 
+	            + (Math.ceil(currentWeekStart.getDate() / 7)+1) + "주차(" + startDate.getDate() + "일~" + (currentWeekStart.getDate()+6) + "일)" ;
+		}
+	    return groupedData;
+	}
+	
+	// 함수호출
+//	graphDatas = groupDataByWeek(graphDatas);
+    
+    
+    
+    
+    
+    
+	    // 1달씩 그룹화한 데이타
+	function groupDataByMonth(gdata) {
+	    let groupedData = [];
+	    let currentMonth = null;
+	    let monthTotal = 0;
+	
+	    gdata.forEach(item => {
+	        let itemDate = new Date(item.date);
+	        let itemMonth = itemDate.getMonth();
+	
+	        if (currentMonth != null && (currentMonth != itemMonth)) {
+	            // 현재 월이 변경되면 그 월의 데이터를 groupedData에 추가
+	            let formattedDate = (currentMonth + 1) + "월";
+	            groupedData.push({ date: formattedDate, totalAmount: monthTotal });
+	            monthTotal = 0;
+	        }
+	        monthTotal += item.totalAmount;
+	        currentMonth = itemMonth;
+	    });
+	    if (currentMonth !== null) {
+	        // 마지막 월의 데이터를 groupedData에 추가
+	        let formattedDate = (currentMonth + 1) + "월( ~" + endDate.getDate() + "일)";
+	        groupedData.push({ date: formattedDate, totalAmount: monthTotal });
+	    }
+			    // 첫 번째 주의 데이터를 수정
+		if (groupedData.length > 0) {
+		    let firstData = groupedData[0];
+		    let currentMonth = startDate.getMonth();
+		    firstData.date = (currentMonth + 1) + "월(" + startDate.getDate() + "일~ )";
+		}
+	
+	    return groupedData;
+	}
+	// 함수호출
+//	graphDatas = groupDataByMonth(graphDatas);
+
+
+
+
+
+
 
 	// 라벨(x축) = graphDatas의 date
     let labels = graphDatas.map(function(item) {
@@ -85,6 +213,16 @@
         data: graphData,
         options: {
 	        responsive: false, // 반응형 해제, 반응형으로 두면 크기가 무조건 꽉 채워짐
+            scales: {
+                y: {
+                    beginAtZero: true, // y축 시작값 0으로 설정
+                    // 눈금의 최대값은 자료의 최대값과 최대값에 5000 더한 값 범위 안에서 설정
+                    suggestedMax: Math.ceil(Math.max(...data) / 5000) * 5000,
+                    ticks: {
+	                    precision: -3 // 자료값이 0일 때 눈금선값의 소수점 자리수 설정
+	                }
+                }
+            },
 	        plugins: {
 	            legend: {
 	                display: false // 범례 표시 해제
@@ -93,6 +231,7 @@
         }
     });
 </script>
+<h3>매출액 상위 회원</h3>
     <div>
 		<table border="">
 		    <thead>
@@ -102,7 +241,7 @@
 		        </tr>
 		    </thead>
 		    <tbody>
-		        <tr th:each="item, index : ${slist}">
+				<tr th:each="item, index : ${slist}" th:if="${index.index < 5}">
 		            <td th:text="${index.index + 1}"></td>
 		            <td th:text="${item['sid']}"></td>
 		            <td th:text="${item['total']}"></td>
@@ -119,7 +258,7 @@
 		        </tr>
 		    </thead>
 		    <tbody>
-		        <tr th:each="item, index : ${clist}">
+				<tr th:each="item, index : ${clist}" th:if="${index.index < 5}">
 		            <td th:text="${index.index + 1}"></td>
 		            <td th:text="${item['cid']}"></td>
 		            <td th:text="${item['total']}"></td>
@@ -127,6 +266,7 @@
 		    </tbody>
 		</table>
 	</div>
+<h3>매출액 상위 상품</h3>
     <div>
 		<table border="">
 		    <thead>
@@ -136,7 +276,7 @@
 		        </tr>
 		    </thead>
 		    <tbody>
-		        <tr th:each="item, index : ${plist}">
+		        <tr th:each="item, index : ${plist}" th:if="${index.index < 5}">
 		            <td th:text="${index.index + 1}"></td>
 		            <td th:text="${item['pname']}"></td>
 		            <td th:text="${item['total']}"></td>

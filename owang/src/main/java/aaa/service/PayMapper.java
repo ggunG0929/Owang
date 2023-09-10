@@ -24,7 +24,7 @@ public interface PayMapper {
 	// 아임포트고유번호로 db에서 아이디 가져오기
 	String idget(String impUid);
 	// id로 impuid리스트
-    List<String> impuidsById(String id);
+    List<String> impuids(String id);
     // 일별 매출액
     List<Map<String, Object>> dailytotal(Date startDate, Date endDate);
     // 아이디별 매출액

@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
     </select>
     
     <!-- id로 imp_uid 리스트 가져오기 -->
-	<select id="impuidsById" parameterType="String" resultType="String">
+	<select id="impuids" parameterType="String" resultType="String">
 	    SELECT imp_uid
 	    FROM payment
 	    WHERE sid = #{id} OR cid = #{id}

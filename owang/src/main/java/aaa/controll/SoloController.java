@@ -127,7 +127,7 @@ public class SoloController {
         }
 		
 		// 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴
-		List<String> impuidList = paym.impuidbys(sid);
+		List<String> impuidList = paym.impuids(sid);
 		
 		String token = PayService.getToken(); // PayService를 통해 토큰을 가져옴
 		// API에 대한 요청을 위한 URL 생성

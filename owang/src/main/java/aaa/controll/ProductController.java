@@ -109,20 +109,20 @@ public class ProductController {
 	    	// 타입을 2로 바꾸기
 	    	soloinfo.setStype(2);
 	    	// 회원 유효기간 가져오기
-	    	Date sdate = solosession.getSdate();
-	        // 유효기간이 오늘 이전인 경우 - 오늘날짜에 상품 유효기간 더하기
-	        if(sdate.before(today)) {
-	            Calendar calendar = Calendar.getInstance();
-	            calendar.setTime(today);
-	            calendar.add(Calendar.DATE, valid);
-	            sdate = calendar.getTime();
-	         // 유효기간이 오늘 이후거나 오늘인 경우 - 유효기간에 상품 유효기간 더하기
-	        }else { 
-	            Calendar calendar = Calendar.getInstance();
-	            calendar.setTime(sdate);
-	            calendar.add(Calendar.DATE, valid);
-	            sdate = calendar.getTime();
-	        }
+	    	Date sdate = solosession.getSdate();    		
+    		// 유효기간이 null이거나 오늘 이전인 경우 - 오늘날짜에 상품 유효기간 더하기
+    		if(sdate==null || sdate.before(today)) {
+    			Calendar calendar = Calendar.getInstance();
+    			calendar.setTime(today);
+    			calendar.add(Calendar.DATE, valid);
+    			sdate = calendar.getTime();
+    			// 유효기간이 오늘 이후거나 오늘인 경우 - 유효기간에 상품 유효기간 더하기
+    		}else { 
+    			Calendar calendar = Calendar.getInstance();
+    			calendar.setTime(sdate);
+    			calendar.add(Calendar.DATE, valid);
+    			sdate = calendar.getTime();
+    		}
 	        // 회원 유효기간 세팅
 	        soloinfo.setSdate(sdate);
 	        // 회원 정보 변경
@@ -135,17 +135,17 @@ public class ProductController {
 	    	compinfo.setCid(companysession.getCid());
 	    	compinfo.setCtype(2);
 	    	Date cdate = companysession.getCdate();
-	        if(cdate.before(today)) {
-	            Calendar calendar = Calendar.getInstance();
-	            calendar.setTime(today);
-	            calendar.add(Calendar.DATE, valid);
-	            cdate = calendar.getTime();
-	        }else {
-	            Calendar calendar = Calendar.getInstance();
-	            calendar.setTime(cdate);
-	            calendar.add(Calendar.DATE, valid);
-	            cdate = calendar.getTime();
-	        }
+	    	if(cdate==null || cdate.before(today)) {    		
+    			Calendar calendar = Calendar.getInstance();
+    			calendar.setTime(today);
+    			calendar.add(Calendar.DATE, valid);
+    			cdate = calendar.getTime();
+    		}else {
+    			Calendar calendar = Calendar.getInstance();
+    			calendar.setTime(cdate);
+    			calendar.add(Calendar.DATE, valid);
+    			cdate = calendar.getTime();
+    		}
 	        compinfo.setCdate(cdate);
 	        mcm.paycmember(compinfo);
 	    }

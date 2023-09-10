@@ -33,7 +33,7 @@ public class CompanyController {
 	@RequestMapping("/product")
 	String product(Model mm, HttpSession session) throws Exception {
 		String cid = (String) session.getAttribute("cid");
-    	List<String> impuidList = paym.impuidbyc(cid);
+    	List<String> impuidList = paym.impuids(cid);
         String token = PayService.getToken(); // PayService를 통해 토큰을 가져옴
         // API에 대한 요청을 위한 URL 생성
         String apiUrl = "https://api.iamport.kr/payments?"
