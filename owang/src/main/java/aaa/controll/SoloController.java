@@ -1,6 +1,7 @@
 package aaa.controll;
 
-import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
-
-import com.mysql.cj.Session;
 
 import aaa.model.PageData;
 import aaa.model.PaymentResponseMember;
@@ -148,10 +147,15 @@ public class SoloController {
 			// paid_at을 포맷팅
 			Long ldate = Long.parseLong(payment.getPaid_at());
 			Date date = new Date(ldate * 1000L);
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			payment.setPaid_at(sdf.format(date));
+			payment.setPaid_at(PayService.timeformat(date));
 		}
 //	        System.out.println(responseEntity);
+		Collections.sort(paymentData, new Comparator<PaymentResponseMember.Payment>() {
+		    public int compare(PaymentResponseMember.Payment a, PaymentResponseMember.Payment b) {
+		        // paid_at을 기준으로 내림차순 정렬
+		        return b.getPaid_at().compareTo(a.getPaid_at());
+		    }
+		});
 		mm.addAttribute("paymentData", paymentData);
 		return "product/payment";
 	}

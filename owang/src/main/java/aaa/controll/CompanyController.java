@@ -1,6 +1,7 @@
 package aaa.controll;
 
-import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,8 +33,18 @@ public class CompanyController {
 	
 	@RequestMapping("/product")
 	String product(Model mm, HttpSession session) throws Exception {
-		String cid = (String) session.getAttribute("cid");
+		MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
+		String cid = companysession.getCid();
+		
+		// cdate가 오늘 이후인 경우 - 유효상품이 있는 경우
+		Date cdate = companysession.getCdate();
+		Date today = new Date();
+        if(cdate.after(today)) {
+        	mm.addAttribute("cdate", cdate);
+        }
+
     	List<String> impuidList = paym.impuids(cid);
+
         String token = PayService.getToken(); // PayService를 통해 토큰을 가져옴
         // API에 대한 요청을 위한 URL 생성
         String apiUrl = "https://api.iamport.kr/payments?"
@@ -53,10 +64,15 @@ public class CompanyController {
             // paid_at을 포맷팅
             Long ldate = Long.parseLong(payment.getPaid_at());
             Date date = new Date(ldate * 1000L);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            payment.setPaid_at(sdf.format(date));
+			payment.setPaid_at(PayService.timeformat(date));
         }
 //        System.out.println(responseEntity);
+		Collections.sort(paymentData, new Comparator<PaymentResponseMember.Payment>() {
+		    public int compare(PaymentResponseMember.Payment a, PaymentResponseMember.Payment b) {
+		        // paid_at을 기준으로 내림차순 정렬
+		        return b.getPaid_at().compareTo(a.getPaid_at());
+		    }
+		});
         mm.addAttribute("paymentData", paymentData);
         return "product/payment";
 	}

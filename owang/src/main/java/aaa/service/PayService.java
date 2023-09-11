@@ -145,4 +145,10 @@ public class PayService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
     }
+    
+    // 날짜+시간 포맷팅 메서드
+    public static String timeformat(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	return sdf.format(date);
+    }
 }

@@ -1,6 +1,5 @@
 package aaa.controll;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -45,14 +44,23 @@ public class ProductController {
 	String product_form(@PathVariable String productId, Model mm, HttpSession session) {
 		// 세션으로 사용자정보 채워주기
 		String name, tel;
+		Date today = new Date();
 		if(session.getAttribute("sid")!=null) {
 			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 			name = solosession.getSname();
 			tel = solosession.getSphone();
+			Date sdate = solosession.getSdate();
+			if(sdate!=null && sdate.after(today)) {
+				mm.addAttribute("sdate", sdate);
+			}
 		}else {
 			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
 			name = companysession.getCname();
 			tel = companysession.getCcall();
+			Date cdate = companysession.getCdate();
+			if(cdate !=null && cdate.after(today)) {
+				mm.addAttribute("cdate", cdate);
+			}
 		}
 		// 상품정보 채워주기
 		ProductDTO dto = pm.detail(productId);

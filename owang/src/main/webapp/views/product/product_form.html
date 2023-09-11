@@ -125,6 +125,12 @@
 </script>
 </head>
 <body>
+<th:block th:if="${sdate != null}">				
+	<h3>현재 적용중인 상품은 [[${#dates.format(sdate, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
+</th:block>
+<th:block th:if="${cdate != null}">				
+	<h3>현재 적용중인 상품은 [[${#dates.format(cdate, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
+</th:block>
 <div>
 	상품에 대한 설명입니다.
 </div>
