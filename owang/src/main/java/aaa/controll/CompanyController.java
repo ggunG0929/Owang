@@ -1,20 +1,15 @@
 package aaa.controll;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
 
 import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
@@ -30,23 +25,24 @@ import jakarta.servlet.http.HttpSession;
 public class CompanyController {
 
 	@Resource
-	PayMapper paym;
-	
+	PayMapper paym;	
 	@Autowired
 	PayService payS;
 	
 	@RequestMapping("/product")
 	String product(Model mm, HttpSession session) throws Exception {
+		// 세션에서 id 가져옴
 		MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
 		String cid = companysession.getCid();
-		
+
 		// cdate가 오늘 이후인 경우 - 유효상품이 있는 경우
 		Date cdate = companysession.getCdate();
 		Date today = new Date();
         if(cdate.after(today)) {
-        	mm.addAttribute("cdate", cdate);
+        	mm.addAttribute("date", cdate);
         }
-
+        
+        // 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴
     	List<String> impuidList = paym.impuids(cid);
 		List<PaymentResponseMember.Payment> paymentData = payS.getPaymentData(impuidList);
         mm.addAttribute("paymentData", paymentData);

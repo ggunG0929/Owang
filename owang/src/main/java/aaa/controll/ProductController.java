@@ -1,5 +1,6 @@
 package aaa.controll;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import aaa.model.MCompanyDTO;
 import aaa.model.PaymentDTO;
+import aaa.model.PaymentResponseMember;
 import aaa.model.ProductDTO;
 import aaa.model.SoloDTO;
 import aaa.service.MCompanyMapper;
@@ -58,7 +60,7 @@ public class ProductController {
 			tel = solosession.getSphone();
 			Date sdate = solosession.getSdate();
 			if(sdate!=null && sdate.after(today)) {
-				mm.addAttribute("sdate", sdate);
+				mm.addAttribute("date", sdate);
 			}
 		}else {
 			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
@@ -66,7 +68,7 @@ public class ProductController {
 			tel = companysession.getCcall();
 			Date cdate = companysession.getCdate();
 			if(cdate !=null && cdate.after(today)) {
-				mm.addAttribute("cdate", cdate);
+				mm.addAttribute("date", cdate);
 			}
 		}
 		// 상품정보 채워주기
@@ -181,7 +183,7 @@ public class ProductController {
 	
 	// 결제 금액 검증까지 성공했을 때 리다이렉트
 	@RequestMapping("/result/{impUid}")
-	String result(@PathVariable String impUid, Model mm, HttpSession session) {
+	String result(@PathVariable String impUid, Model mm, HttpSession session) throws Exception {
 		Date date;
 		if(session.getAttribute("sid")!=null) {
 			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
@@ -191,9 +193,12 @@ public class ProductController {
 			date = companysession.getCdate();
 		}
 		// 결제시 부여된 impUid로 db내용 가져옴
-		PaymentDTO dto = paym.detail(impUid);
-		mm.addAttribute("dto", dto);
+		List<String> impuidList = new ArrayList<>();
+		impuidList.add(impUid);
+		List<PaymentResponseMember.Payment> paymentData = payS.getPaymentData(impuidList);
+        mm.addAttribute("paymentData", paymentData);
 		mm.addAttribute("date", date);
+//		return "product/payment";
 		return "product/product_result";
 	}
 	

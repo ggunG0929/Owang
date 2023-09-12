@@ -71,30 +71,15 @@
 		        var paymentData = {
 					// 거래고유번호
 		            impUid: callback.imp_uid,
-		            // 주문번호
-		            merchantUid: callback.merchant_uid,
 		            // 상품아이디
 		            productId: /*[[${dto.productId}]]*/ null,
 		            // 상품명
 		            pname: callback.name,
 		            // 결제금액
 		            amount: callback.paid_amount,
-		            // 주문인
-		            buyerName: callback.buyer_name,
-		            // 주문인 연락처
-		            buyerTel: callback.buyer_tel,
-		            // 결제상태(가상계좌를 뺀다면 필요없음)
-		            pstatus: callback.status,
 		            // 결제시간
 		            paidAt: new Date(callback.paid_at* 1000),
 		        };
-                // vbank 결제 시에만 추가 정보를 설정(가상계좌를 뺀다면 필요없음)
-		        if (pay_method === 'vbank') {
-					paymentData.paidAt = null;
-		            paymentData.vbankName = callback.vbank_name;
-		            paymentData.vbankNum = callback.vbank_num;
-		            paymentData.vbankHolder = callback.vbank_holder;
-		        }
 		        // 주문정보를 post형식으로 complete로 보냄
 		        $.ajax({
 		            url: '/product/complete',
@@ -125,10 +110,7 @@
 </head>
 <body>
 <th:block th:if="${sdate != null}">				
-	<h3>현재 적용중인 상품은 [[${#dates.format(sdate, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
-</th:block>
-<th:block th:if="${cdate != null}">				
-	<h3>현재 적용중인 상품은 [[${#dates.format(cdate, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
+	<h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
 </th:block>
 <div>
 	상품에 대한 설명입니다.

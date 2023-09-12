@@ -1,19 +1,14 @@
 package aaa.controll;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
 
 import aaa.model.PageData;
 import aaa.model.PaymentResponseMember;
@@ -112,13 +107,12 @@ public class SoloController {
 	// 상품
 	@Resource
 	PayMapper paym;
-	
 	@Autowired
 	PayService payS;
 	
 	@RequestMapping("/product")
 	String product(Model mm, HttpSession session) throws Exception {
-		// 세션 아이디를 가져옴
+		// 세션에서 id 가져옴
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 		String sid = solosession.getSid();
 		
@@ -126,7 +120,7 @@ public class SoloController {
 		Date sdate = solosession.getSdate();
 		Date today = new Date();
         if(sdate.after(today)) {
-        	mm.addAttribute("sdate", sdate);
+        	mm.addAttribute("date", sdate);
         }
 		
 		// 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴

@@ -7,11 +7,8 @@ CREATE TABLE payment(
     sid		VARCHAR(100),
     cid		VARCHAR(100),
     imp_uid	VARCHAR(100),
-    merchant_uid	VARCHAR(100),
     product_id	VARCHAR(100),
     pname	VARCHAR(100),
-    buyer_name	VARCHAR(100),
-    buyer_tel	VARCHAR(100),
     amount		INT,
     paid_at		Date
 );

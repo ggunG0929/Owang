@@ -6,11 +6,8 @@
 </head>
 <body>
 	<!-- 유효기간이 오늘보다 이후일 경우 -->
-	<th:block th:if="${sdate != null}">				
-	<h3>현재 적용중인 상품은 [[${#dates.format(sdate, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
-	</th:block>
-	<th:block th:if="${cdate != null}">				
-	<h3>현재 적용중인 상품은 [[${#dates.format(cdate, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
+	<th:block th:if="${date != null}">				
+	<h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
 	</th:block>
 <h1>회원 결제내역</h1>
     <table border="">

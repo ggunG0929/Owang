@@ -5,21 +5,24 @@
 <title>결제결과</title>
 </head>
 <body>
-<h1>[[${dto.buyerName}]]님의 결제가 완료되었습니다.</h1>			
+<h1>[[${paymentData[0].buyer_name}]]님의 결제가 완료되었습니다.</h1>			
 <h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
 	<table border="">
 		<tr>
 			<td>주문번호</td>
+			<td>결제상태</td>
+			<td>결제시간</td>
 			<td>상품명</td>
 			<td>결제금액</td>
-			<td>결제시간</td>
+			<td></td>
 		</tr>
 		<tr>
-			<td th:text="${dto.merchantUid}"></td>
-			<td th:text="${dto.pname}"></td>
-			<td th:text="${dto.amount}"></td>
-			<!-- 포맷팅 필요 -->
-			<td th:text="${#dates.format(dto.paidAt, 'yyyy-MM-dd')}"></td>
+			<td th:text="${paymentData[0].merchant_uid}"></td>
+			<td th:text="${paymentData[0].status}"></td>
+			<td th:text="${paymentData[0].paid_at}"></td>
+			<td th:text="${paymentData[0].name}"></td>
+			<td th:text="${paymentData[0].amount}"></td>
+			<td><a th:href="${paymentData[0].receipt_url}">매출전표</a></td>
 		</tr>
 	</table>
 </body>

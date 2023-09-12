@@ -261,6 +261,6 @@ public class AdminProductController {
 		String token = payS.getToken();
 	    payS.paymentCancle(token, impUid, "취소사유: 관리자에 의한 취소");
 	    
-	    return "redirect:/admin_product/payment/detail/" + impUid;
+	    return "redirect:/admin_product/payment/detail/"+impUid;
 	}
 }

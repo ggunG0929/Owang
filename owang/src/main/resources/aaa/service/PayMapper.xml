@@ -78,8 +78,8 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 
 	<insert id="insert" parameterType="payDTO">
-		insert into payment (sid, cid, imp_uid, merchant_uid, product_id, pname, buyer_name, buyer_tel, amount, paid_at) 
-		values (#{sid}, #{cid}, #{impUid}, #{merchantUid}, #{productId}, #{pname}, #{buyerName}, #{buyerTel}, #{amount}, #{paidAt})
+		insert into payment (sid, cid, imp_uid, product_id, pname, amount, paid_at) 
+		values (#{sid}, #{cid}, #{impUid}, #{productId}, #{pname}, #{amount}, #{paidAt})
 	</insert>
 	
 </mapper>
