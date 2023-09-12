@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>상품 매출 내역</title>
+<script th:inline="javascript">
+    var errorMsg = /*[[${errorMsg}]]*/ null;
+//    var errorMsgJSON = /*[[${errorMsg}]]*/ null;
+//    var errorMsg = null;
+
+//    if (errorMsgJSON !== null) {
+//        var errorObj = JSON.parse(errorMsgJSON);
+//        errorMsg = errorObj.message;
+//    }
+
+    if (errorMsg !== null) {
+        alert(errorMsg);
+    }
+    
+	// from 선택시 to는 그 이후가 선택되도록
+	document.addEventListener('DOMContentLoaded', function() {
+	    let inputSd = document.querySelector('input[name="from"]');
+	    let inputEd = document.querySelector('input[name="to"]');    
+	    inputSd.addEventListener('input', function() {
+	        inputEd.min = this.value;
+	    });
+	});	
+</script>
+</head>
+<body>
+   <h1>상품 매출 내역</h1>
+   [[${status}]]
+   [[${limit}]]
+   [[${from}]]
+   [[${to}]]
+   [[${sorting}]]
+   [[${today}]]
+   <form action="/admin_product/payment/1" method="post">
+		<label for="status">결제상태</label>
+        <select name="status" id="status">
+            <option value="paid" th:selected="${status == 'paid'}">완료</option>
+            <option value="all" th:selected="${status == 'all'}">모두</option>
+            <option value="ready" th:selected="${status == 'ready'}">대기</option>
+            <option value="cancelled" th:selected="${status == 'cancelled'}">취소</option>
+            <option value="failed" th:selected="${status == 'failed'}">실패</option>
+        </select>
+        <label for="limit">1페이지당 자료수</label>
+        <select name="limit" id="limit">
+            <option value="15" th:selected="${limit == 15}">15</option>
+            <option value="30" th:selected="${limit == 30}">30</option>
+            <option value="50" th:selected="${limit == 50}">50</option>
+            <option value="100" th:selected="${limit == 100}">100</option>
+        </select>
+        <label for="from">범위</label>
+        <input type="date" name="from" id="from" th:value="${from}" th:max="${today}">
+        <label for="to">~</label>
+        <input type="date" name="to" id="to" th:value="${to}" th:max="${today}">
+        <label for="sorting">정렬</label>
+        <select name="sorting" id="sorting">
+            <option value="-updated" th:selected="${sorting == '-updated'}">-최종수정시각</option>
+            <option value="updated" th:selected="${sorting == 'updated'}">+최종수정시각</option>
+            <option value="-started" th:selected="${sorting == '-started'}">-결제요청시각</option>
+            <option value="started" th:selected="${sorting == 'started'}">+결제요청시각</option>
+            <option value="-paid" th:selected="${sorting == '-paid'}">-결제완료시각</option>
+            <option value="paid" th:selected="${sorting == '-paid'}">+결제완료시각</option>
+        </select>
+        <button type="submit">검색</button>
+    </form>
+    <table border="">
+        <thead>
+            <tr>
+                <th>결제상태</th>
+                <th>거래번호</th>
+                <th>상품명</th>
+                <th>상품금액</th>
+				<th>회원아이디</th>
+                <th>결제요청시각</th>
+                <th>결제실패시각</th>
+                <th>결제완료시각</th>
+                <th>결제취소시각</th>
+            </tr>
+        </thead>
+        <th:block th:if="${paymentData != null}">
+        <tbody>
+            <tr th:each="payment : ${paymentData}">
+                <td th:text="${payment.status}"></td>
+                <td>						
+	                <a th:href="|/admin_product/payment/detail/${payment.imp_uid}|" th:text="${payment.imp_uid}" />
+				</td>
+                <td th:text="${payment.name}"></td>
+                <td th:text="${payment.amount}"></td>
+                <td th:text="${payment.id}"></td>
+                <td th:text="${payment.started_at}"></td>
+                <td th:text="${payment.failed_at}"></td>
+                <td th:text="${payment.paid_at}"></td>
+                <td th:text="${payment.cancelled_at}"></td>
+            </tr>
+		</th:block>
+            <tr>
+				<td colspan="9" align="center">					
+		    		<!-- 이전 페이지로 이동 -->
+					<th:block th:unless="${from == null or to == null}">
+				    <a th:if="${page-1 > 0}" th:href="|/admin_product/payment/${page-1}?
+				    	status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|">이전</a>
+					</th:block>
+					<th:block th:if="${from == null or to == null}">
+				    <a th:if="${page-1 > 0}" th:href="|/admin_product/payment/${page-1}?
+				    	status=${status}&limit=${limit}&sorting=${sorting}|">이전</a>
+					</th:block>
+					<!-- 페이지 번호 표시 -->
+					<th:each begin="1" end="${totalPages}" step="1" var="i">
+						<th:block th:each="no: ${#numbers.sequence(1, totalPages)}" >
+							<span th:if="${no==page}" th:text="${no}"/>
+							<th:block th:unless="${from == null or to == null}">
+								<a th:unless="${no==page}" th:href="|/admin_product/payment/${no}?
+									status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|" th:text="${no}"/>
+							</th:block>
+							<th:block th:if="${from == null or to == null}">
+								<a th:unless="${no==page}" th:href="|/admin_product/payment/${no}?
+									status=${status}&limit=${limit}&sorting=${sorting}|" th:text="${no}"/>
+							</th:block>
+						</th:block>
+					</th:each>
+					<!-- 다음 페이지로 이동 -->
+					<th:block th:unless="${from == null or to == null}">
+					    <a th:if="${totalPages >= page+1}" th:href="|/admin_product/payment/${page+1}?
+					    	status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|">다음</a>
+					</th:block>
+					<th:block th:if="${from == null or to == null}">
+					    <a th:if="${totalPages >= page+1}" th:href="|/admin_product/payment/${page+1}?
+					    	status=${status}&limit=${limit}&sorting=${sorting}|">다음</a>
+					</th:block>
+				</td>
+			</tr>
+        </tbody>
+    </table>
+</body>
+</html>

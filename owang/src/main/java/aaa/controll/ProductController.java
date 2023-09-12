@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,10 +33,16 @@ public class ProductController {
 	ProductMapper pm;
 	
 	@RequestMapping("/notice")
-	String product_notice(Model mm) {
+	String product_notice(Model mm, HttpSession session) {
+		boolean compchk = false;
+		if(session.getAttribute("cid")!=null) {
+			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
+			compchk = companysession.isCapproval();
+		}
 		// 전체 상품 목록
 		List<ProductDTO> data= pm.list();
 		mm.addAttribute("data", data);
+		mm.addAttribute("compchk", compchk);
 		return "product/product_notice";
 	}
 	
@@ -76,6 +83,8 @@ public class ProductController {
 	SoloMapper sm;
 	@Resource
 	MCompanyMapper mcm;
+	@Autowired
+	PayService payS;
 	
 	// 주문정보 전달받음
 	@RequestMapping(value ="/complete", method = RequestMethod.POST)
@@ -85,10 +94,10 @@ public class ProductController {
 		
 		// 결제정보 검증(주문정보와 금액 비교)
 		// 서비스에서 토큰 가져옴
-	    String token = PayService.getToken();
+	    String token = payS.getToken();
 //		    System.out.println("토큰가져옴: " + token);
 	    // 결제된 금액	// 서비스에서 imp_uid와 토큰으로 결제내역 가져옴
-	    String amount = PayService.paymentInfo(payDTO.getImpUid(), token);
+	    String amount = payS.paymentInfo(payDTO.getImpUid(), token);
 //		    System.out.println("금액가져옴: "+amount);
 	    int res = 1;
 	    // 주문정보 금액과 결제된 금액이 다를 경우 - 0
@@ -96,7 +105,7 @@ public class ProductController {
 	    	res = 0;
 //		    	System.out.println("검증실패");
 			// 결제 취소
-			PayService.paymentCancle(token, payDTO.getImpUid(), amount, "결제 금액 오류");
+			payS.paymentCancle(token, payDTO.getImpUid(), "결제 금액 오류");
 			return res;
 		}
 	    
@@ -135,6 +144,8 @@ public class ProductController {
 	        soloinfo.setSdate(sdate);
 	        // 회원 정보 변경
 	        sm.paysmember(soloinfo);
+	        // 세션 업데이트
+	        session.setAttribute("solosession", soloinfo);
         // 기업회원 세션이 존재할 경우
 	    }else if(session.getAttribute("cid")!=null) {
 			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
@@ -156,6 +167,7 @@ public class ProductController {
     		}
 	        compinfo.setCdate(cdate);
 	        mcm.paycmember(compinfo);
+	        session.setAttribute("companysession", compinfo);
 	    }
 //	    System.out.println("주문정보 저장시도: "+payDTO);
 	    // 주문정보를 db에 저장
@@ -169,10 +181,19 @@ public class ProductController {
 	
 	// 결제 금액 검증까지 성공했을 때 리다이렉트
 	@RequestMapping("/result/{impUid}")
-	String result(@PathVariable String impUid, Model mm) {
+	String result(@PathVariable String impUid, Model mm, HttpSession session) {
+		Date date;
+		if(session.getAttribute("sid")!=null) {
+			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+			date = solosession.getSdate();
+		}else {
+			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
+			date = companysession.getCdate();
+		}
 		// 결제시 부여된 impUid로 db내용 가져옴
 		PaymentDTO dto = paym.detail(impUid);
 		mm.addAttribute("dto", dto);
+		mm.addAttribute("date", date);
 		return "product/product_result";
 	}
 	

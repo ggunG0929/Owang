@@ -1,14 +1,16 @@
 package aaa.controll;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,13 +23,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.thymeleaf.util.StringUtils;
 
+import aaa.model.MCompanyDTO;
 import aaa.model.PaymentResponseAll;
 import aaa.model.PaymentResponseMember;
 import aaa.model.PaymentResponseAll.PaymentAll;
 import aaa.model.ProductDTO;
+import aaa.model.SoloDTO;
+import aaa.service.MCompanyMapper;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
 import aaa.service.ProductMapper;
+import aaa.service.SoloMapper;
 import jakarta.annotation.Resource;
 
 @Controller
@@ -131,6 +137,9 @@ public class AdminProductController {
 	}
 	
 	
+	@Autowired
+	PayService payS;
+	
 	// 전체 매출내역
 	@RequestMapping("/payment/{page}")
     public String getPayments(Model mm, 
@@ -140,21 +149,19 @@ public class AdminProductController {
             @RequestParam(value = "from", required = false) String from,
             @RequestParam(value = "to", required = false) String to,
             @RequestParam(value = "sorting", defaultValue = "-updated") String sorting
-    		) throws Exception {		
+            // unix변환과 getToken때문에
+    		) throws Exception {
 		// 날짜 변환
+    	String today = PayService.dateformat(new Date());
 		String range="";
 		if(!StringUtils.isEmpty(from) && !StringUtils.isEmpty(to)) {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		    Date fromDate = format.parse(from);
-		    Date toDate = format.parse(to);
-		    // Date 객체를 Unix 타임스탬프로 변환
-		    long fromunix = fromDate.getTime() / 1000;
-		    long tounix = toDate.getTime() / 1000;
-//			&from=1670449156&to=1671053156
+		    // Unix타임스탬프로 변환
+		    long fromunix = PayService.stringToUnix(from);
+		    long tounix = PayService.stringToUnix(to);
 		    range = "&from="+fromunix+"&to="+tounix;
 		}
 		// API 통신
-        String token = PayService.getToken(); // PayService를 통해 토큰을 가져옴
+        String token = payS.getToken(); // PayService를 통해 토큰을 가져옴
         // URL 생성
         String apiUrl = "https://api.iamport.kr/payments/status/"+status+"?page="
         		+page+"&limit="+limit+range+"&sorting="+sorting+"&_token=" + token;
@@ -162,73 +169,98 @@ public class AdminProductController {
         RestTemplate restTemplate = new RestTemplate();
         // PaymentResponse 형태로 정보받음
         ResponseEntity<PaymentResponseAll> responseEntity = restTemplate.getForEntity(apiUrl, PaymentResponseAll.class);
-        List<PaymentAll> paymentData = responseEntity.getBody().getResponse().getList();
- 
-        for (PaymentResponseAll.PaymentAll payment : paymentData) {       	
-        	// imp_uid로 db정보 검색해서 id 가져옴
-            String id = paym.idget(payment.getImp_uid());
-            payment.setId(id);
-            
-            // paid_at이 0인 경우 "미결제"로 표시
-            if (payment.getPaid_at().equals("0")) {
-                payment.setPaid_at("미결제");
-            } else {
-                // paid_at을 포맷팅
-                Long ldate = Long.parseLong(payment.getPaid_at());
-                Date date = new Date(ldate * 1000L);
-                payment.setPaid_at(PayService.timeformat(date));
-            }
-        }
-        int total = responseEntity.getBody().getResponse().getTotal();
-        int totalPages = (int)Math.ceil((double)total / limit);
+        System.out.println("응답코드 : "+responseEntity.getBody().getCode());
+        if (responseEntity.getBody().getResponse() == null) {
+            mm.addAttribute("errorMsg", responseEntity.getBody().getMessage());
+        }else {
+        	List<PaymentAll> paymentData = responseEntity.getBody().getResponse().getList();
+        	
+        	for (PaymentResponseAll.PaymentAll payment : paymentData) {       	
+        		// imp_uid로 db정보 검색해서 id 가져옴
+        		String id = paym.idget(payment.getImp_uid());
+        		payment.setId(id);
+        		
+        		// unixtimestamp정보들을 포맷팅
+        		payment.setPaid_at(PayService.unixformat(payment.getPaid_at()));
+        		payment.setStarted_at(PayService.unixformat(payment.getStarted_at()));
+        		payment.setFailed_at(PayService.unixformat(payment.getFailed_at()));
+        		payment.setCancelled_at(PayService.unixformat(payment.getCancelled_at()));
+        	}
+        	int total = responseEntity.getBody().getResponse().getTotal();
+        	int totalPages = (int)Math.ceil((double)total / limit);
 //        System.out.println(responseEntity);
-        mm.addAttribute("paymentData", paymentData);
-        mm.addAttribute("page", page);
-        mm.addAttribute("totalPages", totalPages);
-        mm.addAttribute("status", status);
-        mm.addAttribute("limit", limit);
-        mm.addAttribute("from", from);
-        mm.addAttribute("to", to);
-        mm.addAttribute("sorting", sorting);
-        return "admin/product/payment_admin"; 
+        	mm.addAttribute("paymentData", paymentData);
+        	mm.addAttribute("page", page);
+        	mm.addAttribute("totalPages", totalPages);
+        	mm.addAttribute("status", status);
+        	mm.addAttribute("limit", limit);
+        	mm.addAttribute("from", from);
+        	mm.addAttribute("to", to);
+        	mm.addAttribute("sorting", sorting);
+        	mm.addAttribute("today", today);
+        }
+        return "admin/product/payment_list"; 
     }
 	
+	// 매출내역상세
+	@RequestMapping("/payment/detail/{impuid}")
+	String paymentByImpuid(Model mm, @PathVariable String impuid) throws Exception {		
+		// impuid를 List에 추가
+		List<String> impuidList = new ArrayList<>();
+		impuidList.add(impuid);
+		List<PaymentResponseMember.Payment> paymentData = payS.getPaymentData(impuidList);
+        mm.addAttribute("paymentData", paymentData);
+		return "admin/product/payment_detail";
+	}
 	
-	@RequestMapping("/payment/member/{id}")
-	String paymentById(Model mm, @PathVariable String id) throws Exception {
-		// 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴
-		List<String> impuidList = paym.impuids(id);
-//		System.out.println("impuidList: "+impuidList);
-		
-		String token = PayService.getToken(); // PayService를 통해 토큰을 가져옴
-		// API에 대한 요청을 위한 URL 생성
-		String apiUrl = "https://api.iamport.kr/payments?"
-				// 스트림으로 변환
-				+ impuidList.stream()
-				// 하나씩 어떤 형태로 가져올지
-				.map(uid -> "imp_uid[]=" + uid)
-				// &로 이어줌
-				.collect(Collectors.joining("&"))
-				+ "&_token=" + token;
-		// rest템플릿
-		RestTemplate restTemplate = new RestTemplate();
-		// PaymentResponseMember 형태로 정보받음
-		ResponseEntity<PaymentResponseMember> responseEntity = restTemplate.getForEntity(apiUrl, PaymentResponseMember.class);
-		List<PaymentResponseMember.Payment> paymentData = responseEntity.getBody().getResponse();
-		for (PaymentResponseMember.Payment payment : paymentData) {
-			// paid_at을 포맷팅
-			Long ldate = Long.parseLong(payment.getPaid_at());
-			Date date = new Date(ldate * 1000L);
-			payment.setPaid_at(PayService.timeformat(date));
+	
+	@Resource
+	SoloMapper sm;
+	@Resource
+	MCompanyMapper mcm;
+	// 결제취소
+	@RequestMapping("/payment/cancle")
+	String paymentCancle(@RequestParam("impUid") String impUid,
+			@RequestParam("id") String id,
+			@RequestParam("name") String name) throws Exception {
+		// 유효기간 추출
+		int valid=0;
+		// 상품명에서 숫자추출
+		Pattern pattern = Pattern.compile("\\d+");
+		Matcher matcher = pattern.matcher(name);
+		if (matcher.find()) {
+			String num = matcher.group();
+			valid = Integer.parseInt(num);
 		}
-//        System.out.println("responseEntity: "+responseEntity);
-		Collections.sort(paymentData, new Comparator<PaymentResponseMember.Payment>() {
-		    public int compare(PaymentResponseMember.Payment a, PaymentResponseMember.Payment b) {
-		        // paid_at을 기준으로 내림차순 정렬
-		        return b.getPaid_at().compareTo(a.getPaid_at());
-		    }
-		});
-		mm.addAttribute("paymentData", paymentData);
-		return "product/payment";
+		// 상품명으로 기업회원인지 개인회원인지
+		if (name.contains("채용")) {
+			// 기업회원
+			// DTO 불러오기
+	    	MCompanyDTO compinfo = mcm.deatilaaaCompany(id);
+	    	// 유효기간 변경
+	    	Date cdate = compinfo.getCdate();
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(cdate);
+			calendar.add(Calendar.DATE, -valid);
+			cdate = calendar.getTime();
+	        compinfo.setCdate(cdate);
+	        // db 수정
+	        mcm.paycmember(compinfo);
+		} else {
+			// 개인회원
+			SoloDTO soloinfo = sm.detailSolo(id);
+			Date sdate = soloinfo.getSdate();
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(sdate);
+			calendar.add(Calendar.DATE, -valid);
+			sdate = calendar.getTime();
+	        soloinfo.setSdate(sdate);
+	        sm.paysmember(soloinfo);
+		}
+		// 취소진행
+		String token = payS.getToken();
+	    payS.paymentCancle(token, impUid, "취소사유: 관리자에 의한 취소");
+	    
+	    return "redirect:/admin_product/payment/detail/" + impUid;
 	}
 }

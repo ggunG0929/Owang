@@ -7,7 +7,6 @@
 <!--iamport.payment.js-->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <!-- 자바스크립트에 타임리프 적용 -->
-<!-- 빨간줄 생김... 아주 보기 싫다ㅠㅠ -->
 <script th:inline="javascript">
 	var IMP = window.IMP;
 	IMP.init('imp65726445');	// 회원당 하나씩 부여받은 아이디 넣기
@@ -27,7 +26,7 @@
 	var nowtime = hours + minutes + seconds + milliseconds;
 	
 	// 타임리프로 dto에서 가져오기
-	var code = [[${dto.productCode}]];
+	var code = /*[[${dto.productCode}]]*/ null;
 	
 	// 주문번호 = 시간 + 상품코드
 	var uidnum = nowdate + nowtime + code;
@@ -38,11 +37,11 @@
     	// 결제정보
 	    var options = {
 	        merchant_uid: uidnum,
-	        name: [[${dto.productName}]], // 상품명 입력값
-	        amount: [[${dto.productPrice}]], // 상품전체가격 입력값
-	        buyer_name: [[${name}]],
+	        name: /*[[${dto.productName}]]*/ null, // 상품명 입력값
+	        amount: /*[[${dto.productPrice}]]*/ null, // 상품전체가격 입력값
+	        buyer_name: /*[[${name}]]*/ null,
 	        buyer_email: "",
-	        buyer_tel: [[${tel}]]
+	        buyer_tel: /*[[${tel}]]*/ null
 	    };
 		// {===} : 자료형까지 동일한지 확인함
 		// pg사 선택 - 카카오페이, 이니시스
@@ -75,7 +74,7 @@
 		            // 주문번호
 		            merchantUid: callback.merchant_uid,
 		            // 상품아이디
-		            productId: [[${dto.productId}]],
+		            productId: /*[[${dto.productId}]]*/ null,
 		            // 상품명
 		            pname: callback.name,
 		            // 결제금액

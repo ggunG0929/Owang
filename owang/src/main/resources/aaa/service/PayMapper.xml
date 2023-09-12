@@ -28,7 +28,6 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	    SELECT imp_uid
 	    FROM payment
 	    WHERE sid = #{id} OR cid = #{id}
-	    ORDER BY DATE(paid_at) DESC
 	</select>
 	
 	<!-- 기간제한 -->
@@ -44,7 +43,6 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	        <include refid="dateRange"/>
 	    </if>
 	    GROUP BY DATE(paid_at)
-	    ORDER BY DATE(paid_at)
 	</select>
 	
 	<!-- 개인아이디별 결제 금액 합산 -->

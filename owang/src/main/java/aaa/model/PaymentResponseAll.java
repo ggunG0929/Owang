@@ -21,7 +21,7 @@ public class PaymentResponseAll {
 
     @Data
     public static class PaymentAll {
-    	// 아이디 - 받아온 정보에는 없지만 db를 통해 매칭해서 넣어줄 것
+    	// 아이디 - 받아온 정보에는 없지만 db를 통해 매칭해서 넣음
     	String id;
     	
     	// 아임포트 고유번호
@@ -77,14 +77,17 @@ public class PaymentResponseAll {
         // 결제상태
         private String status;
         // 결제시작 시간
-        private int started_at;
+//        private int started_at;
+        private String started_at;
         // 결제완료 시간
 //        private int paid_at;
         private String paid_at;
         // 결제실패 시간
-        private int failed_at;
+//        private int failed_at;
+        private String failed_at;
         // 결제취소 시간
-        private int cancelled_at;
+//        private int cancelled_at;
+        private String cancelled_at;
         // 실패이유
         private String fail_reason;
         // 취소이유

@@ -13,6 +13,8 @@ public class PaymentResponseMember {
 
     @Data
     public static class Payment {
+    	// 아이디 - 받아온 정보에는 없지만 db를 통해 매칭해서 넣음
+    	String id;
     	// 아임포트고유번호
         private String imp_uid;
         // 주문번호
@@ -44,8 +46,8 @@ public class PaymentResponseMember {
         private String vbank_name;
         private String vbank_num;
         private String vbank_holder;
-        private int vbank_date;
-        private int vbank_issued_at;
+        private String vbank_date;
+        private String vbank_issued_at;
         // 상품명
         private String name;
         // 상품가격
@@ -66,13 +68,13 @@ public class PaymentResponseMember {
         // 결제상태
         private String status;
         // 결제시작 시간
-        private int started_at;
+        private String started_at;
         // 결제완료 시간
         private String paid_at;
         // 결제실패 시간
-        private int failed_at;
+        private String failed_at;
         // 결제취소 시간
-        private int cancelled_at;
+        private String cancelled_at;
         // 실패이유
         private String fail_reason;
         // 취소이유
