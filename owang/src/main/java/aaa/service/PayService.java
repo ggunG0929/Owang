@@ -36,6 +36,7 @@ public class PayService {
 //	@Value("${iamport.impSecret}")
 	private String impSecret="SS3JF3Z4XOrf6uLjjtTqyIsiI0gH5owDz62Ebcaha64SS9JhQ1c3AdQtDb3fxTpS4EWa3EMIzGIV0Trc";
 
+	
 	// 토큰발급
 	public String getToken() throws Exception {
 		// 객체선언, 초기화
@@ -85,6 +86,7 @@ public class PayService {
 		return token;
 	}
 	
+	
     // 결제검증
 	public String paymentInfo(String imp_uid, String access_token) throws Exception {
 //		System.out.println("검증합니다. 검증할 거래의 imp_uid = " + imp_uid + ", access_token = " + access_token);
@@ -113,6 +115,7 @@ public class PayService {
 		return amount;
 	}
 
+	
 	// 결제취소
 	public void paymentCancle(String access_token, String imp_uid, String reason) throws Exception {
 //		System.out.println("취소합니다. 취소할 거래의 imp_uid = " + imp_uid);
@@ -181,19 +184,19 @@ public class PayService {
     }
 	
 	// Date형으로 받은 날짜 포맷팅 메서드
-    public static String dateformat(Date date) {
+    public String dateformat(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
     }
     
     // 날짜+시간 포맷팅 메서드
-    public static String timeformat(Date date) {
+    public String timeformat(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	return sdf.format(date);
     }
     
     // String형으로 받은 UNIXtimestamp를 String으로 포맷팅 메서드
-    public static String unixformat(String date) {
+    public String unixformat(String date) {
         if (!date.equals("0")) {
             Long dateInLong = Long.parseLong(date);
             Date unixToDate = new Date(dateInLong * 1000L);
@@ -203,7 +206,7 @@ public class PayService {
     }
 
     // 포맷팅된 형태(yyyy-MM-dd)의 String을 Unix타임스탬프로
-    public static Long stringToUnix(String date) throws java.text.ParseException {
+    public Long stringToUnix(String date) throws java.text.ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	    Date datedDate = sdf.parse(date);
 	    // Date 객체를 Unix타임스탬프로 변환

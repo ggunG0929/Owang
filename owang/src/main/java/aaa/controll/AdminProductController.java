@@ -67,6 +67,8 @@ public class AdminProductController {
     }
 
     
+	@Autowired
+	PayService payS;
     @Resource
     PayMapper paym;
 
@@ -79,17 +81,14 @@ public class AdminProductController {
 		// 그래프 데이타
 		// db에서 일매출 합산
         List<Map<String, Object>> dailytotal = paym.dailytotal(startDate, endDate);
-//        System.out.println("dailytotal = "+dailytotal);
 
         // 리스트 데이타
         // db에서 회원종류별 매출액 순위리스트
         List<Map<String, Object>> totalbys = paym.totalbys(startDate, endDate);
         List<Map<String, Object>> totalbyc = paym.totalbyc(startDate, endDate);
-//        System.out.println("totalbys = "+totalbys);
-//        System.out.println("totalbyc = "+totalbyc);
         // db에서 상품별 매출액 순위리스트
         List<Map<String, Object>> totalbyp = paym.totalbyp(startDate, endDate);
-//        System.out.println("totalbyp = "+totalbyp);
+        
         // 회원자료 중 sid나 cid가 없는 자료 제외하기
         totalbys = totalbys.stream()
         		.filter(map -> map.containsKey("sid"))
@@ -97,24 +96,24 @@ public class AdminProductController {
         totalbyc = totalbyc.stream()
                 .filter(map -> map.containsKey("cid"))
                 .collect(Collectors.toList());
+        
         // 기간내 값들 합산
         int totalSum = mapSum(dailytotal, "totalAmount");
         int sSum = mapSum(totalbys, "total");
         int cSum = mapSum(totalbyc, "total");
         int pSum = mapSum(totalbyp, "total");
-//    	System.out.println(totalSum);
-    	// 오늘날짜	// 날짜 선택시 오늘 이후 날짜는 선택 불가하도록
-    	String today = PayService.dateformat(new Date()); 
-//    	System.out.println(today);
+
+    	// 오늘날짜	// 날짜 선택시 오늘 이후 날짜는 선택 불가하도록 정보를 줘야함
+    	String today = payS.dateformat(new Date()); 
+
     	// 선택한 날짜 뜨도록 string으로 보내주기
     	String strStartDate = null;
     	String strEndDate = null;
     	if(startDate != null && endDate != null) {        	
-    		strStartDate = PayService.dateformat(startDate);
-    		strEndDate = PayService.dateformat(endDate);
+    		strStartDate = payS.dateformat(startDate);
+    		strEndDate = payS.dateformat(endDate);
     	}
-//    	System.out.println(startDate);
-//    	System.out.println(endDate);
+
         mm.addAttribute("graphData", dailytotal);
         mm.addAttribute("slist", totalbys);
         mm.addAttribute("clist", totalbyc);
@@ -136,10 +135,7 @@ public class AdminProductController {
 	            .sum();
 	}
 	
-	
-	@Autowired
-	PayService payS;
-	
+		
 	// 전체 매출내역
 	@RequestMapping("/payment/{page}")
     public String getPayments(Model mm, 
@@ -152,14 +148,15 @@ public class AdminProductController {
             // unix변환과 getToken때문에
     		) throws Exception {
 		// 날짜 변환
-    	String today = PayService.dateformat(new Date());
+    	String today = payS.dateformat(new Date());
 		String range="";
 		if(!StringUtils.isEmpty(from) && !StringUtils.isEmpty(to)) {
 		    // Unix타임스탬프로 변환
-		    long fromunix = PayService.stringToUnix(from);
-		    long tounix = PayService.stringToUnix(to);
+		    long fromunix = payS.stringToUnix(from);
+		    long tounix = payS.stringToUnix(to);
 		    range = "&from="+fromunix+"&to="+tounix;
 		}
+		
 		// API 통신
         String token = payS.getToken(); // PayService를 통해 토큰을 가져옴
         // URL 생성
@@ -169,8 +166,8 @@ public class AdminProductController {
         RestTemplate restTemplate = new RestTemplate();
         // PaymentResponse 형태로 정보받음
         ResponseEntity<PaymentResponseAll> responseEntity = restTemplate.getForEntity(apiUrl, PaymentResponseAll.class);
-        System.out.println("응답코드 : "+responseEntity.getBody().getCode());
-        if (responseEntity.getBody().getResponse() == null) {
+//        System.out.println("응답코드 : "+responseEntity.getBody().getCode());
+        if (responseEntity.getBody().getResponse() == null) {	// 여기까지 코드가 못오고 그냥 터짐...
             mm.addAttribute("errorMsg", responseEntity.getBody().getMessage());
         }else {
         	List<PaymentAll> paymentData = responseEntity.getBody().getResponse().getList();
@@ -181,14 +178,15 @@ public class AdminProductController {
         		payment.setId(id);
         		
         		// unixtimestamp정보들을 포맷팅
-        		payment.setPaid_at(PayService.unixformat(payment.getPaid_at()));
-        		payment.setStarted_at(PayService.unixformat(payment.getStarted_at()));
-        		payment.setFailed_at(PayService.unixformat(payment.getFailed_at()));
-        		payment.setCancelled_at(PayService.unixformat(payment.getCancelled_at()));
+        		payment.setPaid_at(payS.unixformat(payment.getPaid_at()));
+        		payment.setStarted_at(payS.unixformat(payment.getStarted_at()));
+        		payment.setFailed_at(payS.unixformat(payment.getFailed_at()));
+        		payment.setCancelled_at(payS.unixformat(payment.getCancelled_at()));
         	}
+        	// 페이지 처리를 위한 정보
         	int total = responseEntity.getBody().getResponse().getTotal();
         	int totalPages = (int)Math.ceil((double)total / limit);
-//        System.out.println(responseEntity);
+
         	mm.addAttribute("paymentData", paymentData);
         	mm.addAttribute("page", page);
         	mm.addAttribute("totalPages", totalPages);
@@ -224,7 +222,7 @@ public class AdminProductController {
 			@RequestParam("id") String id,
 			@RequestParam("name") String name) throws Exception {
 		// 유효기간 추출
-		int valid=0;
+		int valid = 0;
 		// 상품명에서 숫자추출
 		Pattern pattern = Pattern.compile("\\d+");
 		Matcher matcher = pattern.matcher(name);

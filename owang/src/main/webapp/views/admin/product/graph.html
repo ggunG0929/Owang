@@ -7,27 +7,103 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
 <body>
+<div>		
+	<button onclick="rangedays(365)">최근 365일</button>
 	<button onclick="rangedays(180)">최근 180일</button>
 	<button onclick="rangedays(30)">최근 30일</button>
 	<button onclick="rangedays(7)">최근 7일</button>
-<form action="">
-	<input type="date" name="startDate" th:value="${startDate}" th:max="${today}">
-	~
-	<input type="date" name="endDate" th:value="${endDate}" th:max="${today}">
-	<button type="submit">확인</button>
-</form>
-<th:block th:if="${startDate != null and endDate != null}">
-	<h3>검색기간: [[${startDate}]]부터 [[${endDate}]]까지</h3>
-</th:block>
+	<form action="">
+		<input type="date" name="startDate" th:value="${startDate}" th:max="${today}">
+		~
+		<input type="date" name="endDate" th:value="${endDate}" th:max="${today}">
+		<button type="submit">확인</button>
+	</form>
+	<th:block th:if="${startDate != null and endDate != null}">
+		<h3>검색기간: [[${startDate}]]부터 [[${endDate}]]까지</h3>
+	</th:block>
+</div>
 <h3>기간내 총매출: [[${totalSum}]]</h3>
-<button id="btnMonth">월간</button>
-<button id="btnWeek">주간</button>
-<button id="btnDay">일간</button>
 <div>
+	<button id="btnMonth">월간</button>
+	<button id="btnWeek">주간</button>
+	<button id="btnDay">일간</button>
     <canvas id="graphCanvas" width="500" height="300"></canvas>
 </div>
-<script th:inline="javascript">
+<h3>매출액 상위 회원</h3>
+<div>
+    <canvas id="pieChart" width="300" height="300"></canvas>
+</div>
+<div>
+	<table border="">
+	    <thead>
+	        <tr>
+	            <th colspan="2">개인회원</th>
+	            <th>[[${sSum}]]</th>
+	            <td>
+	                <!-- 퍼센트 값을 계산하여 출력 -->
+	                <span th:text="${(sSum * 100) / totalSum + '%'}"></span>
+	            </td>
+	        </tr>
+	    </thead>
+	    <tbody>
+			<tr th:each="item, index : ${slist}" th:if="${index.index < 5}">
+	            <td th:text="${index.index + 1}"></td>
+	            <td th:text="${item['sid']}"></td>
+	            <td th:text="${item['total']}"></td>
+	            <td>
+	                <span th:text="${((item['total'] * 100) / sSum) + '%'}"></span>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+</div>
+<div>
+	<table border="">
+	    <thead>
+	        <tr>
+	            <th colspan="2">기업회원</th>
+	            <th>[[${cSum}]]</th>
+	            <td>
+	                <span th:text="${(cSum * 100) / totalSum + '%'}"></span>
+	            </td>
+	        </tr>
+	    </thead>
+	    <tbody>
+			<tr th:each="item, index : ${clist}" th:if="${index.index < 5}">
+	            <td th:text="${index.index + 1}"></td>
+	            <td th:text="${item['cid']}"></td>
+	            <td th:text="${item['total']}"></td>
+	            <td>
+	                <span th:text="${((item['total'] * 100) / cSum) + '%'}"></span>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+</div>
+<h3>매출액 상위 상품</h3>
+<div>
+	<table border="">
+	    <thead>
+	        <tr>
+	            <th colspan="2">상품</th>
+	            <th>[[${pSum}]]</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr th:each="item, index : ${plist}" th:if="${index.index < 5}">
+	            <td th:text="${index.index + 1}"></td>
+	            <td th:text="${item['pname']}"></td>
+	            <td th:text="${item['total']}"></td>
+	            <td>
+	                <span th:text="${((item['total'] * 100) / pSum) + '%'}"></span>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+</div>
 	
+	
+<script th:inline="javascript">
     let inputSd = document.querySelector('input[name="startDate"]');
     let inputEd = document.querySelector('input[name="endDate"]');
 	// 최근 range 매출보기
@@ -51,14 +127,11 @@
 	
     // 그래프 데이터
     let graphDatas = /*[[${graphData}]]*/ null;
- //   console.log(graphDatas);
+//    console.log(graphDatas);
     let startDate = new Date(/*[[${startDate}]]*/);
     let endDate = new Date(/*[[${endDate}]]*/);
-    
-    
+        
 	function prepareGraphData(startDate, endDate, graphDatas) {		
-
-	    let allDates = getDates(startDate, endDate);
 	    // 시작 날짜와 끝 날짜 사이의 모든 날짜를 가져오는 함수
 	    function getDates(startDate, endDate) {
 	        let dates = [];
@@ -70,13 +143,14 @@
 	        }
 	        return dates;
 	    }
-	
+	    let allDates = getDates(startDate, endDate);
+	    
 	    // 데이터를 tempMap에 넣기(복사)
 	    let tempMap = new Map();
 	    graphDatas.forEach(item => {
 	        tempMap.set(item.date, item.totalAmount);
 	    });
-	
+	    
 	    // tempMap과 비교하여 누락된 날짜를 채우기
 	    allDates.forEach(date => {
 	        // 날짜를 iso문자열로 변환하고 T를 기준으로 나눠 yyyy-mm-dd 형식 날짜를 가져옴
@@ -88,7 +162,7 @@
 	            graphDatas.push({ date: isoDate, totalAmount: 0 });
 	        }
 	    });
-	
+	    
 	    // graphDatas의 정렬기준(a, b를 날짜로 변환해서 빼기: a가 크면 양수- 뒤로 감, a가 작으면 음수- 앞으로 감) - 날짜순
 	    graphDatas.sort((a, b) => new Date(a.date) - new Date(b.date));
 	
@@ -98,22 +172,19 @@
 	
 	// 1주씩 데이타 그룹화
 	function groupDataByWeek(gdata, startDate, endDate) {
-
 		// 특정일이 속해있는 주 중에 첫 날(일요일) 가져오기
 	    Date.prototype.getStartOfWeek = function() {
 			// 연 월 일 정보 가져와서 요일 정보 빼기 - 요일이 0(일요일)으로 됨
 	        let startOfWeek = new Date(this.getFullYear(), this.getMonth(), this.getDate() - this.getDay());
 	        return startOfWeek;
 	    }
-	
 	    let groupedData = [];
 	    let currentWeekStart = null;
 	    let weekTotal = 0;
-	
+	    
 	    gdata.forEach(item => {
 	        let itemDate = new Date(item.date);
 	        let startOfWeek = itemDate.getStartOfWeek();
-	
 	        if (currentWeekStart != null && (currentWeekStart.getTime() != startOfWeek.getTime())) {
 				// 현재 주의 첫날이 같으면 데이터를 묶고, 현재 주의 첫날이 달라지면 그 주의 데이터를 groupedData에 추가
 	            let formattedDate = (currentWeekStart.getMonth() + 1) + "월 "
@@ -125,15 +196,15 @@
 	        weekTotal += item.totalAmount;
 	        currentWeekStart = startOfWeek;
 	    });	
+		// 마지막 주의 데이터를 groupedData에 추가
 	    if (currentWeekStart !== null) {
-			// 마지막 주의 데이터를 groupedData에 추가
 	        let formattedDate = (currentWeekStart.getMonth() + 1) + "월 "
 	         + (Math.ceil(currentWeekStart.getDate() / 7) + 1) + "주차(" + currentWeekStart.getDate() + "일~"
 	          + endDate.getDate() + "일)";
 	        groupedData.push({ date: formattedDate, totalAmount: weekTotal });
 	    }
+		// 자료 첫 주의 라벨 수정
 	    if (groupedData.length > 0) {
-			// 자료 첫 주의 라벨 수정
 	        let firstData = groupedData[0];
 	        let currentWeekStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() - startDate.getDay());
 	        firstData.date = (currentWeekStart.getMonth() + 1) + "월 "
@@ -163,47 +234,45 @@
 	        monthTotal += item.totalAmount;
 	        currentMonth = itemMonth;
 	    });
+        // 마지막 월의 데이터를 groupedData에 추가
 	    if (currentMonth !== null) {
-	        // 마지막 월의 데이터를 groupedData에 추가
 	        let formattedDate = (currentMonth + 1) + "월( ~" + endDate.getDate() + "일)";
 	        groupedData.push({ date: formattedDate, totalAmount: monthTotal });
 	    }
-			// 첫 번째 주의 데이터를 수정
+		// 첫 번째 주의 데이터를 수정
 		if (groupedData.length > 0) {
 		    let firstData = groupedData[0];
 		    let currentMonth = startDate.getMonth();
 		    firstData.date = (currentMonth + 1) + "월(" + startDate.getDate() + "일~ )";
 		}
-	
 	    return groupedData;
 	}
 
 
 	let graphCanvas=null;
-	function drawGraph(graphDatas) {
-		
-	    // 이전 그래프 파괴
+	function drawGraph(graphDatas) {		
+	    // 이미 그려진 그래프가 있다면 이전 그래프 파괴
 	    if (graphCanvas) {
 	        graphCanvas.destroy();
 	    }
 	    
 		// 라벨(x축) = graphDatas의 date
-	    let labels = graphDatas.map(function(item) {
+	    let glabel = graphDatas.map(function(item) {
 	        return item.date;
 	    });
 		// 데이타(y축) = graphDatas의 totalAmount
-	    let data = graphDatas.map(function(item) {
+	    let gdata = graphDatas.map(function(item) {
 	        return item.totalAmount;
 	    });
 	
 	    let graphData = {
-	        labels: labels,
+	        labels: glabel,
 	        datasets: [{
 	            label: "매출",
-	            data: data,
+	            data: gdata,
 	            backgroundColor: 'yellow',
 	            borderColor: 'orange',
-	            borderWidth: 3
+	            borderWidth: 2
 	        }]
 	    };
 		// 캔버스에 그래프 그리기
@@ -220,7 +289,7 @@
 						// y축 시작값 0으로 설정
 	                    beginAtZero: true,
 	                    // 눈금의 최대값은 자료의 최대값과 최대값에 5000 더한 값 범위 안에서 설정
-	                    suggestedMax: Math.ceil(Math.max(...data) / 5000) * 5000,
+	                    suggestedMax: Math.ceil(Math.max(...gdata) / 5000) * 5000,
 	                    ticks: {
 							// 자료값이 0일 때 눈금선값의 소수점 자리수 설정
 	                        precision: -3
@@ -235,8 +304,7 @@
 	            },
 	        }
 	    });
-    }
-	
+
 
 	// 버튼 클릭 이벤트
 	document.getElementById('btnDay').addEventListener('click', function() {
@@ -272,61 +340,70 @@
 	};
 	checkDateRange(startDate, endDate);
 	
+	
+	// 매출액 상위 회원 비율 원 그래프 그리기
+	function drawPieChart(ssum, csum) {
+	    let total = ssum + csum;
+	    let spercent = (ssum / total) * 100;
+	    let cpercent = (csum / total) * 100;
+	    let pieCanvas = document.getElementById('pieChart').getContext('2d');
+	
+	    let pdata = {
+	        labels: ['기업', '개인'],
+	        datasets: [{
+	            label: '매출액 비율',
+	            data: [cpercent, spercent],
+	            backgroundColor: [
+	                'rgba(54, 162, 235, 0.2)',
+	                'rgba(255, 99, 132, 0.2)',
+	            ],
+	            borderColor: [
+	                'rgba(54, 162, 235, 1)',
+	                'rgba(255, 99, 132, 1)',
+	            ],
+	            borderWidth: 2
+	        }]
+	    };
+	
+	    let pieChart = new Chart(pieCanvas, {
+	        type: 'pie',	// 원형그래프
+	        data: pdata,
+	        options: {
+	            responsive: false,
+	            plugins: {
+	                legend: {
+	                    position: 'bottom',
+//	                    display: false,
+	                },
+	                title: {
+	                    display: true,
+	                    text: '매출액 상위 회원 비율'
+	                },
+	                tooltip: {
+	                    callbacks: {
+	                        label: function(context) {
+								// 라벨이 없으면 ''(공백)으로
+	                            let label = context.label || '';
+	                            let value = context.parsed;
+	                            // 소수점 둘째자리까지 표시
+	                            return `${label}: ${value.toFixed(2)}%`;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    });
+	}
+	let ssum = /*[[${sSum}]]*/ 0;
+	let csum = /*[[${cSum}]]*/ 0;
+	drawPieChart(ssum, csum);
+	
+	
+	
+	
+	
+	
+	
 </script>
-
-
-<h3>매출액 상위 회원</h3>
-    <div>
-		<table border="">
-		    <thead>
-		        <tr>
-		            <th colspan="2">개인회원</th>
-		            <th>[[${sSum}]]</th>
-		        </tr>
-		    </thead>
-		    <tbody>
-				<tr th:each="item, index : ${slist}" th:if="${index.index < 5}">
-		            <td th:text="${index.index + 1}"></td>
-		            <td th:text="${item['sid']}"></td>
-		            <td th:text="${item['total']}"></td>
-		        </tr>
-		    </tbody>
-		</table>
-	</div>
-    <div>
-		<table border="">
-		    <thead>
-		        <tr>
-		            <th colspan="2">기업회원</th>
-		            <th>[[${cSum}]]</th>
-		        </tr>
-		    </thead>
-		    <tbody>
-				<tr th:each="item, index : ${clist}" th:if="${index.index < 5}">
-		            <td th:text="${index.index + 1}"></td>
-		            <td th:text="${item['cid']}"></td>
-		            <td th:text="${item['total']}"></td>
-		        </tr>
-		    </tbody>
-		</table>
-	</div>
-<h3>매출액 상위 상품</h3>
-    <div>
-		<table border="">
-		    <thead>
-		        <tr>
-		            <th colspan="2">상품</th>
-		            <th>[[${pSum}]]</th>
-		        </tr>
-		    </thead>
-		    <tbody>
-		        <tr th:each="item, index : ${plist}" th:if="${index.index < 5}">
-		            <td th:text="${index.index + 1}"></td>
-		            <td th:text="${item['pname']}"></td>
-		            <td th:text="${item['total']}"></td>
-		        </tr>
-		    </tbody>
-		</table>
-	</div>
 </body>
 </html>

@@ -37,7 +37,7 @@ public class ProductController {
 	@RequestMapping("/notice")
 	String product_notice(Model mm, HttpSession session) {
 		boolean compchk = false;
-		if(session.getAttribute("cid")!=null) {
+		if(session.getAttribute("companysession")!=null) {
 			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
 			compchk = companysession.isCapproval();
 		}
@@ -54,7 +54,7 @@ public class ProductController {
 		// 세션으로 사용자정보 채워주기
 		String name, tel;
 		Date today = new Date();
-		if(session.getAttribute("sid")!=null) {
+		if(session.getAttribute("solosession")!=null) {
 			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 			name = solosession.getSname();
 			tel = solosession.getSphone();
@@ -117,7 +117,7 @@ public class ProductController {
 	    // 현재 날짜 구하기
 	    Date today = new Date();
 	    // 개인회원 세션이 존재할 경우
-	    if(session.getAttribute("sid")!=null) {
+	    if(session.getAttribute("solosession")!=null) {
 	    	SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 	    	// 세션 아이디를 주문정보에 담기
 	    	payDTO.setSid(solosession.getSid());
@@ -149,7 +149,7 @@ public class ProductController {
 	        // 세션 업데이트
 	        session.setAttribute("solosession", soloinfo);
         // 기업회원 세션이 존재할 경우
-	    }else if(session.getAttribute("cid")!=null) {
+	    }else if(session.getAttribute("companysession")!=null) {
 			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
 	    	payDTO.setCid(companysession.getCid());
 	    	MCompanyDTO compinfo = new MCompanyDTO();
@@ -185,7 +185,7 @@ public class ProductController {
 	@RequestMapping("/result/{impUid}")
 	String result(@PathVariable String impUid, Model mm, HttpSession session) throws Exception {
 		Date date;
-		if(session.getAttribute("sid")!=null) {
+		if(session.getAttribute("solosession")!=null) {
 			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 			date = solosession.getSdate();
 		}else {
