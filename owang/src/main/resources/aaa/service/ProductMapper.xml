@@ -16,8 +16,8 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 
 	<insert id="insert" parameterType="pDTO">
-		insert into product (product_name, product_client, product_code, product_valid, product_price) 
-		values (#{productName}, #{productClient}, #{productCode}, #{productValid}, #{productPrice})
+		insert into product (product_name, product_client, product_valid, product_price) 
+		values (#{productName}, #{productClient}, #{productValid}, #{productPrice})
 	</insert>
 	
 	<delete id="delete" parameterType="pDTO">

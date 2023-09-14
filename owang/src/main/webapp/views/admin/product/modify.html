@@ -4,18 +4,24 @@
 <meta charset="UTF-8">
 <title>상품 관리</title>
 </head>
-<script>
+<script th:inline="javascript">
 	document.addEventListener("DOMContentLoaded", function () {
 	    let addForm = document.getElementById("addForm");
 	    let del = document.querySelectorAll(".delbtn");
 	    // 상품추가폼 제출(submit)시
 	    addForm.addEventListener("submit", function (event) {
 	        event.preventDefault(); // 폼 기본동작 방지
-			// confirm 확인받고 상폼추가폼 제출
-	        if (confirm("정말로 상품을 추가하시겠습니까?")) {
-	            this.submit();
+	        let productPrice = productPriceInput.value;
+	        if (productPrice >= 1000) {
+	            // confirm 확인받고 상품추가폼 제출
+	            if (confirm("정말로 상품을 추가하시겠습니까?")) {
+	                this.submit();
+	            }
+	        } else {
+	            alert("1000이상을 입력하세요");
 	        }
 	    });
+
 	    // 상품 삭제 버튼 각각
 	    del.forEach(function (button) {
 			// 버튼 클릭시 이벤트
@@ -30,6 +36,33 @@
 	            }
 	        });
 	    });
+	    
+        let productClientSelect = document.querySelector("select[name='productClient']");
+        let productNameInput = document.querySelector("input[name='productName']");
+        let productValidInput = document.querySelector("input[name='productValid']");
+        let productPriceInput = document.querySelector("input[name='productPrice']");
+
+        productClientSelect.addEventListener("change", function () {
+            if (this.value === '개인') {
+                productNameInput.value = '[오왕]리뷰열람권 ';
+            } else if (this.value === '기업') {
+                productNameInput.value = '[오왕]채용공고권 ';
+            }
+        });
+
+		// 상품명
+		productValidInput.addEventListener("blur", function () {
+		    let validValue = this.value;
+		    let productName = productNameInput.value;
+		
+	        let upProductName;
+	        if (productName.length >= 11) {
+	            upProductName = productName.slice(0, 10) + validValue + '일권';
+	        } else {
+	            upProductName = productName + validValue + '일권';
+	        }
+	        productNameInput.value = upProductName;
+		});
 	});
 </script>
 <body>
@@ -39,7 +72,6 @@
 	<table border="">
 		<tr>
 			<td>대상</td>
-			<td>상품코드</td>
 			<td>유효일</td>
 			<td>상품명</td>
 			<td>금액</td>
@@ -47,7 +79,6 @@
 		</tr>
 		<tr th:each="dto : ${data}" align="center">
 			<td th:text="${dto.productClient}"></td>
-			<td th:text="${dto.productCode}"></td>
 			<td th:text="${dto.productValid}"></td>
 			<td th:text="${dto.productName}"></td>
 			<td th:text="${dto.productPrice}"></td>
@@ -55,12 +86,16 @@
 			<td><input type="button" value="삭제" class="delbtn" th:attr="id=${dto.productId}"></td>
 		</tr>
 		<tr>
-			<td><input type="text" th:field="*{productClient}"></td>
-			<td><input type="text" th:field="*{productCode}"></td>
-			<td><input type="text" th:field="*{productValid}"></td>
-			<td><input type="text" th:field="*{productName}"></td>
-			<td><input type="text" th:field="*{productPrice}"></td>
-			<td><input type="submit" value="추가"></td>
+            <td>
+                <select th:field="*{productClient}">
+                    <option value="개인" selected>개인</option>
+                    <option value="기업">기업</option>
+                </select>
+            </td>
+            <td><input type="number" th:field="*{productValid}" min="1"></td>
+            <td><input type="text" th:field="*{productName}" readonly></td>
+            <td><input type="text" th:field="*{productPrice}" pattern="[0-9]*" required></td>
+            <td><input type="submit" value="추가"></td>
 		</tr>
 	</table>
 </form>

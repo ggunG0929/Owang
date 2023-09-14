@@ -39,7 +39,7 @@
                   <th>[[${sSum}]]</th>
                   <td>
                       <!-- 퍼센트 값을 계산하여 출력 -->
-                      <span th:text="${(sSum * 100) / totalSum + '%'}"></span>
+                      <span th:if="${totalSum != 0}" th:text="${(sSum * 100) / totalSum + '%'}"></span>
                   </td>
               </tr>
           </thead>
@@ -49,7 +49,7 @@
                   <td th:text="${item['sid']}"></td>
                   <td th:text="${item['total']}"></td>
                   <td>
-                      <span th:text="${((item['total'] * 100) / sSum) + '%'}"></span>
+                      <span th:if="${sSum != 0}" th:text="${((item['total'] * 100) / sSum) + '%'}"></span>
                   </td>
               </tr>
           </tbody>
@@ -62,7 +62,7 @@
                   <th colspan="2">기업회원</th>
                   <th>[[${cSum}]]</th>
                   <td>
-                      <span th:text="${(cSum * 100) / totalSum + '%'}"></span>
+                      <span th:if="${totalSum != 0}" th:text="${(cSum * 100) / totalSum + '%'}"></span>
                   </td>
               </tr>
           </thead>
@@ -72,7 +72,7 @@
                   <td th:text="${item['cid']}"></td>
                   <td th:text="${item['total']}"></td>
                   <td>
-                      <span th:text="${((item['total'] * 100) / cSum) + '%'}"></span>
+                      <span th:if="${cSum != 0}" th:text="${((item['total'] * 100) / cSum) + '%'}"></span>
                   </td>
               </tr>
           </tbody>
@@ -93,7 +93,7 @@
                   <td th:text="${item['pname']}"></td>
                   <td th:text="${item['total']}"></td>
                   <td>
-                      <span th:text="${((item['total'] * 100) / pSum) + '%'}"></span>
+                      <span th:if="${pSum != 0}" th:text="${((item['total'] * 100) / pSum) + '%'}"></span>
                   </td>
               </tr>
           </tbody>

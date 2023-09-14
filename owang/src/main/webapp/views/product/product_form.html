@@ -31,11 +31,8 @@
 	var nowdate = year +  month + date;
 	var nowtime = hours + minutes + seconds + milliseconds;
 	
-	// 타임리프로 dto에서 가져오기
-	var code = /*[[${dto.productCode}]]*/ null;
-	
 	// 주문번호 = 시간 + 상품코드
-	var uidnum = nowdate + nowtime + code;
+	var uidnum = nowdate + nowtime;
 
 	// 결제요청(pg사, 결제수단)
     function requestPay(pg, pay_method) {
@@ -44,7 +41,7 @@
 	    var options = {
 	        merchant_uid: uidnum,
 	        name: /*[[${dto.productName}]]*/ null, // 상품명 입력값
-	        amount: /*[[${dto.productPrice}]]*/ null, // 상품전체가격 입력값
+	        amount: /*[[${dto.productPrice/1000}]]*/ null, // 상품전체가격 입력값(테스트이므로 /1000)
 	        buyer_name: /*[[${name}]]*/ null,
 	        buyer_email: /*[[${email}]]*/ "",
 	        buyer_tel: /*[[${tel}]]*/ null
@@ -81,8 +78,8 @@
 		            productId: /*[[${dto.productId}]]*/ null,
 		            // 상품명
 		            pname: callback.name,
-		            // 결제금액
-		            amount: callback.paid_amount,
+		            // 결제금액(테스트이므로 천원을 곱해줌)
+		            amount: callback.paid_amount * 1000,
 		            // 결제시간
 		            paidAt: new Date(callback.paid_at* 1000),
 		        };

@@ -184,7 +184,7 @@ public class SoloController {
 		      }
 		   }
 		
-		// 상품
+		// 상품 결제내역
 		@Resource
 		PayMapper paym;
 		@Autowired
@@ -195,18 +195,20 @@ public class SoloController {
 			// 세션에서 id 가져옴
 			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 			String sid = solosession.getSid();
-			
+			System.out.println(sid);
 			// sdate가 오늘 이후인 경우 - 유효상품이 있는 경우
-			Date sdate = solosession.getSdate();
 			Date today = new Date();
-	        if(sdate.after(today)) {
+			Date sdate = solosession.getSdate();
+	        if(sdate!=null && sdate.after(today)) {
 	        	mm.addAttribute("date", sdate);
 	        }
 			
 			// 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴
 			List<String> impuidList = paym.impuids(sid);
-			List<PaymentResponseMember.Payment> paymentData = payS.getPaymentData(impuidList);
-			mm.addAttribute("paymentData", paymentData);
+			if(!impuidList.isEmpty())  {				
+				List<PaymentResponseMember.Payment> paymentData = payS.getPaymentData(impuidList);
+				mm.addAttribute("paymentData", paymentData);
+			}
 			return "product/payment";
 		}
 }

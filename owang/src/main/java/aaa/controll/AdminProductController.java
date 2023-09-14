@@ -174,63 +174,58 @@ public class AdminProductController {
         RestTemplate restTemplate = new RestTemplate();
         // PaymentResponse 형태로 정보받음
         ResponseEntity<PaymentResponseAll> responseEntity = restTemplate.getForEntity(apiUrl, PaymentResponseAll.class);
-        System.out.println("응답코드 : "+responseEntity.getBody().getCode());
-        if (responseEntity.getBody().getResponse() == null) {
-            mm.addAttribute("errorMsg", responseEntity.getBody().getMessage());
-        }else {
-        	List<PaymentAll> paymentData = responseEntity.getBody().getResponse().getList();
+    	List<PaymentAll> paymentData = responseEntity.getBody().getResponse().getList();
+    	
+    	for (PaymentResponseAll.PaymentAll payment : paymentData) {       	
+    		// imp_uid로 db정보 검색해서 id 가져옴
+    		String id = paym.idget(payment.getImp_uid());
+    		payment.setId(id);
+    		
+    		// unixtimestamp정보들을 포맷팅
+    		payment.setPaid_at(payS.unixformat(payment.getPaid_at()));
+    		payment.setStarted_at(payS.unixformat(payment.getStarted_at()));
+    		payment.setFailed_at(payS.unixformat(payment.getFailed_at()));
+    		payment.setCancelled_at(payS.unixformat(payment.getCancelled_at()));
+    		
+    		// status를 수정
+    		Map<String, String> statusToKor = new HashMap<>();{
+    			statusToKor.put("paid", "완료");
+    			statusToKor.put("ready", "대기");
+    			statusToKor.put("cancelled", "취소");
+    			statusToKor.put("failed", "실패");
+    		}
+    		payment.setStatus(statusToKor.get(payment.getStatus()));
+    	}
         	
-        	for (PaymentResponseAll.PaymentAll payment : paymentData) {       	
-        		// imp_uid로 db정보 검색해서 id 가져옴
-        		String id = paym.idget(payment.getImp_uid());
-        		payment.setId(id);
-        		
-        		// unixtimestamp정보들을 포맷팅
-        		payment.setPaid_at(payS.unixformat(payment.getPaid_at()));
-        		payment.setStarted_at(payS.unixformat(payment.getStarted_at()));
-        		payment.setFailed_at(payS.unixformat(payment.getFailed_at()));
-        		payment.setCancelled_at(payS.unixformat(payment.getCancelled_at()));
-        		
-        		// status를 수정
-        		Map<String, String> statusToKor = new HashMap<>();{
-        			statusToKor.put("paid", "완료");
-        			statusToKor.put("ready", "대기");
-        			statusToKor.put("cancelled", "취소");
-        			statusToKor.put("failed", "실패");
-        		}
-        		payment.setStatus(statusToKor.get(payment.getStatus()));
-        	}
-        	
-        	// 페이지처리
-        	int total = responseEntity.getBody().getResponse().getTotal();
-        	int totalPages = (int)Math.ceil((double)total / limit);
+    	// 페이지처리
+    	int total = responseEntity.getBody().getResponse().getTotal();
+    	int totalPages = (int)Math.ceil((double)total / limit);
 //        System.out.println(responseEntity);
-        	// 앞뒤로 몇페이지씩 보일건지
-        	int ranged = 2;
-        	// 둘 중에 큰 숫자
-        	int startPage = Math.max(1, page - ranged);
-        	// 둘 중에 작은 숫자
-        	int endPage = Math.min(totalPages, page + ranged);
-        	// 이전버튼 눌렀을 때의 페이지
-        	int prevPage = Math.max(1, page - ranged -1);
-        	// 다음버튼 눌렀을 때의 페이지
-        	int nextPage = Math.min(totalPages, page + ranged +1);
-        	
-        	mm.addAttribute("page", page);
-        	mm.addAttribute("paymentData", paymentData);
-        	mm.addAttribute("status", status);
-        	mm.addAttribute("limit", limit);
-        	mm.addAttribute("from", from);
-        	mm.addAttribute("to", to);
-        	mm.addAttribute("sorting", sorting);
-        	mm.addAttribute("today", today);
-        	
-        	mm.addAttribute("startPage", startPage);
-        	mm.addAttribute("endPage", endPage);
-        	mm.addAttribute("prevPage", prevPage);
-        	mm.addAttribute("nextPage", nextPage);
-        	mm.addAttribute("totalPages", totalPages);
-        }
+    	// 앞뒤로 몇페이지씩 보일건지
+    	int ranged = 2;
+    	// 둘 중에 큰 숫자
+    	int startPage = Math.max(1, page - ranged);
+    	// 둘 중에 작은 숫자
+    	int endPage = Math.min(totalPages, page + ranged);
+    	// 이전버튼 눌렀을 때의 페이지
+    	int prevPage = Math.max(1, page - ranged -1);
+    	// 다음버튼 눌렀을 때의 페이지
+    	int nextPage = Math.min(totalPages, page + ranged +1);
+    	
+    	mm.addAttribute("page", page);
+    	mm.addAttribute("paymentData", paymentData);
+    	mm.addAttribute("status", status);
+    	mm.addAttribute("limit", limit);
+    	mm.addAttribute("from", from);
+    	mm.addAttribute("to", to);
+    	mm.addAttribute("sorting", sorting);
+    	mm.addAttribute("today", today);
+    	
+    	mm.addAttribute("startPage", startPage);
+    	mm.addAttribute("endPage", endPage);
+    	mm.addAttribute("prevPage", prevPage);
+    	mm.addAttribute("nextPage", nextPage);
+    	mm.addAttribute("totalPages", totalPages);
         return "admin/product/payment_list"; 
     }
 	

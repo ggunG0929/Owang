@@ -111,8 +111,8 @@ public class ProductController {
        String amount = payS.paymentInfo(payDTO.getImpUid(), token);
 //          System.out.println("금액가져옴: "+amount);
        int res = 1;
-       // 주문정보 금액과 결제된 금액이 다를 경우 - 0
-       if (payDTO.getAmount() != Integer.parseInt(amount)) {
+       // 주문정보 금액과 결제된 금액(테스트이므로/1000)이 다를 경우 - 0
+       if (payDTO.getAmount()/1000 != Integer.parseInt(amount)) {
           res = 0;
 //             System.out.println("검증실패");
          // 결제 취소
