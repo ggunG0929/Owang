@@ -82,4 +82,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		values (#{sid}, #{cid}, #{impUid}, #{productId}, #{pname}, #{amount}, #{paidAt})
 	</insert>
 	
+	<update id="payCancel">
+		update payment set 
+		amount = 0
+		where imp_uid = #{impUid}
+	</update>
+	
 </mapper>

@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>ask/수정</title>
+
+<script>
+	function fileDelete(){
+		frm.action = "/ask/fileDelete"
+		frm.submit()
+	}
+	
+</script>
+
+
 </head>
 <body>
 
@@ -22,17 +32,16 @@
 			<td>작성자</td>
 			<td><input type="text" th:field="*{pname}"/></td>
 		</tr>
-		<!--<tr>
+		<tr>
 			<td>파일</td>
 			<td>
-				<th:block th:if="${dto.upfile != null}">
-					
+				<th:block th:if="${dto.upfile != null}">	
 				<input type="text" th:field="*{upfile}" readonly/>
 				<input  type="button" onclick="fileDelete()" value="파일삭제"/>
 				</th:block>
 				<input th:if="${dto.upfile == null}" type="file" th:field="*{mmff}"/>
 			</td>
-		</tr>-->
+		</tr>
 		<tr>
 			<td>내용</td>
 			<td><textarea th:field="*{content}" /></td>

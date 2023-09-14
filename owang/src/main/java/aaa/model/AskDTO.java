@@ -2,7 +2,6 @@ package aaa.model;
 
 import java.util.Date;
 import java.util.regex.Pattern;
-
 import org.apache.ibatis.type.Alias;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +14,8 @@ public class AskDTO {
 	//lev : 답글의 계층
 	//gid : 답글 그룹에 속하는 답글들을 식별하는 데 사용
 	
+	//파일첨부
+	MultipartFile mmff;
 	
 
 	int id, cnt, seq, lev, gid, start, limit = 10,pageLimit=5, page, pageStart, pageEnd, pageTotal;
@@ -56,4 +57,26 @@ public class AskDTO {
 		this.pw = pw;
 		this.content = content;
 	}
+	
+	//파일
+	public String getUpfile() {
+		if(upfile == null || upfile.trim().equals("") ||  upfile.trim().equals("null") ) {
+			upfile = null;
+		}
+		return upfile;
+	}
+	
+	
+	public boolean isImg() {
+		if(getUpfile()==null) {
+			return false;
+		}
+		return Pattern.matches(".{1,}[.](bmp|png|gif|jpg|jpeg)", upfile.toLowerCase());
+	}
+	
+	
+	
+	
+	
+	
 }

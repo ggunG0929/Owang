@@ -48,8 +48,9 @@
     function showLanguage() {
         event.preventDefault();
         document.getElementById("language").style.display = "block";
-        document.getElementById("hidelg").style.display = "none";
+        document.getElementById("hidelg").style.display = "block";
         document.getElementById("showlg").style.display = "none";
+
     }
 
     function hideLanguage() {
@@ -80,20 +81,27 @@
         });
     });
 
-    // 근무 기간 입력란을 Datepicker로 변환
+// 근무 기간 달력
 $(function() {
-    $("#resumeWorkStart").datepicker({
+    $("#rsworkstart").datepicker({
         dateFormat: 'yy-mm-dd',  // 날짜 형식 (예: 2023-09-15)
         changeMonth: true,
         changeYear: true,
         yearRange: '1950:2030'   // 선택 가능한 연도 범위
     });
 
-    $("#resumeWorkEnd").datepicker({
+    $("#rsworkend").datepicker({
         dateFormat: 'yy-mm-dd',  // 날짜 형식 (예: 2023-09-15)
         changeMonth: true,
         changeYear: true,
         yearRange: '1950:2030'   // 선택 가능한 연도 범위
+    });
+    
+    $("#rslicenseyear").datepicker({
+	    dateFormat: 'yy-mm-dd',  // 날짜 형식 (예: 2023-09-15)
+	    changeMonth: true,
+	    changeYear: true,
+	    yearRange: '1950:2030'   // 선택 가능한 연도 범위
     });
 });
 
@@ -108,15 +116,16 @@ $(function() {
             <div id="careerDetails-${careerCount}" style="display: none;">
                 <div>
                     <p>회사명</p>
-                    <p><input type="text" id="resumeCompany-${careerCount}" name="resumeCompany" th:field="*{resumeCompany}" /></p>
+                    <p><input type="text" id="rscompany-${careerCount}" name="rscompany" th:field="*{rscompany}" /></p>
                 </div>
                 <div>
                     <p>근무 기간</p>
-                    <p><input type="text" id="resumeWorkDay-${careerCount}" name="resumeWorkDay" th:field="*{resumeWorkDay}" /></p>
+                    <p><input type="text" id="rsworkstart-${careerCount}" name="rsworkstart" th:field="*{rsworkstart}" /></p>
+                    <p><input type="text" id="rsworkend-${careerCount}" name="rsworkend" th:field="*{rsworkend}" /></p>
                 </div>
                 <div>
                     <p>담당 업무</p>
-                    <p><textarea id="resumeWork-${careerCount}" name="resumeWork" th:field="*{resumeWork}" rows="4" cols="50"></textarea></p>
+                    <p><textarea id="resumeWork-${careerCount}" name="rswork" th:field="*{rswork}" rows="4" cols="50"></textarea></p>
                 </div>
             </div>
         `;
@@ -179,7 +188,7 @@ $("#file").on('change',function(){
 		<div>
 			<div style="border: 1px solid #ccc; width:700px;">
 			    <h3>기본정보</h3>
-			    <table style="width:450px;">
+			    <table style="width:500px;">
 					<input type="hidden" th:value="${solosession.sid}" name="sid" />
 			        <tr>
 			            <td th:text="${solosession.sname}"></td>
@@ -207,7 +216,7 @@ $("#file").on('change',function(){
             <!-- 이력서 제목 -->
             <div style="border: 1px solid #ccc; width:700px;">
                 <p>이력서 제목</p>
-                <p><input type="text" th:field="*{rstitle}" /></p>
+                <p><input type="text" th:field="*{rstitle}" required /></p>
             </div>
 
             <!-- 경력 사항 -->
@@ -215,7 +224,7 @@ $("#file").on('change',function(){
                 <p>경력</p>
                 <p>
                     <label for="resumeCareerNew">
-                        <input type="radio" name="rscareer" id="resumeCareerNew" value="신입" th:field="*{rscareer}" />
+                        <input type="radio" name="rscareer" id="resumeCareerNew" value="신입" th:field="*{rscareer}" required />
                         신입
                     </label>
                     <label for="resumeCareerExperienced">
@@ -235,8 +244,8 @@ $("#file").on('change',function(){
 	                <tr>
 	                    <td>근무 기간</td>
 	                    <td>
-							<input type="text" id="rsworkstart" th:field="*{rsworkstart}"onchange="printCareer()" />
-	                    	<input type="text" id="rsworkend" th:field="*{rsworkend}" onchange="printCareer()" />
+							<input type="date" id="rsworkstart" th:field="*{rsworkstart}"onchange="printCareer()" />
+	                    	<input type="date" id="rsworkend" th:field="*{rsworkend}" onchange="printCareer()" />
 	                    </td>
 	                </tr>
 	                <tr>
@@ -244,24 +253,8 @@ $("#file").on('change',function(){
 	                    <td><textarea id="rswork" th:field="*{rswork}" rows="4" cols="50" onchange="printCareer()" /></td>
 	                </tr>
 	            </table>
-	            <!-- 경력 입력 값 출력 -->
-	            <table>
-					<tr>
-	                    <td>회사명</td>
-	                    <td id='company' />
-                    </tr>
-	                <tr>
-	                    <td>근무 기간</td>
-	                    <td id='workstart' />
-	                    <td id='workend' />
-	                </tr>
-	                <tr>
-	                    <td>담당 업무</td>
-	                    <td id='work' />
-	                </tr>
-	            </table>
             </div>
-            <div id="careerDetailsOutput" style="display: none;">
+            <div id="careerDetailsOutput" style="display: none; ">
 			    <h3>경력 정보</h3>
 			    <p><strong>회사명:</strong> <span th:text="${soloResumeDTO.rscompany}"></span></p>
 			    <p><strong>근무 기간:</strong> <span th:text="${soloResumeDTO.rsworkstart}" /><span th:text="${soloResumeDTO.rsworkend}" /></p>
@@ -271,8 +264,8 @@ $("#file").on('change',function(){
 			<div style="border: 1px solid #ccc; width: 700px;">
 			    <p>최종 학력</p>
 			    <p>
-				<select th:field="*{rsacademic}">
-				    <option value="" disabled selected>학교 유형 선택</option>
+				<select th:field="*{rsacademic}" required>
+				    <option value="">학교 유형 선택</option>
 				    <option value="대학원">대학원</option>
 				    <option value="대학(4년)">대학(4년)</option>
 				    <option value="대학(2, 3년)">대학(2, 3년)</option>
@@ -281,8 +274,8 @@ $("#file").on('change',function(){
 				    <option value="초등학교">초등학교</option>
 				</select>
 
-				<select th:field="*{rsacademicstat}">
-				    <option value="" disabled selected>학력 상태</option>
+				<select th:field="*{rsacademicstat}" required>
+				    <option value="">학력 상태</option>
 				    <option value="졸업">졸업</option>
 				    <option value="재학중">재학중</option>
 				    <option value="휴학중">휴학중</option>
@@ -308,13 +301,14 @@ $("#file").on('change',function(){
                 </p>
                 <table id="license">
                     <tr>
-                        <td>자격증 명</td>
+                        <td>자격증명</td>
                         <td><input type="text" th:field="*{rslicense}" /></td>
                     </tr>
                     <tr>
-                        <td>발행처</td>
+                        <td>발행기관</td>
                         <td><input type="text" th:field="*{rslicenseorg}" placeholder="발행기관" /></td>
-                        <td><input type="text" th:field="*{rslicenseyear}" placeholder="발행년도" /></td>
+                        <td>발행년도</td>
+                        <td><input type="date" id="rslicenseyear" th:field="*{rslicenseyear}" placeholder="발행년도" onchange="printCareer()" /></td>
                     </tr>
                 </table>
                 <button onclick="hideLicense()" class="btn_hide" id="hideli">-</button>
@@ -325,12 +319,12 @@ $("#file").on('change',function(){
                 <p>
                 	<button onclick="showLanguage()" class="btn_show" id="showlg">+</button>어학 능력
 				</p>
-				<table id="language">
+				<table id="language" style="display:none;">
 					<tr>
 						<td>어학명</td>
 						<td>
 							<select th:field="*{rslanguage}">
-						        <option value="" disabled selected>어학명</option>
+						        <option value="">어학명</option>
 							    <option value="그리스어">그리스어</option>
 							    <option value="네덜란드어">네덜란드어</option>
 							    <option value="노르웨이어">노르웨이어</option>
@@ -359,7 +353,7 @@ $("#file").on('change',function(){
 						<td>어학수준</td>
 						<td>
    							<select th:field="*{rslanguagelevel}">
-						        <option value="" disabled selected>어학수준</option>
+						        <option value="">어학수준</option>
 							    <option value="회화 능숙">회화 능숙</option>
 							    <option value="일상 대화">일상 대화</option>
 							    <option value="간단 대화">간단 대화</option>
@@ -367,7 +361,7 @@ $("#file").on('change',function(){
 						</td>
 					</tr>
                 </table>
-                <button onclick="hideLanguage()" class="btn_hide" id="hidelg">-</button>
+                <button onclick="hideLanguage()" class="btn_hide" id="hidelg" style="display:none;">-</button>
             </div>
             
             <div>

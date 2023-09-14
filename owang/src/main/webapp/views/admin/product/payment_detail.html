@@ -45,7 +45,7 @@ function confirmCancellation() {
 				<th:block th:unless="${paymentData[0].paid_at == '0'}">
 				<td colspan="2" th:text="${paymentData[0].paid_at}"></td>
 				</th:block>
-				<td><a th:href="${paymentData[0].receipt_url}">매출전표</a></td>
+				<td><a th:href="${paymentData[0].receipt_url}" target="_blank">매출전표</a></td>
             </tr>
             <tr>
 				<th>결제상태</th>

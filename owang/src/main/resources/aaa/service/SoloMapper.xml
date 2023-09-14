@@ -8,8 +8,8 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 
 <insert id="insertSolo" parameterType="soloDTO">
-    INSERT INTO solo (sid, spw, sname, sbirth, sage, sgender, sphone, semail, saddress, scompanyName, scompanyFile, stype, sbcnt)
-    VALUES (#{sid}, #{spw}, #{sname}, #{sbirth}, #{sage}, #{sgender}, #{sphone}, #{semail}, #{saddress}, #{scompanyName}, #{scompanyFile}, #{stype}, 0)
+    INSERT INTO solo (sid, cid, spw, sname, sbirth, sage, sgender, sphone, semail, saddress, scompanyName, scompanyFile, stype, sbcnt)
+    VALUES (#{sid}, #{cid} ,#{spw}, #{sname}, #{sbirth}, #{sage}, #{sgender}, #{sphone}, #{semail}, #{saddress}, #{scompanyName}, #{scompanyFile}, #{stype}, 0)
 </insert>
 	
 	
@@ -42,4 +42,21 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	stype = #{stype}, sdate = #{sdate}
 	where sid = #{sid}
 </update>
+
+<update id="loginsmember" parameterType="soloDTO">
+   update solo 
+   set stype = #{stype} , sdate = null
+   where sid = #{sid}
+</update>
+<update id="fileDelete" parameterType="soloDTO">
+	update solo set
+	scompanyFile = null
+	where sid = #{sid} and spw=#{spw}
+</update>
+<select id="findloSolo" resultType="Integer">
+    select count(*) from solo where sname = #{fname} and semail = #{femail}
+</select>
+<select id="findid" resultType="soloDTO">
+    select sid from solo where sname = #{fname} and semail = #{femail}
+</select>
 </mapper>

@@ -7,7 +7,8 @@
     <title>ask/답글 작성</title>
 </head>
 <body>
-    <h1>1:1 문의 답글 작성++</h1>
+    <h1>ask/reply</h1>
+    <h1> 관리자-답변작성 </h1>
 
     <form method="post" th:action="|/ask/reply/${askdto.page}/${askdto.id}|" th:object="${askdto}">
         <!-- 페이지 번호와 부모 글의 ID를 전달 -->
@@ -22,13 +23,22 @@
             <tr>
                 <td>작성자 *</td>
                 <td><input type="text" name="pname" th:value="${askdto.pname}"  /></td>
+                <!--<td><input type="text" value="관리자" readonly /></td>-->
             </tr>
-            <tr>
+            <!-- 관리자만 답변을 달기에 암호는 없앴습니다...-->
+            <!--<tr>
                 <td>암호 *</td>
                 <td><input type="text" name="pw" th:field="*{pw}" />
 
-                </td>
+                </td>-->
             </tr>
+            
+            <!--<tr>
+				<td>사진첨부</td>
+				<td><input type="file" th:field="*{mmff}"/></td>
+			</tr>-->
+            
+            
             <tr>
                 <td>답글 내용 *</td>
                 <td><textarea name="content" th:field="*{content}"
@@ -37,9 +47,9 @@
             <tr>
                 <td colspan="2" align="center">
                     <input type="submit" value="답글 작성" />
-                    <a th:href="@{|/ask/detail/${askdto.page}/${askdto.id}|}">돌아가기</a>
-                    <a th:href="@{|/ask/detail/${askdto.page}/${askdto.id}|}">돌아가기2</a>
-                    <a th:href="@{|/ask/detail/${page}/${id}|}">돌아가기</a>
+                    <a th:href="@{|/ask/detail/${askdto.page}/${askdto.id}|}">←돌아가기</a>
+                    <!--<a th:href="@{|/ask/detail/${askdto.page}/${askdto.id}|}">돌아가기2</a>
+                    <a th:href="@{|/ask/detail/${page}/${id}|}">돌아가기</a>-->
                 </td>
             </tr>
         </table>

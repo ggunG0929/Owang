@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1> 리뷰 수정 페이지 </h1>
+[[${mainData}]]
+
+<form action="" method="post"  th:object="${mainData}">
+
+	<table border="">
+		<tr>
+			<td>작성자</td>
+			<td><input type="text" th:field="*{sid}" readonly/></td>
+		</tr>
+		<tr>
+			<td>기업이름</td>
+			<td><input type="text" th:field="*{cid}"  readonly/></td>
+		</tr>
+		<tr>
+			<td>리뷰제목</td>
+			<td><input type="text" th:field="*{rvtitle}" /> </td>
+		</tr>
+		<tr>
+			<td>기업 장점</td>
+			<td><textarea type="text" rows="10" cols="30" th:field="*{rvjang}"   required></textarea></td>
+		</tr>
+		<tr>
+			<td>기업 단점</td>
+			<td><textarea type="text"  rows="10" cols="30"   th:field="*{rvdan}" required/></td>
+		</tr>
+		<tr align="center">
+			<td ><input type="submit" value="전송" /> </td>
+			<td>
+				<a th:href="|/review/list/${reviewDTO.cid}/${reviewDTO.page}|">뒤로가기</a>
+			</td>
+		</tr>
+		
+	</table>
+</form>
+
+</body>
+</html>

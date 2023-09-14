@@ -36,7 +36,6 @@ public class PayService {
 //	@Value("${iamport.impSecret}")
 	private String impSecret="SS3JF3Z4XOrf6uLjjtTqyIsiI0gH5owDz62Ebcaha64SS9JhQ1c3AdQtDb3fxTpS4EWa3EMIzGIV0Trc";
 
-	
 	// 토큰발급
 	public String getToken() throws Exception {
 		// 객체선언, 초기화
@@ -114,10 +113,10 @@ public class PayService {
 		// br과 conn을 닫아 주었더니 자바스크립트문 해석을 못해서 db저장과 리다이렉트가 발생하지 않음
 		return amount;
 	}
-
+	
 	
 	// 결제취소
-	public void paymentCancle(String access_token, String imp_uid, String reason) throws Exception {
+	public void paymentCancel(String access_token, String imp_uid, String reason) throws Exception {
 //		System.out.println("취소합니다. 취소할 거래의 imp_uid = " + imp_uid);
 		HttpsURLConnection conn = null;
 		// 결제취소
@@ -147,10 +146,10 @@ public class PayService {
 		conn.disconnect();
 	}
 	
+	
 	@Autowired
 	PayMapper paym;
-	
-	// imp_uid로 결제정보 가져오기
+	// imp_uid 리스트로 결제정보 가져오기
     public List<PaymentResponseMember.Payment> getPaymentData(List<String> impuidList) throws Exception {
         String token = getToken();
         String apiUrl = "https://api.iamport.kr/payments?" +
@@ -162,7 +161,7 @@ public class PayService {
         ResponseEntity<PaymentResponseMember> responseEntity = restTemplate.getForEntity(apiUrl, PaymentResponseMember.class);
         List<PaymentResponseMember.Payment> paymentData = responseEntity.getBody().getResponse();
  
-        // id검색하고 시간데이터포맷팅해서 세팅
+        // id 검색하고 시간데이터포맷팅해서 세팅
         for (PaymentResponseMember.Payment payment : paymentData) {
             String id = paym.idget(payment.getImp_uid());
             payment.setId(id);
@@ -183,6 +182,8 @@ public class PayService {
         return paymentData;
     }
 	
+    
+    
 	// Date형으로 받은 날짜 포맷팅 메서드
     public String dateformat(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

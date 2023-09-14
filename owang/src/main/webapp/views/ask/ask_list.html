@@ -7,13 +7,21 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/notice/css.css}">
 </head>
 <style>
-h4{text-align: center;}	
+h4,table{text-align: center;}	
+table{justify-content: center;}
 </style>
 
 <body>
 
-	<h4>ask / list</h4>
-	<h4>이곳은 질문 리스트입니다. </h4>
+	<header>
+       <div th:include="header :: header"></div>
+    </header>
+    
+	<h3>ask / list</h3>
+	<h3>이곳은 질문 리스트입니다. </h3>
+	<h4>질문답변은 개인정보관계로 본인글만 확인 가능합니다.</br>
+		감사합니다.
+	</h4>
 	<hr>
 	<table border="">
 				<tr>
@@ -27,12 +35,18 @@ h4{text-align: center;}
                 <tr th:each="askdto, dtoStat : ${mainData}">
 					<td th:text="${dtoStat.count + askDTO.start}"/>
 					<td>
-						<span th:utext="${'&nbsp;&nbsp;' * askdto.lev}"></span>
-						<span th:if="${askdto.lev > 0}">└</span>
+						<!--공백이두번-->
+						<!--<span th:utext="${'&nbsp;&nbsp;' * askdto.lev}"></span>-->
+						<!--공백 한번으로 줄임-->
+						<span th:utext="${'&nbsp;' * askdto.lev}"></span>
+						<span th:if="${askdto.lev > 0}">[RE]</span>
 						<a th:href="|/ask/detail/${askDTO.page}/${askdto.id}|" th:text="${askdto.title}"></a>
 					</td>
 					<td th:text="${askdto.pname}"/>
-					<td th:text="${askdto.regDate}"/>
+					<!--<td th:text="${askdto.regDate}"/>-->
+					<!--날짜 예쁘게 수정-->
+					<td th:text="${#dates.format(askdto.regDate, 'yyyy-MM-dd')}"></td>
+
 					<td th:text="${askdto.cnt}"/>
 				</tr>
 				<tr>
@@ -48,11 +62,15 @@ h4{text-align: center;}
 				<a th:if="${askDTO.pageEnd < askDTO.pageTotal}" th:href="${askDTO.pageEnd + 1}" th:text="'[다음]'"/>
 					</td>
 				</tr>
-				<tr>
-					<td colspan="5" align="right">
-						<a th:href="|/ask/insert/${askDTO.page}|">글쓰기</a>
-					</td>
-				</tr>
+				<!--기업로그인 > 글쓰기-->
+				<td colspan="5" align="right">
+   					 <a th:href="|/ask/insert/${askDTO.page}|" th:if="${session['cid']}">글쓰기</a>
+				</td>
+				
+				<!-- 개인로그인 > 글쓰기 -->
+				<td colspan="5" align="right">
+   					 <a th:href="|/ask/insert/${askDTO.page}|" th:if="${session['solosession']}">글쓰기</a>
+				</td>
 	</table>
 </body>
 </html>

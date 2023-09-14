@@ -46,7 +46,8 @@ h4{text-align: center;}
 						<a th:href="|/notice/detail/${noticeDTO.page}/${ndto.id}|" th:text="${ndto.title}"></a>
 					</td>
 					<td th:text="${ndto.pname}"/>
-					<td th:text="${ndto.regDate}"/>
+					<!--날짜 포맷팅-->
+					<td th:text="${#dates.format(ndto.regDate, 'yyyy-MM-dd')}"/>
 					<td th:text="${ndto.cnt}"/>
 				</tr>
 				<tr>
@@ -64,8 +65,8 @@ h4{text-align: center;}
 				</tr>
 				<tr>
 					<td colspan="5" align="right">
-						<!--현재 기업일때 되도록-->
-						<a th:href="|/notice/insert/${noticeDTO.page}|" th:if="${session['cid']}">글쓰기</a>
+						<!--관리자일때만 공지사항 작성 가능-->
+						<a th:href="|/notice/insert/${noticeDTO.page}|"th:if="${session.adminSession}">글쓰기</a>
 					</td>
 				</tr>
             </div>

@@ -29,8 +29,8 @@ public interface SoloResumeMapper {
 	int resumedelete(int rsid);
 	
 	// 이력서 수정
-	int resumemodify(SoloResumeDTO rdto, String sid);
+	int resumemodify(SoloResumeDTO rdto);
 	
 	// 파일 삭제
-	int fileDelete(@Param("rsid") int rsid);
+	int fileDelete(int rsid);
 }

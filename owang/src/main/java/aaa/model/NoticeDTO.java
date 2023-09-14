@@ -13,7 +13,7 @@ import lombok.Data;
 public class NoticeDTO {
 	
 
-	int id, cnt, seq, lev, gid, start, limit = 3,pageLimit=4, page, pageStart, pageEnd, pageTotal;
+	int id, cnt, seq, lev, gid, start, limit = 10,pageLimit=4, page, pageStart, pageEnd, pageTotal;
 	String title, pname, pw, upfile, content, msg, goUrl ;
 	String grade;
 	

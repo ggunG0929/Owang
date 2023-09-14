@@ -47,12 +47,15 @@
 					<span th:if="${no==recruitDTO.page}" th:text="${no}"/>
 					<a th:unless="${no==recruitDTO.page}" th:href="${no}" th:text="${no}"/>
 				</th:block>
-				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageEnd + 1}" th:text="'[다음]'"/>======21
+				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageEnd + 1}" th:text="'[다음]'"/>
 				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageTotal}" th:text="'[맨끝]'"/>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="5" align="right" th:if="${session['cid']}" >
+				<a th:href="|/recruit/insert/${recruitDTO.page}|">글쓰기</a>
+			</td>
+			<td colspan="5" align="right" th:if="${session.adminSession}" >
 				<a th:href="|/recruit/insert/${recruitDTO.page}|">글쓰기</a>
 			</td>
 		</tr>

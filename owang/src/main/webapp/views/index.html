@@ -3,13 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	
 </head>
 <body>
     <header>
-		<!-- 스프링 오류메시지에 따라 수정 -->
-       <div th:insert="~{header :: header}"></div>
+       <div th:include="header :: header"></div>
     </header>
-
     <th:blcok th:if="${session.companysession}">
 	<h1>기업세션</h1>
 	[[${session.companysession}]]	
@@ -18,5 +17,13 @@
 	<th:block th:unless="${session.companysession}">
 	<h1>사용자 세션</h1>
 	[[${session.solosession}]]
+	
 	</th:block>
+	<th:block th:if="${session.adminSession}">
+	<h1>관리자 세션</h1>
+	[[${session.adminSession}]]
+
+	</th:block>
+
+
 </html>

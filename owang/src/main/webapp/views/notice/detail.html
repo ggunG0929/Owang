@@ -14,7 +14,7 @@
 		</tr><tr>
 			<td>작성자</td><td th:text="${ndto.pname}"/>
 		</tr><tr>
-			<td>등록일</td><td th:text="${ndto.regDate}"/>
+			<td>등록일</td><td th:text="${#dates.format(ndto.regDate, 'yyyy-MM-dd')}"/>
 		</tr><tr>
 			<td>조회수</td><td th:text="${ndto.cnt}"/>
 		</tr>
@@ -23,8 +23,9 @@
 			<td>내용</td><td th:text="${ndto.content}"/>
 		</tr><tr>
 			<td colspan="2" align="right">
-				<a th:href="|/notice/delete/${ndto.page}/${ndto.id}|">삭제</a>
-				<a th:href="|/notice/modify/${ndto.page}/${ndto.id}|">수정</a>
+				<!--공지사항 수정,삭제는 오직 관리자만!-->
+				<a th:href="|/notice/delete/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}">삭제</a>
+				<a th:href="|/notice/modify/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}">수정</a>
 				<a th:href="|/notice/notice/${ndto.page}|">목록으로</a>
 			</td>
 		</tr>

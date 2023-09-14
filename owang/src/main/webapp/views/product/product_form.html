@@ -7,6 +7,12 @@
 <!--iamport.payment.js-->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <!-- 자바스크립트에 타임리프 적용 -->
+<script th:inline="javascript" th:if="${errorMsg != null}">
+    $(document).ready(function() {
+        alert(/*[[${errorMsg}]]*/ null);
+        window.location.href = "/login/main";
+    });
+</script>
 <script th:inline="javascript">
 	var IMP = window.IMP;
 	IMP.init('imp65726445');	// 회원당 하나씩 부여받은 아이디 넣기
@@ -40,7 +46,7 @@
 	        name: /*[[${dto.productName}]]*/ null, // 상품명 입력값
 	        amount: /*[[${dto.productPrice}]]*/ null, // 상품전체가격 입력값
 	        buyer_name: /*[[${name}]]*/ null,
-	        buyer_email: "",
+	        buyer_email: /*[[${email}]]*/ "",
 	        buyer_tel: /*[[${tel}]]*/ null
 	    };
 		// {===} : 자료형까지 동일한지 확인함
@@ -90,19 +96,25 @@
 		            data: JSON.stringify(paymentData)
 		        })
 		        .done(function (res) {
+					var redirectUrl;
 		            if (res>0) {
 		                alert('결제에 성공했습니다.');
-		            } else {
-		                alert('결제를 취소합니다. \n이유: 결제금액 검증 실패');
-		            }
-	            // 리다이렉트할 URL 설정	// 파라미터로 imp_uid 전달
-	            var redirectUrl = "/product/result/" + callback.imp_uid;
-	            window.location.href = redirectUrl;
+			            // 리다이렉트할 URL 설정	// 파라미터로 imp_uid 전달
+			            redirectUrl = "/product/result/" + callback.imp_uid;
+		            } else if(res == 0) {
+		                alert('결제를 취소합니다. \n이유: 결제금액 검증실패');
+		                redirectUrl = '/product/notice';
+		            } else if(res == -1) {
+				        alert('결제를 취소합니다. \n이유: 세션만료');
+				        redirectUrl = '/login/main';
+					}
+		            window.location.href = redirectUrl;
 		        });
 	        // 결제 실패
 		    } else {
 		        alert("결제에 실패했습니다. \n이유: " + callback.error_msg);
 //		        console.log(JSON.stringify(callback, null, 2) + " 실패");
+	            window.location.href = "/product/notice";
 		    }
         });
     }

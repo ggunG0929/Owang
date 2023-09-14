@@ -14,6 +14,8 @@ public interface AskMapper {
 	
 	//리스트 
 	List<AskDTO> askList(AskDTO dto);
+	//회원리스트
+	List<AskDTO> useraskList(AskDTO dto);
 
 	
 	AskDTO detail(int id);

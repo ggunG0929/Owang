@@ -18,7 +18,6 @@ import aaa.model.SoloDTO;
 import aaa.service.AdminCompanyMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.SoloMapper;
-import groovyjarjarantlr.MakeGrammar;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -66,7 +65,7 @@ public class JoinController {
 	// 개인회원가입
 	@GetMapping("solo")
 	String joinsoloForm(SoloDTO solo,MCompanyDTO company, Model mm) {
-		List<MCompanyDTO> data = acmapper.companyList(company);
+		List<MCompanyDTO> data = acmapper.companyCapprovalList(company);
 		mm.addAttribute("mainData",data);
 		return "join/join_solo";
 	}

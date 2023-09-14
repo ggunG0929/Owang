@@ -20,6 +20,7 @@ public class MCompanyDTO {
 	String cpw;	//비밀번호1
 	String cpw2;	//비밀번호2
 	String cname;	//회사명
+	String cemail;
 	String cbuild;	//설렵닌도
 	String ccategory;	//업종
 	int cstaff;	//직원수
@@ -62,12 +63,14 @@ public class MCompanyDTO {
 			if(ccompanyFile==null ||
 				ccompanyFile.trim().equals("") ||
 				ccompanyFile.trim().equals("null")) {
-				ccompanyFile="null";
+				ccompanyFile=null;
 			}
 			return ccompanyFile;	
 	}
 
-
+		public String getMmffName() {
+			return mmff.getOriginalFilename();
+		}
 
 		
 		

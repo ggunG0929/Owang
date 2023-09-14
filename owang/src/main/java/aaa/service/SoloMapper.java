@@ -21,10 +21,18 @@ public interface SoloMapper {
 	SoloDTO detailSolo(String sid);
 	int delettt(SoloDTO dto);
 	int modifffy(SoloDTO dto);
-	
+	int fileDelete(SoloDTO dto);
 	// 세션받아오기 객체
 	SoloDTO resumeSolo(String userid);
 	
 	// 결제회원처리
 	void paysmember(SoloDTO dto);
+	
+
+	void loginsmember(SoloDTO dto);
+		
+	
+// 아이디확인
+	int findloSolo(String fname, String femail);	
+	SoloDTO findid(String fname, String femail);	
 }

@@ -5,7 +5,9 @@ import lombok.Data;
 @Data
 public class AdminDTO {
 	
-	String id, pw, adminName, Msg, goUrl;
+	String id, pw, adminName, msg, goUrl;
+	
+	boolean capproval=true;
 
 	public AdminDTO(String id, String pw,String adminName) {
 		super();

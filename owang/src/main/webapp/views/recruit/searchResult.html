@@ -7,10 +7,35 @@
 </head>
 
 <body>
-	<h1 th:text="${param.searchOption + ' 검색 결과'}"></h1>
 	[[${mainData}]]
-
-
+	<th:block th:if="${mainData == null}">
+		<h1>검색결과가 없습니다</h1>
+		<a th:href="|/recruit/list/1|">목록으로</a>
+		<form action="/recruit/search" method="get" th:object="${recruitDTO}">
+	    <select name="searchOption">
+	        <option th:selected="*{searchOption == 'all'}" value="all">전체</option>
+	        <option th:selected="*{searchOption == 'title'}" value="title">제목</option>
+	        <option th:selected="*{searchOption == 'content'}"  value="content">내용</option>
+	        <option th:selected="*{searchOption == 'name'}" value="name">회사 이름</option>
+	    </select>
+	    <input type="text" name="keyword" th:field="*{keyword}" placeholder="검색어 입력">
+	    <button type="submit">검색</button>
+	</form>
+	</th:block>
+	<th:block th:unless="${mainData == null}">	
+	<h1 th:text="${param.searchOption + ' 검색 결과'}"></h1>
+	
+	<form action="/recruit/search" method="get" th:object="${recruitDTO}">
+	    <select name="searchOption">
+	        <option th:selected="*{searchOption == 'all'}" value="all">전체</option>
+	        <option th:selected="*{searchOption == 'title'}" value="title">제목</option>
+	        <option th:selected="*{searchOption == 'content'}"  value="content">내용</option>
+	        <option th:selected="*{searchOption == 'name'}" value="name">회사 이름</option>
+	    </select>
+	    <input type="text" name="keyword" th:field="*{keyword}" placeholder="검색어 입력">
+	    <button type="submit">검색</button>
+	</form>
+		
 	<table border="">
 		<tr>
 			<td>번호</td>
@@ -26,25 +51,25 @@
 					th:text="${dto.recruitTitle}"></a>
 			</td>
 			<td>
-				<a th:href="기업페이지가들어가요" th:text="${dto.cid}"></a>
+				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cid}"></a>
 			</td>
 			<td th:text="${dto.regDate}" />
 			<td th:text="${dto.cnt}" />
 		</tr>
 
-
+		
 		<tr>
 			<td colspan="5" align="center">
 				<!-- [처음] 링크 -->
 				<a th:if="${recruitDTO.pageStart > 1}"
 					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=1)}"
 					th:text="'[처음]'" />
-
+			
 				<!-- [이전] 링크 -->
 				<a th:if="${recruitDTO.page > 1}"
 					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.page - 1})}"
 					th:text="'[이전]'" />
-
+			
 				<!-- 페이지 번호 링크 -->
 				<th:block th:each="no: ${#numbers.sequence(recruitDTO.pageStart, recruitDTO.pageEnd)}">
 					<span th:if="${no == recruitDTO.page}" th:text="${no}" />
@@ -52,17 +77,17 @@
 						th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${no})}"
 						th:text="${no}" />
 				</th:block>
-
+			
 				<!-- [다음] 링크 -->
 				<a th:if="${recruitDTO.page < recruitDTO.pageTotal}"
 					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.page + 1})}"
 					th:text="'[다음]'" />
-
+			
 				<!-- [맨끝] 링크 -->
 				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}"
 					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.pageTotal})}"
 					th:text="'[맨끝]'" />
-				</td>
+			</td>
 		</tr>
 		
 		<tr align="center">
@@ -71,7 +96,8 @@
 
 
 	</table>
-
+	</th:block>
+	
 </body>
 
 </html>

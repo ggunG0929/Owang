@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 <update id="modifffy" parameterType="mcDTO">
 		update company set 
-		cname = #{cname}, cbuild= #{cbuild}, ccategory= #{ccategory},
+		cname = #{cname}, cbuild= #{cbuild}, ccategory= #{ccategory}, ccompanyFile= #{ccompanyFile},
 		cstaff = #{cstaff}, csales = #{csales}, ccontent = #{ccontent},cpw=#{cpw}
 		where cid = #{cid} 
 </update>
@@ -43,6 +43,43 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 </delete>
 
 <update id="paycmember" parameterType="mcDTO">
+	update company set
+	ctype = #{ctype}, cdate = #{cdate}
+	where cid = #{cid}
+</update>
+<update id="logincmember" parameterType="mcDTO">
+	update company set
+	ctype = #{ctype}
+	where cid = #{cid}
+</update>
+
+<update id="fileDelete" parameterType="mcDTO">
+	update company set
+	ccompanyFile = null
+	where cid = #{cid} and cpw=#{cpw}
+</update>
+
+<select id="findloCompany" resultType="Integer">
+    select count(*) from company where cname = #{fname} and cemail = #{femail}
+</select>
+<select id="findid" resultType="mcDTO">
+    select cid from company where cname = #{fname} and cemail = #{femail}
+</select>
+
+<select id="applist" resultType="aDTO">
+   	 	select 
+   	 	ano, recruit_id, recruit_title, sid, sname, rsid, apphoto, aptitle, apcareer, apcompany, apworkstart, apworkend, apwork, 
+		apacademic, apacademicstat, apintroduce, aplicense, aplicenseorg, aplicenseyear, aplanguage, aplanguagelevel, 
+		apsubmitdate, cname, cid
+   	 	from applicant 
+   	 	where cid = #{cid}
+	</select>
+
+<delete id="appdelete"  parameterType="aDTO">
+	delete from applicant where ano = #{ano}
+</delete>
+
+<update id="appstate" parameterType="mcDTO">
 	update company set
 	ctype = #{ctype}, cdate = #{cdate}
 	where cid = #{cid}

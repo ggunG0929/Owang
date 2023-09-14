@@ -38,6 +38,9 @@ public interface RecruitMapper {
 	
 	// 검색기능 테스트
 	List<RecruitDTO> searchRecruit(@Param("keyword") String keyword, @Param("searchOption") String searchOption);
+	
+	// 기업 디테일에서 작성한 채용만 보기
+	List<RecruitDTO> recruitCompanyDetail(RecruitDTO dto);
 
 	
 	

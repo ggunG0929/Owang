@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -67,10 +68,10 @@ public class AdminProductController {
     }
 
     
-	@Autowired
-	PayService payS;
     @Resource
     PayMapper paym;
+	@Autowired
+	PayService payS;
 
     // 결제정산
 	@RequestMapping("/graph")
@@ -81,14 +82,17 @@ public class AdminProductController {
 		// 그래프 데이타
 		// db에서 일매출 합산
         List<Map<String, Object>> dailytotal = paym.dailytotal(startDate, endDate);
+//        System.out.println("dailytotal = "+dailytotal);
 
         // 리스트 데이타
         // db에서 회원종류별 매출액 순위리스트
         List<Map<String, Object>> totalbys = paym.totalbys(startDate, endDate);
         List<Map<String, Object>> totalbyc = paym.totalbyc(startDate, endDate);
+//        System.out.println("totalbys = "+totalbys);
+//        System.out.println("totalbyc = "+totalbyc);
         // db에서 상품별 매출액 순위리스트
         List<Map<String, Object>> totalbyp = paym.totalbyp(startDate, endDate);
-        
+//        System.out.println("totalbyp = "+totalbyp);
         // 회원자료 중 sid나 cid가 없는 자료 제외하기
         totalbys = totalbys.stream()
         		.filter(map -> map.containsKey("sid"))
@@ -96,16 +100,15 @@ public class AdminProductController {
         totalbyc = totalbyc.stream()
                 .filter(map -> map.containsKey("cid"))
                 .collect(Collectors.toList());
-        
         // 기간내 값들 합산
         int totalSum = mapSum(dailytotal, "totalAmount");
         int sSum = mapSum(totalbys, "total");
         int cSum = mapSum(totalbyc, "total");
         int pSum = mapSum(totalbyp, "total");
-
-    	// 오늘날짜	// 날짜 선택시 오늘 이후 날짜는 선택 불가하도록 정보를 줘야함
+//    	System.out.println(totalSum);
+    	// 오늘날짜	// 날짜 선택시 오늘 이후 날짜는 선택 불가하도록
     	String today = payS.dateformat(new Date()); 
-
+//    	System.out.println(today);
     	// 선택한 날짜 뜨도록 string으로 보내주기
     	String strStartDate = null;
     	String strEndDate = null;
@@ -113,7 +116,12 @@ public class AdminProductController {
     		strStartDate = payS.dateformat(startDate);
     		strEndDate = payS.dateformat(endDate);
     	}
-
+        if (startDate == null && endDate == null) {
+        	strStartDate = "2022-09-01";
+            strEndDate = today;
+        }
+//    	System.out.println(startDate);
+//    	System.out.println(endDate);
         mm.addAttribute("graphData", dailytotal);
         mm.addAttribute("slist", totalbys);
         mm.addAttribute("clist", totalbyc);
@@ -135,7 +143,7 @@ public class AdminProductController {
 	            .sum();
 	}
 	
-		
+	
 	// 전체 매출내역
 	@RequestMapping("/payment/{page}")
     public String getPayments(Model mm, 
@@ -153,10 +161,10 @@ public class AdminProductController {
 		if(!StringUtils.isEmpty(from) && !StringUtils.isEmpty(to)) {
 		    // Unix타임스탬프로 변환
 		    long fromunix = payS.stringToUnix(from);
-		    long tounix = payS.stringToUnix(to);
+		    // 날짜의 전날까지의 결과만 나와서 to에 하루를 더해줌
+		    long tounix = payS.stringToUnix(to) + 24 * 60 * 60; // 24시간 * 60분 * 60초
 		    range = "&from="+fromunix+"&to="+tounix;
 		}
-		
 		// API 통신
         String token = payS.getToken(); // PayService를 통해 토큰을 가져옴
         // URL 생성
@@ -166,8 +174,8 @@ public class AdminProductController {
         RestTemplate restTemplate = new RestTemplate();
         // PaymentResponse 형태로 정보받음
         ResponseEntity<PaymentResponseAll> responseEntity = restTemplate.getForEntity(apiUrl, PaymentResponseAll.class);
-//        System.out.println("응답코드 : "+responseEntity.getBody().getCode());
-        if (responseEntity.getBody().getResponse() == null) {	// 여기까지 코드가 못오고 그냥 터짐...
+        System.out.println("응답코드 : "+responseEntity.getBody().getCode());
+        if (responseEntity.getBody().getResponse() == null) {
             mm.addAttribute("errorMsg", responseEntity.getBody().getMessage());
         }else {
         	List<PaymentAll> paymentData = responseEntity.getBody().getResponse().getList();
@@ -182,23 +190,50 @@ public class AdminProductController {
         		payment.setStarted_at(payS.unixformat(payment.getStarted_at()));
         		payment.setFailed_at(payS.unixformat(payment.getFailed_at()));
         		payment.setCancelled_at(payS.unixformat(payment.getCancelled_at()));
+        		
+        		// status를 수정
+        		Map<String, String> statusToKor = new HashMap<>();{
+        			statusToKor.put("paid", "완료");
+        			statusToKor.put("ready", "대기");
+        			statusToKor.put("cancelled", "취소");
+        			statusToKor.put("failed", "실패");
+        		}
+        		payment.setStatus(statusToKor.get(payment.getStatus()));
         	}
-        	// 페이지 처리를 위한 정보
+        	
+        	// 페이지처리
         	int total = responseEntity.getBody().getResponse().getTotal();
         	int totalPages = (int)Math.ceil((double)total / limit);
-
-        	mm.addAttribute("paymentData", paymentData);
+//        System.out.println(responseEntity);
+        	// 앞뒤로 몇페이지씩 보일건지
+        	int ranged = 2;
+        	// 둘 중에 큰 숫자
+        	int startPage = Math.max(1, page - ranged);
+        	// 둘 중에 작은 숫자
+        	int endPage = Math.min(totalPages, page + ranged);
+        	// 이전버튼 눌렀을 때의 페이지
+        	int prevPage = Math.max(1, page - ranged -1);
+        	// 다음버튼 눌렀을 때의 페이지
+        	int nextPage = Math.min(totalPages, page + ranged +1);
+        	
         	mm.addAttribute("page", page);
-        	mm.addAttribute("totalPages", totalPages);
+        	mm.addAttribute("paymentData", paymentData);
         	mm.addAttribute("status", status);
         	mm.addAttribute("limit", limit);
         	mm.addAttribute("from", from);
         	mm.addAttribute("to", to);
         	mm.addAttribute("sorting", sorting);
         	mm.addAttribute("today", today);
+        	
+        	mm.addAttribute("startPage", startPage);
+        	mm.addAttribute("endPage", endPage);
+        	mm.addAttribute("prevPage", prevPage);
+        	mm.addAttribute("nextPage", nextPage);
+        	mm.addAttribute("totalPages", totalPages);
         }
         return "admin/product/payment_list"; 
     }
+	
 	
 	// 매출내역상세
 	@RequestMapping("/payment/detail/{impuid}")
@@ -222,7 +257,7 @@ public class AdminProductController {
 			@RequestParam("id") String id,
 			@RequestParam("name") String name) throws Exception {
 		// 유효기간 추출
-		int valid = 0;
+		int valid=0;
 		// 상품명에서 숫자추출
 		Pattern pattern = Pattern.compile("\\d+");
 		Matcher matcher = pattern.matcher(name);
@@ -257,7 +292,9 @@ public class AdminProductController {
 		}
 		// 취소진행
 		String token = payS.getToken();
-	    payS.paymentCancle(token, impUid, "취소사유: 관리자에 의한 취소");
+	    payS.paymentCancel(token, impUid, "취소사유: 관리자에 의한 취소");
+	    // db 수정
+	    paym.payCancel(impUid);
 	    
 	    return "redirect:/admin_product/payment/detail/"+impUid;
 	}

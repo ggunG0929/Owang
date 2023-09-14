@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -116,35 +117,39 @@ public class SoloResumeController {
 	String modifyReg(SoloResumeDTO rdto, PageData pd, HttpSession session,
 			HttpServletRequest request) {
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
-
+		System.out.println("수정제출 : " + rdto);
 		pd.setMsg("수정실패");
 		pd.setGoUrl("/solo_resume/modify/" + rdto.rsid);
 		
-		int cnt = rsmapper.resumemodify(rdto, solosession.sid);
+		int cnt = rsmapper.resumemodify(rdto);
 		System.out.println("modifyReg:"+cnt);
 		if(cnt>0) {
 			
 			// 수정이 되었을때 파일을 저장해야 함 (파일 저장)
 			fileSave(rdto, request);
-			rsmapper.resumemodify(rdto, solosession.sid);
 			pd.setMsg("수정되었습니다.");
 			pd.setGoUrl("/solo_resume/detail/"+rdto.getRsid());
 		}
 
 		return "solo_resume/alert";
 	}
-	/*
+	
 	// 수정폼에서 파일 삭제
 	@PostMapping("fileDelete")
 	String fileDelete(SoloResumeDTO rdto, PageData pd, HttpServletRequest request) {
+		
+		System.out.println("파일딜리트에 어서와  :"+ rdto);
 		
 		SoloResumeDTO delDTO = rsmapper.resumefiledetail(rdto.getRsid());
 		pd.setMsg("파일 삭제실패");
 		// 삭제 실패하면 수정페이지로
 		pd.setGoUrl("/solo_resume/modify/" + rdto.getRsid());
 		
+		
+		
+		
 		// 파일 삭제 mapper 추가
-		int cnt = rsmapper.fileDelete(rdto);
+		int cnt = rsmapper.fileDelete(rdto.rsid);
 		System.out.println("fileDelete:"+cnt);
 		if(cnt>0) {
 			
@@ -154,7 +159,7 @@ public class SoloResumeController {
 		}
 		return "solo_resume/alert";
 	}
-	*/
+	
 
 	// 이력서 삭제
 	@RequestMapping("delete/{rsid}")
@@ -191,9 +196,8 @@ public class SoloResumeController {
 			return;
 		}
 		
-		String path = request.getServletContext().getRealPath("up");
+		String path = request.getServletContext().getRealPath("resumephoto");
 		// 이건 가상서버이다, 배포 시에는 realPath로 가져온다
-		path = "C:\\Final_Team\\owang\\src\\main\\webapp\\up";
 
 		// 점 처리
 		int dot = rdto.getRsmmff().getOriginalFilename().lastIndexOf(".");
@@ -231,8 +235,7 @@ public class SoloResumeController {
 	
 	void fileDeleteModule(SoloResumeDTO delDTO, HttpServletRequest request) {
 		if(delDTO.getRsphoto()!=null) {
-			String path = request.getServletContext().getRealPath("up");
-			path = "C:\\Spring_Team\\owang\\src\\main\\webapp\\up";
+			String path = request.getServletContext().getRealPath("resumephoto");
 			
 			new File(path+"\\"+delDTO.getRsphoto()).delete();
 		}

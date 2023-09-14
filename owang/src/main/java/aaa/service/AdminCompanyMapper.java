@@ -5,6 +5,8 @@ package aaa.service;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import aaa.model.MCompanyDTO;
 
 
@@ -13,9 +15,12 @@ import aaa.model.MCompanyDTO;
 @Mapper
 public interface AdminCompanyMapper {
 
-	// 기업 회원 정리
+	// 기업 미등록 회원 정리
 	List<MCompanyDTO> companyList(MCompanyDTO dto);
-	
+
+	// 기업 등록 회원 정리
+	List<MCompanyDTO> companyCapprovalList(MCompanyDTO dto);
+
 	// 기업 회원 페이지 계산
 	int adminAddCont();
 	
@@ -24,5 +29,11 @@ public interface AdminCompanyMapper {
 
 	// 기업 체크
 	int checkoutFile(int cno);
+	
+	// 기업 삭제
+	int deleteCompany(int cno);
+	
+	// 기업 검색기능 테스트
+	List<MCompanyDTO> searchCompany(@Param("keyword") String keyword, @Param("searchOption") String searchOption);
 	
 }

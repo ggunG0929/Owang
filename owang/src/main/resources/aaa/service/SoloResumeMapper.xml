@@ -34,9 +34,12 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 	
 	<!-- 이력서 수정 -->
-	<update id="resumemodify" parameterType="rDTO">
+	 <update id="resumemodify" parameterType="rDTO">
 		update resume set 
-		sid = #{sid}, rsphoto = #{rsphoto}, rstitle = #{rstitle}, rscareer = #{rscareer},rscompany = #{rscompany},rsworkstart = #{rsworkstart},rsworkend = #{rsworkend}, rswork= #{rswork}, rsacademic= #{rsacademic}, rsacademicstat= #{rsacademicstat}, rsintroduce= #{rsintroduce},rslicense = #{rslicense},rslicenseorg = #{rslicenseorg}, rslicenseyear= #{rslicenseyear}, rslanguage= #{rslanguage}, rslanguagelevel= #{rslanguagelevel}, rsmoddate= #{rsmoddate} 
+		rstitle = #{rstitle}, rscareer = #{rscareer},rscompany = #{rscompany},rsworkstart = #{rsworkstart},rsworkend = #{rsworkend}, rswork= #{rswork}
+		, rsacademic= #{rsacademic}, rsacademicstat= #{rsacademicstat}, rsintroduce= #{rsintroduce},rslicense = #{rslicense}
+		, rslicenseorg = #{rslicenseorg}, rslicenseyear= #{rslicenseyear}, rslanguage= #{rslanguage}, rslanguagelevel= #{rslanguagelevel}
+		, rsmoddate= sysdate() 
 		where rsid = #{rsid} and sid = #{sid}
 	</update>
 	
@@ -45,6 +48,6 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 	
 	<update id="fileDelete" parameterType="rDTO">
-		update board set rsphoto = null where rsid = #{rsid}
+		update resume set rsphoto = null where rsid = #{rsid}
 	</update>
 </mapper>

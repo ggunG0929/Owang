@@ -7,8 +7,8 @@
 </head>
 
 <body>
-
-	<h1>개인 정보 상세</h1>
+	<h1>관리자메뉴</h1>
+	<h1>개인 정보 확인</h1>
 
 	<table border="">
 		<tr>
@@ -49,16 +49,20 @@
 		</tr>
 		<tr th:if="${dto.scompanyFile != null && dto.scompanyFile != '' && dto.scompanyFile != 'null' }">
 			<th>재직증명서</th>
-			<td th:text="${dto.scompanyFile}"></td>
+			<td><a th:href="@{|/admin_solo/soloup/download/${dto.scompanyFile}|}"
+			
+			 th:text="${dto.scompanyFile}"></a>
 		</tr>
 
 
 
 	</table>
 
-	<a href="/solo/modify">수정</a>
-	<a href="/solo/delete">삭제</a>
-
+	
+	<a th:href="@{|/admin_solo/delete/${sid}|}"
+	th:onclick="return confirm('[[${dto.sname}]]회원님을 삭제하시겠습니까?')"
+	  th:text="|${dto.sname}회원삭제|"></a>
+		<a href="/admin_solo/sololist/1">목록으로</a>
 </body>
 
 </html>

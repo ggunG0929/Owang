@@ -2,10 +2,11 @@ package aaa.service;
 
 
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
-
-
+import aaa.model.ApplicantDTO;
 import aaa.model.MCompanyDTO;
 import aaa.model.RecruitDTO;
 
@@ -28,7 +29,18 @@ public interface MCompanyMapper {
 		MCompanyDTO deatilCompany(String cid);
 		int modifffy(MCompanyDTO dto); 
 		int delettt(MCompanyDTO company);
-		
+		int fileDelete(MCompanyDTO dto);
 		// 결제회원처리
 		void paycmember(MCompanyDTO dto);
+		// 로그인회원처리
+		void logincmember(MCompanyDTO dto);
+		
+		
+		// 아이디확인
+		int findloCompany(String fname, String femail);	
+		MCompanyDTO findid(String fname, String femail);	
+				
+		
+		// 지원자 리스트 불러오기
+		List<ApplicantDTO> applist(String cid);
 }

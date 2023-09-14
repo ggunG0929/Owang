@@ -17,14 +17,16 @@ public class RecruitDTO {
 	// 만들고보니 등록일 마감일 필요 일단 진행
 	
 	int recruitId, start, limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
-	String recruitTitle, recruitName, recruitUpfile, recruitContent, cid;
+	public String recruitTitle, recruitName, recruitUpfile, recruitContent, cid;
+	
 	String msg, goUrl;
+	boolean capproval;
 	Date regDate = new Date();
-	Date realMagam=new Date();
+	Date realMagam = new Date();
 	int recruitMagam;
 	int recruitMoney; // 급여
 	String recruitlocatoin; // 근무지역
-	
+	String searchOption, keyword;// 검색조건
 	MultipartFile mmff;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -32,13 +34,16 @@ public class RecruitDTO {
 	public String getRegDate() {
 		return sdf.format(regDate);
 	}
-	public Date getRegDate2() {
-		return regDate;
+	
+	
+
+
+	public String getRealMagam() {
+		return sdf.format(realMagam);
 	}
 
-	public void setRegDate(Date regDate) {
-		this.regDate = regDate;
-	}
+
+
 
 	public String getRecruitUpfile() {
 		if(recruitUpfile == null || recruitUpfile.trim().equals("") ||  recruitUpfile.trim().equals("null") ) {
@@ -74,7 +79,7 @@ public class RecruitDTO {
 	}
 	
 	
-
+	/*
 	public String getRealMagam() {
 		
 		LocalDate currentDate = LocalDate.now();
@@ -82,11 +87,12 @@ public class RecruitDTO {
 	    futureDate = currentDate.plusDays(getRecruitMagam());
 
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-		String formattedDate = futureDate.format(formatter);	
+		String formattedDate = futureDate.format(formatter);
+	
 		
 		return formattedDate;
 	}
+	*/
 
 	public RecruitDTO(String recruitTitle, String recruitName, String recruitContent) {
 		this.recruitTitle = recruitTitle;

@@ -5,12 +5,19 @@
 	<title>Insert title here</title>
 	<!-- jQuery 라이브러리 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+   function fileDelete(){
+      frm.action = "/solo/fileDelete"
+      frm.submit()
+   }
+   
+</script>
 </head>
 
 <body>
 	<h1>solo/ModifyForm</h1>
-
-	<form method="post" enctype="multipart/form-data" th:object="${dto}">
+	[[${dto}]]
+	<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
 		<input type="hidden" th:field="*{sid}" />
 		<table border="">
 
@@ -65,18 +72,27 @@
 			</tr>
 
 
-			<label>재직자라면 클릭하세요<input type="button" onclick="toggleFields()" value="재직정보입력" /></label>
+			
 			<!-- 회사 이름 필드 -->
-			<tr id="companyNameMenu" style="display:none;">
+			<tr id="companyNameMenu">
 				<td>회사 이름</td>
 				<td><input type="text" th:field="*{scompanyName}" />
 				</td>
 			</tr>
 
 			<!-- 회사 재직증명서 파일 업로드 필드 -->
-			<tr id="companyFileMenu" style="display:none;">
+			<tr id="companyFileMenu">
 				<td>회사 재직증명서</td>
-				<td><input type="file" th:field="*{mmff}" />
+				<td>
+					<th:block th:if="${dto.scompanyFile != null}">
+					<input type="hidden" th:field="*{scompanyFile}" readonly/>
+					<input type="button" onclick="fileDelete()" th:value="|*{scompanyFile} 파일삭제|" />
+
+					</th:block>
+					<input th:unless="${dto.scompanyFile != null}" type="file" th:field="*{mmff}" />
+
+
+
 				</td>
 			</tr>
 
@@ -97,18 +113,7 @@
 		</table>
 	</form>
 	<script>
-		function toggleFields() {
-			const companyName = document.getElementById("companyNameMenu");
-			const companyFile = document.getElementById("companyFileMenu");
-
-			if (companyName.style.display == "none") {
-				companyName.style.display = "table-row";
-				companyFile.style.display = "table-row";
-			} else {
-				companyName.style.display = "none";
-				companyFile.style.display = "none";
-			}
-		}
+	
 		$(document).ready(function () {
 			// 페이지 로드 시, 기존 비밀번호 필드의 값을 새 비밀번호 필드에 설정
 			var oldPassword = $("#spw").val();

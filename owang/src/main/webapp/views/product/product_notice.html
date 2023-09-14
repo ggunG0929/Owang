@@ -20,10 +20,10 @@
 		<td th:text="${dto.productClient}"></td>
 		<td th:text="${dto.productName}"></td>
 		<td th:text="${dto.productPrice}"></td>
-		<th:block th:if="${session.companysession != null and dto.productClient == '기업' and compchk}">			
+		<th:block th:if="${session.cid != null and dto.productClient == '기업' and compchk}">			
 		<td><a th:href="|/product/${dto.productId}|">신청</a></td>
 		</th:block>
-		<th:block th:if="${session.solosession != null and dto.productClient == '개인'}">			
+		<th:block th:if="${session.sid != null and dto.productClient == '개인'}">			
 		<td><a th:href="|/product/${dto.productId}|">신청</a></td>
 		</th:block>
 	</tr>

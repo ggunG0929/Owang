@@ -14,7 +14,7 @@
         <thead>
             <tr>
                 <th>주문번호</th>
-                <th>결제상태</th>
+<!--                <th>결제상태</th>-->
                 <th>결제일</th>
                 <th>상품명</th>
                 <th>결제금액</th>
@@ -25,7 +25,7 @@
 		<th:block th:if="${paymentData}!=null">
             <tr th:each="payment : ${paymentData}">
 				<td th:text="${payment.merchant_uid}"></td>
-				<td th:text="${payment.status}"></td>
+<!--				<td th:text="${payment.status}"></td>-->
 				<td th:text="${payment.paid_at}"></td>
 				<td th:text="${payment.name}"></td>
 				<td th:text="${payment.amount}"></td>

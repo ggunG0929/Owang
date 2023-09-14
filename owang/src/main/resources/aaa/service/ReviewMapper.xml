@@ -14,6 +14,30 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="reviewCnt" resultType="Integer">
     	select count(*) from review where cid = #{cid}
 	</select>
-
+	
+	<insert id="reveiwInsert"  parameterType="rrDTO">
+	INSERT INTO review (sid, cid, rvtitle, rvjang, rvdan)
+	VALUES
+    (#{sid}, #{cid}, #{rvtitle}, #{rvjang}, #{rvdan})
+	</insert>
+	
+	<select  id="reviewDetail"   resultType="rrDTO"  parameterType="rrDTO" >
+		select * from review 		
+		where cid = #{cid}
+		<if test="sid != null ">
+			and sid = #{sid}
+		</if>
+	</select>
+	
+	<update id="reviewModify" parameterType="rrDTO">
+		update review set
+		rvtitle = #{rvtitle}, rvjang = #{rvjang}, rvdan = #{rvdan}
+		where cid = #{cid}
+		<if test="sid != null">
+			and sid = #{sid}
+		</if>
+	</update>
+	
+	
 
 </mapper>

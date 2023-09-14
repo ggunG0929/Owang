@@ -4,10 +4,15 @@
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="cid"/>
+		<item key="selection" value="click"/>
 		<item key="wrap" value="true"/>
 		<item key="incremental" value="false"/>
 		<list key="findhistory">
+			<item value="click"/>
+			<item value="세션이 만료"/>
+			<item value="graphCanvas"/>
+			<item value="title"/>
+			<item value="data"/>
 			<item value="cid"/>
 			<item value="system"/>
 			<item value="date"/>
@@ -20,6 +25,7 @@
 			<item value="add"/>
 		</list>
 		<list key="replacehistory">
+			<item value="lineChart"/>
 			<item value="callback"/>
 		</list>
 	</section>

@@ -5,16 +5,30 @@
 <title>Insert title here</title>
 </head>
 <body>
-	[[${mainData}]]
+	
+	<h1>등록된 회원</h1>
+	<form action="/admin_company/search" method="get">
+	<select name="searchOption">
+		<option value="all">전체</option>
+		<option value="cname">기업 이름</option>
+		<option value="ccid">기업 아이디</option>
+		<option value="cceo">대표 이름</option>
+		<option value="ccall">내용</option>
+	</select>
+	<input type="text" name="keyword" placeholder="검색어 입력">
+	<button type="submit">검색</button>
+	</form>
 	<table border="">
 		<tr>
 			<td>번호</td>
-			<td>제목</td>
-			<td>작성자</td>
+			<td>기업 상세 페이지</td>
+			<td>기업아이디</td>
 			<td>결제일</td>
 			<td>조회수</td>
+			<td>회원 구분</td>
+			<td>간편 탈퇴</td>
 		</tr>
-		<tr th:each="dto, dtoStat : ${mainData}">
+		<tr th:each="dto, dtoStat : ${realData}">
 			<td th:text="${dtoStat.count + MCompanyDTO.start}"/>
 			<td >
 				<a th:href="|/admin_company/detail/${MCompanyDTO.page}/${dto.cno}|" th:text="${dto.cname}"></a>
@@ -24,9 +38,21 @@
 			</td>
 			<td th:text="${dto.cdate}"/>
 			<td th:text="${dto.cnt}"/>
+			<td align="center">
+			    <span th:switch="${dto.ctype}">
+			        <span th:case="1">기본</span>
+			        <span th:case="2">유료</span>
+			        <span th:case="*">기타</span> <!-- 다른 값에 대한 기본 처리 -->
+			    </span>
+			</td>
+			<td align="center">
+				<a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')" th:text="삭제">삭제</a>
+
+			</td>
+			
 		</tr>
 		<tr>
-			<td colspan="5" align="center">
+			<td colspan="6" align="center">
 				<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
 				<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.page-MCompanyDTO.page}+1" th:text="'[처음]'"/>
 				
@@ -39,11 +65,51 @@
 				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageTotal}" th:text="'[맨끝]'"/>
 			</td>
 		</tr>
+	
+	</table>
+	<hr />
+	<h1>미등록 회원</h1>
+	[[${mainData}]]
+	
+	<table border="">
 		<tr>
-			<td colspan="5" align="right" th:if="${session['cid']}" >
-				<a th:href="|/recruit/insert/${MCompanyDTO.page}|">글쓰기</a>
+			<td>번호</td>
+			<td>제목</td>
+			<td>작성자</td>
+			<td>결제일</td>
+			<td>조회수</td>
+			<td>간편 수락</td>
+		</tr>
+		<tr th:each="dto, dtoStat : ${mainData}">
+			<td th:text="${dtoStat.count + MCompanyDTO.start}"/>
+			<td >
+				<a th:href="|/admin_company/detail/${MCompanyDTO.page}/${dto.cno}|" th:text="${dto.cname}"></a>
+			</td>
+			<td >
+				<a th:text="${dto.cid}"></a>
+			</td>
+			<td th:text="${dto.cdate}"/>
+			<td th:text="${dto.cnt}"/>
+			<td>
+				<a th:href="@{|/admin_company/checkId/${dto.cno}|}" onclick="return confirm('회원가입을 허락하시겠습니까?')" th:text="수락"></a>
+			</td>
+			
+		</tr>
+		<tr>
+			<td colspan="6" align="center">
+				<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
+				<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.page-MCompanyDTO.page}+1" th:text="'[처음]'"/>
+				
+				<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.pageStart - 1}" th:text="'[이전]'"/>			
+				<th:block th:each="no: ${#numbers.sequence(MCompanyDTO.pageStart, MCompanyDTO.pageEnd)}" >
+					<span th:if="${no==MCompanyDTO.page}" th:text="${no}"/>
+					<a th:unless="${no==MCompanyDTO.page}" th:href="${no}" th:text="${no}"/>
+				</th:block>
+				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageEnd + 1}" th:text="'[다음]'"/>
+				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageTotal}" th:text="'[맨끝]'"/>
 			</td>
 		</tr>
+	
 	</table>
 </body>
 </html>

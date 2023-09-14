@@ -1,0 +1,15 @@
+
+ **  Android APP 개발환경구축 **
+
+1. Android Studio 다운로드 및 설치 - https://developer.android.com
+   1) JDK                - 자바 컴파일러 & APIs ( 2000여개의 클래스 )
+   2) Android SDK    -  안드로이드 개발도구 & APIs ( 4000여개의 클래스 )
+   3) 코드편집기
+
+
+2. 실행환경 에뮬레이터 설치 or 실 디바이스 USB연결
+   1) AVD              - Android Virtual Device
+   2) 실제 phone or tablet
+
+  
+

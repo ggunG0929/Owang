@@ -10,6 +10,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select * from ask order by gid desc, seq limit #{start}, #{limit}
 	</select>
 	
+	<select id="useraskList" resultType="askDTO" parameterType="askDTO">
+		select * from ask where pname = #{pname} order by gid desc, seq limit #{start}, #{limit}
+	</select>
+	
 	
 	<select id="listCnt" resultType="Integer">
 		select count(*) from ask

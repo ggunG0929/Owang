@@ -9,7 +9,8 @@
 <body>
 	<h1>recruit/detail</h1>
 	[[${dto}]]
-
+	[[${dto.recruitId}]]
+	[[${dto.recruitTitle}]]
 	<table border="">
 
 		<td>id</td>
@@ -30,7 +31,7 @@
 		</tr>
 		<tr>
 			<td>마감일</td>
-			<td th:text="${magam}" />
+			<td th:text="${dto.realMagam}" />
 		</tr>
 		<tr>
 			<td>조회수</td>
@@ -52,10 +53,14 @@
 			<td th:text="${dto.recruitContent}" />
 		</tr>
 		<tr>
-			<td colspan="2" align="right">
+			<td align="right" colspan="6"> 
+
+			<th:block th:if="${session.adminSession != null or session.cid == dto.cid}">
 				<a th:href="|/recruit/delete/${dto.page}/${dto.recruitId}|">삭제</a>
 				<a th:href="|/recruit/modify/${dto.page}/${dto.recruitId}|">수정</a>
-				<a th:href="|/recruit/list/${dto.page}|">목록으로</a>
+			</th:block>
+
+			<a th:href="|/recruit/list/${dto.page}|">목록으로</a>
 			</td>
 		</tr>
 		<th:block th:if="${session['sid']}">
@@ -64,7 +69,7 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<a th:href="|/recruit/submit/${dto.page}/${dto.recruitId}|">입사지원</a>
+					<a th:href="|/solo_applicant/submit/${dto.page}/${dto.cid}/${dto.recruitId}|">입사지원</a>
 				</td>
 			</tr>
 		</th:block>

@@ -1,6 +1,7 @@
-CREATE TABLE resume (
-    rsid INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE applicant (
+    ano INT AUTO_INCREMENT PRIMARY KEY,
     sid VARCHAR(100),
+    cid VARCHAR(100),
     rsphoto VARCHAR(100),
     rstitle VARCHAR(100),
     rscareer VARCHAR(100),
@@ -9,7 +10,7 @@ CREATE TABLE resume (
     rsworkend VARCHAR(100),
     rswork VARCHAR(100),
     rsacademic VARCHAR(100),
-	rsacademicstat VARCHAR(100),
+   rsacademicstat VARCHAR(100),
     rsintroduce VARCHAR(100),
     rslicense VARCHAR(100),
     rslicenseorg VARCHAR(100),
@@ -21,6 +22,5 @@ CREATE TABLE resume (
     cnt INT
 ) AUTO_INCREMENT = 1;
 
-select * from resume;
-
-drop table resume;
+select * from applicant;
+drop table applicant;

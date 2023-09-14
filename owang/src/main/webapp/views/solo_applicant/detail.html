@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>지원서 디테일</h2>
+<div>
+	<div>
+        <div style="border: 1px solid #ccc; width:700px;" >
+			<h3>기본정보</h3>
+			<div>
+				<table style="width:450px;">
+					<input type="hidden" th:value="${solosession.sid}" name="sid" />
+			        <tr>
+			            <td th:text="${solosession.sname}"></td>
+			            <td th:text="${solosession.sgender}"></td>
+			            <td th:text="${solosession.sage}"></td>
+					</tr>
+					<tr>
+						<td>주소</td>
+						<td th:text="${solosession.saddress}"></td>
+						<td>이메일</td>
+						<td th:text="${solosession.semail}"></td>
+					</tr>
+					<tr>
+						<td >전화번호</td>
+						<td th:text="${solosession.sphone}"></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+			
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>이력서 제목</p>
+		</div>
+</div>
+</body>
+</html>

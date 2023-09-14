@@ -13,6 +13,11 @@ public interface AdminSolo {
 
 	// 게시글 정렬
 	List<SoloDTO> soloList(SoloDTO dto);
+	
+	
+	//전체회원관리 수정삭제
+	SoloDTO detailSolo(String sid);
+	int delettt(String sid);
 
 	// 게시글 페이지 계산
 	int soloListCnt();
@@ -26,5 +31,7 @@ public interface AdminSolo {
 	// 게시글 페이지 계산
 	int solocomListCnt();
 	//서치
-	List<SoloDTO> searchRecruit(@Param("keyword") String keyword, @Param("searchOption") String searchOption);
+	List<SoloDTO> searcha( String keyword,String searchOption);
+	//서치 카운트톨탈
+	int searchcount(String keyword,String searchOption);
 }

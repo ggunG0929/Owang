@@ -15,7 +15,9 @@
 
 <body>
 	<h1>개인회원가입</h1>
+	[[${mainData}]]<br>
 <button id="showTermsButton">이용약관 보기</button>
+
 	<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
 
 		
@@ -98,7 +100,17 @@
 			<!-- 회사 이름 필드 -->
 			<tr id="companyNameMenu" style="display:none;">
 				<td>회사 이름</td>
-				<td><input type="text" name="scompanyName" />
+				<td>
+					<input type="text" name="scompanyName" list="company-list" class="company-list" />
+					
+					<datalist id="company-list">
+						<th:block th:each="recruit : ${mainData}">
+							<option th:value="${recruit.cname}" class="company-list" />
+							 
+							<span th:text="|회사번호 ${recruit.ccall}|" class="company-list"></span>
+							
+						</th:block>
+					</datalist>
 				</td>
 			</tr>
 
@@ -216,6 +228,8 @@
 				alert('팝업 창을 열 수 없습니다. 팝업 창이 차단되었을 수 있습니다.');
 			}
 		});
+
+	
 	</script>
 </body>
 

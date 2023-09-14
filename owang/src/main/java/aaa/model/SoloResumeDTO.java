@@ -22,8 +22,9 @@ public class SoloResumeDTO {
 	public int rsid;    // 이력서 번호
 	String sid; // 개인회원
 	String rsphoto; // 사진
-	
 	String rstitle; // 제목
+	
+	// 경력
 	String rscareer; // 경력
 	String rscompany; // 회사명
 	String rsworkstart; // 근무시작
@@ -34,11 +35,16 @@ public class SoloResumeDTO {
 	String rsacademic; // 학력
 	String rsacademicstat; // 학력 상대
 	String rsintroduce; // 자기 소개
+	
+	// 자격증
 	String rslicense; // 자격증
 	String rslicenseorg; // 자격증 발행처
 	String rslicenseyear; // 자격증 발행년도
-	String rslanguage="어학명"; // 어학능력
+	
+	// 어학 능력
+	String rslanguage; // 어학능력
 	String rslanguagelevel; // 어학수준
+	
 	Date rsregdate;
 	Date rsmoddate; // 글 수정일 
 	

@@ -17,49 +17,89 @@ import lombok.Data;
 @Alias("aDTO")
 public class ApplicantDTO {
 	
-	MultipartFile rsmmff; // 증명사진
+	SoloResumeDTO srDTO;
+	RecruitDTO rcDTO;
+	MCompanyDTO mcDTO;
+	SoloDTO sDTO;
 	
+	//int recruitId; // 지원한 공고의 번호
 	public int ano;  // 지원자 번호
-	String sid; // 개인회원
-	String cid; // 기업회원
-	String rsphoto; // 사진
-	
-	String rstitle; // 제목
-	String rscareer; // 경력
-	String rscompany; // 회사명
-	String rsworkstart; // 근무시작
-	String rsworkend; // 근무끝	
-	String rswork; // 담당업무
+	String sname; // 개인회원
+	String aptitle; // 지원서 명
+	String recruitTitle; // 공고 제목
+	int rsid;
+	String sid;
+	String cname; // 기업이름
 	
 	
-	String rsacademic; // 학력
-	String rsacademicstat; // 학력 상대
-	String rsintroduce; // 자기 소개
-	String rslicense; // 자격증
-	String rslicenseorg; // 자격증 발행처
-	String rslicenseyear; // 자격증 발행년도
-	String rslanguage="어학명"; // 어학능력
-	String rslanguagelevel; // 어학수준
-	Date rsregdate;
-	Date rsmoddate; // 글 수정일 
+	Date apsubmitdate; // 지원 일자
+		
+	// 페이징 처리
+    private int start;
+    private int limit = 5;
+    private int pageLimit = 4;
+    private int page;
+    private int pageStart = 0;
+    private int pageEnd;
+    private int pageTotal;
 	
-	int cnt; // 총 이력서 개 수
 	
-	String [] careers = {"신입", "경력"};
-	
-	public String getUpfile() {
-		if(rsphoto == null || rsphoto.trim().equals("") ||  rsphoto.trim().equals("null") ) {
-			rsphoto = null;
+	public void calc(int total) {	
+		start = (page -1) * limit;
+		
+		pageStart = (page -1)/pageLimit*pageLimit +1;
+		pageEnd = pageStart + pageLimit -1;
+		
+		
+		pageTotal = total / limit;
+		if(total % limit != 0) {
+			pageTotal++;
 		}
-		return rsphoto;
+		
+		if(pageEnd > pageTotal) {
+			pageEnd = pageTotal;
+		}
+		
 	}
 	
-	public boolean isImg() {
-		if(getUpfile()==null) {
-			return false;
-		}
-		return Pattern.matches(".{1,}[.](bmp|png|gif|jpg|jpeg)", rsphoto.toLowerCase());
-	}
+	// 생성자에 필드 초기화 또는 설정 코드 추가
+    public ApplicantDTO() {
+        super();
+        // 필드 초기화 또는 설정
+        this.start = 0;
+        this.page = 1;
+    }
+
+    // 필드 값 설정 메서드 추가
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setPageLimit(int pageLimit) {
+        this.pageLimit = pageLimit;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public void setPageStart(int pageStart) {
+        this.pageStart = pageStart;
+    }
+
+    public void setPageEnd(int pageEnd) {
+        this.pageEnd = pageEnd;
+    }
+
+    public void setPageTotal(int pageTotal) {
+        this.pageTotal = pageTotal;
+    }
+
+	
 }
 
 

@@ -12,13 +12,13 @@ body{
     /* vh 추가설명 출처-mozilla */
     min-height: 100vh;
 
-    background: #23242a;
+    background: rgb(0, 0, 0);
 }
 .box{
     position: relative;
     width: 380px;
     height: 500px;
-    background-color: #1c1c1c;
+    background-color: rgb(0, 0, 0);
     border-radius: 8px;
     overflow: hidden;
     /* 이거빼고 보면 애니메이션 사각형으로 크게 제어를 햇지만 */
@@ -32,6 +32,7 @@ body{
     position: absolute;
     top: 0;
     inset: 0;
+   
 }
 .borderLine::before{
     content: '';
@@ -39,9 +40,9 @@ body{
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 420px;
+    height: 500px;
     background: linear-gradient(0deg, transparent, transparent,
-    #ffffff, #ffffff, #ffffff);
+    rgb(255, 255, 255), rgb(255, 255, 255), rgb(255, 255, 255));
     z-index: 1;
     /* animate 션 효과는 keyframes과 animation로 중간상태를 정의하여 나타냄 */
     /* https://webclub.tistory.com/621 참고 */
@@ -57,9 +58,9 @@ body{
     top: -50%;
     left: -50%;
     width: 380px;
-    height: 420px;
+    height: 500px;
     background: linear-gradient(0deg, transparent, transparent,
-    #ffffff, #ffffff, #ffffff);
+    rgb(255, 255, 255), rgb(255, 255, 255), rgb(255, 255, 255));
     z-index: 1;
     /* animate 션 효과는 keyframes과 animation로 중간상태를 정의하여 나타냄 */
     /* https://webclub.tistory.com/621 참고 */

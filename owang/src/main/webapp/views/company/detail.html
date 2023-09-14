@@ -5,6 +5,8 @@
 <title>company/detail</title>
 </head>
 <body>
+	
+	[[${session.solosession}]]
 <h1>company/detail</h1>
 	<table border="">
 		<tr>
@@ -18,15 +20,23 @@
 		</tr><tr>
 			<td>직원수</td><td th:text="${dto.cstaff}"/>
 		</tr><tr>
-			<td>매출액</td><td th:text="${dto.csales}"/>
+			<td>매출액</td><td th:text="|${dto.csales}(단위:백만원)|"/>
 		</tr>
 		<tr>
 			<td>내용</td><td th:text="${dto.ccontent}"/>
-		</tr><tr>
+		</tr>
+		<tr th:if="${session.cid == dto.cid}">
+				<th>사업자증명서</th>
+				<td th:text="${dto.ccompanyFile}"></td>
+			</tr>
+		<tr>
 			<td colspan="2" align="right">
-				<a th:href="|/review/list/${dto.cid}/1|">리뷰</a>
+				<a th:href="|/review/lo/${dto.cid}/1|">리뷰</a>
+				<a th:href="|/company/list/${dto.cid}/1|">채용공고</a>
+				<th:block th:if="${session.adminSession != null or session.cid == dto.cid}">
 				<a href="/company/modify" >수정</a>
 				<a href="/company/delete" >삭제</a>
+				</th:block>
 			</td>
 		</tr>
 	</table>

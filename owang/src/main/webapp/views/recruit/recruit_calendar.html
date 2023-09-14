@@ -58,14 +58,18 @@
 				},
 		
 				eventClick: function (eventInfo) {
-					// 클릭한 이벤트의 ID를 가져옵니다. 이벤트 ID는 서버에서 생성한 고유한 값이어야 합니다.
-					var eventId = eventInfo.event.id;
-					
-					// 상세 페이지로 이동할 URL을 생성합니다. 여기서는 "/recruit/detail"로 이동하는 예제입니다.
-					var detailURL = '/recruit/detail/1/' + eventId;
-
-					// 생성한 URL로 이동합니다.
-					window.location.href = detailURL;
+				    // 클릭한 이벤트의 ID를 가져옵니다. 이벤트 ID는 서버에서 생성한 고유한 값이어야 합니다.
+				    var eventId = eventInfo.event.id;
+				    
+				    // 이벤트 정보에서 cid 값을 가져옵니다.
+				    var eventcId = eventInfo.event.extendedProps.cid;
+				    console.log(eventInfo);
+				    
+				    // 상세 페이지로 이동할 URL을 생성합니다. 여기서는 "/recruit/detail"
+				    var detailURL = '/recruit/detail/' + eventcId + '/1/' + eventId;
+				    
+				    // 생성한 URL로 이동합니다.
+				    window.location.href = detailURL;
 				}
 
 			});

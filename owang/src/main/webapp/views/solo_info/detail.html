@@ -47,15 +47,15 @@
 			<th>재직중인 회사이름</th>
 			<td th:text="${dto.scompanyName}"></td>
 		</tr>
-		<tr th:if="${dto.scompanyFile != null && dto.scompanyFile != '' && dto.scompanyFile != 'null' }">
+		<tr >
 			<th>재직증명서</th>
 			<td th:text="${dto.scompanyFile}"></td>
 		</tr>
-
+		<!--th:if="${dto.scompanyFile != null && dto.scompanyFile != '' && dto.scompanyFile != 'null' }"-->
 
 
 	</table>
-
+	<a href="/">홈</a>
 	<a href="/solo/modify">수정</a>
 	<a href="/solo/delete">삭제</a>
 

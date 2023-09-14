@@ -6,16 +6,51 @@
 </head>
 <body>
 <h2>지원서 관리</h2>
+	<span th:if="${#lists.isEmpty(appdata)}">
+    	<h2>지원내역이 존재하지 않습니다</h2>
+	</span>
+	<p th:if="${appdata.isEmpty()}">
+        <h3><a href="/recruit/list/1">채용공고 보러가기</a></h3>
+    </p>    
+<span th:if="${not appdata.isEmpty()}" th:text="${'총 ' + appdata.size() + ' 건의 지원 내역이 있습니다.'}"></span>
 <table border="">
-	<tr>
+	<tr th:if="${not appdata.isEmpty()}">
 		<td>.no</td>
 		<td>지원일</td>
+		<td>지원자명</td>
 		<td>기업명</td>
 		<td>공고제목</td>
-		<td>이력서 관리</td>
-		<td>지원 취소</td>
+		<td>지원이력서</td>
+		<td>지원취소</td>
 	</tr>
-	
+    <!-- appdata가 값이 있는 경우 데이터 출력 -->
+    <tr th:each="adto, astart : ${appdata}">
+        <td th:text="${astart.count}"/>
+        <td th:text="${adto.apsubmitdate}" />
+        <td th:text="${adto.sname}" />
+        <td th:text="${adto.cname}" />
+        <td th:text="${adto.recruitTitle}" />
+        <td>
+			<a th:href="|detail/${adto.ano}|" th:text="${adto.aptitle}" /> 
+		</td>
+		<input type="hidden" th:value="${adto.ano}" name="ano"/>
+        <td>
+            <a th:href="|delete/${adto.ano}|">지원취소</a>
+        </td>
+    </tr>
+
+    <!-- 페이징 처리 -->
+<!--<tr>
+    <td colspan="5" align="center">
+        <a th:if="${applicantDTO.pageStart > 1}" th:href="${applicantDTO.pageStart - 1}" th:text="'[이전]'" />
+        <th:block th:each="ad: ${#numbers.sequence(applicantDTO.pageStart, applicantDTO.pageEnd)}">
+            <span th:if="${ad == applicantDTO.page}" th:text="${ad}" />
+            <a th:unless="${ad == applicantDTO.page}" th:href="${ad}" th:text="${ad}"></a>
+        </th:block>
+        <a th:if="${applicantDTO.pageEnd < applicantDTO.pageTotal}" th:href="${applicantDTO.pageEnd + 1}" th:text="'[다음]'" />
+    </td>
+</tr>-->
+
 </table>
 </body>
 </html>

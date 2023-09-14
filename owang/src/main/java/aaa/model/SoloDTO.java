@@ -13,6 +13,7 @@ import lombok.Data;
 public class SoloDTO {
 	MultipartFile mmff; 	//
 	public int sno;	//개인부여되는 번호
+	public String cid; // 기업아이디
     public String sid; // 아이디
     public String spw; // 비밀번호
     public String spw2; // 암호확인
@@ -28,8 +29,11 @@ public class SoloDTO {
     public String scompanyFile; // 직장의 재직자 증명파일
 	public int stype;
 	public Date sdate;
+	
 	public int sbcnt;
 	boolean sinjueng;
+	   public String searchOption;
+	    public String keyword;
 	//1 : 일반개인고객 , 2: 결제권 있는 개인고객, 3: 블랙개인
 	
 int start,limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
@@ -58,24 +62,73 @@ int start,limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
 		if(scompanyFile==null ||
 			scompanyFile.trim().equals("") ||
 			scompanyFile.trim().equals("null")) {
-			scompanyFile="null";
+			scompanyFile=null;
 		}
 		return scompanyFile;	
 }
-
+	public String getMmffName() {
+		return mmff.getOriginalFilename();
+	}
 	public SoloDTO() {
-		super();
+		// TODO Auto-generated constructor stub
 	}
+	
+	
+	
+	 // getter와 setter 메서드는 필드에 접근할 때 사용됨
+    public String getSearchOption() {
+        return searchOption;
+    }
 
-	public SoloDTO(int sno, String sid, String sname, int stype) {
+    public void setSearchOption(String searchOption) {
+        this.searchOption = searchOption;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+	public SoloDTO(MultipartFile mmff, int sno, String sid, String spw, String spw2, String sname, String sjumin,
+			String sbirth, int sage, String sgender, String sphone, String semail, String saddress, String scompanyName,
+			String scompanyFile, int stype, Date sdate, int sbcnt, boolean sinjueng, String searchOption,
+			String keyword, int start, int limit, int pageLimit, int page, int pageStart, int pageEnd, int pageTotal,
+			int cnt,String cid) {
 		super();
+		this.mmff = mmff;
 		this.sno = sno;
+		this.cid = cid;
 		this.sid = sid;
+		this.spw = spw;
+		this.spw2 = spw2;
 		this.sname = sname;
+		this.sjumin = sjumin;
+		this.sbirth = sbirth;
+		this.sage = sage;
+		this.sgender = sgender;
+		this.sphone = sphone;
+		this.semail = semail;
+		this.saddress = saddress;
+		this.scompanyName = scompanyName;
+		this.scompanyFile = scompanyFile;
 		this.stype = stype;
+		this.sdate = sdate;
+		this.sbcnt = sbcnt;
+		this.sinjueng = sinjueng;
+		this.searchOption = searchOption;
+		this.keyword = keyword;
+		this.start = start;
+		this.limit = limit;
+		this.pageLimit = pageLimit;
+		this.page = page;
+		this.pageStart = pageStart;
+		this.pageEnd = pageEnd;
+		this.pageTotal = pageTotal;
+		this.cnt = cnt;
 	}
-	
-	
 	
 	
 	
