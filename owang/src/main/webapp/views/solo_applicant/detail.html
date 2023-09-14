@@ -6,9 +6,17 @@
 </head>
 <body>
 <h2>지원서 디테일</h2>
+<table style="border: 1px solid #ccc; width:500px;" >
+	<tr>
+		<td><h3>지원 기업</h3></td><td th:text="${adto.cname}" />
+	</tr>
+	<tr>
+		<td><h3>지원 공고</h2></td><td th:text="${adto.recruitTitle}" />
+	</tr>
+</table>	
 <div>
 	<div>
-        <div style="border: 1px solid #ccc; width:700px;" >
+        <div style="border: 1px solid #ccc; width:500px;" >
 			<h3>기본정보</h3>
 			<div>
 				<table style="width:450px;">
@@ -31,10 +39,74 @@
 				</table>
 			</div>
 			<div>
-			
+				<img th:if="${adto.img}" th:src="|/resumephoto/${adto.apphoto}|"
+				style="width:160px; height:200px; border: 1px solid #ccc;"/>
+			</div>
+		</div>
+		
+		<!-- 이력서 제목 -->
         <div style="border: 1px solid #ccc; width:500px;">
 			<p>이력서 제목</p>
+			<td th:text="${adto.aptitle}" />
 		</div>
+		<!-- 경력 사항 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>경력</p>
+			<td th:text="${adto.apcareer}" />
+			<table th:if="${adto.apcareer == '경력'}">
+			    <!-- 경력일 경우에만 아래 필드들을 보여줍니다. -->
+			    <tr>
+					<td>회사명: <span th:text="${adto.apcompany}"></span></td>
+				</tr>
+			    <tr>
+					<td>근무 기간: <span th:text="${adto.apworkstart}" />~<span th:text="${adto.apworkend}" />
+					</td>
+				</tr>
+			    <tr>
+					<td>업무 내용: <span th:text="${adto.apwork}"></span></td>
+			    </tr>
+			</table>
+		</div>
+		<!-- 학력 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>학력</p>
+			<td th:text="${adto.apacademic}" />
+			<td th:text="${adto.apacademicstat}" />			
+		</div>
+		<!-- 자기소개 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+		    <p>자기소개서</p>
+		    <p th:if="${adto.apintroduce == null or adto.apintroduce.isEmpty()}" style="color:red;">등록된 자기소개서가 없습니다</p>
+			<table th:if="${adto.apintroduce != null or not #lists.isEmpty(adto.apintroduce)}">
+		    <p th:text="${adto.apintroduce}" />
+		</div>
+		<!-- 자격증 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>자격증</p>
+			<p th:if="${adto.aplicense == null or adto.aplicense.isEmpty()}" style="color:red;">등록된 자격증이 없습니다</p>
+			<table th:if="${adto.aplicense != null and not #lists.isEmpty(adto.aplicense)}">
+				<tr>
+				    <td>자격증명</td>
+				    <td th:text="${adto.aplicense}" />
+					<td>발행기관</td>
+				    <td th:text="${adto.aplicenseorg}" />
+				    <td>취득일자</td>
+				    <td th:text="${adto.aplicenseyear}" />
+				</tr>
+			</table>
+		</div>
+		<!-- 어학 능력 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>어학능력</p>
+			<p th:if="${adto.aplanguage == null or adto.aplanguage.isEmpty()}" style="color:red;">등록된 어학능력이 없습니다</p>
+			<table th:if="${adto.aplanguage != null or not #lists.isEmpty(adto.aplanguage)}">
+			<p th:text="${adto.aplanguage}" />
+			<p th:text="${adto.aplanguagelevel}" />
+		</div>
+		<div>
+			<a th:href="|/solo_applicant/home/${adto.page}|">목록으로</a>
+		</div>
+	</div>
 </div>
 </body>
 </html>

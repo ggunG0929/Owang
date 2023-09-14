@@ -42,5 +42,11 @@ public interface MCompanyMapper {
 				
 		
 		// 지원자 리스트 불러오기
-		List<ApplicantDTO> applist(String cid);
+		List<ApplicantDTO> applist(ApplicantDTO adto);
+		
+		// 지원서 디테일
+		ApplicantDTO appdetail(int ano, String cid);
+		
+		int appstate(int ano);
 }
+

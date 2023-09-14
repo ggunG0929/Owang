@@ -5,10 +5,10 @@
 <title>회원상품관리</title>
 </head>
 <body>
-	<!-- 유효기간이 오늘보다 이후일 경우 -->
-	<th:block th:if="${date != null}">				
-	<h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
-	</th:block>
+   <!-- 유효기간이 오늘보다 이후일 경우 -->
+   <th:block th:if="${date != null}">            
+   <h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
+   </th:block>
 <h1>회원 결제내역</h1>
     <table border="">
         <thead>
@@ -22,21 +22,21 @@
             </tr>
         </thead>
         <tbody>
-		<th:block th:if="${paymentData}!=null">
+      <th:block th:if="${paymentData}!=null">
             <tr th:each="payment : ${paymentData}">
-				<td th:text="${payment.merchant_uid}"></td>
-<!--				<td th:text="${payment.status}"></td>-->
-				<td th:text="${payment.paid_at}"></td>
-				<td th:text="${payment.name}"></td>
-				<td th:text="${payment.amount}"></td>
+            <td th:text="${payment.merchant_uid}"></td>
+<!--            <td th:text="${payment.status}"></td>-->
+            <td th:text="${payment.paid_at}"></td>
+            <td th:text="${payment.name}"></td>
+            <td th:text="${payment.amount}"></td>
                 <td><a th:href="${payment.receipt_url}">매출전표</a></td>
             </tr>
-		</th:block>
-		<th:block th:if="${paymentData}==null">
-			<tr>
-				<td colspan="6">결제 내역이 없습니다.</td>
-			</tr>
-		</th:block>
+      </th:block>
+      <th:block th:if="${paymentData}==null">
+         <tr>
+            <td colspan="6">결제 내역이 없습니다.</td>
+         </tr>
+      </th:block>
         </tbody>
     </table>
 </body>

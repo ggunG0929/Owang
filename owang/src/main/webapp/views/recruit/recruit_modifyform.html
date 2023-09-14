@@ -32,6 +32,12 @@
 				<option value="30">30일 후</option>
 				<option value="300">300일 후</option>
 			</select>
+			<!--==================== 은별 추가 부분====================-->
+			<!--급여추가-->
+			<tr> 
+				<td>급여</td>
+				<td><input type="text" th:field="*{recruitMoney}"/></td>
+			<!-- ==================== 은별 ====================-->
 			<tr>
 				<td>내용</td>
 				<td><textarea type="text" th:field="*{recruitContent}" rows="10" cols="30" required /></td>
@@ -39,10 +45,8 @@
 			<tr>
 				<td colspan="2" align="center">
 					<input type="submit" value="수정" />
-					<!--안나옴...그래서 그냥 주석처리함 ㅠㅠㅠ
-						<a th:href="|/recruit/list/${recruitDTO.page}|">뒤로가기</a>-->
 
-						<a th:href="@{'/recruit/list/' + ${dto.page}}">뒤로가기</a>
+						<a th:href="@{'/recruit/list/1'}">뒤로가기</a>
 
 				</td>
 

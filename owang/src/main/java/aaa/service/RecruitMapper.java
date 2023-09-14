@@ -12,6 +12,10 @@ public interface RecruitMapper {
 	// 게시글 정렬
 	List<RecruitDTO> recruitList(RecruitDTO dto);
 	
+	   // 게시글 정렬
+	   int recruitCnt(String cid);
+
+	
 	// 게시글 페이지 계산
 	int recruitListCnt();
 	

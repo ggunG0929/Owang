@@ -52,6 +52,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
     <if test="searchOption == 'name'">
         and sname like concat('%', #{keyword} ,'%')
     </if>
+     <if test="searchOption == 'type'">
+        and stype = #{keyword}  <!-- 유료회원(프리미엄회원)는 stype가 2이며, 일반회원은 stype가 1입니다. -->
+    </if>
 </sql>
 
 <!-- 검색 테스트 -->
@@ -70,6 +73,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
     </if>
     <if test="searchOption == 'name'">
         and sname like concat('%', #{keyword} ,'%')
+    </if>
+     <if test="searchOption == 'type'">
+        and stype = #{keyword}  <!-- 유료회원(프리미엄회원)는 stype가 2이며, 일반회원은 stype가 1입니다. -->
     </if>
 </sql>
 

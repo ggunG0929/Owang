@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 <insert id="insertSolo" parameterType="soloDTO">
     INSERT INTO solo (sid, cid, spw, sname, sbirth, sage, sgender, sphone, semail, saddress, scompanyName, scompanyFile, stype, sbcnt)
-    VALUES (#{sid}, #{cid} ,#{spw}, #{sname}, #{sbirth}, #{sage}, #{sgender}, #{sphone}, #{semail}, #{saddress}, #{scompanyName}, #{scompanyFile}, #{stype}, 0)
+    VALUES (#{sid}, #{cid} ,#{spw}, #{sname}, #{sbirth}, #{sage}, #{sgender}, #{sphone}, #{semail}, #{saddress}, #{scompanyName}, #{scompanyFile}, 1, 0)
 </insert>
 	
 	

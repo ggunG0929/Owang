@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
 <head>
@@ -9,7 +7,12 @@
 <body>
     <h1>ask/reply</h1>
     <h1> 관리자-답변작성 </h1>
-
+    [[${askdto.title}]]
+    
+    <header>
+       <div th:insert="~{header :: header}"></div>
+    </header>
+    
     <form method="post" th:action="|/ask/reply/${askdto.page}/${askdto.id}|" th:object="${askdto}">
         <!-- 페이지 번호와 부모 글의 ID를 전달 -->
         <input type="hidden" name="page" th:value="${askdto.page}" />
@@ -18,11 +21,14 @@
         <table border="">
 			<tr>
                 <td>문의글 제목 *</td>
-                <td><input type="text" name="title" th:value="${askdto.title}"  /></td>
+                <!--<td><input type="text" name="title" th:value="${askdto.title}"  /></td>-->
+                <td><input type="text" name="title" th:field="*{title}"  /></td> 
             </tr>
             <tr>
-                <td>작성자 *</td>
-                <td><input type="text" name="pname" th:value="${askdto.pname}"  /></td>
+                <td>작성자-관리자(고정)</td>
+                <!--원본-->
+                <!--<td><input type="text" name="pname" th:value="${askdto.pname}" /></td>-->
+                <td><input type="text" name="pname" th:value="관리자" readonly/></td>
                 <!--<td><input type="text" value="관리자" readonly /></td>-->
             </tr>
             <!-- 관리자만 답변을 달기에 암호는 없앴습니다...-->
@@ -47,7 +53,7 @@
             <tr>
                 <td colspan="2" align="center">
                     <input type="submit" value="답글 작성" />
-                    <a th:href="@{|/ask/detail/${askdto.page}/${askdto.id}|}">←돌아가기</a>
+                    <a th:href="@{|/ask/detail/${askdto.page}/${askdto.id}|}">돌아가기</a>
                     <!--<a th:href="@{|/ask/detail/${askdto.page}/${askdto.id}|}">돌아가기2</a>
                     <a th:href="@{|/ask/detail/${page}/${id}|}">돌아가기</a>-->
                 </td>

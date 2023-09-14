@@ -9,10 +9,47 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="askList" resultType="askDTO" parameterType="askDTO">
 		select * from ask order by gid desc, seq limit #{start}, #{limit}
 	</select>
+	<!-- 원본-성길짱 -->
+	 <!-- <select id="useraskList" resultType="askDTO" parameterType="askDTO">
+		SELECT * 
+		FROM (
+		  SELECT * 
+		  FROM ask
+		  WHERE gid IN (SELECT gid FROM ask WHERE pname = #{pname})
+		  UNION
+		  SELECT *
+		  FROM ask
+		  WHERE pname = "관리자"
+		) AS combined_result
+		ORDER BY gid DESC, seq ASC
+		LIMIT #{start}, #{limit};
+
+	</select>  -->
 	
-	<select id="useraskList" resultType="askDTO" parameterType="askDTO">
-		select * from ask where pname = #{pname} order by gid desc, seq limit #{start}, #{limit}
-	</select>
+	 <select id="useraskList" resultType="askDTO" parameterType="askDTO">
+		SELECT *
+		FROM ask
+		WHERE gid IN (
+		  SELECT gid
+		  FROM ask
+		  WHERE pname = #{pname}
+		) OR (
+		  pname = "관리자" AND seq IN (
+		    SELECT seq
+		    FROM ask
+		    WHERE pname = #{pname}
+		  )
+		)
+		ORDER BY gid DESC, seq ASC
+		LIMIT #{start}, #{limit};
+
+	</select> 
+	
+	
+	
+	
+
+
 	
 	
 	<select id="listCnt" resultType="Integer">
@@ -32,11 +69,14 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select max(id) from ask 
 	</select>
 	
+	
 	<insert id="askInsert" parameterType="askDTO">
 		insert into ask (title, pname, pw, content, upfile, reg_date, cnt, seq, lev, gid, id)
 		values
 		(#{title},#{pname},#{pw},#{content},#{upfile}, sysdate(),0,0,0, #{id}, #{id})
 	</insert>
+	
+	
 	<!-- 삭제하기 -->
 	<delete id="askDelete" parameterType="askDTO">
 		delete from ask where id = #{id}
@@ -50,19 +90,24 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</update>
 	
 	<!-- 파일없음 -->
-	<!-- <update id="fileDelete" parameterType="askDTO">
-		update ask set upfile = null where id = #{id} and pw= #{pw}
-	</update> -->
+	<update id="fileDelete" parameterType="askDTO">
+		update ask set upfile = null where id = #{id}
+	</update>
 	
 	<select id="idPwChk" parameterType="askDTO" resultType="Integer">
 		select count(*) from ask where id = #{id} and pw= #{pw}
 	</select>
 	
-	<!-- 답변쓰 -->
+	<!-- 답변쓰 원본쓰-->
 	<insert id="insertReply" parameterType="askDTO">
 	    insert into ask (title, pname, pw, content, upfile, reg_date, cnt, seq, lev, gid)
 	    values
-	    ('답글 제목', #{pname}, #{pw}, #{content}, '', sysdate(), 0, #{seq}, #{lev}, #{gid})
-	</insert>
+	    (#{title}, #{pname}, #{pw}, #{content}, '', sysdate(), 0, #{seq}, #{lev}, #{gid})
+	</insert> 
+	<!-- <insert id="insertReply" parameterType="askDTO">
+	    insert into ask (title, pname, pw, content, upfile, reg_date, cnt, seq, lev, gid)
+	    values
+	    (#{title}, '관리자', #{pw}, #{content}, '', sysdate(), 0, #{seq}, #{lev}, #{gid})
+	</insert> -->
 
 </mapper>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import aaa.model.AdminDTO;
 import aaa.model.MCompanyDTO;
 import aaa.model.ReviewDTO;
 import aaa.model.SoloDTO;
@@ -34,6 +35,7 @@ public class ReviewController {
 	String list(@PathVariable String cid, Model mm, @PathVariable int page, HttpSession session, ReviewDTO dto) {
 		SoloDTO sdto = (SoloDTO) session.getAttribute("solosession");
 		MCompanyDTO cdto = (MCompanyDTO) session.getAttribute("companysession");
+		AdminDTO adto = (AdminDTO)session.getAttribute("adminSession");
 		System.out.println("뀨" + sdto);
 		System.out.println("기업뀨" + cdto);
 		//System.out.println(sdto.isSinjueng() + "이게 트루가 아님뭐야임마");
@@ -50,6 +52,9 @@ public class ReviewController {
 		        mm.addAttribute("mainData", data);
 		        dto.setMsg("기업회원님 입장");
 		        dto.setGoUrl("/review/list/" + dto.getCid() + "/1");
+		    }else if(!cdto.isCapproval()) {
+		    	dto.setMsg("인증이 아직 완료 되지 않음");
+				dto.setGoUrl("/product/notice");
 		    }
 		} else if (sdto != null) {
 		    // 개인회원인 경우의 처리
@@ -65,9 +70,12 @@ public class ReviewController {
 		        dto.calc(reviewMapper.reviewCnt(cid));
 		        List<ReviewDTO> data = reviewMapper.reviewList(dto);
 		        mm.addAttribute("mainData", data);
-		        dto.setMsg("리뷰권구입고객님 입장");
+		        dto.setMsg("리뷰 가능한 개인회원( 입장");
 		        dto.setGoUrl("/review/list/" + dto.getCid() + "/1");
 		    }
+		}else if (adto != null) {
+			dto.setMsg("관리자 입장");
+	        dto.setGoUrl("/review/list/" + dto.getCid() + "/1");
 		}
 		
 		return "review/review_alert";
@@ -86,8 +94,8 @@ public class ReviewController {
 
 	// 리뷰 작성 페이지
 	@GetMapping("/insert/{cid}/{page}")
-	String insert(Model mm, ReviewDTO dto) {
-
+	String insert(Model mm, ReviewDTO dto, HttpSession session) {
+		
 		mm.addAttribute("mainData", reviewMapper.reviewList(dto));
 		return "review/review_insert";
 	}

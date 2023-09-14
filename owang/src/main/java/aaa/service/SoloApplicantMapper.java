@@ -15,7 +15,7 @@ public interface SoloApplicantMapper {
 	void appinsert(ApplicantDTO adto);
 	
 	// 지원서 리스트 출력	
-	List<ApplicantDTO> applist(String sid);
+	List<ApplicantDTO> applist(ApplicantDTO adto);
 
 	// 지원서 디테일
 	ApplicantDTO appdetail(int ano, String sid);

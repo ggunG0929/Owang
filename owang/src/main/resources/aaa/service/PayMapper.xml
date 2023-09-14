@@ -85,7 +85,6 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<update id="payCancel">
 		update payment set 
 		amount = 0
-		where imp_uid = #{impUid}
+		where imp_uid = #{impUId}
 	</update>
-	
 </mapper>

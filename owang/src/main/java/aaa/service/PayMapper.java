@@ -19,11 +19,10 @@ public interface PayMapper {
 	int insert(PaymentDTO dto);
 //	// 결제내역삭제
 //	int delete(PaymentDTO dto);
-	// 결제내역수정 - 결제취소시
+	// 결제내역수정
 	void payCancel(String impUid);
 	// 아임포트고유번호로 db에서 아이디 가져오기
 	String idget(String impUid);
-//	String idgetNopaydb(String name, String tel, String mail);
 	// id로 impuid리스트
     List<String> impuids(String id);
     // 일별 매출액

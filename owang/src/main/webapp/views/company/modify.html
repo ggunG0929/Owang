@@ -27,6 +27,10 @@
 				<td><input type="text" th:field="*{cname}" /></td>
 			</tr>
 			<tr>
+				<td>대표자</td>
+				<td><input type="text" th:field="*{cceo}" /></td>
+			</tr>
+			<tr>
 				<td>설립연도</td>
 				<td><input type="text" th:field="*{cbuild}" /></td>
 			</tr>
@@ -49,18 +53,29 @@
 				<td>업종</td>
 				<td><input type="text" th:field="*{ccategory}" /></td>
 			</tr>
+			
 			<tr>
 				<td>직원수</td>
 				<td><input type="text" th:field="*{cstaff}" /></td>
 			</tr>
 			<tr>
-				<td>매출액</td>
+				<td>한해매출액(단위:100만원)</td>
 				<td><input type="text" th:field="*{csales}" /></td>
+			</tr>
+			<tr>
+				<td>이메일</td>
+				<td><input type="email" th:field="*{cemail}" /></td>
+			</tr>
+			<tr>
+				<td>전화번호</td>
+				<td><input type="text" th:field="*{ccall}" /></td>
 			</tr>
 			<tr>
 				<td>내용</td>
 				<td><textarea th:field="*{ccontent}" /></td>
 			</tr>
+			
+			
 
 			<tr>
 				<td>회사사업자등록증</td>

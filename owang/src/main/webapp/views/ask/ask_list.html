@@ -7,8 +7,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/notice/css.css}">
 </head>
 <style>
-h4,table{text-align: center;}	
-table{justify-content: center;}
+h4{text-align: center;}	
+
 </style>
 
 <body>
@@ -18,9 +18,10 @@ table{justify-content: center;}
     </header>
     
 	<h3>ask / list</h3>
-	<h3>이곳은 질문 리스트입니다. </h3>
+	<h3>이곳은 질문 리스트입니다.</h3>
 	<h4>질문답변은 개인정보관계로 본인글만 확인 가능합니다.</br>
 		감사합니다.
+		
 	</h4>
 	<hr>
 	<table border="">
@@ -39,7 +40,7 @@ table{justify-content: center;}
 						<!--<span th:utext="${'&nbsp;&nbsp;' * askdto.lev}"></span>-->
 						<!--공백 한번으로 줄임-->
 						<span th:utext="${'&nbsp;' * askdto.lev}"></span>
-						<span th:if="${askdto.lev > 0}">[RE]</span>
+						<span th:if="${askdto.lev > 0}">└[RE]</span>
 						<a th:href="|/ask/detail/${askDTO.page}/${askdto.id}|" th:text="${askdto.title}"></a>
 					</td>
 					<td th:text="${askdto.pname}"/>

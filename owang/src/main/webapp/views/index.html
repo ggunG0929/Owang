@@ -3,9 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	
 </head>
 <body>
-	<header>
+    <header>
        <div th:insert="~{header :: header}"></div>
     </header>
     <th:blcok th:if="${session.companysession}">
@@ -16,6 +17,7 @@
 	<th:block th:unless="${session.companysession}">
 	<h1>사용자 세션</h1>
 	[[${session.solosession}]]
+	
 	</th:block>
 	<th:block th:if="${session.adminSession}">
 	<h1>관리자 세션</h1>

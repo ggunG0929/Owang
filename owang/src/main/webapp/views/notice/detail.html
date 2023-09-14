@@ -19,6 +19,14 @@
 			<td>조회수</td><td th:text="${ndto.cnt}"/>
 		</tr>
 		
+		<tr th:if="${ndto.upfile != null}">
+		    <td>사진</td>
+		    <td>
+		        <img th:if="${ndto.img}" th:src="|/up/${ndto.upfile}|"/>
+		        <a th:unless="${ndto.img}" th:text="${ndto.upfile}"></a>
+		    </td>
+		</tr>
+		
 		<tr>
 			<td>내용</td><td th:text="${ndto.content}"/>
 		</tr><tr>

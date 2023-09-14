@@ -20,9 +20,9 @@ public class MCompanyDTO {
 	String cpw;	//비밀번호1
 	String cpw2;	//비밀번호2
 	String cname;	//회사명
-	String cemail;
 	String cbuild;	//설렵닌도
 	String ccategory;	//업종
+	String cemail;// 이메일
 	int cstaff;	//직원수
 	int csales;	//1년매출액
 	String ccall;	//회사전화번호
@@ -30,7 +30,7 @@ public class MCompanyDTO {
 	String caddress;	//주소
 	String ccompanyFile;	//사업자등록증파일 파일명 cid로저장해주기
 	String ccontent;
-	int ctype=1;
+	int ctype;
 	Date cdate;
 	int cbcnt;
 	boolean capproval;

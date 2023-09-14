@@ -11,6 +11,7 @@
 			color: #f00;
 		}
 	</style>
+
 </head>
 
 <body>
@@ -31,48 +32,48 @@
 			</tr>
 			<tr>
 				<td>비밀번호</td>
-				<td><input type="password" name="spw"></td>
+				<td><input type="password" name="spw" required></td>
 			</tr>
 			<tr>
 				<td>암호확인</td>
-				<td><input type="password" name="spw2" />
+				<td><input type="password" name="spw2" required/></td>
 			</tr>
 			<tr>
 			<tr>
 				<td>이름</td>
-				<td><input type="text" name="sname" />
+				<td><input type="text" name="sname" required/></td>td>
 				</td>
 			</tr>
 			<tr>
 				<td>주민등록번호 앞자리</td>
 				<td>
-					<input type="text" id="jumin" name="sjumin" />
+					<input type="text" id="jumin" name="sjumin" required/>
 					<input type="button" onclick="Birth()" value="클릭!" />
 				</td>
 			</tr>
 			<tr>
 				<td>생년월일</td>
-				<td><input type="text" id="birth" name="sbirth" readonly /></td>
+				<td><input type="text" id="birth" name="sbirth" required readonly /></td>
 			</tr>
 			<tr>
 				<td>나이</td>
-				<td><input type="number" id="age" name="sage" readonly /></td>
+				<td><input type="number" id="age" name="sage" required readonly /></td>
 			</tr>
 			<tr>
 				<td>성별</td>
 				<td>
-					<label><input type="radio" name="sgender" value="남성" checked> 남성</label>
-					<label><input type="radio" name="sgender" value="여성"> 여성</label>
+					<label><input type="radio" name="sgender" value="남성" checked required> 남성</label>
+					<label><input type="radio" name="sgender" value="여성" required> 여성</label>
 				</td>
 			</tr>
 			<tr>
 				<td>휴대폰번호</td>
-				<td><input type="text" name="sphone" /></td>
+				<td><input type="text" name="sphone" required/></td>
 			</tr>
 			<tr>
 				<td>이메일</td>
 				<td>
-					<input type="text" id="email" name="email" />
+					<input type="text" id="email" name="email" required/>
 					@
 					<select id="emailDomain">
 						<option value="naver.com">naver.com</option>
@@ -88,7 +89,7 @@
 			</tr>
 			<tr>
 				<td>주소</td>
-				<td><input type="text" name="saddress" />
+				<td><input type="text" name="saddress" required/>
 				</td>
 			</tr>
 
@@ -102,31 +103,69 @@
 				<td>회사 이름</td>
 				<td>
 					<input type="text" name="scompanyName" list="company-list" class="company-list" />
-					
+					<input type="hidden" name="cid" id="cid" />
+
 					<datalist id="company-list">
 						<th:block th:each="recruit : ${mainData}">
-							<option th:value="${recruit.cname}" class="company-list" />
+						     <option th:text="${recruit.cname}" class="company-list" th:data-company-number="${recruit.cid}" />
 							 
-							<span th:text="|회사번호 ${recruit.ccall}|" class="company-list"></span>
-							
+							 
+         					 <span th:text="|회사번호 ${recruit.ccall}|" class="company-list"></span>
+							 
 						</th:block>
 					</datalist>
 				</td>
-			</tr>
-
+				</tr>
+				
+			
+				
+				
 			<!-- 회사 재직증명서 파일 업로드 필드 -->
 			<tr id="companyFileMenu" style="display:none;">
 				<td>회사 재직증명서</td>
 				<td><input type="file" name="mmff" />
 				</td>
 			</tr>
-		</table> <!-- 나머지 필드들 -->
+			</table> <!-- 나머지 필드들 -->
 		
 
 		<input type="submit" value="가입" />
 	</form>
+	
+		
 
 	<script>
+	
+  document.addEventListener('DOMContentLoaded', function() {
+            const scompanyNameInput = document.querySelector('input[name="scompanyName"]');
+            const cidInput = document.getElementById('cid');
+            const dataListOptions = document.querySelectorAll('#company-list option');
+            const companyNumberElement = document.getElementById('company-number');
+
+            // 입력 필드에 입력이 발생할 때마다 실행되는 함수
+            scompanyNameInput.addEventListener('input', function() {
+                const inputValue = scompanyNameInput.value;
+                
+                // 모든 option 요소를 순회하면서 일치하는 값을 찾습니다.
+                for (const option of dataListOptions) {
+                    if (option.value === inputValue) {
+                        // 일치하는 값이 있으면 해당 회사번호를 숨겨진 input에 설정합니다.
+                        cidInput.value = option.getAttribute('data-company-number');
+                        // 회사번호를 출력합니다.
+                        companyNumberElement.textContent = `회사번호: ${cidInput.value}`;
+                        return; // 값을 찾았으므로 반복문 종료
+                    }
+                }
+
+                // 일치하는 값이 없을 경우 숨겨진 input과 출력을 비웁니다.
+                cidInput.value = '';
+                companyNumberElement.textContent = '';
+            });
+        });
+
+
+		
+		
 		// 이메일 셀렉트 박스의 값을 변경할 때마다 호출되는 함수
 		document.getElementById("emailDomain").addEventListener("change", function () {
 			updateEmailField();

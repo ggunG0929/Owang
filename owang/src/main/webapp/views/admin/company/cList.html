@@ -20,13 +20,13 @@
 	</form>
 	<table border="">
 		<tr>
-			<td>번호</td>
-			<td>기업 상세 페이지</td>
-			<td>기업아이디</td>
-			<td>결제일</td>
-			<td>조회수</td>
-			<td>회원 구분</td>
-			<td>간편 탈퇴</td>
+			<th>번호</th>
+			<th>기업 상세 페이지</th>
+			<th>기업아이디</th>
+			
+			
+			<th>회원 구분</th>
+			<th>간편 탈퇴</th>
 		</tr>
 		<tr th:each="dto, dtoStat : ${realData}">
 			<td th:text="${dtoStat.count + MCompanyDTO.start}"/>
@@ -36,14 +36,11 @@
 			<td >
 				<a th:text="${dto.cid}"></a>
 			</td>
-			<td th:text="${dto.cdate}"/>
-			<td th:text="${dto.cnt}"/>
-			<td align="center">
-			    <span th:switch="${dto.ctype}">
-			        <span th:case="1">기본</span>
-			        <span th:case="2">유료</span>
-			        <span th:case="*">기타</span> <!-- 다른 값에 대한 기본 처리 -->
-			    </span>
+			<td >
+			<span th:if="${dto.ctype == 2}" th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></span>
+			<span th:unless="${dto.ctype == 2}" th:text="일반회원"></span>
+			</td>
+		
 			</td>
 			<td align="center">
 				<a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')" th:text="삭제">삭제</a>
@@ -73,12 +70,14 @@
 	
 	<table border="">
 		<tr>
-			<td>번호</td>
-			<td>제목</td>
-			<td>작성자</td>
-			<td>결제일</td>
-			<td>조회수</td>
-			<td>간편 수락</td>
+			<th>번호</th>
+			<th>기업페이지</th>
+			<th>기업아이디</th>
+			
+			<th>회원 구분</th>
+			<th>간편 탈퇴</th>
+			<th>회원 삭제</th>
+	
 		</tr>
 		<tr th:each="dto, dtoStat : ${mainData}">
 			<td th:text="${dtoStat.count + MCompanyDTO.start}"/>
@@ -88,12 +87,18 @@
 			<td >
 				<a th:text="${dto.cid}"></a>
 			</td>
-			<td th:text="${dto.cdate}"/>
-			<td th:text="${dto.cnt}"/>
+				<td >
+			<span th:if="${dto.ctype == 2}" th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></span>
+			<span th:unless="${dto.ctype == 2}" th:text="일반회원"></span>
+			</td>
+		
 			<td>
 				<a th:href="@{|/admin_company/checkId/${dto.cno}|}" onclick="return confirm('회원가입을 허락하시겠습니까?')" th:text="수락"></a>
 			</td>
-			
+				<td align="center">
+				<a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')" th:text="삭제">삭제</a>
+
+			</td>
 		</tr>
 		<tr>
 			<td colspan="6" align="center">

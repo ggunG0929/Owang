@@ -8,6 +8,11 @@
 <h1>ask/detailㄴ</h1>
 [[${askdto}]]
 
+	<header>
+       <div th:include="header :: header"></div>
+    </header>
+    
+
 	<table border="">
 		<tr>
 			<td>id</td><td th:text="${askdto.id}"/>
@@ -40,13 +45,13 @@
 		</tr><tr>
 			<td colspan="2" align="right">
 				<!--관리자만 삭제 ... 헷갈려서 admin)앞에 붙였습니다.-->
-				<a th:href="|/ask/delete/${askdto.page}/${askdto.id}|" th:if="${session.adminSession}">admin)삭제</a>
+				<a th:href="|/ask/delete/${askdto.page}/${askdto.id}|" th:if="${session.adminSession}">삭제</a>
 				<!--관리자만 수정-->
-				<a th:href="|/ask/modify/${askdto.page}/${askdto.id}|" th:if="${session.adminSession}">admin)수정</a>
+				<a th:href="|/ask/modify/${askdto.page}/${askdto.id}|" th:if="${session.adminSession}">수정</a>
 				
 				<a th:href="|/ask/list/${askdto.page}|">목록으로</a>
 				<!--관리자만 답글-->
-				<a th:href="|/ask/reply/${askdto.page}/${askdto.id}|" th:if="${session.adminSession}">admin)답글</a>
+				<a th:href="|/ask/reply/${askdto.page}/${askdto.id}|" th:if="${session.adminSession}">답글</a>
 				
 				
 			</td>

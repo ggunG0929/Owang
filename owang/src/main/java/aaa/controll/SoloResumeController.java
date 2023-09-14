@@ -120,13 +120,14 @@ public class SoloResumeController {
 		System.out.println("수정제출 : " + rdto);
 		pd.setMsg("수정실패");
 		pd.setGoUrl("/solo_resume/modify/" + rdto.rsid);
+		System.out.println("수정전"+rdto);
 		
+		fileSave(rdto, request);
 		int cnt = rsmapper.resumemodify(rdto);
 		System.out.println("modifyReg:"+cnt);
 		if(cnt>0) {
-			
+			System.out.println("수정후"+rdto);
 			// 수정이 되었을때 파일을 저장해야 함 (파일 저장)
-			fileSave(rdto, request);
 			pd.setMsg("수정되었습니다.");
 			pd.setGoUrl("/solo_resume/detail/"+rdto.getRsid());
 		}
@@ -135,12 +136,15 @@ public class SoloResumeController {
 	}
 	
 	// 수정폼에서 파일 삭제
-	@PostMapping("fileDelete")
-	String fileDelete(SoloResumeDTO rdto, PageData pd, HttpServletRequest request) {
+	@PostMapping("fileDelete/{rsid}")
+	String fileDelete(SoloResumeDTO rdto,
+			PageData pd, 
+			HttpServletRequest request,
+			@PathVariable int rsid) {
 		
 		System.out.println("파일딜리트에 어서와  :"+ rdto);
-		
-		SoloResumeDTO delDTO = rsmapper.resumefiledetail(rdto.getRsid());
+		 System.out.println(rdto.getSid()+"안왔나요?");
+		SoloResumeDTO delDTO = rsmapper.resumefiledetail(rsid);
 		pd.setMsg("파일 삭제실패");
 		// 삭제 실패하면 수정페이지로
 		pd.setGoUrl("/solo_resume/modify/" + rdto.getRsid());

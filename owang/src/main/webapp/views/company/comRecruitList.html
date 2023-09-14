@@ -20,7 +20,7 @@
 		<tr th:each="dto, dtoStat : ${mainData}">
 			<td th:text="${dtoStat.count + recruitDTO.start}"/>
 			<td >
-				<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
+				<a th:href="|/recruit/detail/${dto.cid}/1/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
 			</td>
 			<td >
 				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cid}"></a>

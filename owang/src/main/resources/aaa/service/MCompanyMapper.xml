@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
     INSERT INTO company (cid, cpw, cname, cbuild, ccategory, cstaff, csales, ccall, cceo, caddress, ccompanyFile, ccontent, ctype, cbcnt)
     VALUES (
         #{cid},#{cpw},#{cname},#{cbuild},#{ccategory},#{cstaff},#{csales},#{ccall},#{cceo},#{caddress},#{ccompanyFile},
-        #{ccontent},#{ctype},0
+        #{ccontent},1,0
     )
 </insert>
 
@@ -66,22 +66,32 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
     select cid from company where cname = #{fname} and cemail = #{femail}
 </select>
 
-<select id="applist" resultType="aDTO">
+	<!-- 재훈 추가 -->
+	<select id="applist" resultType="aDTO" parameterType="aDTO">
    	 	select 
-   	 	ano, recruit_id, recruit_title, sid, sname, rsid, apphoto, aptitle, apcareer, apcompany, apworkstart, apworkend, apwork, 
-		apacademic, apacademicstat, apintroduce, aplicense, aplicenseorg, aplicenseyear, aplanguage, aplanguagelevel, 
-		apsubmitdate, cname, cid
+	   	 	ano, recruit_id, recruit_title, sid, sname, rsid, apphoto, aptitle, apcareer, apcompany, apworkstart, apworkend, apwork, 
+			apacademic, apacademicstat, apintroduce, aplicense, aplicenseorg, aplicenseyear, aplanguage, aplanguagelevel, 
+			apsubmitdate, cname, cid, apcancel
    	 	from applicant 
-   	 	where cid = #{cid}
+   	 	where cid = #{cid} and apcancel = 0
+		limit #{start}, #{limit}
+	</select>
+	
+	<select id="appdetail" resultType="aDTO">
+		select * from applicant where ano = #{ano} and cid = #{cid}
 	</select>
 
-<delete id="appdelete"  parameterType="aDTO">
-	delete from applicant where ano = #{ano}
-</delete>
-
-<update id="appstate" parameterType="mcDTO">
-	update company set
-	ctype = #{ctype}, cdate = #{cdate}
-	where cid = #{cid}
-</update>
+	<delete id="appdelete"  parameterType="aDTO">
+		delete from applicant where ano = #{ano}
+	</delete>
+	
+	<update id="appstate" parameterType="Integer">
+		update applicant set
+		apcancel = 1
+		where ano = #{ano}
+	</update>
+	
+	<select id="apptotal" resultType="Integer">
+		select count(*) from applicant where cid = #{cid}
+	</select>
 </mapper>

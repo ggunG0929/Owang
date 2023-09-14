@@ -16,9 +16,14 @@
 </head>
 <body>
 
-<h2> ask/수정페이지! </h2>
+<h2> ask/수정페이지입니다. </h2>
 
-</body>
+	<header>
+       <div th:include="header :: header"></div>
+    </header>
+    
+
+
 <form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
 	<input type="hidden" th:field="*{id}" />
 	<input type="hidden" th:field="*{page}" />
@@ -26,7 +31,8 @@
 <table border="">
 		<tr>
 			<td>제목</td>
-			<td><input type="text" th:field="*{title}" /></td>
+			<td><input type="text" th:field="*{title}"/></td>
+			
 		</tr>
 		<tr>
 			<td>작성자</td>
@@ -36,7 +42,8 @@
 			<td>파일</td>
 			<td>
 				<th:block th:if="${dto.upfile != null}">	
-				<input type="text" th:field="*{upfile}" readonly/>
+				<!--<input hidden="text" th:field="*{upfile}" readonly/>-->
+				<input hidden="hidden" th:field="*{upfile}" readonly/>
 				<input  type="button" onclick="fileDelete()" value="파일삭제"/>
 				</th:block>
 				<input th:if="${dto.upfile == null}" type="file" th:field="*{mmff}"/>
@@ -52,11 +59,11 @@
 				<!--<a th:href="|/ask/detail/${askdto.page}/${askdto.id}|" th:text="뒤로"/>-->
 			</td>
 		</tr>
-	</table>-->
+	</table>
 
 
 
-
+</body>
 
 
 </html>

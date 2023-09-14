@@ -58,37 +58,7 @@
 		</tr>
 
 		
-		<tr>
-			<td colspan="5" align="center">
-				<!-- [처음] 링크 -->
-				<a th:if="${recruitDTO.pageStart > 1}"
-					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=1)}"
-					th:text="'[처음]'" />
-			
-				<!-- [이전] 링크 -->
-				<a th:if="${recruitDTO.page > 1}"
-					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.page - 1})}"
-					th:text="'[이전]'" />
-			
-				<!-- 페이지 번호 링크 -->
-				<th:block th:each="no: ${#numbers.sequence(recruitDTO.pageStart, recruitDTO.pageEnd)}">
-					<span th:if="${no == recruitDTO.page}" th:text="${no}" />
-					<a th:unless="${no == recruitDTO.page}"
-						th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${no})}"
-						th:text="${no}" />
-				</th:block>
-			
-				<!-- [다음] 링크 -->
-				<a th:if="${recruitDTO.page < recruitDTO.pageTotal}"
-					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.page + 1})}"
-					th:text="'[다음]'" />
-			
-				<!-- [맨끝] 링크 -->
-				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}"
-					th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.pageTotal})}"
-					th:text="'[맨끝]'" />
-			</td>
-		</tr>
+		
 		
 		<tr align="center">
 			<td colspan="5"><a th:href="|/recruit/list/1|">목록으로</a></td>

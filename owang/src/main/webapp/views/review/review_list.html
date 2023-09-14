@@ -62,12 +62,12 @@
 	[[${mainData}]]<br>
 	[[${session.solosession}]]
 	
-	<th:block th:if="${session.solosession == null or session.solosession.stype != 2 }">
-    	<p>결제 혹은 리뷰 작성을 하셔야합니다. 나는 review_list에 있어</p>
-    	<p><a href="/product/notice">상품안내</a></p>
+	
     	
-	</th:block>
-	<th:block th:unless="${session.solosession == null or session.solosession.stype != 2}">
+    	
+    	
+	
+	
 	
 		<h1>리뷰 게시판</h1>
 
@@ -143,8 +143,9 @@
 
 			</ul>
 		</div>
-	</th:block>
-	<a th:href="|/review/insert/${reviewDTO.cid}/${reviewDTO.page}|">글쓰기</a>
+	
+	<a th:href="|/review/insert/${reviewDTO.cid}/${reviewDTO.page}|"
+		>글쓰기</a>
 </body>
 
 </html>

@@ -81,30 +81,6 @@
         });
     });
 
-// 근무 기간 달력
-$(function() {
-    $("#rsworkstart").datepicker({
-        dateFormat: 'yy-mm-dd',  // 날짜 형식 (예: 2023-09-15)
-        changeMonth: true,
-        changeYear: true,
-        yearRange: '1950:2030'   // 선택 가능한 연도 범위
-    });
-
-    $("#rsworkend").datepicker({
-        dateFormat: 'yy-mm-dd',  // 날짜 형식 (예: 2023-09-15)
-        changeMonth: true,
-        changeYear: true,
-        yearRange: '1950:2030'   // 선택 가능한 연도 범위
-    });
-    
-    $("#rslicenseyear").datepicker({
-	    dateFormat: 'yy-mm-dd',  // 날짜 형식 (예: 2023-09-15)
-	    changeMonth: true,
-	    changeYear: true,
-	    yearRange: '1950:2030'   // 선택 가능한 연도 범위
-    });
-});
-
     var careerCount = 0;  // 경력 개수 초기값
 
     function addCareer() {
@@ -206,7 +182,7 @@ $("#file").on('change',function(){
 							<td th:text="${solosession.sphone}"></td>
 						</tr>
 						<tr style="width:250px;">
-				    		<input type="file" id="file" th:field="*{rsmmff}" />
+				    		<input type="file" id="file" th:field="*{rsmmff}" required />
 				    	</tr>
 					</div>
 				</table>
@@ -244,8 +220,8 @@ $("#file").on('change',function(){
 	                <tr>
 	                    <td>근무 기간</td>
 	                    <td>
-							<input type="date" id="rsworkstart" th:field="*{rsworkstart}"onchange="printCareer()" />
-	                    	<input type="date" id="rsworkend" th:field="*{rsworkend}" onchange="printCareer()" />
+							<input type="date" id="rsworkstart" th:field="*{rsworkstart}" />
+	                    	<input type="date" id="rsworkend" th:field="*{rsworkend}"  />
 	                    </td>
 	                </tr>
 	                <tr>
@@ -308,7 +284,7 @@ $("#file").on('change',function(){
                         <td>발행기관</td>
                         <td><input type="text" th:field="*{rslicenseorg}" placeholder="발행기관" /></td>
                         <td>발행년도</td>
-                        <td><input type="date" id="rslicenseyear" th:field="*{rslicenseyear}" placeholder="발행년도" onchange="printCareer()" /></td>
+                        <td><input type="date" id="rslicenseyear" th:field="*{rslicenseyear}" placeholder="발행년도"/></td>
                     </tr>
                 </table>
                 <button onclick="hideLicense()" class="btn_hide" id="hideli">-</button>

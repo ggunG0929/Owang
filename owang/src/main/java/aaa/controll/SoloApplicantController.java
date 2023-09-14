@@ -1,5 +1,7 @@
 package aaa.controll;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -51,32 +53,39 @@ public class SoloApplicantController {
 	MCompanyMapper mcmapper;
 
 	// 지원서 리스트
-	@RequestMapping("home")
-	String solo_recruit(Model mm, ApplicantDTO adto, HttpSession session) {
+	@RequestMapping("home/{page}")
+	String solo_recruit(Model mm, ApplicantDTO adto, 
+			 @PathVariable int page,HttpSession session) {
 		String sid = (String) session.getAttribute("sid");
-		
-		List<ApplicantDTO> appdata = samapper.applist(sid);
+		adto.calc(samapper.apptotal());
+		adto.setPage(page);
+		adto.setSid(sid);
+		System.out.println(adto);
+		List<ApplicantDTO> appdata = samapper.applist(adto);
 		mm.addAttribute("appdata", appdata);
+		System.out.println("나오란망ㄹ야 : " + adto.getStart() + ", " +  adto.getLimit());
 
-		//mm.addAttribute("adto", adto);
 		System.out.println(appdata);
 		return "solo_applicant/home";
 	}
 
 	// 지원서 디테일
-	@RequestMapping("detail/{ano}") 
-	String solo_recruit_detail(Model mm, HttpSession session, ApplicantDTO adto) {
+	@RequestMapping("detail/{page}/{ano}") 
+	String solo_recruit_detail(Model mm, HttpSession session
+			, ApplicantDTO adto,  SoloResumeDTO rdto
+			, @PathVariable int page, @PathVariable int ano) {
 
 		// 세션
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 		mm.addAttribute("solosession", solosession);
-		
+		int rsid = adto.getRsid();
 		// 
+		adto.setPage(page);
 		mm.addAttribute("adto", samapper.appdetail(adto.ano, solosession.sid));
 		System.out.println(solosession);
 		System.out.println(adto);
 		return "solo_applicant/detail";
-	}	
+	}
 	
 	// 지원서 제출 페이지
 	@GetMapping("submit/{page}/{cid}/{id}")
@@ -151,14 +160,15 @@ public class SoloApplicantController {
 		System.out.println("==================================");
 
 		pd.setMsg("접수가 완료되었습니다.");
-		pd.setGoUrl("/solo_applicant/home");
+		pd.setGoUrl("/solo_applicant/home" + "/" + adto.getPage());
 
 		return "solo_applicant/alert";
 	}
 
 	// 지원서 삭제 (지원 취소)
-	@RequestMapping("delete/{ano}")
-	String deleteApp(ApplicantDTO adto, PageData pd, @PathVariable int ano, HttpSession session) {
+	@RequestMapping("delete/{page}/{ano}")
+	String deleteApp(ApplicantDTO adto, PageData pd
+			, @PathVariable int ano, @PathVariable int page, HttpSession session) {
 		// 일단 삭제이벤트 생성
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 		ApplicantDTO apdto = samapper.appdetail(adto.ano, solosession.sid);
@@ -173,15 +183,37 @@ public class SoloApplicantController {
 			System.out.println();
 			//System.out.println(adto);
 			pd.setMsg("삭제되었습니다.");
-			pd.setGoUrl("/solo_applicant/home");
+			pd.setGoUrl("/solo_applicant/home" + "/" + adto.getPage());
 		}
 		
 		
 		return "solo_applicant/alert";
 	}
 	
+	/*
+	// 지원서에서 채용공고 디테일 이동
+	@RequestMapping("detail/{page}/{id}")
+	String detail(Model mm, @PathVariable int page, @PathVariable int id) {
+		// 조회수증가
+		recruitMapper.recruitAddCont(id);
+		
+		RecruitDTO dto = recruitMapper.recruitDetail(id);
+		dto.setPage(page);
+		dto.calc(recruitMapper.recruitListCnt());
+		LocalDate currentDate = LocalDate.now();
+	    LocalDate futureDate = currentDate.plusDays(dto.getRecruitMagam()); 
+
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd (E)");
+	    String formattedDate = futureDate.format(formatter);
+	    
+		mm.addAttribute("dtro",dto);
+	    mm.addAttribute("magam", formattedDate);
+		return "solo_applicant/apprecruit_detail";
+	}// 채용 디테일
+	*/
+	
 	// 지원서 제출 시 이력서 열람
-	@RequestMapping("submit/{rsid}")
+	@RequestMapping("submit{rsid}")
 	String submitResume(Model mm, SoloResumeDTO rdto, HttpSession session, @PathVariable int rsid) {
 
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");

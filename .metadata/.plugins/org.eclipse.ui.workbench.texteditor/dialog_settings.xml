@@ -4,10 +4,15 @@
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="click"/>
+		<item key="selection" value="ode"/>
 		<item key="wrap" value="true"/>
 		<item key="incremental" value="false"/>
 		<list key="findhistory">
+			<item value="ode"/>
+			<item value="Code"/>
+			<item value="code"/>
+			<item value="/"/>
+			<item value="impuidList"/>
 			<item value="click"/>
 			<item value="세션이 만료"/>
 			<item value="graphCanvas"/>
@@ -18,11 +23,6 @@
 			<item value="date"/>
 			<item value="dates"/>
 			<item value="console"/>
-			<item value="currentWeek"/>
-			<item value="weekTo"/>
-			<item value="impuid"/>
-			<item value="rsp"/>
-			<item value="add"/>
 		</list>
 		<list key="replacehistory">
 			<item value="lineChart"/>

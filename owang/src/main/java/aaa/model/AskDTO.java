@@ -18,7 +18,7 @@ public class AskDTO {
 	MultipartFile mmff;
 	
 
-	int id, cnt, seq, lev, gid, start, limit = 10,pageLimit=5, page, pageStart, pageEnd, pageTotal;
+	int id, cnt, seq, lev, gid, start, limit = 20,pageLimit=5, page, pageStart, pageEnd, pageTotal;
 	String title, pname, pw, upfile, content, msg, goUrl ;
 	String cid;
 	String grade;

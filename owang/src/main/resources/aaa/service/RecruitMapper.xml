@@ -13,6 +13,11 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select count(*) from recruit
 	</select>
 	
+	<select id="recruitCnt" resultType="Integer">
+      select count(*) from recruit where cid=#{cid}
+   </select>
+	
+	
 	<update id="recruitAddCont" parameterType="Integer">
 		update recruit set cnt = cnt + 1 where recruit_id = #{recruit_id}
 	</update>
@@ -20,9 +25,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="recruitDetail">
 		select * from recruit where recruit_id = #{recruit_id}
 	</select>
-	
+	<!--select * from recruit where cid = #{cid} order by reg_date desc limit #{start}, #{limit}-->
 	<select id="recruitCompanyDetail" resultType="recruitDTO" parameterType="recruitDTO">
-		select * from recruit where cid = #{cid}
+		select * from recruit where cid = #{cid} order by reg_date 
 	</select>
 	
 	<select id="recruitMaxId">

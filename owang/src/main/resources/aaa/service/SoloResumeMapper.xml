@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		rstitle = #{rstitle}, rscareer = #{rscareer},rscompany = #{rscompany},rsworkstart = #{rsworkstart},rsworkend = #{rsworkend}, rswork= #{rswork}
 		, rsacademic= #{rsacademic}, rsacademicstat= #{rsacademicstat}, rsintroduce= #{rsintroduce},rslicense = #{rslicense}
 		, rslicenseorg = #{rslicenseorg}, rslicenseyear= #{rslicenseyear}, rslanguage= #{rslanguage}, rslanguagelevel= #{rslanguagelevel}
-		, rsmoddate= sysdate() 
+		, rsmoddate= sysdate() , rsphoto = #{rsphoto}
 		where rsid = #{rsid} and sid = #{sid}
 	</update>
 	

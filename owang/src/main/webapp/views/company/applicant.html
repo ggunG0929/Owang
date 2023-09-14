@@ -23,21 +23,36 @@
 	</tr>
     <!-- appdata가 값이 있는 경우 데이터 출력 -->
     <tr th:each="adto, astart : ${appdata}">
-        <td th:text="${astart.count}" />
+        <td th:text="${astart.count + applicantDTO.start}" th:value="${adto.ano}" />
         <td th:text="${adto.apsubmitdate}" />
         <td th:text="${adto.sname}" />
-        <td th:text="${adto.cname}" />
-        <td th:text="${adto.recruitTitle}" />
-        
-        
+         <!-- 기업 명 -->
+		<td>
+			<a th:href="'/company/detail/' + ${adto.cid}" th:text="${adto.cname}"></a>
+		</td>
+		<!-- 공고 제목 -->
         <td>
-			<a th:href="|solo_resume/detail/${adto.ano}|" th:text="${adto.aptitle}" /> 
+			<a th:href="'/recruit/detail/' + ${adto.cid} + '/' + ${applicantDTO.page} + '/' + ${adto.recruitId}" th:text="${adto.recruitTitle}"></a>
+		</td>
+		<!-- 지원 이력서 -->
+        <td>
+			<a th:href="|/company/detail/${applicantDTO.page}/${adto.ano}|" th:text="${adto.aptitle}" /> 
 		</td>
 		<input type="hidden" th:value="${adto.ano}" name="ano"/>
         <td>
-            <a th:href="|delete/${adto.ano}|">삭제</a>
+            <a th:href="|/company/modify/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.sname}]]님의 지원서를 삭제하시겠습니까?')">삭제</a>
         </td>
     </tr>
+	<tr>
+	    <td colspan="7" align="center">
+	        <a th:if="${applicantDTO.pageStart > 1}" th:href="${applicantDTO.pageStart - 1}" th:text="'[이전]'" />
+	        <th:block th:each="ad: ${#numbers.sequence(applicantDTO.pageStart, applicantDTO.pageEnd)}">
+	            <span th:if="${ad == applicantDTO.page}" th:text="${ad}" />
+	            <a th:unless="${ad == applicantDTO.page}" th:href="${ad}" th:text="${ad}"></a>
+	        </th:block>
+	        <a th:if="${applicantDTO.pageEnd < applicantDTO.pageTotal}" th:href="${applicantDTO.pageEnd + 1}" th:text="'[다음]'" />
+	    </td>
+	</tr>
 
 </table>
 </body>

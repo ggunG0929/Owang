@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+	function fileDelete(){
+		frm.action = "/notice/fileDelete"
+		frm.submit()
+	}
+	
+</script>
 </head>
 <body>
 
@@ -23,15 +30,17 @@
 			<td><input type="text" th:field="*{pname}"/></td>
 		</tr>
 		<tr>
-			<!--<td>파일</td>
+			<td>파일</td>
 			<td>
-				<th:block th:if="${dto.upfile != null}">
-					
-				<input type="text" th:field="*{upfile}" readonly/>
+				<th:block th:if="${dto.upfile != null}">	
+				<!--원본-->
+				<!--<input type="text" th:field="*{upfile}" readonly/>-->
+				<!--hidden으로 수정하더라도 사진은 그대로-->
+				<input type="hidden" th:field="*{upfile}" readonly/>
 				<input  type="button" onclick="fileDelete()" value="파일삭제"/>
 				</th:block>
-				<input th:if="${dto.upfile == null}" type="file" th:field="*{mmff}"/>
-			</td>-->
+				<input th:if="${dto.upfile == null}" type="file" th:field="*{noticemmf}"/>
+			</td>
 		</tr>
 		<tr>
 			<td>내용</td>
@@ -45,44 +54,6 @@
 		</tr>
 	</table>
 
-<!--<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
-		<input type="hidden" th:field="*{recruitId}" />
-		<input type="hidden" th:field="*{page}" />
-		
-		<table border="">
-			<tr>
-				<td>수정-제목</td>
-				<td><input type="text" th:field="*{recruitTitle}" required /></td>
-			</tr>
-			<tr>
-				<td>작성자</td>
-				<td><input type="text" th:field="*{recruitName}" required /></td>
-			</tr>
-			<tr>
-				<td>파일</td>
-				<td><input type="file" th:field="*{mmff}" /></td>
-			</tr>
-			<select name="마감일" th:field="*{recruitMagam}">
-				<option value="7" selected>7일 후</option>
-				<option value="30">30일 후</option>
-				<option value="300">300일 후</option>
-			</select>
-			<tr>
-				<td>내용</td>
-				<td><textarea type="text" th:field="*{recruitContent}" rows="10" cols="30" required /></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-					<input type="submit" value="수정" />
-					안나옴...그래서 그냥 주석처리함 ㅠㅠㅠ
-						<a th:href="|/recruit/list/${recruitDTO.page}|">뒤로가기</a>
-
-						<a th:href="@{'/recruit/list/' + ${dto.page}}">뒤로가기</a>
-
-				</td>
-
-			</tr>
-		</table>-->
 
 
 

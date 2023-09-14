@@ -64,14 +64,14 @@ public class ProductController {
             mm.addAttribute("date", sdate);
          }
       }else if(session.getAttribute("companysession")!=null) {
-		 MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-		 name = companysession.getCname();
-		 tel = companysession.getCcall();
-		 email = companysession.getCemail();
-		 Date cdate = companysession.getCdate();
-		 if(cdate !=null && cdate.after(today)) {
-		    mm.addAttribute("date", cdate);
-		 }
+       MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
+       name = companysession.getCname();
+       tel = companysession.getCcall();
+       email = companysession.getCemail();
+       Date cdate = companysession.getCdate();
+       if(cdate !=null && cdate.after(today)) {
+          mm.addAttribute("date", cdate);
+       }
       }else {
           String errorMsg = "세션이 없습니다. 로그인 후 다시 시도해주세요.";
           mm.addAttribute("errorMsg", errorMsg);
@@ -111,7 +111,7 @@ public class ProductController {
        String amount = payS.paymentInfo(payDTO.getImpUid(), token);
 //          System.out.println("금액가져옴: "+amount);
        int res = 1;
-       // 주문정보 금액과 결제된 금액(테스트이므로/1000)이 다를 경우 - 0
+       // 주문정보 금액과 결제된 금액/1000이 다를 경우 - 0
        if (payDTO.getAmount()/1000 != Integer.parseInt(amount)) {
           res = 0;
 //             System.out.println("검증실패");
@@ -204,7 +204,7 @@ public class ProductController {
          MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
          date = companysession.getCdate();
       }else {
-    	  date = null;
+         date = null;
       }
       // 결제시 부여된 impUid로 db내용 가져옴
       List<String> impuidList = new ArrayList<>();

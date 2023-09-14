@@ -46,9 +46,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</update>
 	
 	<!-- 파일없음 -->
-	<!-- <update id="fileDelete" parameterType="nDTO">
-		update notice set upfile = null where id = #{id} and pw= #{pw}
-	</update> -->
+	<update id="fileDelete" parameterType="nDTO">
+		update notice set upfile = null where id = #{id}
+	</update>
 	
 	<select id="idPwChk" parameterType="nDTO" resultType="Integer">
 		select count(*) from notice where id = #{id} and pw= #{pw}

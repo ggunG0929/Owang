@@ -10,10 +10,11 @@ import lombok.Data;
 
 @Alias("nDTO")
 @Data
-public class NoticeDTO {
+public class NoticeDTO {//공지사항dto
 	
-
-	int id, cnt, seq, lev, gid, start, limit = 10,pageLimit=4, page, pageStart, pageEnd, pageTotal;
+	MultipartFile noticemmf;
+	
+	int id, cnt, seq, lev, gid, start, limit =10, pageLimit=5, page, pageStart, pageEnd, pageTotal;
 	String title, pname, pw, upfile, content, msg, goUrl ;
 	String grade;
 	
@@ -22,6 +23,24 @@ public class NoticeDTO {
 	NoticeDTO(){
 		
 	}
+	
+	
+	
+	public String getUpfile() {
+		if(upfile == null || upfile.trim().equals("") ||  upfile.trim().equals("null") ) {
+			upfile = null;
+		}
+		return upfile;
+	}
+	
+	public boolean isImg() {
+		if(getUpfile()==null) {
+			return false;
+		}
+		return Pattern.matches(".{1,}[.](bmp|png|gif|jpg|jpeg)", upfile.toLowerCase());
+	}
+	
+	
 	
 	public void calc(int total) {
 		
