@@ -12,10 +12,10 @@
 </script>
 </head>
 <body>
-
+<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 <h2> 공지사항 - 수정페이지! </h2>
-
-</body>
 <form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
 	<input type="hidden" th:field="*{id}" />
 	<input type="hidden" th:field="*{page}" />
@@ -55,6 +55,8 @@
 	</table>
 
 
+
+</body>
 
 
 

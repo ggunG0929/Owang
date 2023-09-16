@@ -63,6 +63,8 @@ public class ApplicantDTO {
 	String aplanguage;
 	String aplanguagelevel;
 	int apcancel;
+	int apread;
+	int appass;
 	Date apsubmitdate;
 		
 	// 페이징 처리

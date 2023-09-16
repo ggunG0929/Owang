@@ -4,10 +4,12 @@
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="ode"/>
+		<item key="selection" value="type"/>
 		<item key="wrap" value="true"/>
 		<item key="incremental" value="false"/>
 		<list key="findhistory">
+			<item value="type"/>
+			<item value="findpw"/>
 			<item value="ode"/>
 			<item value="Code"/>
 			<item value="code"/>
@@ -21,8 +23,6 @@
 			<item value="cid"/>
 			<item value="system"/>
 			<item value="date"/>
-			<item value="dates"/>
-			<item value="console"/>
 		</list>
 		<list key="replacehistory">
 			<item value="lineChart"/>

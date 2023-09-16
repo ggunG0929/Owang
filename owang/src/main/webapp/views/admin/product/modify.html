@@ -12,11 +12,17 @@
        addForm.addEventListener("submit", function (event) {
            event.preventDefault(); // 폼 기본동작 방지
            let productPrice = productPriceInput.value;
+           let productClient = productClientSelect.value; // 선택된 값을 가져옴
+
            if (productPrice >= 1000) {
-               // confirm 확인받고 상품추가폼 제출
-               if (confirm("정말로 상품을 추가하시겠습니까?")) {
-                   this.submit();
-               }
+			   if(productClient == "") {
+				   alert("상품대상을 선택하세요")
+			   }else {				   
+	               // confirm 확인받고 상품추가폼 제출
+	               if (confirm("정말로 상품을 추가하시겠습니까?")) {
+	                   this.submit();
+	               }
+			   }
            } else {
                alert("1000이상을 입력하세요");
            }
@@ -88,12 +94,13 @@
       <tr>
             <td>
                 <select th:field="*{productClient}">
-                    <option value="개인" selected>개인</option>
+                    <option value="" selected>선택해주세요</option>
+                    <option value="개인">개인</option>
                     <option value="기업">기업</option>
                 </select>
             </td>
             <td><input type="number" th:field="*{productValid}" min="1"></td>
-            <td><input type="text" th:field="*{productName}" readonly></td>
+            <td><input type="text" th:field="*{productName}" placeholder="상품대상을선택하세요" readonly></td>
             <td><input type="text" th:field="*{productPrice}" pattern="[0-9]*" required></td>
             <td><input type="submit" value="추가"></td>
       </tr>

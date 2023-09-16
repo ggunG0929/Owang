@@ -47,7 +47,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		SELECT 
 		    ano, recruit_id, recruit_title, sid, sname, rsid, apphoto, aptitle, apcareer, apcompany, apworkstart, apworkend, apwork, 
 		    apacademic, apacademicstat, apintroduce, aplicense, aplicenseorg, aplicenseyear, aplanguage, aplanguagelevel, 
-		    apsubmitdate, cname, cid
+		    apsubmitdate, cname, cid, apcancel, apread, appass
 		FROM applicant 
 		WHERE sid = #{sid}
 		limit #{start}, #{limit}
@@ -72,5 +72,12 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="apptotal" resultType="Integer">
 		select count(*) from applicant
 	</select>
+	
+	<!-- 개인 지원서 취소 시 apcancel 1로 변경 -->
+	<update id="appstate" parameterType="Integer">
+		update applicant set
+		apcancel = 1
+		where ano = #{ano}
+	</update>
 	
 </mapper>

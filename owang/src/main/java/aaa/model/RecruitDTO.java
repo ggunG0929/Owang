@@ -17,7 +17,7 @@ public class RecruitDTO {
 	// 만들고보니 등록일 마감일 필요 일단 진행
 	
 	int recruitId, start, limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
-	public String recruitTitle, recruitName, recruitUpfile, recruitContent, cid;
+	public String recruitTitle, recruitName, recruitUpfile, recruitContent, cid, cname;
 	
 	String msg, goUrl;
 	boolean capproval;
@@ -27,6 +27,7 @@ public class RecruitDTO {
 	int recruitMoney; // 급여
 	String recruitlocatoin; // 근무지역
 	String searchOption, keyword;// 검색조건
+	
 	MultipartFile mmff;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

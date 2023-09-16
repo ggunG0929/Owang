@@ -5,7 +5,9 @@
 <title>delete</title>
 </head>
 <body>
-
+<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 <form method="post" >
 	<input type="hidden" th:value="${sid}" name="sid"/>
 	<table border="">

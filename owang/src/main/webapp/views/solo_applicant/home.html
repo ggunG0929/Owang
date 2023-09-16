@@ -16,13 +16,14 @@
 <span th:if="${not appdata.isEmpty()}" th:text="${'총 ' + appdata.size() + ' 건의 지원 내역이 있습니다.'}"></span>
 <table border="">
 	<tr th:if="${not appdata.isEmpty()}">
-		<td>.no</td>
-		<td>지원일</td>
-		<td>지원자명</td>
-		<td>기업명</td>
-		<td>공고제목</td>
-		<td>지원이력서</td>
-		<td>지원취소</td>
+	    <td>.no</td>
+	    <td>지원일</td>
+	    <td>지원자명</td>
+	    <td>기업명</td>
+	    <td>공고제목</td>
+	    <td>지원이력서</td>
+	    <td>지원상태</td>
+    	<td>합격여부</td>
 	</tr>
     <!-- appdata가 값이 있는 경우 데이터 출력 -->
     <tr th:each="adto, astart : ${appdata}">
@@ -42,14 +43,24 @@
 			<a th:href="|/solo_applicant/detail/${applicantDTO.page}/${adto.ano}|" th:text="${adto.aptitle}" /> 
 		</td>
 		<input type="hidden" th:value="${adto.ano}" name="ano"/>
-        <td>
-            <a th:href="|/solo_applicant/delete/${applicantDTO.page}/${adto.ano}|">지원취소</a>
-        </td>
+		[[${adto.apcancel}]]</br>
+				[[${adto.appass}]]
+		<!-- 지원 취소 -->
+		<td th:if="${adto.apcancel == 0}">
+		    <a th:href="|/solo_applicant/modify/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.cname}]]에 지원을 취소하겠습니까?')">지원취소</a>
+		</td>
+		<td th:if="${adto.apcancel == 1}" th:colspan="3">취소된 지원서 입니다</td>   
+		<!-- 합격여부 -->
+		<td th:if="${adto.apcancel != 1}">
+		    <span th:if="${adto.apread == 0}">미열람</span>
+		    <span th:if="${adto.apread == 1 and adto.appass == 0}">열람완료</span>
+		    <span th:if="${adto.apread == 1 and adto.appass == 1}">합격</span>
+		    <span th:if="${adto.appass == 2}">불합격</span>
+		</td>
     </tr>
-
     <!-- 페이징 처리 -->
 	<tr>
-	    <td colspan="7" align="center">
+	    <td colspan="9" align="center">
 	        <a th:if="${applicantDTO.pageStart > 1}" th:href="${applicantDTO.pageStart - 1}" th:text="'[이전]'" />
 	        <th:block th:each="ad: ${#numbers.sequence(applicantDTO.pageStart, applicantDTO.pageEnd)}">
 	            <span th:if="${ad == applicantDTO.page}" th:text="${ad}" />

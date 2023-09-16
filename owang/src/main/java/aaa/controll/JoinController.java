@@ -2,6 +2,7 @@ package aaa.controll;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,8 @@ public class JoinController {
 	MCompanyMapper cmapper;
 	@Resource
 	AdminCompanyMapper acmapper;
+
+	Date currentDate = new Date();
 	//이용약관
 		 @GetMapping("cterms.html")
 		    public String showTermsPage() {
@@ -65,7 +68,7 @@ public class JoinController {
 	// 개인회원가입
 	@GetMapping("solo")
 	String joinsoloForm(SoloDTO solo,MCompanyDTO company, Model mm) {
-		List<MCompanyDTO> data = acmapper.companyCapprovalList(company);
+		List<MCompanyDTO> data = acmapper.join(company);
 		mm.addAttribute("mainData",data);
 		return "join/join_solo";
 	}
@@ -74,7 +77,7 @@ public class JoinController {
 
 	String joinsoloReg(SoloDTO solo, PageData pd, HttpServletRequest request) {
 		fileSavesolo(solo, request);
-
+		solo.setSjoindate(currentDate);
 		pd.setMsg("개인회원가입이 완료되었습니다.");
 		pd.setGoUrl("/");
 		smapper.insertSolo(solo); // sql에 개인정보입력
@@ -174,7 +177,7 @@ public class JoinController {
 
 			fos.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

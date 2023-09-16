@@ -29,6 +29,7 @@ public class SoloDTO {
     public String scompanyFile; // 직장의 재직자 증명파일
 	public int stype;
 	public Date sdate;
+	public Date sjoindate;
 	
 	public int sbcnt;
 	boolean sinjueng;

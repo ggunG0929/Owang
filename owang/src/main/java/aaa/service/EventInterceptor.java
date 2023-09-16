@@ -25,7 +25,7 @@ public class EventInterceptor implements HandlerInterceptor {
         
         System.out.println( session.getAttribute("adminSession") );
         if (dto == null || session.getAttribute("adminSession") == null) {
-        	dto = new AdminDTO();
+           dto = new AdminDTO();
             System.out.println("이벤트체크 핸들러님 오셧나요 1");
             
             dto.setMsg("접근이 불허된 페이지 입니다.");
@@ -39,4 +39,3 @@ public class EventInterceptor implements HandlerInterceptor {
         return true;
     }
 }
-

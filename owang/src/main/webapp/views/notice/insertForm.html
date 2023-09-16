@@ -5,6 +5,9 @@
 <title>board/insertForm</title>
 </head>
 <body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 <h1>notice/insertForm*</h1>
 <form method="post" enctype="multipart/form-data" th:object="${noticeDTO}">
 	<table border="">

@@ -7,7 +7,9 @@
 </head>
 
 <body>
-
+<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	<h1>개인 정보 상세</h1>
 
 	<table border="">
@@ -15,6 +17,18 @@
 			<th>아이디</th>
 			<td th:text="${dto.sid}"></td>
 		</tr>
+		<tr>
+			<th>타입</th>
+			<td>
+				<span th:if="${dto.stype == 2}">
+					<span th:if="${dto.sdate == null}">프리미엄회원(재직자리뷰) 평생이용</span>
+					<span th:unless="${dto.sdate == null}"
+						th:text="|프리미엄회원 마감일:${#dates.format(dto.sdate, 'yyyy-MM-dd')}|"></span>
+				</span>
+				<span th:unless="${dto.stype == 2}" th:text="일반회원"></span>
+			</td>
+		</tr>
+		<tr>
 		<tr>
 			<th>이름</th>
 			<td th:text="${dto.sname}"></td>
@@ -43,14 +57,21 @@
 			<th>주소</th>
 			<td th:text="${dto.saddress}"></td>
 		</tr>
-		<tr th:if="${dto.scompanyName != null && dto.scompanyName != ''}">
+		<tr th:unless="${dto.scompanyName == null || dto.scompanyName == ''}">
 			<th>재직중인 회사이름</th>
 			<td th:text="${dto.scompanyName}"></td>
 		</tr>
-		<tr >
+		<tr th:unless="${dto.scompanyFile == null ||  dto.scompanyFile == ''}">
 			<th>재직증명서</th>
-			<td th:text="${dto.scompanyFile}"></td>
+			<td><a th:href="@{|/admin_solo/soloup/download/${dto.scompanyFile}|}" th:text="${dto.scompanyFile}">다운로드</a>
+			</td>
 		</tr>
+		<tr th:unless="${dto.scompanyFile == null ||  dto.scompanyFile == ''}">
+			<th>재직인증승인</th>
+			<td th:if="${dto.sinjueng==true}" th:text="승인완료"></td>
+			<td th:unless="${dto.sinjueng==true}" th:text="미승인"></td>
+		</tr>
+
 		<!--th:if="${dto.scompanyFile != null && dto.scompanyFile != '' && dto.scompanyFile != 'null' }"-->
 
 

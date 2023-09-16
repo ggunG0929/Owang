@@ -15,6 +15,9 @@
 </head>
 
 <body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
    <h1>solo/ModifyForm</h1>
    [[${dto}]]
    <form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">

@@ -25,4 +25,9 @@ public interface ReviewMapper {
 	ReviewDTO reviewDetail(ReviewDTO dto);
 	
 	int reviewModify(ReviewDTO dto);
+	
+	int reviewDelete(ReviewDTO dto);
+	
+	// 리뷰 1개이상쓴사람
+	int ccnt(String sid);
 }

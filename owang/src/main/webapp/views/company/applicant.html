@@ -5,7 +5,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-[[${appdata}]]
 <h2>기업 지원자 관리</h2>
 <span th:if="${appdata.isEmpty()}">
 	<h2>지원자가 존재하지 않습니다</h2>
@@ -19,7 +18,8 @@
 		<td>기업명</td>
 		<td>공고제목</td>
 		<td>지원이력서</td>
-		<td>지원자 삭제</td>
+		<td>합격</td>
+		<td>불합격</td>
 	</tr>
     <!-- appdata가 값이 있는 경우 데이터 출력 -->
     <tr th:each="adto, astart : ${appdata}">
@@ -35,16 +35,30 @@
 			<a th:href="'/recruit/detail/' + ${adto.cid} + '/' + ${applicantDTO.page} + '/' + ${adto.recruitId}" th:text="${adto.recruitTitle}"></a>
 		</td>
 		<!-- 지원 이력서 -->
-        <td>
-			<a th:href="|/company/detail/${applicantDTO.page}/${adto.ano}|" th:text="${adto.aptitle}" /> 
+		<td>
+		    <th:block th:if="${adto.apcancel == 1}">
+		        <span>취소된 지원입니다</span>
+		    </th:block>
+		    <a th:href="|/company/detail/${applicantDTO.page}/${adto.ano}|" th:text="${adto.aptitle}" th:unless="${adto.apcancel == 1}" />
 		</td>
 		<input type="hidden" th:value="${adto.ano}" name="ano"/>
+		<!-- 합격 -->
+        <td> 
+            <th:block th:if="${adto.appass == 1}" th:colspan="2">
+		        <span>합격자 입니다</span>
+		    </th:block>
+            <a th:if="${adto.appass != 1 and adto.appass == 0}" th:href="|/company/pass/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.sname}]]님을 합격처리 하시겠습니까?')">합격</a>
+        </td>
+		<!-- 불합격 -->
         <td>
-            <a th:href="|/company/modify/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.sname}]]님의 지원서를 삭제하시겠습니까?')">삭제</a>
+		    <th:block th:if="${adto.appass == 2}">
+		        <span>불합격자 입니다</span>
+		    </th:block>
+            <a th:if="${adto.appass != 2 and adto.appass == 0}"  th:href="|/company/nonpass/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.sname}]]님을 불합격처리 하시겠습니까?')">불합격</a>
         </td>
     </tr>
-	<tr>
-	    <td colspan="7" align="center">
+	<!--<tr th:if="${not appdata.isEmpty()}">
+	    <td colspan="9" align="center">
 	        <a th:if="${applicantDTO.pageStart > 1}" th:href="${applicantDTO.pageStart - 1}" th:text="'[이전]'" />
 	        <th:block th:each="ad: ${#numbers.sequence(applicantDTO.pageStart, applicantDTO.pageEnd)}">
 	            <span th:if="${ad == applicantDTO.page}" th:text="${ad}" />
@@ -52,8 +66,81 @@
 	        </th:block>
 	        <a th:if="${applicantDTO.pageEnd < applicantDTO.pageTotal}" th:href="${applicantDTO.pageEnd + 1}" th:text="'[다음]'" />
 	    </td>
-	</tr>
+	</tr>-->
 
+</table>
+<h2>합격자 명단</h2>
+<span th:if="${apppassdata.isEmpty()}">
+	<h2>합격자가 존재하지 않습니다</h2>
+</span>
+	<span th:if="${not apppassdata.isEmpty()}" th:text="${'총 ' + apppassdata.size() + ' 명의 합격자가 존재합니다.'}"></span>
+<table border="" th:if="${not apppassdata.isEmpty()}">
+	<tr>
+		<td>.no</td>
+		<td>지원일</td>
+		<td>지원자명</td>
+		<td>기업명</td>
+		<td>공고제목</td>
+		<td>지원이력서</td>
+	</tr>
+	<tr th:each="appass, astart : ${apppassdata}">
+        <td th:text="${astart.count + applicantDTO.start}" th:value="${appass.ano}" />
+        <td th:text="${appass.apsubmitdate}" />
+        <td th:text="${appass.sname}" />
+         <!-- 기업 명 -->
+		<td>
+			<a th:href="'/company/detail/' + ${appass.cid}" th:text="${appass.cname}"></a>
+		</td>
+		<!-- 공고 제목 -->
+        <td>
+			<a th:href="'/recruit/detail/' + ${appass.cid} + '/' + ${applicantDTO.page} + '/' + ${appass.recruitId}" th:text="${appass.recruitTitle}"></a>
+		</td>
+		<!-- 지원 이력서 -->
+		<td>
+		    <th:block th:if="${appass.apcancel == 1}">
+		        <span>취소된 지원입니다</span>
+		    </th:block>
+		    <a th:href="|/company/detail/${applicantDTO.page}/${appass.ano}|" th:text="${appass.aptitle}" th:unless="${appass.apcancel == 1}" />
+		</td>
+		<input type="hidden" th:value="${appass.ano}" name="ano"/>
+    </tr>
+</table>
+
+<h2>불합격자 명단</h2>
+<span th:if="${appnonpassdata.isEmpty()}">
+	<h2>불합격자가 존재하지 않습니다</h2>
+</span>
+	<span th:if="${not appnonpassdata.isEmpty()}" th:text="${'총 ' + appnonpassdata.size() + ' 명의 불합격자가 존재합니다.'}"></span>
+<table border="">
+	<tr>
+		<td>.no</td>
+		<td>지원일</td>
+		<td>지원자명</td>
+		<td>기업명</td>
+		<td>공고제목</td>
+		<td>지원이력서</td>
+	</tr>
+	<tr th:each="apnonpass, astart : ${appnonpassdata}">
+        <td th:text="${astart.count + applicantDTO.start}" th:value="${apnonpass.ano}" />
+        <td th:text="${apnonpass.apsubmitdate}" />
+        <td th:text="${apnonpass.sname}" />
+         <!-- 기업 명 -->
+		<td>
+			<a th:href="'/company/detail/' + ${apnonpass.cid}" th:text="${apnonpass.cname}"></a>
+		</td>
+		<!-- 공고 제목 -->
+        <td>
+			<a th:href="'/recruit/detail/' + ${apnonpass.cid} + '/' + ${applicantDTO.page} + '/' + ${apnonpass.recruitId}" th:text="${apnonpass.recruitTitle}"></a>
+		</td>
+		<!-- 지원 이력서 -->
+		<td>
+		    <th:block th:if="${apnonpass.apcancel == 1}">
+		        <span>취소된 지원입니다</span>
+		    </th:block>
+		    <a th:href="|/company/detail/${applicantDTO.page}/${apnonpass.ano}|" th:text="${apnonpass.aptitle}" th:unless="${apnonpass.apcancel == 1}" />
+		</td>
+		<input type="hidden" th:value="${apnonpass.ano}" name="ano"/>
+    </tr>	
 </table>
 </body>
 </html>

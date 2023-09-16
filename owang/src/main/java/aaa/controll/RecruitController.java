@@ -228,33 +228,33 @@ public class RecruitController {
 	
 	
 	@GetMapping("insert/{page}")
-	   String insert(RecruitDTO dto, HttpSession session,MCompanyDTO company, Model mm) {
-	       MCompanyDTO mcseDto = (MCompanyDTO) session.getAttribute("companysession");
-	       AdminDTO admin = (AdminDTO) session.getAttribute("adminSession");
-	       
-	       List<MCompanyDTO> data = adrmMapper.companyCapprovalList(company);
-	       mm.addAttribute("mainData",data);
-	       
-	       // 기업 또는 관리자 중 하나라도 로그인되었고 승인되었을 때 삽입 페이지로 이동
-	       if ((mcseDto != null && mcseDto.isCapproval()) || (admin != null && admin.isCapproval())) {
-	          
-	          int a = recruitMapper.recruitCnt(mcseDto.getCid());
-	          if(a>20) {
-	              dto.setMsg("채용공고는 20개를 초과할수없습니다.");
-	               dto.setGoUrl("/recruit/list/1");
-	               return "recruit/recruit_alert";
-	          }
-	          
-	          
-	          
-	           //System.out.println(mcseDto.isCapproval() + "값이 무엇이냐");
-	           return "recruit/recruit_insert";
-	       } else {
-	           dto.setMsg("로그인 시간이 만료되었거나 승인되지 않은 사용자입니다.");
-	           dto.setGoUrl("/recruit/list/1");
-	           return "recruit/recruit_alert";
-	       }
-	   }
+	String insert(RecruitDTO dto, HttpSession session, MCompanyDTO company, Model mm) {
+	    MCompanyDTO mcseDto = (MCompanyDTO) session.getAttribute("companysession");
+	    AdminDTO admin = (AdminDTO) session.getAttribute("adminSession");
+
+	    List<MCompanyDTO> data = adrmMapper.companyCapprovalList(company);
+	    mm.addAttribute("mainData", data);
+
+	    // 기업 또는 관리자 중 하나라도 로그인되었고 승인되었을 때 삽입 페이지로 이동
+	    if ((mcseDto != null && mcseDto.isCapproval()) || (admin != null && admin.isCapproval())) {
+
+	        if (admin == null) {
+	            int a = recruitMapper.recruitCnt(mcseDto.getCid());
+	            if (a > 20) {
+	                dto.setMsg("채용공고는 20개를 초과할 수 없습니다.");
+	                dto.setGoUrl("/recruit/list/1");
+	                return "recruit/recruit_alert";
+	            }
+	        }
+
+	        return "recruit/recruit_insert";
+	    } else {
+	        dto.setMsg("로그인 시간이 만료되었거나 승인되지 않은 사용자입니다.");
+	        dto.setGoUrl("/recruit/list/1");
+	        return "recruit/recruit_alert";
+	    }
+	}
+
 
 
 
@@ -269,7 +269,8 @@ public class RecruitController {
 			dto.setMsg("아직 승인되지 않은 기업입니다.");
 			dto.setGoUrl("/recruit/list/1");
 		}
-		
+		System.out.println("mcseDto : "+mcseDto);
+		dto.setCname(mcseDto.getCname());
 		dto.setRecruitId(recruitMapper.recruitMaxId()+1);
 		//System.out.println(dto);
 		fileSave(dto, request);

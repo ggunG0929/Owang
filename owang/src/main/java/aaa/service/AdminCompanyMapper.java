@@ -20,9 +20,13 @@ public interface AdminCompanyMapper {
 
 	// 기업 등록 회원 정리
 	List<MCompanyDTO> companyCapprovalList(MCompanyDTO dto);
+	
+	List<MCompanyDTO> join(MCompanyDTO dto);
 
-	// 기업 회원 페이지 계산
+	// 기업 인증회원 페이지 계산
 	int adminAddCont();
+	// 기업 미인증회원 페이지 계산
+	int adminAddMiCont();
 	
 	// 기업 회원 상세보기
 	MCompanyDTO adminCDetail(int cno);

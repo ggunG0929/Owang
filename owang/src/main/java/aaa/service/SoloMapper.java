@@ -35,4 +35,8 @@ public interface SoloMapper {
 // 아이디확인
 	int findloSolo(String fname, String femail);	
 	SoloDTO findid(String fname, String femail);	
+	
+	// 비번찾기
+	int findpwSolo(String fid, String femail, String fbirth);	
+	int modifyspw(String sid, String spw);
 }

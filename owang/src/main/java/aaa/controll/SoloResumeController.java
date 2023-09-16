@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import aaa.model.ApplicantDTO;
+import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
 import aaa.model.RecruitDTO;
 import aaa.model.SoloDTO;
@@ -164,7 +166,8 @@ public class SoloResumeController {
 		return "solo_resume/alert";
 	}
 	
-
+	
+	
 	// 이력서 삭제
 	@RequestMapping("delete/{rsid}")
 	String delete(SoloResumeDTO rdto, HttpServletRequest request, PageData pd 
@@ -191,6 +194,7 @@ public class SoloResumeController {
 		
 		return "solo_resume/alert";
 	}
+	
 	
     // 파일 저장
 	void fileSave(SoloResumeDTO rdto, HttpServletRequest request) {

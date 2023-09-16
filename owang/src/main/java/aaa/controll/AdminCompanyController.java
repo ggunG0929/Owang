@@ -23,6 +23,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin_company")
@@ -66,13 +67,33 @@ public class AdminCompanyController {
 	String list(Model mm, MCompanyDTO dto) {
 		
 		dto.calc(adminMapper.adminAddCont());
-	
+		
 		List<MCompanyDTO> data = adminMapper.companyList(dto);
 		System.out.println(adminMapper.companyList(dto));
 		mm.addAttribute("mainData",data);
 		mm.addAttribute("realData",adminMapper.companyCapprovalList(dto));
 		return "/admin/company/cList";
 	}// 기업 리스트
+	
+	@RequestMapping("cRegList/{page}")
+	String cRegList(Model mm,MCompanyDTO dto,@PathVariable int page ) {
+		dto.setPage(page);
+		dto.calc(adminMapper.adminAddCont());
+		System.out.println(dto);
+		List<MCompanyDTO> data = adminMapper.companyCapprovalList(dto);
+		mm.addAttribute("realData",data);
+		return "/admin/company/cRegList";
+	}
+	// 미인증
+	@RequestMapping("cMiList/{page}")
+	String cMiList(Model mm, MCompanyDTO dto) {
+	
+		dto.calc(adminMapper.adminAddMiCont());
+		List<MCompanyDTO> data = adminMapper.companyList(dto);
+		mm.addAttribute("mainData",data);
+		
+		return "/admin/company/cMiList";
+	}
 	
 	@RequestMapping("delete/{cno}")
 	String delete(MCompanyDTO dto, Model mm,@PathVariable int cno ,HttpServletRequest request) {
@@ -145,10 +166,15 @@ public class AdminCompanyController {
 
 		}// 파일 다운로드
 		
+		// 수락여기
 		@RequestMapping("checkId/{cno}")
-		String checkId(@PathVariable int cno,MCompanyDTO dto) {
+		String checkId(@PathVariable int cno,MCompanyDTO dto, HttpSession session) {
 			//adminMapper.checkoutFile(cno);
+			 
+			
+			
 			System.out.println(adminMapper.checkoutFile(dto.getCno())+"오셧나요");
+			adminMapper.checkoutFile(dto.getCno());
 			return "redirect:/admin_company/list/1";
 		}
 

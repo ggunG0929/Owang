@@ -50,7 +50,6 @@
     <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
     <fullyQualifiedTypeName name="java.util.regex.Matcher"/>
     <fullyQualifiedTypeName name="aaa.model.MCompanyDTO"/>
-    <fullyQualifiedTypeName name="aaa.model.SoloDTO"/>
     <fullyQualifiedTypeName name="java.util.Calendar"/>
     <fullyQualifiedTypeName name="jakarta.servlet.http.HttpSession"/>
     <fullyQualifiedTypeName name="aaa.model.ApplicantDTO"/>
@@ -60,4 +59,5 @@
     <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
     <fullyQualifiedTypeName name="aaa.service.RecruitMapper"/>
     <fullyQualifiedTypeName name="jakarta.annotation.Resource"/>
+    <fullyQualifiedTypeName name="aaa.model.SoloDTO"/>
 </qualifiedTypeNameHistroy>

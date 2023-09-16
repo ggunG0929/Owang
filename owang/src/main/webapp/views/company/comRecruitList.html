@@ -8,14 +8,15 @@
 <header>
        <div th:include="header :: header"></div>
 </header>
-[[${mainData}]]
+	<h3>채용공고는 20개 까지 작성가능합니다.</h3>
 	<table border="">
 		<tr>
 			<td>번호</td>
 			<td>제목</td>
-			<td>작성자</td>
+			<td>회사이름</td>
 			<td>등록일</td>
 			<td>조회수</td>
+			<td>기업아이디(본편에선 제거)</td>
 		</tr>
 		<tr th:each="dto, dtoStat : ${mainData}">
 			<td th:text="${dtoStat.count + recruitDTO.start}"/>
@@ -23,25 +24,13 @@
 				<a th:href="|/recruit/detail/${dto.cid}/1/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
 			</td>
 			<td >
-				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cid}"></a>
+				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
 			</td>
 			<td th:text="${dto.regDate}"/>
 			<td th:text="${dto.cnt}"/>
+			<td th:text="${dto.cid}"/>
 		</tr>
-		<tr>
-			<td colspan="5" align="center">
-				<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
-				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.page-recruitDTO.page}+1" th:text="'[처음]'"/>
-				
-				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.pageStart - 1}" th:text="'[이전]'"/>			
-				<th:block th:each="no: ${#numbers.sequence(recruitDTO.pageStart, recruitDTO.pageEnd)}" >
-					<span th:if="${no==recruitDTO.page}" th:text="${no}"/>
-					<a th:unless="${no==recruitDTO.page}" th:href="${no}" th:text="${no}"/>
-				</th:block>
-				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageEnd + 1}" th:text="'[다음]'"/>
-				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageTotal}" th:text="'[맨끝]'"/>
-			</td>
-		</tr>
+		
 	</table>
 </body>
 </html>

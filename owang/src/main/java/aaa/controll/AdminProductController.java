@@ -156,14 +156,21 @@ public class AdminProductController {
             // unix변환과 getToken때문에
           ) throws Exception {
       // 날짜 변환
-       String today = payS.dateformat(new Date());
+      String today = payS.dateformat(new Date());
       String range="";
       if(!StringUtils.isEmpty(from) && !StringUtils.isEmpty(to)) {
           // Unix타임스탬프로 변환
           long fromunix = payS.stringToUnix(from);
           // 날짜의 전날까지의 결과만 나와서 to에 하루를 더해줌
           long tounix = payS.stringToUnix(to) + 24 * 60 * 60; // 24시간 * 60분 * 60초
-          range = "&from="+fromunix+"&to="+tounix;
+          if(fromunix < tounix) {        	  
+        	  range = "&from="+fromunix+"&to="+tounix;
+          }else {        	  
+        	  String errorMsg = "기간을 확인하세요 \n전체기간으로 검색합니다";
+        	  mm.addAttribute("errorMsg", errorMsg);
+        	  from = null;
+        	  to = null;
+          }
       }
       // API 통신
         String token = payS.getToken(); // PayService를 통해 토큰을 가져옴

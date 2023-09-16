@@ -4,6 +4,14 @@ CREATE TABLE applicant (
     sid VARCHAR(100),
     cid VARCHAR(100),
     sname VARCHAR(100),
+   sbirth VARCHAR(30),
+    sage int,
+    sgender varchar(10),
+    sphone  VARCHAR(30),
+    semail  VARCHAR(100),
+    saddress  VARCHAR(100),
+   scompanyName  VARCHAR(100),
+    scompanyFile  VARCHAR(100),
     cname VARCHAR(100),
     recruit_id VARCHAR(100),
     recruit_title VARCHAR(100),
@@ -23,9 +31,11 @@ CREATE TABLE applicant (
     aplanguage VARCHAR(100),
     aplanguagelevel VARCHAR(100),
     apsubmitdate TIMESTAMP,
-    cnt INT
+    apcancel INT DEFAULT 0
 );
 
-select * from applicant;
+ALTER TABLE applicant
 
+DROP COLUMN cnt;
+select * from applicant;
 drop table applicant;

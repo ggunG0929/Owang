@@ -6,6 +6,9 @@
 </head>
 <body>
 <h1>recruit/list</h1>
+<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	[[${mainData}]]]
 	<form action="/recruit/search" method="get">
     <select name="searchOption">
@@ -22,9 +25,10 @@
 		<tr>
 			<td>번호</td>
 			<td>제목</td>
-			<td>작성자</td>
+			<td>회사 이름</td>
 			<td>등록일</td>
 			<td>조회수</td>
+			<td>기업아이디(본편에선제거)</td>
 		</tr>
 		<tr th:each="dto, dtoStat : ${mainData}">
 			<td th:text="${dtoStat.count + recruitDTO.start}"/>
@@ -32,13 +36,14 @@
 				<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
 			</td>
 			<td >
-				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cid}"></a>
+				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
 			</td>
 			<td th:text="${dto.regDate}"/>
 			<td th:text="${dto.cnt}"/>
+			<td th:text="${dto.cid}" />
 		</tr>
 		<tr>
-			<td colspan="5" align="center">
+			<td colspan="6" align="center">
 				<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
 				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.page-recruitDTO.page}+1" th:text="'[처음]'"/>
 				
@@ -52,10 +57,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="5" align="right" th:if="${session['cid']}" >
+				
+			<td colspan="6" align="right" th:if="${session['cid']}" >
 				<a th:href="|/recruit/insert/${recruitDTO.page}|">글쓰기</a>
 			</td>
-			<td colspan="5" align="right" th:if="${session.adminSession}" >
+			<td colspan="6" align="right" th:if="${session.adminSession}" >
 				<a th:href="|/recruit/insert/${recruitDTO.page}|">글쓰기</a>
 			</td>
 		</tr>

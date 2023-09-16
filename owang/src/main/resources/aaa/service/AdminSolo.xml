@@ -12,8 +12,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 
 	<select id="soloListCnt" resultType="Integer">
-		select count(*) from solo
+		select count(*) from solo  
 	</select>
+	
 
 
 
@@ -36,7 +37,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</update>
 	<select id="solocomList" resultType="soloDTO"
 		parameterType="soloDTO">
-		select * from solo where sinjueng=false and scompanyFile!="null" order by sno desc limit #{start},
+		select * from solo where sinjueng=false and scompanyFile!="null" order by sjoindate desc limit #{start},
 		#{limit} 
 	</select>
 	

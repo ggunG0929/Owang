@@ -7,13 +7,16 @@
 </head>
 
 <body>
-	
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	[[${recruitDTO}]]
 	<br>
 	[[${mainData}]]
 	<p><input type="text" th:value="${session['cid']}" readonly/></p>
 	<h1>recruit/insert</h1>
 	<form action="" method="post" enctype="multipart/form-data" th:object="${recruitDTO}">
+		
 		<table border="">
 			<tr>
 				<td>공고제목</td>

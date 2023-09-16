@@ -15,8 +15,11 @@
 </head>
 
 <body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	<h1>개인회원가입</h1>
-	[[${mainData}]]<br>
+	
 <button id="showTermsButton">이용약관 보기</button>
 
 	<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
@@ -41,7 +44,7 @@
 			<tr>
 			<tr>
 				<td>이름</td>
-				<td><input type="text" name="sname" required/></td>td>
+				<td><input type="text" name="sname" required/></td>
 				</td>
 			</tr>
 			<tr>
@@ -108,9 +111,7 @@
 					<datalist id="company-list">
 						<th:block th:each="recruit : ${mainData}">
 						     <option th:text="${recruit.cname}" class="company-list" th:data-company-number="${recruit.cid}" />
-							 
-							 
-         					 <span th:text="|회사번호 ${recruit.ccall}|" class="company-list"></span>
+							 <span th:text="|회사번호 ${recruit.ccall}|" class="company-list"></span>
 							 
 						</th:block>
 					</datalist>
@@ -156,7 +157,7 @@
                         return; // 값을 찾았으므로 반복문 종료
                     }
                 }
-
+         
                 // 일치하는 값이 없을 경우 숨겨진 input과 출력을 비웁니다.
                 cidInput.value = '';
                 companyNumberElement.textContent = '';

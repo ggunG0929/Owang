@@ -10,13 +10,19 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 	
 	<select id="companyCapprovalList" resultType="mcDTO" parameterType="mcDTO">
-		select * from company where capproval = true  order by cno desc limit #{start}, #{limit}
+		select * from company where capproval = true or ctype = 2 order by cno desc limit #{start}, #{limit}
 	</select>
-	
+	<select id="join" resultType="mcDTO" parameterType="mcDTO">
+		select * from company where capproval = true or ctype = 2 order by cno desc 
+	</select>
 		
 	<select id="adminAddCont" resultType="Integer">
-		select count(*) from company
+		select count(*) from company where capproval = true
 	</select>
+	<select id="adminAddMiCont" resultType="Integer">
+		select count(*) from company where capproval = false
+	</select>
+	
 
 	<select id="adminCDetail">
 		select * from company where cno = #{cno}

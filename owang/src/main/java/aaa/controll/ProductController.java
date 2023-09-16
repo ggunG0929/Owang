@@ -23,6 +23,7 @@ import aaa.service.MCompanyMapper;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
 import aaa.service.ProductMapper;
+import aaa.service.ReviewMapper;
 import aaa.service.SoloMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
@@ -30,64 +31,92 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("product")
 public class ProductController {
+	
+	@Resource
+	ProductMapper pm;
+	
+	@Resource
+	ReviewMapper rvm;
+	
+	// 상품페이지
+	@RequestMapping("/notice")
+	String product_notice(Model mm, HttpSession session) {
+		
+		String alertMsg = "로그인이 필요합니다";
+		String goUrl = "/login/main";
+		
+		// 개인회원
+		if(session.getAttribute("solosession") != null) {
+			String sid = (String)session.getAttribute("sid");
+			if(rvm.ccnt(sid) > 0) {	// 리뷰작성한 개인회원
+				alertMsg = "프리미엄회원은 결제가 불필요합니다";
+				goUrl = "/product/notice";
+			}else {
+				String pay = "solo";
+				mm.addAttribute("pay", pay);
+			}
+		}
+		
+		// 기업회원
+		if(session.getAttribute("companysession") != null) {
+			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
+			if(companysession.isCapproval()) { // 인증받은 기업회원				
+				String pay = "comp";
+				mm.addAttribute("pay", pay);
+			}else {
+				alertMsg = "기업인증이 필요합니다";
+				goUrl = "/product/notice";
+			}
+		}
+		// 전체 상품 목록
+		List<ProductDTO> data= pm.list();
+		
+		mm.addAttribute("data", data);
+		mm.addAttribute("msg", alertMsg);
+		mm.addAttribute("goUrl", goUrl);
+		return "product/product_notice";
+	}
 
-   @Resource
-   ProductMapper pm;
-   
-   @RequestMapping("/notice")
-   String product_notice(Model mm, HttpSession session) {
-      boolean compchk = false;
-      if(session.getAttribute("companysession")!=null) {
-         MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-         compchk = companysession.isCapproval();
-      }
-      // 전체 상품 목록
-      List<ProductDTO> data= pm.list();
-      mm.addAttribute("data", data);
-      mm.addAttribute("compchk", compchk);
-      return "product/product_notice";
-   }
-   
-   // 상품 결제 폼
-   @RequestMapping("/{productId}")
-   String product_form(@PathVariable String productId, Model mm, HttpSession session) {
-      // 세션으로 사용자정보 채워주기
-      String name, tel, email;
-      Date today = new Date();
-      if(session.getAttribute("solosession")!=null) {
-         SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
-         name = solosession.getSname();
-         tel = solosession.getSphone();
-         email = solosession.getSemail();
-         Date sdate = solosession.getSdate();
-         if(sdate!=null && sdate.after(today)) {
-            mm.addAttribute("date", sdate);
-         }
-      }else if(session.getAttribute("companysession")!=null) {
-       MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-       name = companysession.getCname();
-       tel = companysession.getCcall();
-       email = companysession.getCemail();
-       Date cdate = companysession.getCdate();
-       if(cdate !=null && cdate.after(today)) {
-          mm.addAttribute("date", cdate);
-       }
-      }else {
-          String errorMsg = "세션이 없습니다. 로그인 후 다시 시도해주세요.";
-          mm.addAttribute("errorMsg", errorMsg);
-          name=null;
-          tel=null;
-          email=null;
-      }
-      // 상품정보 채워주기
-      ProductDTO dto = pm.detail(productId);
-      
-      mm.addAttribute("name", name);
-      mm.addAttribute("tel", tel);
-      mm.addAttribute("email", email);
-      mm.addAttribute("dto", dto);
-      return "product/product_form";
-   }
+	
+	// 상품 결제 폼
+	@RequestMapping("/{productId}")
+	String product_form(@PathVariable String productId, Model mm, HttpSession session) {
+		// 세션으로 사용자정보 채워주기
+		String name, tel, email;
+		Date today = new Date();
+		if(session.getAttribute("solosession")!=null) {
+			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+			name = solosession.getSname();
+			tel = solosession.getSphone();
+			email = solosession.getSemail();
+			Date sdate = solosession.getSdate();
+			if(sdate!=null && sdate.after(today)) {
+				mm.addAttribute("date", sdate);
+			}
+		}else if(session.getAttribute("companysession")!=null) {
+			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
+			name = companysession.getCname();
+			tel = companysession.getCcall();
+			email = companysession.getCemail();
+			Date cdate = companysession.getCdate();
+			if(cdate !=null && cdate.after(today)) {
+				mm.addAttribute("date", cdate);
+			}
+		}else {
+			String errorMsg = "세션이 없습니다. 로그인 후 다시 시도해주세요.";
+			mm.addAttribute("errorMsg", errorMsg);
+			name=null;
+			tel=null;
+			email=null;
+		}
+		// 상품정보 채워주기
+		ProductDTO dto = pm.detail(productId);
+		mm.addAttribute("name", name);
+		mm.addAttribute("tel", tel);
+		mm.addAttribute("email", email);
+		mm.addAttribute("dto", dto);
+		return "product/product_form";
+	}
    
    
    @Resource
@@ -164,6 +193,7 @@ public class ProductController {
           MCompanyDTO compinfo = new MCompanyDTO();
           compinfo.setCid(companysession.getCid());
           compinfo.setCtype(2);
+          compinfo.setCapproval(true);
           Date cdate = companysession.getCdate();
           if(cdate==null || cdate.before(today)) {          
              Calendar calendar = Calendar.getInstance();

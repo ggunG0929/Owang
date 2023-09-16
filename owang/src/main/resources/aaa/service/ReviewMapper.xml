@@ -38,6 +38,18 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		</if>
 	</update>
 	
+	<delete id="reviewDelete"  parameterType="rrDTO">
+		delete from review
+		where cid = #{cid}
+		<if test="sid != null">
+			and sid = #{sid}
+		</if>  
+	</delete>
+	
+	<select id="ccnt" resultType="Integer">
+    	select count(*) from review where sid = #{sid}
+	</select>
+	
 	
 
 </mapper>

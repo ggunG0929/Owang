@@ -8,17 +8,22 @@ import jakarta.annotation.Resource;
 
 @Configuration
 public class EventConfig implements WebMvcConfigurer{
-	
-	@Resource
-	EventInterceptor interceptor;
+   
+   @Resource
+   EventInterceptor interceptor;
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		
-		registry.addInterceptor(interceptor).addPathPatterns("/admin/adminM");
-		
-	}
-	
-	
-	
+   @Override
+   public void addInterceptors(InterceptorRegistry registry) {
+      
+      registry.addInterceptor(interceptor).addPathPatterns("/admin/adminM")
+      .addPathPatterns("/admin_cs/**")
+      .addPathPatterns("/admin_company/**")
+      .addPathPatterns("/admin_solo/**")
+      .addPathPatterns("/admin_product/**");
+      
+      
+   }
+   
+   
+   
 }

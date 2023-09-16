@@ -9,6 +9,9 @@
 <h2>수정페이지입니당구리당 </h2> <!--연결성공-->
 
 </body>
+<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 [[${dto}]]
 <form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
 		<input type="hidden" th:field="*{recruitId}" />

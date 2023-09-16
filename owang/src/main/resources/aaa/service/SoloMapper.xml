@@ -8,8 +8,8 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 
 <insert id="insertSolo" parameterType="soloDTO">
-    INSERT INTO solo (sid, cid, spw, sname, sbirth, sage, sgender, sphone, semail, saddress, scompanyName, scompanyFile, stype, sbcnt)
-    VALUES (#{sid}, #{cid} ,#{spw}, #{sname}, #{sbirth}, #{sage}, #{sgender}, #{sphone}, #{semail}, #{saddress}, #{scompanyName}, #{scompanyFile}, 1, 0)
+    INSERT INTO solo (sjoindate,sid, cid, spw, sname, sbirth, sage, sgender, sphone, semail, saddress, scompanyName, scompanyFile, stype, sbcnt)
+    VALUES (#{sjoindate},#{sid}, #{cid} ,#{spw}, #{sname}, #{sbirth}, #{sage}, #{sgender}, #{sphone}, #{semail}, #{saddress}, #{scompanyName}, #{scompanyFile}, 1, 0)
 </insert>
 	
 	
@@ -59,4 +59,12 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <select id="findid" resultType="soloDTO">
     select sid from solo where sname = #{fname} and semail = #{femail}
 </select>
+<select id="findpwSolo" resultType="Integer">
+    select count(*) from solo where sid = #{fid} and semail = #{femail} and sbirth = #{fbirth}
+</select>
+<update id="modifyspw">
+	update solo set spw = #{spw}
+	where sid = #{sid}
+</update>
+
 </mapper>

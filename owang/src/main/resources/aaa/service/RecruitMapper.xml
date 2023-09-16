@@ -35,10 +35,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 	
 	<insert id="recruitInsert" parameterType="recruitDTO">
-    	insert into recruit( recruit_title, cid, recruit_content, recruit_upfile, reg_date, recruit_money,
+    	insert into recruit(cname, recruit_title, cid, recruit_content, recruit_upfile, reg_date, recruit_money,
     		recruit_magam , cnt, realMagam )
     	values
-    	(#{recruitTitle}, #{cid}, #{recruitContent},
+    	(#{cname}, #{recruitTitle}, #{cid}, #{recruitContent},
     	#{recruitUpfile}, sysdate(),#{recruitMoney}, #{recruitMagam},0,
     	 DATE_ADD(CURRENT_DATE, INTERVAL #{recruitMagam} DAY))
 	</insert>
@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		<if test="searchOption == 'all'">
 			 ( recruit_title like concat('%', #{keyword} ,'%')
 	        or recruit_content like concat('%', #{keyword} ,'%')
-	        or cid like concat('%', #{keyword} ,'%')
+	        or cname like concat('%', #{keyword} ,'%')
 	        )
 		</if>
 		<if test="searchOption == 'title'">
@@ -77,7 +77,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	        and recruit_content like concat('%' , #{keyword} ,'%')
 	    </if>
         <if test="searchOption == 'name'">
-	        and cid like concat('%' , #{keyword} , '%')
+	        and cname like concat('%' , #{keyword} , '%')
 	    </if>
    </sql>
 	

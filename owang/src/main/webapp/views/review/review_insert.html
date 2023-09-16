@@ -5,6 +5,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 <h1> 리뷰 작성 페이지 </h1>
 <form action="" method="post"  th:object="${reviewDTO}">
 	[[${reviewDTO}]]<br>

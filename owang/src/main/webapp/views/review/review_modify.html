@@ -6,8 +6,10 @@
 </head>
 <body>
 <h1> 리뷰 수정 페이지 </h1>
-[[${mainData}]]
 
+<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 <form action="" method="post"  th:object="${mainData}">
 
 	<table border="">

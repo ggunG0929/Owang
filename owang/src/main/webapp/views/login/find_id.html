@@ -28,7 +28,9 @@
 </head>
 
 <body>
-
+<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	<h1>아이디 찾기</h1>
 	<form method="post" onsubmit="return validateForm()">
 		<div id="selectzz" align="center" style="font-weight: 100 ; color: rgb(0, 0, 0);"><a>타입을 선택해주세요.</a></div>

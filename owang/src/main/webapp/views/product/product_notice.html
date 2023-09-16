@@ -5,6 +5,24 @@
 <title>상품안내 및 신청</title>
 </head>
 <body>
+<script th:inline="javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    var submitBtn = document.getElementById("submitBtn");
+    submitBtn.addEventListener("click", function() {
+		if(/*[[${pay}]]*/ "" != null) {			
+	        var selectedProductId = document.querySelector('input[name="productRadio"]:checked');
+	        if (selectedProductId) {
+	            window.location.href = "/product/" + selectedProductId.value;
+	        } else {
+	            alert("상품을 선택해주세요");
+	        }
+		} else {
+	        alert(/*[[${msg}]]*/ "오류가 발생했습니다");
+		    window.location.href = /*[[${goUrl}]]*/ "/";
+		}
+    });
+});
+</script>
 <div>
 	개인을 위해서는 리뷰열람권이 있고<br>
 	기업을 위해서는 채용공고권이 있습니다.<br>
@@ -12,21 +30,27 @@
 </div>
 <table border="">
 	<tr>
+		<td></td>
 		<td>대상</td>
 		<td>상품명</td>
 		<td>금액</td>
 	</tr>
 	<tr th:each="dto : ${data}" align="center">
+    <td>
+        <input type="radio" th:if="${dto.productClient == '기업' and pay == 'comp'}" 
+               th:value="${dto.productId}" name="productRadio"> <!-- 기업 선택 -->
+        <input type="radio" th:if="${dto.productClient == '개인' and pay == 'solo'}" 
+               th:value="${dto.productId}" name="productRadio"> <!-- 개인 선택 -->
+    </td>
 		<td th:text="${dto.productClient}"></td>
 		<td th:text="${dto.productName}"></td>
 		<td th:text="${dto.productPrice}"></td>
-		<th:block th:if="${session.cid != null and dto.productClient == '기업' and compchk}">			
-		<td><a th:href="|/product/${dto.productId}|">신청</a></td>
-		</th:block>
-		<th:block th:if="${session.sid != null and dto.productClient == '개인'}">			
-		<td><a th:href="|/product/${dto.productId}|">신청</a></td>
-		</th:block>
-	</tr>
+</tr>
+<tr>
+    <td colspan="3" align="center">
+        <button id="submitBtn">신청</button>
+    </td>
+</tr>
 </table>
 </body>
 </html>

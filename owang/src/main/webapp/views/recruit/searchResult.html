@@ -7,6 +7,9 @@
 </head>
 
 <body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	[[${mainData}]]
 	<th:block th:if="${mainData == null}">
 		<h1>검색결과가 없습니다</h1>
@@ -23,7 +26,7 @@
 	</form>
 	</th:block>
 	<th:block th:unless="${mainData == null}">	
-	<h1 th:text="${param.searchOption + ' 검색 결과'}"></h1>
+	<h1 th:text="${param.searchOption + ' 검색 결과 :'+ param.keyword}"></h1>
 	
 	<form action="/recruit/search" method="get" th:object="${recruitDTO}">
 	    <select name="searchOption">
@@ -40,28 +43,60 @@
 		<tr>
 			<td>번호</td>
 			<td>제목</td>
-			<td>작성자</td>
+			<td>회사 이름</td>
 			<td>등록일</td>
 			<td>조회수</td>
+			<td>기업아이디(본편에선제거)</td>
 		</tr>
 		<tr th:each="dto, dtoStat : ${mainData}">
-			<td th:text="${dtoStat.count + recruitDTO.start}" />
-			<td>
-				<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|"
-					th:text="${dto.recruitTitle}"></a>
+			<td th:text="${dtoStat.count + recruitDTO.start}"/>
+			<td >
+				<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
 			</td>
-			<td>
-				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cid}"></a>
+			<td >
+				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
 			</td>
-			<td th:text="${dto.regDate}" />
-			<td th:text="${dto.cnt}" />
+			<td th:text="${dto.regDate}"/>
+			<td th:text="${dto.cnt}"/>
+			<td th:text="${dto.cid}" />
 		</tr>
+		<tr>
 
-		
+		      <tr>
+         <td colspan="6" align="center">
+            <!-- [처음] 링크 -->
+            <a th:if="${recruitDTO.pageStart > 1}"
+               th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=1)}"
+               th:text="'[처음]'" />
+
+            <!-- [이전] 링크 -->
+            <a th:if="${recruitDTO.page > 1}"
+               th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.page - 1})}"
+               th:text="'[이전]'" />
+
+            <!-- 페이지 번호 링크 -->
+            <th:block th:each="no: ${#numbers.sequence(recruitDTO.pageStart, recruitDTO.pageEnd)}">
+               <span th:if="${no == recruitDTO.page}" th:text="${no}" />
+               <a th:unless="${no == recruitDTO.page}"
+                  th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${no})}"
+                  th:text="${no}" />
+            </th:block>
+
+            <!-- [다음] 링크 -->
+            <a th:if="${recruitDTO.page < recruitDTO.pageTotal}"
+               th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.page + 1})}"
+               th:text="'[다음]'" />
+
+            <!-- [맨끝] 링크 -->
+            <a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}"
+               th:href="@{/recruit/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${recruitDTO.pageTotal})}"
+               th:text="'[맨끝]'" />
+            </td>
+      </tr>
 		
 		
 		<tr align="center">
-			<td colspan="5"><a th:href="|/recruit/list/1|">목록으로</a></td>
+			<td colspan="6"><a th:href="|/recruit/list/1|">목록으로</a></td>
 		</tr>
 
 

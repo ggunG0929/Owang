@@ -26,24 +26,40 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 	</select>  -->
 	
-	 <select id="useraskList" resultType="askDTO" parameterType="askDTO">
-		SELECT *
-		FROM ask
-		WHERE gid IN (
-		  SELECT gid
-		  FROM ask
-		  WHERE pname = #{pname}
-		) OR (
-		  pname = "관리자" AND seq IN (
-		    SELECT seq
-		    FROM ask
-		    WHERE pname = #{pname}
-		  )
-		)
-		ORDER BY gid DESC, seq ASC
-		LIMIT #{start}, #{limit};
-
-	</select> 
+	 <!-- <select id="useraskList" resultType="askDTO" parameterType="askDTO">
+	 		SELECT *
+	 		FROM ask
+	 		WHERE gid IN (
+	 		  SELECT gid
+	 		  FROM ask
+	 		  WHERE pname = #{pname}
+	 		) OR (
+	 		  pname = "관리자" AND seq IN (
+	 		    SELECT seq
+	 		    FROM ask
+	 		    WHERE pname = #{pname}
+	 		  )
+	 		)
+	 		ORDER BY gid DESC, seq ASC
+	 		LIMIT #{start}, #{limit};
+	 
+	 	</select>  -->
+	
+	<select id="useraskList" resultType="askDTO" parameterType="askDTO">
+    SELECT *
+    FROM ask
+    WHERE gid IS NULL AND pname = #{pname}
+    UNION ALL
+    SELECT *
+    FROM ask
+    WHERE gid IN (
+        SELECT gid
+        FROM ask
+        WHERE pname = #{pname}
+    )
+    ORDER BY gid DESC, seq ASC
+    LIMIT #{start}, #{limit};
+</select>
 	
 	
 	

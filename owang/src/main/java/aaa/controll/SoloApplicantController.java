@@ -165,6 +165,30 @@ public class SoloApplicantController {
 		return "solo_applicant/alert";
 	}
 
+	// 개인회원 지원 취소
+	@RequestMapping("modify/{page}/{ano}")
+	String com_recruit_modify(ApplicantDTO adto, PageData pd, HttpServletRequest request
+			, @PathVariable int ano, @PathVariable int page, HttpSession session) {
+		System.out.println("modify어서와");
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		ApplicantDTO apdto = samapper.appdetail(adto.ano, solosession.sid);
+		System.out.println(apdto);
+
+		
+		// apcancel = 2 변경
+		samapper.appstate(adto.getAno());
+		System.out.println(apdto);
+		
+	    String contextPath = request.getContextPath();
+	    String redirectUrl = contextPath + "/solo_applicant/home" + "/" + adto.getPage();
+	    
+	    	
+		
+		return "redirect:" + redirectUrl;	
+	}
+		
+	
+	
 	// 지원서 삭제 (지원 취소)
 	@RequestMapping("delete/{page}/{ano}")
 	String deleteApp(ApplicantDTO adto, PageData pd
@@ -210,10 +234,10 @@ public class SoloApplicantController {
 	    mm.addAttribute("magam", formattedDate);
 		return "solo_applicant/apprecruit_detail";
 	}// 채용 디테일
-	*/
+
 	
 	// 지원서 제출 시 이력서 열람
-	@RequestMapping("submit{rsid}")
+	@RequestMapping("submit/{rsid}")
 	String submitResume(Model mm, SoloResumeDTO rdto, HttpSession session, @PathVariable int rsid) {
 
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
@@ -227,5 +251,5 @@ public class SoloApplicantController {
 		// 이력서 열람만 가능
 		return "solo_resume/recruit_resume";
 	}
-
+	*/
 }

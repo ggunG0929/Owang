@@ -59,6 +59,9 @@
 </head>
 
 <body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	[[${mainData}]]<br>
 	[[${session.solosession}]]
 	
@@ -108,6 +111,13 @@
 					<td th:if="${session.adminSession}">
 						<a th:href="|/review/modify/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">수정하기</a>
 					</td>
+					<td th:if="${session['sid'] == review.sid}">
+						<a th:href="|/review/delete/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">삭제하기</a>
+					</td>
+					<td th:if="${session.adminSession}">
+						<a th:href="|/review/delete/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">삭제하기</a>
+					</td>
+					
 				</tr>
 			</tbody>
 		</table>
@@ -144,8 +154,11 @@
 			</ul>
 		</div>
 	
-	<a th:href="|/review/insert/${reviewDTO.cid}/${reviewDTO.page}|"
-		>글쓰기</a>
+    <a th:if="${session['sid']}"
+     th:href="|/review/insert/${reviewDTO.cid}/${reviewDTO.page}|" >글쓰기</a>
+
+
+
 </body>
 
 </html>
