@@ -83,42 +83,43 @@ public class AdminProductController {
 		// 그래프 데이타
 		// db에서 일매출 합산
 		List<Map<String, Object>> dailytotal = paym.dailytotal(startDate, endDate);
-//        System.out.println("dailytotal = "+dailytotal);
 
 		// 리스트 데이타
 		// db에서 회원종류별 매출액 순위리스트
 		List<Map<String, Object>> totalbys = paym.totalbys(startDate, endDate);
 		List<Map<String, Object>> totalbyc = paym.totalbyc(startDate, endDate);
-//        System.out.println("totalbys = "+totalbys);
-//        System.out.println("totalbyc = "+totalbyc);
-		// db에서 상품별 매출액 순위리스트
-		List<Map<String, Object>> totalbyp = paym.totalbyp(startDate, endDate);
-//        System.out.println("totalbyp = "+totalbyp);
-		// 회원자료 중 sid나 cid가 없는 자료 제외하기
+		// 회원자료 중 sid나 cid가 없는 자료 제외하기 - sid가 없는 자료면 cid자료들이고, cid가 없는 자료면 sid자료임
 		totalbys = totalbys.stream().filter(map -> map.containsKey("sid")).collect(Collectors.toList());
 		totalbyc = totalbyc.stream().filter(map -> map.containsKey("cid")).collect(Collectors.toList());
+
+		// db에서 상품별 매출액 순위리스트
+		List<Map<String, Object>> totalbyp = paym.totalbyp(startDate, endDate);
+
 		// 기간내 값들 합산
 		int totalSum = mapSum(dailytotal, "totalAmount");
 		int sSum = mapSum(totalbys, "total");
 		int cSum = mapSum(totalbyc, "total");
 		int pSum = mapSum(totalbyp, "total");
-//       System.out.println(totalSum);
+
 		// 오늘날짜 // 날짜 선택시 오늘 이후 날짜는 선택 불가하도록
 		String today = payS.dateformat(new Date());
-//       System.out.println(today);
-		// 선택한 날짜 뜨도록 string으로 보내주기
-		String strStartDate = null;
-		String strEndDate = null;
+
+		// 미선택시 db가 들어간 첫날과 오늘을 자동선택
+		// 선택시 선택한 날짜 뜨도록 string으로 보내주기
+		String strStartDate = "2022-09-01";
+		String strEndDate = today;
 		if (startDate != null && endDate != null) {
-			strStartDate = payS.dateformat(startDate);
-			strEndDate = payS.dateformat(endDate);
+			if (startDate.before(endDate)) {
+				strStartDate = payS.dateformat(startDate);
+				strEndDate = payS.dateformat(endDate);
+			} else {
+				String errorMsg = "기간을 확인하세요";
+				mm.addAttribute("errorMsg", errorMsg);
+				startDate = null;
+				endDate = null;
+			}
 		}
-		if (startDate == null && endDate == null) {
-			strStartDate = "2022-09-01";
-			strEndDate = today;
-		}
-//       System.out.println(startDate);
-//       System.out.println(endDate);
+
 		mm.addAttribute("graphData", dailytotal);
 		mm.addAttribute("slist", totalbys);
 		mm.addAttribute("clist", totalbyc);
