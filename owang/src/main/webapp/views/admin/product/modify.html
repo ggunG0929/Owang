@@ -72,6 +72,7 @@
    });
 </script>
 <body>
+	<th:block th:replace="~{admin/adheader}"/>
 <h1>상품 변경</h1>
 <!-- 폼제출시 동작은 상품추가 -->
 <form action="insertProduct" method="post" th:object="${ProductDTO}" id="addForm">

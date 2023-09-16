@@ -5,7 +5,7 @@
 <title>수락버튼등장</title>
 </head>
 <body>
-	<th:block th:replace="admin/adheader"/>
+	<th:block th:replace="~{admin/adheader}"/>
 	<h1>기업 수락 상세 보기</h1>
 	
 	[[${dto}]]
@@ -69,7 +69,8 @@
         	<td><a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')" th:text="삭제">삭제</a></td>
         </tr>
     	<tr align="center">
-    		<td colspan="2"><a th:href="|/admin_company/list/${dto.page}|">목록으로</a></td>
+    		<td colspan="2" th:if="${dto.capproval == false}"><a th:href="|/admin_company/cMiList/1|">목록으로</a></td>
+    		<td colspan="2" th:unless="${dto.capproval == false}"><a th:href="|/admin_company/cRegList/1|">목록으로</a></td>
     	</tr> 
     </table>
 	

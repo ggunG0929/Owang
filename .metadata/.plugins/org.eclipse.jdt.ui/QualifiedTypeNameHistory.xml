@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="org.apache.ibatis.type.Alias"/>
     <fullyQualifiedTypeName name="com.example.demo.service.RecruitMapper"/>
     <fullyQualifiedTypeName name="com.example.demo.model.RecruitDTO"/>
     <fullyQualifiedTypeName name="lombok.Data"/>
@@ -58,6 +57,7 @@
     <fullyQualifiedTypeName name="java.io.File"/>
     <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
     <fullyQualifiedTypeName name="aaa.service.RecruitMapper"/>
-    <fullyQualifiedTypeName name="jakarta.annotation.Resource"/>
     <fullyQualifiedTypeName name="aaa.model.SoloDTO"/>
+    <fullyQualifiedTypeName name="jakarta.annotation.Resource"/>
+    <fullyQualifiedTypeName name="aaa.service.ReviewMapper"/>
 </qualifiedTypeNameHistroy>
