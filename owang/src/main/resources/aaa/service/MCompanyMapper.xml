@@ -24,6 +24,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
     select count(*) from company where cid = #{cid}
 </select>
 
+<select id="getctype" resultType="Integer">
+    select ctype from company where cid = #{cid}
+</select>
+
 <select  id="deatilCompany">
 	select * from company where cid = #{cid}
 </select>

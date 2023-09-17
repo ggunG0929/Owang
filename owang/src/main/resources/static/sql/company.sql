@@ -1,43 +1,27 @@
-# cno 무결성번호
-# cid 기업아이디
-# cpw 기업 비번
-# cname 기업이름
-# cbuild 설립연도
-# ccategory 업종alter
-# cstaff 직원수
-# csales 1년매출액
-# ccall 회사 전화번호
-# cceo 회사 대표 이름
-# caddress 회사 주소
-# cconmanyfile 사업자등록파일
-# ctype 타입 ( 1번 기본, 2번유료, 3번 블랙)
-# cemail 이메일
+# 기업회원
+select * from company;
 
 CREATE TABLE company (
-    cno int  NOT NULL AUTO_INCREMENT primary key,
-   cid varchar(100) ,
+	cno	int NOT NULL AUTO_INCREMENT primary key,
+    cid varchar(100),
     cpw VARCHAR(100),
-    cname VARCHAR(100),
-    cemail VARCHAR(100),
-    cbuild VARCHAR(100),
-    ccategory varchar(100),
-    cstaff int,
-    csales int,
-    ccall varchar(100),
-    cceo varchar(100),
-    caddress varchar(400),
-    ccompanyFile  VARCHAR(100),
-    ccontent varchar(500),
-    ctype Int default 1,
-    cdate date,
-    cbcnt int,
-    capproval boolean default false 
-    
+    cname	VARCHAR(100),
+    cemail	VARCHAR(100),
+    cbuild	VARCHAR(100),
+    ccategory	varchar(100),
+    cstaff	int,
+    csales	int,
+    ccall	varchar(100),
+    cceo	varchar(100),
+    caddress	varchar(400),
+    ccompanyFile 	VARCHAR(100),
+    ccontent	varchar(500),
+    ctype	Int default 1,
+    cdate	date,
+    cbcnt	int,
+    capproval	boolean default false
 );
-ALTER TABLE company
-MODIFY COLUMN capproval BOOLEAN;
-
-UPDATE `company` SET `ctype` = '2', `capproval` = 1 WHERE (cno = 29);
+drop table company;
 
 INSERT INTO company (cid, cpw, cname, cemail, cbuild, ccategory, cstaff, csales, ccall, cceo, caddress, ccompanyFile, ccontent, ctype, cdate, cbcnt, capproval)
 VALUES
@@ -60,21 +44,7 @@ VALUES
     ('company17', 'password17', '고기마루', 'gogimaru@test.com', '2018-07-25', '한식음식점', 8, 450, '010-6116-7770', '노승우', '서울시 중구 명동로 5-5', '고기마루.jpg', '고기마루은 고객들에게 다양한 고기 요리를 제공합니다. 고기의 풍미를 느끼세요.', 1, '2023-02-20', 6, true),
     ('company18', 'password18', '고기앞으로', 'gogiaturo@test.com', '2018-07-25', '한식음식점', 7, 450, '010-6636-7770', '김홍철', '서울시 강동구 성내로 25-5', '고기앞으로.jpg', '고기앞으로은 고객들에게 다양한 고기 요리를 제공합니다. 고기의 풍미를 느끼세요.', 1, null, 6, false),
     ('company19', 'password19', '비벼비벼비빕', 'bibimbab@test.com', '2018-07-25', '한식음식점', 15, 750, '010-6611-7770', '김명자', '서울시 강남구 인사동 1-3', '비벼비벼비밥.jpg', '비벼비벼비밥은 고객들에게 다양한 비빔요리를 제공합니다. 비빔밥의 다양한 풍미를 느끼세요.', 1,null, 6, true),
-    ('company20', 'password20', '음악과 비와 전', 'eumgwa@test.com', '2018-07-25', '한식음식점', 6, 450, '010-6466-7770', '홍박사', '서울시 중랑구 명량로 54-5', '음악과비와전.jpg', '음악과비와전은 고객들에게 다양한 고기 요리를 제공합니다.  풍미를 느끼세요.', 1, null, 6, true);
-
-
- update company set capproval = true and ctype = 2 where cno = 29;
-select * from company;
-select * from company where cid = "company4" and cpw = "password4";
-select * from company where capproval = 1;
-   update solo set
-   ccompanyFile = ""
-   where cid = "aaa" and cpw='aaa';
-drop table company;
-
-select * from company;
-select * from company where cid = "company4" and cpw = "password4";
-select * from company capproval where capproval = true;
-select * from company where capproval = false;
-update company set capproval = true where cno = 5;
-drop table company;
+    ('company20', 'password20', '음악과 비와 전', 'eumgwa@test.com', '2018-07-25', '한식음식점', 6, 450, '010-6466-7770', '홍박사', '서울시 중랑구 명량로 54-5', '음악과비와전.jpg', '음악과비와전은 고객들에게 다양한 고기 요리를 제공합니다.  풍미를 느끼세요.', 1, null, 6, true),
+# 더미데이터
+    ('bonjuck', '1111', '본죽', 'bonjuck@naver.com', '2002-01-01', '한식회사', 100, 1000, '010-1234-5678', '김본죽', '서울특별시 영등포구 선유로 165', '본죽.jpg', '한 그릇, 한 그릇 정성을 다하는 온기 그대로, 아침을 여는 시작점으로부터 늦은 저녁을 마무리하는 마침점까지 긴 하루 속, 나를 채우는 가장 따뜻한 온점의 회사', 2, '2023-09-20', 5, true),
+    ('saema', '1111', '새마을식당', 'saema@naver.com', '2012-01-01', '한식회사', 100, 1000, '010-1234-5678', '백종원', '서울시 강남구 봉은사로 1길 39', '새마을식당.jpg','높은브랜드 파워와 인지도를 가진 장수브랜드이며, 트렌드에 발맞춘 식당입니다',2, '2023-09-23', 0, true); 

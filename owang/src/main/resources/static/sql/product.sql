@@ -15,4 +15,6 @@ drop table product;
 # 초기자료
 insert into product (product_name, product_client, product_valid, product_price) values
 ("[오왕]리뷰열람권 7일권", "개인", 7, 15000),
-("[오왕]채용공고권 7일권", "기업", 7, 15000);
+("[오왕]채용공고권 7일권", "기업", 7, 15000),
+("[오왕]리뷰열람권 15일권", "개인", 15, 30000),
+("[오왕]채용공고권 15일권", "기업", 15, 30000);

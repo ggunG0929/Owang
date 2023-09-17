@@ -12,7 +12,8 @@
 	</header>
 	[[${recruitDTO}]]
 	<br>
-	[[${mainData}]]
+	[[${mainData}]]<br>
+	[[${session.companysession.cdate}]]
 	<p><input type="text" th:value="${session['cid']}" readonly/></p>
 	<h1>recruit/insert</h1>
 	<form action="" method="post" enctype="multipart/form-data" th:object="${recruitDTO}">
@@ -22,6 +23,7 @@
 				<td>공고제목</td>
 				<td><input type="text" th:field="*{recruitTitle}" required /></td>
 			</tr>
+			<!--
 			<tr>
 				<td>회사명</td>
 				<td>
@@ -36,6 +38,7 @@
 				</td>
 			
 			</tr>
+			-->
 			<!--정규직만있어서 readonly로 설정했습니다.-->
 			<tr>
 				<td>근무형태</td>
@@ -64,11 +67,18 @@
 				<td>파일</td>
 				<td><input type="file" th:field="*{mmff}" /></td>
 			</tr>
+			<!--
 			<select name="마감일" th:field="*{recruitMagam}">
 				<option value="7" selected>7일 후</option>
 				<option value="30">30일 후</option>
 				<option value="300">300일 후</option>
 			</select>
+			-->
+			<tr>
+				<td>마감일</td>
+				<td><input type="date" name="realMagam" th:min="${today}" required/></td>
+			</tr>
+			
 			<tr>
 				<td>내용</td>
 				<td><textarea type="text" th:field="*{recruitContent}" rows="10" cols="30" required /></td>

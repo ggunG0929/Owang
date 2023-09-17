@@ -1,27 +1,23 @@
--- 은별
--- Qna이름을 ask로 바꿨습니다~ 참고해주세용~!
+# 공지사항 게시판
+select * from notice;
 
 create table notice(
-id int auto_increment primary key,
-title varchar(100),
-pname varchar(100),
-pw varchar(100),
-upfile varchar(100),
-content varchar(9999),
-reg_date timestamp,
-cnt int,
+id	int auto_increment primary key,
+title	varchar(100),
+pname	varchar(100),
+pw	varchar(100),
+upfile	varchar(100),
+content	varchar(9999),
+reg_date	timestamp,
+cnt	int,
 seq int,
 lev int,
 gid int
 );
 
 drop table notice;
-select * from notice;
 
-
-
--- notice공지사항 더미데이터
-
+-- notice 공지사항 더미데이터
 INSERT INTO notice (id, title, pname, pw, content, reg_date, cnt, seq, lev, gid)
 VALUES
 (1, '[공지] 구직자 대상 범죄 피해 방지를 위해 면접 전 주의하세요', '오왕관리자', '1111', '구직자 대상 범죄 피해 방지를 위해 면접 전 주의하세요', '2023-04-05', 0, 0, 0, 1),
@@ -50,15 +46,3 @@ VALUES
 (24, '[공지] 로그인 오류 현상 안내', '오왕관리자', '1111', '로그인 오류 현상에 대한 안내입니다. 문제가 해결될 때까지 기다려주세요.', '2023-08-20', 0, 0, 0, 1),
 (25, '[이벤트] 추석 선물 증정 이벤트', '오왕관리자', '1111', '추석을 맞아 선물을 증정하는 이벤트를 진행합니다.', '2023-08-25', 0, 0, 0, 1),
 (26, '[공지] 서비스 종료 예정 안내', '오왕관리자', '1111', '일부 서비스 종료 예정에 대한 안내입니다. 자세한 내용을 확인하세요.', '2023-09-05', 0, 0,0,1);
-
-
-
-
-
-
-
-
-
-
-
-

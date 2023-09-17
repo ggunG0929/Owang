@@ -50,6 +50,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		    apsubmitdate, cname, cid, apcancel, apread, appass
 		FROM applicant 
 		WHERE sid = #{sid}
+		ORDER BY ano DESC
 		limit #{start}, #{limit}
 
 	</select>

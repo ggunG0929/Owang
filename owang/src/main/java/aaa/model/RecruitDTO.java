@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 import org.apache.ibatis.type.Alias;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -17,12 +18,14 @@ public class RecruitDTO {
 	// 만들고보니 등록일 마감일 필요 일단 진행
 	
 	int recruitId, start, limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
+	int rtype;
 	public String recruitTitle, recruitName, recruitUpfile, recruitContent, cid, cname;
 	
 	String msg, goUrl;
 	boolean capproval;
 	Date regDate = new Date();
-	Date realMagam = new Date();
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	public Date realMagam = new Date();
 	int recruitMagam;
 	int recruitMoney; // 급여
 	String recruitlocatoin; // 근무지역
@@ -35,9 +38,6 @@ public class RecruitDTO {
 	public String getRegDate() {
 		return sdf.format(regDate);
 	}
-	
-	
-
 
 	public String getRealMagam() {
 		return sdf.format(realMagam);
@@ -102,6 +102,42 @@ public class RecruitDTO {
 	}
 	public RecruitDTO() {
 		super();
+	}
+
+	public RecruitDTO(int recruitId, int start, int limit, int pageLimit, int page, int pageStart, int pageEnd,
+			int pageTotal, int cnt, int rtype, String recruitTitle, String recruitName, String recruitUpfile,
+			String recruitContent, String cid, String cname, String msg, String goUrl, boolean capproval, Date regDate,
+			Date realMagam, int recruitMagam, int recruitMoney, String recruitlocatoin, String searchOption,
+			String keyword, MultipartFile mmff, SimpleDateFormat sdf) {
+		super();
+		this.recruitId = recruitId;
+		this.start = start;
+		this.limit = limit;
+		this.pageLimit = pageLimit;
+		this.page = page;
+		this.pageStart = pageStart;
+		this.pageEnd = pageEnd;
+		this.pageTotal = pageTotal;
+		this.cnt = cnt;
+		this.rtype = rtype;
+		this.recruitTitle = recruitTitle;
+		this.recruitName = recruitName;
+		this.recruitUpfile = recruitUpfile;
+		this.recruitContent = recruitContent;
+		this.cid = cid;
+		this.cname = cname;
+		this.msg = msg;
+		this.goUrl = goUrl;
+		this.capproval = capproval;
+		this.regDate = regDate;
+		this.realMagam = realMagam;
+		this.recruitMagam = recruitMagam;
+		this.recruitMoney = recruitMoney;
+		this.recruitlocatoin = recruitlocatoin;
+		this.searchOption = searchOption;
+		this.keyword = keyword;
+		this.mmff = mmff;
+		this.sdf = sdf;
 	}
 
 	

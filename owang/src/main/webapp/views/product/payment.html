@@ -33,7 +33,7 @@
 					<td th:text="${payment.pg_provider}"></td>
 					<th:block th:if="${payment.status=='완료'}">
 						<td th:text="${payment.paid_at}"></td>
-						<td><a th:href="${payment.receipt_url}">매출전표</a></td>
+						<td><a th:href="${payment.receipt_url}" target="_blank">매출전표</a></td>
 					</th:block>
 					<th:block th:unless="${payment.status=='완료'}">
 						<td th:text="${payment.started_at}"></td>

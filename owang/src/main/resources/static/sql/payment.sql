@@ -1,4 +1,4 @@
-# 결제
+# 결제내역
 select * from payment;
 
 # 개인회원아이디, 기업회원아이디, 아임포트고유번호, 상품아이디, 상품명, 결제금액, 결제시간
@@ -15,7 +15,7 @@ CREATE TABLE payment(
 
 drop table payment;
 
-# 밑에 찐데이터 인서트문 / 더미데이터 인서트문 이렇게 2개 있습니다
+# 찐데이터 인서트문 / 더미데이터 인서트문 이렇게 2개 있습니다
 # 찐데이터에 아이디연결(~9월 12일분까지)
 INSERT INTO payment (sid, cid, imp_uid, product_id, pname, amount, paid_at) VALUES 
 (null, 'company10', 'imp_536478305563', 7, '당근 10kg', 1004, '2023-08-26'),

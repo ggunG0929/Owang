@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>결제결과</title>
+	<meta charset="UTF-8">
+	<title>결제결과</title>
 </head>
+
 <body>
-<h1>[[${paymentData[0].buyer_name}]]님의 결제가 완료되었습니다.</h1>
-<th:block th:if="${date != null}">
-   <h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
-</th:block>
-   <table border="">
-      <tr>
-         <td>주문번호</td>
-<!--         <td>결제상태</td>-->
-         <td>결제시간</td>
-         <td>상품명</td>
-         <td>결제금액</td>
-         <td></td>
-      </tr>
-      <tr>
-         <td th:text="${paymentData[0].merchant_uid}"></td>
-<!--         <td th:text="${paymentData[0].status}"></td>-->
-         <td th:text="${paymentData[0].paid_at}"></td>
-         <td th:text="${paymentData[0].name}"></td>
-         <td th:text="${paymentData[0].amount}"></td>
-         <td><a th:href="${paymentData[0].receipt_url}">매출전표</a></td>
-      </tr>
-   </table>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
+	<h1>결제가 완료되었습니다.</h1>
+	<th:block th:if="${date != null}">
+		<h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
+	</th:block>
+	<table border="">
+		<tr>
+			<td>주문번호</td>
+			<td>결제시간</td>
+			<td>상품명</td>
+			<td>결제금액</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td th:text="${paymentData[0].merchant_uid}"></td>
+			<td th:text="${paymentData[0].paid_at}"></td>
+			<td th:text="${paymentData[0].name}"></td>
+			<td th:text="${paymentData[0].amount}"></td>
+			<td><a th:href="${paymentData[0].receipt_url}" target="_blank">매출전표</a></td>
+		</tr>
+	</table>
 </body>
+
 </html>

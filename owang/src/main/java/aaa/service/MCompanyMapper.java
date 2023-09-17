@@ -22,7 +22,9 @@ public interface MCompanyMapper {
 		MCompanyDTO deatilaaaCompany(String cid);
 		//기업 아이디체크
 		int idChk(String cid);
-		// 기업 가져오기
+		// 기업타입 가져오기
+		Integer getctype(String cid); 
+		
 		// 게시글 상세보기
 		
 		//기업 정보 상세 수정 삭제 

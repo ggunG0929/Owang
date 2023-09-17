@@ -36,6 +36,8 @@ public class ProductController {
 	ProductMapper pm;
 	@Resource
 	ReviewMapper rvm;
+	@Resource
+	MCompanyMapper mcm;
 
 	// 상품페이지
 	@RequestMapping("/notice")
@@ -59,7 +61,8 @@ public class ProductController {
 		// 기업회원
 		if (session.getAttribute("companysession") != null) {
 			MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-			if (companysession.isCapproval()) { // 인증받은 기업회원
+			MCompanyDTO compdb = mcm.deatilCompany(companysession.getCid());
+			if (compdb.isCapproval()) { // 인증받은 기업회원
 				String pay = "comp";
 				mm.addAttribute("pay", pay);
 			} else {
@@ -67,6 +70,7 @@ public class ProductController {
 				goUrl = "/product/notice";
 			}
 		}
+
 		// 전체 상품 목록
 		List<ProductDTO> data = pm.list();
 
@@ -101,7 +105,7 @@ public class ProductController {
 				mm.addAttribute("date", cdate);
 			}
 		} else {
-			String errorMsg = "세션이 없습니다. 로그인 후 다시 시도해주세요.";
+			String errorMsg = "로그인 후 다시 시도해주세요.";
 			mm.addAttribute("errorMsg", errorMsg);
 			name = null;
 			tel = null;
@@ -118,8 +122,6 @@ public class ProductController {
 
 	@Resource
 	SoloMapper sm;
-	@Resource
-	MCompanyMapper mcm;
 	@Autowired
 	PayService payS;
 	@Resource
@@ -231,6 +233,7 @@ public class ProductController {
 		} else {
 			date = null;
 		}
+
 		// 결제시 부여된 impUid로 db내용 가져옴
 		List<String> impuidList = new ArrayList<>();
 		impuidList.add(impUid);
@@ -240,5 +243,4 @@ public class ProductController {
 //      return "product/payment";
 		return "product/product_result";
 	}
-
 }

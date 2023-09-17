@@ -32,12 +32,13 @@
 </head>
 
 <body>
-	
+
 	<div class="box">
 		<span class="borderLine"></span>
 		<form method="post" onsubmit="return validateForm()">
 
-			<div id="selectzz" align="center" style="font-weight: 100 ; color: rgb(128, 255, 255);"><a>타입을 선택해주세요.</a></div>
+			<div id="selectzz" align="center" style="font-weight: 100 ; color: rgb(128, 255, 255);"><a>타입을 선택해주세요.</a>
+			</div>
 
 			<div id="errorMessage" align="center" style="color: red;"></div>
 			</br>
@@ -46,7 +47,6 @@
 					onclick="toggleLoginType('company')">기업회원</button>
 				<button type="button" class="toggle-button" data-login-type="individual"
 					onclick="toggleLoginType('individual')">개인회원</button>
-
 			</div>
 			<h2>로그인</h2>
 			<div class="inputbox">
@@ -66,66 +66,60 @@
 				<a href="/join/solo">개인회원가입</a>
 			</div>
 			<input type="submit" value="로그인">
-			</form>
-	</form>
-	<script>
-		// 폼 제출을 처리하는 JavaScript 함수
-		function validateForm() {
-			const loginTypeField = document.getElementById("loginType");
-			const errorMessage = document.getElementById("errorMessage");
+		</form>
+		</form>
+		<script>
+			// 폼 제출을 처리하는 JavaScript 함수
+			function validateForm() {
+				const loginTypeField = document.getElementById("loginType");
+				const errorMessage = document.getElementById("errorMessage");
 
-			if (loginTypeField.value === "") {
-				errorMessage.textContent = "로그인 유형을 선택해주세요.";
-				return false; // 폼 제출을 막음
-			} else {
-				errorMessage.textContent = ""; // 에러 메시지를 지움
-				return true; // 폼 제출 허용
-			}
-		}
-
-		function toggleLoginType(type) {
-			errorMessage.textContent = ""; // 에러 메시지를 지움
-			// JavaScript 코드 추가
-			const selectzzDiv = document.getElementById("selectzz");
-			selectzzDiv.style.display = "none";
-
-			const buttons = document.querySelectorAll(".toggle-button");
-			const loginTypeField = document.getElementById("loginType");
-
-			buttons.forEach(button => {
-				const buttonType = button.getAttribute("data-login-type");
-				if (buttonType === type) {
-					button.classList.add("selected");
-					loginTypeField.value = type;
+				if (loginTypeField.value === "") {
+					errorMessage.textContent = "로그인 유형을 선택해주세요.";
+					return false; // 폼 제출을 막음
 				} else {
-					button.classList.remove("selected");
-				
+					errorMessage.textContent = ""; // 에러 메시지를 지움
+					return true; // 폼 제출 허용
 				}
-			});
-
-			const borderLine = document.querySelector(".borderLine");
-			const boxz = document.querySelector(".box");
-			
-
-
-			if (type === "individual") {
-
-				loginTypeField.value = "individual";
-				borderLine.style.background = "linear-gradient(0deg, transparent, transparent, rgb(255, 0, 0), rgb(255, 0, 0), rgb(255, 0, 0)) ";
-				boxz.style.background = "rgb(255, 0, 0)";
-			
-			} else if (type === "company") {
-
-				loginTypeField.value = "company";
-				borderLine.style.background = "linear-gradient(0deg, transparent, transparent, rgb(0, 0, 255), rgb(0, 0, 255), rgb(0, 0, 255))";
-				boxz.style.background = "rgb(0, 0, 255)";
-		
 			}
-		}
 
+			function toggleLoginType(type) {
+				errorMessage.textContent = ""; // 에러 메시지를 지움
+				// JavaScript 코드 추가
+				const selectzzDiv = document.getElementById("selectzz");
+				selectzzDiv.style.display = "none";
 
+				const buttons = document.querySelectorAll(".toggle-button");
+				const loginTypeField = document.getElementById("loginType");
 
-	</script>
+				buttons.forEach(button => {
+					const buttonType = button.getAttribute("data-login-type");
+					if (buttonType === type) {
+						button.classList.add("selected");
+						loginTypeField.value = type;
+					} else {
+						button.classList.remove("selected");
+
+					}
+				});
+
+				const borderLine = document.querySelector(".borderLine");
+				const boxz = document.querySelector(".box");
+
+				if (type === "individual") {
+
+					loginTypeField.value = "individual";
+					borderLine.style.background = "linear-gradient(0deg, transparent, transparent, rgb(255, 0, 0), rgb(255, 0, 0), rgb(255, 0, 0)) ";
+					boxz.style.background = "rgb(255, 0, 0)";
+
+				} else if (type === "company") {
+
+					loginTypeField.value = "company";
+					borderLine.style.background = "linear-gradient(0deg, transparent, transparent, rgb(0, 0, 255), rgb(0, 0, 255), rgb(0, 0, 255))";
+					boxz.style.background = "rgb(0, 0, 255)";
+				}
+			}
+		</script>
 </body>
 
 </html>

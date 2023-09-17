@@ -4,6 +4,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+<script>
+		function goBack() {
+			window.history.back();
+		}
+</script>
 </head>
 
 <body>
@@ -74,14 +79,17 @@
 		</tr>
 		<th:block th:if="${session['sid']}">
 			<tr>
-				<td colspan="2">이력서 등록 테스트에요</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<a th:href="|/solo_applicant/submit/${dto.page}/${dto.cid}/${dto.recruitId}|">입사지원</a>
+				<td>
+		         <a th:href="|/solo_applicant/submit/${dto.page}/${dto.cid}/${dto.recruitId}|">입사지원</a>
 				</td>
 			</tr>
 		</th:block>
+			<tr>
+				<td colspan="2" >
+					<a href="javascript:goBack()">이전 페이지로</a>
+				</td>
+			</tr>
+		
 	</table>
 
 </body>

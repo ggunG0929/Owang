@@ -39,7 +39,6 @@
     <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
     <fullyQualifiedTypeName name="org.springframework.util.StringUtils"/>
     <fullyQualifiedTypeName name="org.thymeleaf.util.StringUtils"/>
-    <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="aaa.model.PaymentResponseMember"/>
     <fullyQualifiedTypeName name="java.util.stream.Collectors"/>
@@ -48,7 +47,6 @@
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
     <fullyQualifiedTypeName name="java.util.regex.Matcher"/>
-    <fullyQualifiedTypeName name="aaa.model.MCompanyDTO"/>
     <fullyQualifiedTypeName name="java.util.Calendar"/>
     <fullyQualifiedTypeName name="jakarta.servlet.http.HttpSession"/>
     <fullyQualifiedTypeName name="aaa.model.ApplicantDTO"/>
@@ -58,6 +56,8 @@
     <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
     <fullyQualifiedTypeName name="aaa.service.RecruitMapper"/>
     <fullyQualifiedTypeName name="aaa.model.SoloDTO"/>
-    <fullyQualifiedTypeName name="jakarta.annotation.Resource"/>
     <fullyQualifiedTypeName name="aaa.service.ReviewMapper"/>
+    <fullyQualifiedTypeName name="jakarta.annotation.Resource"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="aaa.model.MCompanyDTO"/>
 </qualifiedTypeNameHistroy>

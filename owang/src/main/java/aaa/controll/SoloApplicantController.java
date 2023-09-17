@@ -57,15 +57,16 @@ public class SoloApplicantController {
 	String solo_recruit(Model mm, ApplicantDTO adto, 
 			 @PathVariable int page,HttpSession session) {
 		String sid = (String) session.getAttribute("sid");
-		adto.calc(samapper.apptotal());
-		adto.setPage(page);
+	
 		adto.setSid(sid);
 		System.out.println(adto);
 		List<ApplicantDTO> appdata = samapper.applist(adto);
+		adto.calc(appdata.size());
+		adto.setPage(page);
 		mm.addAttribute("appdata", appdata);
 		System.out.println("나오란망ㄹ야 : " + adto.getStart() + ", " +  adto.getLimit());
 
-		System.out.println(appdata);
+		//System.out.println(appdata);
 		return "solo_applicant/home";
 	}
 

@@ -1,80 +1,31 @@
-CREATE TABLE review (
-	rvid INT AUTO_INCREMENT PRIMARY KEY,
-    sid VARCHAR(100),
-    cid VARCHAR(100),
-    rvtitle VARCHAR(100),
-    rvjang VARCHAR(100),
-    rvdan VARCHAR(100)
-);
-INSERT INTO review (sid, cid, rvtitle, rvjang, rvdan)
-VALUES
-    ('abc', 'company1', '리뷰 제목 6', '장점 6', '단점 1'),
-    ('abc', 'company1', '리뷰 제목 7', '장점 7', '단점 2'),
-    ('abc', 'company1', '리뷰 제목 8', '장점 8', '단점 3'),
-    ('abc', 'company1', '리뷰 제목 9', '장점 9', '단점 4'),
-    ('abc', 'company1', '리뷰 제목 10', '장점 10', '단점 5');
-select * from review where sid = 'abc'  order by rvid desc limit 0, 3;
+# 기업리뷰 게시판
 select * from review;
-select * from review where cid = 'company1';
 
-INSERT INTO review (sid, cid, rvtitle, rvjang, rvdan)
-VALUES
-    ('user1', 'company3', '두번째 회사 제목 1', '장점 1', '단점 1');
-drop table review;
-
-INSERT INTO review (sid, cid, rvtitle, rvjang, rvdan)
-VALUES
-     ('user1', 'company1', '제목1', '장점1', '단점1'),
-  ('user2', 'company1', '제목2', '장점2', '단점2'),
-  ('user3', 'company1', '제목3', '장점3', '단점3'),
-  ('user4', 'company1', '제목4', '장점4', '단점4'),
-  ('user5', 'company1', '제목5', '장점5', '단점5'),
-  ('user5', 'company2', '제목1', '장점1', '단점1'),
-  ('user6', 'company2', '제목2', '장점2', '단점2'),
-  ('user7', 'company2', '제목3', '장점3', '단점3'),
-  ('user8', 'company2', '제목4', '장점4', '단점4'),
-  ('user9', 'company2', '제목5', '장점5', '단점5'),
-  ('user1', 'company3', '제목1', '장점1', '단점1'),
-  ('user2', 'company3', '제목2', '장점2', '단점2'),
-  ('user3', 'company3', '제목3', '장점3', '단점3'),
-  ('user4', 'company3', '제목4', '장점4', '단점4'),
-  ('user5', 'company3', '제목5', '장점5', '단점5'),
-  ('user5', 'company4', '제목1', '장점1', '단점1'),
-  ('user6', 'company4', '제목2', '장점2', '단점2'),
-  ('user7', 'company4', '제목3', '장점3', '단점3'),
-  ('user8', 'company4', '제목4', '장점4', '단점4'),
-  ('user9', 'company4', '제목5', '장점5', '단점5'),
-  ('user1', 'company5', '제목1', '장점1', '단점1'),
-  ('user2', 'company5', '제목2', '장점2', '단점2'),
-  ('user3', 'company5', '제목3', '장점3', '단점3'),
-  ('user4', 'company5', '제목4', '장점4', '단점4'),
-  ('user5', 'company5', '제목5', '장점5', '단점5');
+CREATE TABLE review (
+	rvid	INT AUTO_INCREMENT PRIMARY KEY,
+    sid	VARCHAR(100),
+    cid VARCHAR(100),
+    rvtitle	VARCHAR(100),
+    rvjang	VARCHAR(500),
+    rvdan	VARCHAR(500)
+);
 
 drop table review;
+
 INSERT INTO review (sid, cid, rvtitle, rvjang, rvdan)
 VALUES
-    ('abc', 'company1', '제목1', '장점1', '단점1'),
-    ('abc', 'company2', '제목2', '장점2', '단점2'),
-    ('abc', 'company3', '제목3', '장점3', '단점3'),
-    ('abc', 'company4', '제목4', '장점4', '단점4'),
-    ('abc', 'company5', '제목5', '장점5', '단점5'),
-    ('user1', 'company1', '제목6', '장점6', '단점6'),
-    ('user1', 'company2', '제목7', '장점7', '단점7'),
-    ('user1', 'company3', '제목8', '장점8', '단점8'),
-    ('user1', 'company4', '제목9', '장점9', '단점9'),
-    ('user1', 'company5', '제목10', '장점10', '단점10'),
-    ('user2', 'company1', '제목11', '장점11', '단점11'),
-    ('user2', 'company2', '제목12', '장점12', '단점12'),
-    ('user2', 'company3', '제목13', '장점13', '단점13'),
-    ('user2', 'company4', '제목14', '장점14', '단점14'),
-    ('user2', 'company5', '제목15', '장점15', '단점15'),
-    ('user3', 'company1', '제목16', '장점16', '단점16'),
-    ('user3', 'company2', '제목17', '장점17', '단점17'),
-    ('user3', 'company3', '제목18', '장점18', '단점18'),
-    ('user3', 'company4', '제목19', '장점19', '단점19'),
-    ('user3', 'company5', '제목20', '장점20', '단점20'),
-    ('user4', 'company1', '제목21', '장점21', '단점21'),
-    ('user4', 'company2', '제목22', '장점22', '단점22'),
-    ('user4', 'company3', '제목23', '장점23', '단점23'),
-    ('user4', 'company4', '제목24', '장점24', '단점24'),
-    ('user4', 'company5', '제목25', '장점25', '단점25');
+	('user1', 'company3', '제목1', '장점1', '단점1'),
+	('user2', 'company20', '제목2', '장점2', '단점2'),
+	('user3', 'company8', '제목3', '장점3', '단점3'),
+	('user4', 'company20', '제목4', '장점4', '단점4'),
+	('user5', 'company17', '제목5', '장점5', '단점5'),
+# 더미데이터
+	('review', 'bonjuck', '[배울 수 있는 회사, 사회 초년생이라면 추천합니다.]', '장점) 1. 배울수 있다. 2. 대표님이 직원복지에 신경을 많이 씁니다. ', '단점 1. 회식 강요 심함 2.상여금주고 생색냅니다.'),
+	('review1', 'bonjuck', '[경력 쌓는데 일하기에 좋습니다.]', '1) 팀원 간의 협력을 중요하게 여기며, 함께 일하는 분위기가 좋습니다, 2) 근무 환경은 깨끗하고 안전 ', '1.주말과 휴일에는 고객 수가 늘어 대기 시간이 길어질 때가 있어 스트레스를 받을 때가 있습니다 2.재료를 넉넉히 안사서 옆집가서 빌려야함 종종...'),
+	('review2', 'bonjuck', '[요식업계에서 성장하기에 좋은 회사]', '1. 직원들에게 꾸준한 교육 기회를 제공하여 전문성을 향상시킬 수 있습니다. ', '워라벨 없습니다. 돈 벌어도 쓸수있는 시간이 없어요'),
+	('review3', 'bonjuck', '[그 누구도 추천하지 않습니다.]', '4대보험이 되는 점 ', '대표와 소통이 매우매우 힘들어 직원들끼리 끈끈합니다. '),
+	('user11', 'bonjuck', '[배울 수 있는 회사, 사회 초년생이라면 추천합니다.]', '1. 배울 수 있다. 2. 대표님이 직원 복지에 신경을 많이 씁니다.', '1. 회식 강요 심함 2. 상여금 주고 생색 냅니다.'),
+	('user12', 'bonjuck', '[배울 수 있는 회사, 사회 초년생이라면 추천합니다.]', '1. 신입 직원들에게 풍부한 학습과 성장 기회를 제공. 2. 한식 레스토랑 분야에서 유명하며, 이곳에서 일하면 한식 요리에 대한 전문 지식과 기술을 향상.', '1. 요리사와 서빙 스태프 등 업무 부담이 높을 수 있으며, 일부 직원들은 업무 양에 대한 스트레스 받음 2. 고객 서비스 측면에서 압박을 받는 경우가 있어, 일부 직원들은 고객과의 상호작용에 어려움을 겪음'),
+	('saereview1', 'saema', '[배울 수 있는 회사]', '장점) 1. 배울수 있다. 2. 대표님이 직원복지에 신경을 많이 씁니다. ', '단점 1. 회식 강요 심함 2.상여금주고 생색냅니다.'),
+    ('saereview2', 'saema', '[나이들어도 다니고싶어요]', '1) 팀원 간의 협력을 중요하게 여기며, 함께 일하는 분위기가 좋습니다, 2) 근무 환경은 깨끗하고 안전 ', '1.주말과 휴일에는 고객 수가 늘어 대기 시간이 길어질 때가 있어 스트레스를 받을 때가 있습니다 2.재료를 넉넉히 안사서 옆집가서 빌려야함 종종...'),
+	('saereview3', 'saema', '[요식업계에서 성장하기에 좋은 회사]', '1. 직원들에게 꾸준한 교육 기회를 제공하여 전문성을 향상시킬 수 있습니다. ', '워라벨 없습니다. 돈 벌어도 쓸수있는 시간이 없어요');

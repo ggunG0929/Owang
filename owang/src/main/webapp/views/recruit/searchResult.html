@@ -4,13 +4,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+
 </head>
 
 <body>
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-	[[${mainData}]]
+	
 	<th:block th:if="${mainData == null}">
 		<h1>검색결과가 없습니다</h1>
 		<a th:href="|/recruit/list/1|">목록으로</a>
@@ -45,6 +46,7 @@
 			<td>제목</td>
 			<td>회사 이름</td>
 			<td>등록일</td>
+			<td>마감일</td>
 			<td>조회수</td>
 			<td>기업아이디(본편에선제거)</td>
 		</tr>
@@ -57,6 +59,7 @@
 				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
 			</td>
 			<td th:text="${dto.regDate}"/>
+			<td th:text="${dto.realMagam}"/>
 			<td th:text="${dto.cnt}"/>
 			<td th:text="${dto.cid}" />
 		</tr>
