@@ -71,6 +71,11 @@
            
          </td>
       </tr>
+<th:block th:if="${session.adminSession}">
+	<tr>
+		<td><a th:href="|/admin_product/payment/detail/${askdto.pw}|" target="_blank">주문정보</a></td>
+	</tr>
+</th:block>
 
       <!-- 문의글 -->
       <tr th:unless="${askdto.pname == '관리자'}">

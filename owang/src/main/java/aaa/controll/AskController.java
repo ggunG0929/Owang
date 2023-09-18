@@ -44,17 +44,15 @@ public class AskController {
 		dto.calc(mapper.listCnt());
 		dto.setPname(zuserid);
 		System.out.println("askdto" + dto);
-	
-		
-		//값을 리스트로받아 그다음에
-		//그리스트를 하나씩 하나씩 
-	
+
+		// 값을 리스트로받아 그다음에
+		// 그리스트를 하나씩 하나씩
 
 		if (adto != null) {
 			System.out.println("관리자입니다.");
 			List<AskDTO> admindata = mapper.askList(dto);
 			mm.addAttribute("mainData", admindata);
-		} else {	//개인 
+		} else { // 개인
 			System.out.println("유저입니다.");
 			List<AskDTO> data = mapper.useraskList(dto);
 			mm.addAttribute("mainData", data);
@@ -78,7 +76,7 @@ public class AskController {
 
 	// 글을써보자
 	@GetMapping("insert/{page}")
-	String insert(Model mm, AskDTO dto, HttpSession session, SoloDTO sdto, MCompanyDTO cdto) {
+	String insert(Model mm, AskDTO dto, HttpSession session) {
 		String sid = (String) session.getAttribute("sid");
 		String cid = (String) session.getAttribute("cid");
 
@@ -92,17 +90,40 @@ public class AskController {
 		return "ask/ask_insertForm";
 	}
 
+	@GetMapping("insert/{page}/{impUid}")
+	String insertImpUid(Model mm, HttpSession session, AskDTO dto, @PathVariable String impUid) {
+		String sid = (String) session.getAttribute("sid");
+		String cid = (String) session.getAttribute("cid");
+		if (sid == null) {
+			mm.addAttribute("uid", cid);
+		} else {
+			mm.addAttribute("uid", sid);
+		}
+		return "ask/ask_insertForm";
+	}
+
 	@PostMapping("insert/{page}")
 	String insertReg(AskDTO dto, HttpServletRequest request) {
-
 		dto.setId(mapper.maxId() + 1);
 		fileSave(dto, request);
 		dto.setPname(request.getParameter("uid"));
-		System.out.println(dto);
 		mapper.askInsert(dto);
 		dto.setMsg("게시글 등록되었습니다.");
 		dto.setGoUrl("/ask/list/1");
 
+		return "ask/ask_alert";
+	}
+
+	@PostMapping("insert/{page}/{impUid}")
+	String insertReg2(AskDTO dto, HttpServletRequest request, @PathVariable String impUid) {
+		dto.setId(mapper.maxId() + 1);
+		fileSave(dto, request);
+		dto.setPname(request.getParameter("uid"));
+		dto.setPw(impUid);
+		mapper.askInsert(dto);
+		dto.setMsg("게시글 등록되었습니다.");
+		dto.setGoUrl("/ask/list/1");
+		
 		return "ask/ask_alert";
 	}
 
@@ -116,7 +137,7 @@ public class AskController {
 		}
 
 		String path = request.getServletContext().getRealPath("askup");
-		
+
 		System.out.println(path);
 
 		int dot = dto.getMmff().getOriginalFilename().lastIndexOf("."); // . 위치 찾음
@@ -217,7 +238,7 @@ public class AskController {
 		AskDTO dto = new AskDTO();
 		dto.setPage(page);
 		dto.setId(id);
-		//dto.setTitle("호로로롤로"); // 초기값 설정
+		// dto.setTitle("호로로롤로"); // 초기값 설정
 		mm.addAttribute("askdto", dto);
 
 		return "ask/ask_replyForm";

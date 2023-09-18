@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>board/insertForm</title>
+	<meta charset="UTF-8">
+	<title>board/insertForm</title>
 </head>
+
 <body>
-<h1>ask/insertForm*</h1>
-<h1>1:1 문의하기 여긴어디야!</h1>
+	<h1>ask/insertForm*</h1>
+	<h1>1:1 문의하기 여긴어디야!</h1>
 
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-    
 
-<form method="post" enctype="multipart/form-data" th:object="${askDTO}">
-	<table border="">
-		<tr>
-			<td>문의글 제목*</td>
-			<td><input type="text" th:field="*{title}" required/></td>
-		</tr>
-		<tr>
-			<td>작성자 *</td>
-			<!--로그인시 아이디가 따라옵니다.-->
-			<td><input type="text" name="uid" th:value="${uid}" readonly/></td>
-		</tr>
-		
-		<!--<tr>
+	<form method="post" enctype="multipart/form-data" th:object="${askDTO}">
+		<table border="">
+			<tr>
+				<td>문의글 제목*</td>
+				<td><input type="text" th:field="*{title}" required /></td>
+			</tr>
+			<tr>
+				<td>작성자 *</td>
+				<!--로그인시 아이디가 따라옵니다.-->
+				<td><input type="text" name="uid" th:value="${uid}" readonly /></td>
+			</tr>
+
+			<!--<tr>
 			<td>암호 *</td>
 			<td><input type="text" th:field="*{pw}" />
 				<ul>
@@ -36,27 +37,27 @@
 			
 			
 		</tr>-->
-		<tr>
-			<td>사진첨부</td>
-			<td><input type="file" th:field="*{mmff}"/></td>
-		</tr>
+			<tr>
+				<td>사진첨부</td>
+				<td><input type="file" th:field="*{mmff}" /></td>
+			</tr>
 
-		
-		<tr>
-			<td>문의내용 *</td>
-			<td><textarea th:field="*{content}" rows="25" cols="50" required
-				placeholder="※ 문의글 작성 시 
+
+			<tr>
+				<td>문의내용 *</td>
+				<td><textarea th:field="*{content}" rows="25" cols="50" required placeholder="※ 문의글 작성 시 
 							폭언,욕설 등을 하지 말아주세요
 							답변을 받지못하거나 불이익이 있을 수 있습니다." /></td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center">
-				<input type="submit" value="문의 접수" />
-				<a th:href="|/ask/list/${askDTO.page}|">목록으로</a>
-			</td>
-		</tr>
-	</table>
-</form>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="문의 접수" />
+					<a th:href="|/ask/list/${askDTO.page}|">목록으로</a>
+				</td>
+			</tr>
+		</table>
+	</form>
 
 </body>
+
 </html>

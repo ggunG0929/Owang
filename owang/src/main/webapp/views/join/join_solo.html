@@ -222,7 +222,11 @@
 				birthYear += 1900;
 			}
 
-			const birthDate = `${birthYear}-${month}-${day}`;
+			// 월과 일에 0을 붙여 2자리로 만들어줌
+			const fmtMonth = month < 10 ? `0${month}` : month;
+			const fmtDay = day < 10 ? `0${day}` : day;
+
+			const birthDate = `${birthYear}-${fmtMonth}-${fmtDay}`;
 			const today = new Date();
 			ageField.value = today.getFullYear() - birthYear + 1;
 			birthField.value = birthDate;
