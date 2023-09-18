@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 description.autobuilding=false
 eclipse.preferences.version=1
 encoding=UTF-8
+=======
+eclipse.preferences.version=1
+encoding=UTF-8
+refresh.enabled=true
+>>>>>>> e7aaa660a6352244a2408c4d668961cb55ff7ffc
 version=1

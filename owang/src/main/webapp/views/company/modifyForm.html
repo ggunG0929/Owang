@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>마이페이지 수정</title>
+</head>
+<body>
+<h1>마이페이지 수정</h1>
+<form method="post" enctype="multipart/form-data" th:object="${cdto}">
+	<table border="">
+		<tr>
+			<td>기업이름</td>
+			<td><input type="text" th:field="*{cname}" /></td>
+		</tr>
+		<tr>
+			<td>설립연도</td>
+			<td><input type="text" th:field="*{cbuild}"/></td>
+		</tr>
+		<tr>
+			<td>암호</td>
+			<td><input type="text" name="cpw" /></td>
+		</tr>
+		<tr>
+			<td>업종</td>
+			<td><input type="text" th:field="*{ccategory}"/></td>
+		</tr>
+		<tr>
+			<td>직원수</td>
+			<td><input type="text" th:field="*{cstaff}"/></td>
+		</tr>
+		<tr>
+			<td>매출액</td>
+			<td><input type="text" th:field="*{csales}"/></td>
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td><textarea th:field="*{ccontent}" /></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<input type="submit" value="수정" />
+				<a th:href="|/company/mypage/|" />
+			</td>
+		</tr>
+	</table>
+</form>
+
+</body>
+</html>

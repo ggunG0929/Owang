@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset='utf-8' />
+	<link rel="stylesheet" href="">
+	<script src="./dist/index.global.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.0.js"
+		integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+
+	<script>
+
+
+		document.addEventListener('DOMContentLoaded', function () {
+			var calendarEl = document.getElementById('calendar');
+
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				initialView: 'dayGridMonth',
+				headerToolbar: {
+					left: 'prevYear,prev,next,nextYear today',
+					center: 'title',
+					right: 'dayGridMonth,dayGridWeek,dayGridDay'
+				},
+
+				selectable: true,   // 달력 일자 선택 기능
+				selectMirror: true, // 달력 일자 드래그 기능
+
+				dayMaxEvents: true, // 해당 날짜 이벤트가 오버되면 높이 제한
+				
+
+				
+				events: {
+					url: '/recruit/calendar23', // JSON 데이터를 제공하는 엔드포인트 경로
+					method: 'post', // HTTP GET 요청
+					success: function (Info) {
+						console.log(Info)
+
+						return Info
+					},
+					failure: function () {
+						alert("gd")
+					}
+				},
+			    eventContent: function (info) {
+					var eventTitle = info.event.title;
+					var eventBackgroundColor = '';
+
+					if (eventTitle.startsWith("마감")) {
+						eventBackgroundColor = 'rgb(255, 99, 71)'; // "마감" 이벤트는 빨간색 배경
+					} else if (eventTitle.startsWith("시작")) {
+						eventBackgroundColor = 'rgb(70, 130, 180)'; // "시작" 이벤트는 파란색 배경
+					}
+
+					// 이벤트의 내용과 배경색을 설정합니다.
+					return {
+						html: '<div style="background-color: ' + eventBackgroundColor + ';">' + eventTitle + '</div>'
+					};
+				},
+		
+				eventClick: function (eventInfo) {
+					// 클릭한 이벤트의 ID를 가져옵니다. 이벤트 ID는 서버에서 생성한 고유한 값이어야 합니다.
+					var eventId = eventInfo.event.id;
+					
+					// 상세 페이지로 이동할 URL을 생성합니다. 여기서는 "/recruit/detail"로 이동하는 예제입니다.
+					var detailURL = '/recruit/detail/1/' + eventId;
+
+					// 생성한 URL로 이동합니다.
+					window.location.href = detailURL;
+				}
+
+			});
+
+			calendar.render();
+		});
+
+
+	</script>
+	<style>
+		.calendar {
+			width: 70%;
+			height: 70%;
+			margin: 20px auto;
+		}
+
+		.fc-event {
+			margin-top: 5px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	[[${calendar}]]
+
+	<div style="float: left; width: 80%;">
+		<div id='calendar'></div>
+	</div>
+</body>
+
+</html>

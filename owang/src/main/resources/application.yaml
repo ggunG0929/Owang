@@ -1,0 +1,22 @@
+server :
+<<<<<<< HEAD
+  port : 8468
+=======
+  port : 80
+>>>>>>> 8bd68bb398d7866c23810243622df4e0dd8ea394
+spring :
+  thymeleaf:
+    prefix : views/
+    suffix : .html
+    cache : false
+     
+  datasource :
+    driver-class-name : com.mysql.cj.jdbc.Driver
+    url : jdbc:mysql://localhost:3306/owang
+    username : owangadmin
+    password : 123456789
+    
+mybatis:
+  type-aliases-package: aaa.model
+  configuration:
+    map-underscore-to-camel-case: true

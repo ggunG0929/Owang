@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;owang&apos;" deleteContents="true" description="Delete resource &apos;owang&apos;" element1="/owang" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1693718038132"/>&#x0A;<refactoring comment="Delete resource &apos;owang&apos;" deleteContents="false" description="Delete resource &apos;owang&apos;" element1="/owang" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1693722846578"/>&#x0A;<refactoring comment="Delete resource &apos;owang&apos;" deleteContents="false" description="Delete resource &apos;owang&apos;" element1="/owang" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1693876032679"/>
+=======
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;owang&apos;" deleteContents="true" description="Delete resource &apos;owang&apos;" element1="/owang" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1693718038132"/>&#x0A;<refactoring comment="Delete resource &apos;owang&apos;" deleteContents="false" description="Delete resource &apos;owang&apos;" element1="/owang" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1693727886850"/>
+>>>>>>> 5ee8a3d557027ab2aeccfd5cb54ed07e5be9b894
+</session>

@@ -1,0 +1,203 @@
+package aaa.controll;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import aaa.model.RecruitDTO;
+import aaa.service.RecruitMapper;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+
+@Controller
+@RequestMapping("/recruit")
+public class RecruitController {
+	
+	// path 정의 다같이 쓰는거라 위에 빼둠 받으시고 테스트할때 폴더 경로 바꾸시면되여!!
+	// 승우꺼
+	static String path = "E:\\BackEnd_hakwon\\Spring_Team\\owang\\src\\main\\webapp\\up";
+	
+	
+	
+	@Resource
+	RecruitMapper recruitMapper;
+	
+	@RequestMapping("calendar")
+	String calendar() {
+
+		return "recruit/recruit_calendar";
+	}
+
+	@ResponseBody
+	@PostMapping("calendar2")
+	Object recruitTest() {
+
+		ArrayList<LinkedHashMap<String, String>> list = new ArrayList<>();
+		for (RecruitDTO recruitDTO : recruitMapper.recruitTest()) {
+			LinkedHashMap<String, String> map=new LinkedHashMap<>();
+			map.put("id",recruitDTO.getRecruitId()+"");
+			map.put("title", "시작        "+recruitDTO.getRecruitTitle()+recruitDTO.getRegDate());
+			map.put("start", recruitDTO.getRegDate());
+			
+			list.add(map);
+			
+		}
+		
+		return list;
+	}
+	
+	
+	
+	// 채용 리스트
+	@RequestMapping("list/{page}")
+	String list(Model mm, RecruitDTO dto) {
+		
+
+		System.out.println(recruitMapper.recruitList(dto));
+		dto.calc(recruitMapper.recruitListCnt());
+		
+		/*
+		int daysToAdd = dto.getRecruitMagam(); // 고른 마감일
+		
+		System.out.println(daysToAdd + "오셧 나요 나의 마감일");
+		
+		
+		Calendar currentDate = Calendar.getInstance();// 날짜 정보 선언
+		currentDate.setTime(new Date());//오늘날짜
+		currentDate.add(Calendar.DATE, daysToAdd);// 마감일 뒤로 더해달라는 설정
+		*/
+		//System.out.println("마감일: " + currentDate.getTime().toString()); // 
+		List<RecruitDTO> data = recruitMapper.recruitList(dto);
+		mm.addAttribute("mainData",data);
+		return "recruit/recruit_list";
+	}// 채용 리스트
+	
+	// 채용 디테일
+	@RequestMapping("detail/{page}/{id}")
+	String detail(Model mm, @PathVariable int page, @PathVariable int id) {
+		// 조회수증가
+		recruitMapper.recruitAddCont(id);
+		
+		RecruitDTO dto = recruitMapper.recruitDetail(id);
+		dto.setPage(page);
+		dto.calc(recruitMapper.recruitListCnt());
+		LocalDate currentDate = LocalDate.now();
+	    LocalDate futureDate = currentDate.plusDays(dto.getRecruitMagam()); 
+
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd (E)");
+	    String formattedDate = futureDate.format(formatter);
+	    
+		mm.addAttribute("dto",dto);
+	    mm.addAttribute("magam", formattedDate);
+		return "/recruit/recruit_detail";
+	}// 채용 디테일
+	
+	
+	
+	// 채용 작성 페이지
+	@GetMapping("insert/{page}")
+	String insert(RecruitDTO dto) {
+		
+		return "recruit/recruit_insert";
+	}// 채용 작성 페이지
+	
+	// 채용 삽입
+	@PostMapping("insert/{page}")
+	String insertReg(RecruitDTO dto,HttpServletRequest request) {
+		
+		dto.setRecruitId(recruitMapper.recruitMaxId()+1);
+		fileSave(dto, request);
+		recruitMapper.recruitInsert(dto);
+		System.out.println(dto);
+		dto.setMsg("작성되었습니다.");
+		dto.setGoUrl("/recruit/list/1");
+		return "recruit/recruit_alert";
+	}// 채용 삽입
+	
+	// 파일 저장
+	void fileSave(RecruitDTO dto, HttpServletRequest request) {
+
+		// 파일 업로드 유무 확인
+		if (dto.getMmff().isEmpty()) {
+			return;
+		}
+
+		int dot = dto.getMmff().getOriginalFilename().lastIndexOf(".");
+		String fDomain = dto.getMmff().getOriginalFilename().substring(0, dot);
+		String ext = dto.getMmff().getOriginalFilename().substring(dot);
+
+		dto.setRecruitUpfile(fDomain + ext);
+		File ff = new File(path + "\\" + dto.getRecruitUpfile());
+		int cnt = 1;
+		while (ff.exists()) {
+
+			dto.setRecruitUpfile(fDomain + "_" + cnt + ext);
+			ff = new File(path + "\\" + dto.getRecruitUpfile());
+			cnt++;
+		}
+
+		try {
+			FileOutputStream fos = new FileOutputStream(ff);
+
+			fos.write(dto.getMmff().getBytes());
+
+			fos.close();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+
+	}// 파일 저장
+	
+	// 파일삭제
+	void fileDeleteModule(RecruitDTO delDTO, HttpServletRequest request) {
+		if(delDTO.getRecruitUpfile()!=null) {
+
+			new File(path+"\\"+delDTO.getRecruitUpfile()).delete();
+		}
+	}// 파일삭제
+	
+	@RequestMapping("delete/{page}/{id}")
+	String delete(RecruitDTO dto, HttpServletRequest request ,@PathVariable int id) {
+		// 삭제전 세션이나 기업의 아이디 비번이 맞냐 로직을 넣어야할듯합니다.
+		// 혹은 conform이엿나로 도 가능(alert인데 삭제할지 취소할지 묻는거입니다)
+		// 일단 삭제이벤트 생성
+		RecruitDTO rdto = recruitMapper.recruitDetail(id);
+		System.out.println(dto);
+		dto.setMsg("삭제실패");
+		dto.setGoUrl("/recruit/detail/"+dto.getPage()+"/"+id);
+		
+		// 일단 dto가안와서 page에있는 id로 죽임 form으로 넘긴게안이라서 올방법을 일단 못찾음
+		int cnt = recruitMapper.recruitDelete(id);
+		System.out.println("deleteTest" + cnt);
+		
+		if (cnt>0) {
+			fileDeleteModule(rdto, request);
+			System.out.println();
+			System.out.println(rdto);
+			dto.setMsg("삭제되었습니다.");
+			dto.setGoUrl("/recruit/list/1");
+		}
+		
+		
+		return "recruit/recruit_alert";
+	}
+	
+}

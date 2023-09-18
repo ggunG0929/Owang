@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>기업 마이페이지</title>
+</head>
+<body>
+<h1>기업 마이페이지</h1>
+<table border="" th:each="cdto : ${mainData}">
+		<tr>
+			<td>기업이름</td>
+			<td th:text="${cdto.cname}" />
+		</tr>
+		
+		<tr>
+			<td>설립연도</td>
+			<td th:text="${cdto.cbuild}" />
+		</tr>
+		<tr>
+			<td>업종</td>
+			<td th:text="${cdto.ccategory}" />
+		</tr>
+		<tr>
+			<td>직원수</td>
+			<td th:text="${cdto.cstaff}" />
+		</tr>
+		<tr>
+			<td>매출액</td>
+			<td th:text="${cdto.csales}" />
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td th:text="${cdto.ccontent}" />
+		</tr>
+		<tr>
+			<td colspan="2" align="right">
+				<a th:href="|/company/modify|">수정</a>
+			</td>
+		</tr>
+</table>
+</body>
+</html>

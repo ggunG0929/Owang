@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border="">
+		<tr>
+			<td>id</td>
+			<td th:text="|${dto.recruitId}|"/>
+		</tr>
+		<tr>
+			<td>제목</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>작성자</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>등록일</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>조회수</td>
+			<td></td>
+		</tr>
+	</table>
+	
+</body>
+</html>
