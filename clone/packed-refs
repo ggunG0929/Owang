@@ -1,0 +1,16 @@
+# pack-refs with: peeled fully-peeled sorted 
+5ee8a3d557027ab2aeccfd5cb54ed07e5be9b894 refs/heads/EB
+5ee8a3d557027ab2aeccfd5cb54ed07e5be9b894 refs/heads/EBB
+f0299c5e66a22eb0102e3307ef63c10ad24fb124 refs/heads/G
+26b1d548e538529c615f3d42f52122376f127bc9 refs/heads/giry
+d523eec719ced402ba42cf02f7987457a80ed6c1 refs/heads/hoon
+e7aaa660a6352244a2408c4d668961cb55ff7ffc refs/heads/master
+729aa350acf392022079cb5cdda224dcc4f8a390 refs/heads/nsw
+ca78d344785d125c2eb9946164c1a7cf8dd90332 refs/heads/ryong
+97242f7900d1d15ac7541519ee62717b6b93e3d8 refs/pull/1/head
+2413596f719043ecc5b86c21f361d4f6d71818f2 refs/pull/2/head
+145e3b703486192080249c92825a52e4dce91697 refs/pull/3/head
+4ee84d637fe82a2636edfb5f50d0113bb7f4a498 refs/pull/4/head
+ffacb0813cc05c25895644a2638f112c3d7aa97d refs/pull/5/head
+a464889bd237c176d8e6303caaee24153e82a079 refs/pull/6/head
+ca78d344785d125c2eb9946164c1a7cf8dd90332 refs/pull/7/head
