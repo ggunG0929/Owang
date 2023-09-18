@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>이력서 작성</title>
+<!-- jQuery UI 스타일 및 스크립트 추가 -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<style>
+    #introduce, #license {
+        display: none;
+    }
+    #hide, #hideli {
+        display: none;
+    }
+</style>
+<script>
+    function showForm() {
+        event.preventDefault();
+        document.getElementById("introduce").style.display = "block";
+        document.getElementById("hide").style.display = "block";
+        document.getElementById("show").style.display = "none";
+    }
+
+    function hideForm() {
+        event.preventDefault();
+        document.getElementById("introduce").style.display = "none";
+        document.getElementById("hide").style.display = "none";
+        document.getElementById("show").style.display = "block";
+    }
+
+    function showLicense() {
+        event.preventDefault();
+        document.getElementById("license").style.display = "block";
+        document.getElementById("hideli").style.display = "block";
+        document.getElementById("showli").style.display = "none";
+    }
+
+    function hideLicense() {
+        event.preventDefault();
+        document.getElementById("license").style.display = "none";
+        document.getElementById("hideli").style.display = "none";
+        document.getElementById("showli").style.display = "block";
+    }
+    
+    function showLanguage() {
+        event.preventDefault();
+        document.getElementById("language").style.display = "block";
+        document.getElementById("hidelg").style.display = "block";
+        document.getElementById("showlg").style.display = "none";
+
+    }
+
+    function hideLanguage() {
+        event.preventDefault();
+        document.getElementById("language").style.display = "none";
+        document.getElementById("hidelg").style.display = "none";
+        document.getElementById("showlg").style.display = "block";
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 경력 선택 라디오 버튼
+        var careerRadio = document.querySelectorAll('input[name="rscareer"]');
+        // 경력 관련 입력란들을 감싸는 div
+        var careerDetailsDiv = document.getElementById('careerDetails');
+
+        // 경력 선택 라디오 버튼의 변경 이벤트를 감지
+        careerRadio.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                if (radio.value === '경력') {
+                    // '경력' 선택 시 입력란 나타냄
+                    careerDetailsDiv.style.display = 'block';
+                } else {
+                    // '신입' 선택 시 입력란 숨김
+                    careerDetailsDiv.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    var careerCount = 0;  // 경력 개수 초기값
+
+    function addCareer() {
+        careerCount++;  // 경력 개수 증가
+
+        // 경력 세부 정보 입력란을 동적으로 생성
+        var newCareerDetail = document.createElement('div');
+        newCareerDetail.innerHTML = `
+            <div id="careerDetails-${careerCount}" style="display: none;">
+                <div>
+                    <p>회사명</p>
+                    <p><input type="text" id="rscompany-${careerCount}" name="rscompany" th:field="*{rscompany}" /></p>
+                </div>
+                <div>
+                    <p>근무 기간</p>
+                    <p><input type="text" id="rsworkstart-${careerCount}" name="rsworkstart" th:field="*{rsworkstart}" /></p>
+                    <p><input type="text" id="rsworkend-${careerCount}" name="rsworkend" th:field="*{rsworkend}" /></p>
+                </div>
+                <div>
+                    <p>담당 업무</p>
+                    <p><textarea id="resumeWork-${careerCount}" name="rswork" th:field="*{rswork}" rows="4" cols="50"></textarea></p>
+                </div>
+            </div>
+        `;
+
+        // 경력 세부 정보 입력란을 추가한 후 보이도록 설정
+        document.getElementById('careerDetailsContainer').appendChild(newCareerDetail);
+        document.getElementById(`careerDetails-${careerCount}`).style.display = 'block';
+    }
+function printCareer()  {
+  const rscompany = document.getElementById('rscompany').value;
+  const rsworkstart = document.getElementById('rsworkstart').value;
+  const rsworkend = document.getElementById('rsworkend').value;
+  const rswork = document.getElementById('rswork').value;
+  document.getElementById("company").innerText = resumeCompany;
+  document.getElementById("workstart").innerText = resumeWorkStart;
+  document.getElementById("workend").innerText = resumeWorkEnd;
+  document.getElementById("work").innerText = resumeWork;
+}
+
+<!-- 파일명 표시 -->
+$("#file").on('change',function(){
+  var fileName = $("#file").val();
+  $(".upload-name").val(fileName);
+});
+</script>
+<style>
+.filebox .upload-name {
+    display: inline-block;
+    height: 30px;
+    padding: 0 5px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 200px;
+    color: #999999;
+}
+.filebox label {
+    display: inline-block;
+    padding: 10px 10px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #999999;
+    cursor: pointer;
+    height: 15px;
+    margin-left: 10px;
+    font-size: 12px;
+}
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+</style>
+<body>
+<h2>이력서 작성</h2>
+<div>
+	<form method="post" enctype="multipart/form-data" th:object="${soloResumeDTO}">
+		<div>
+			<div style="border: 1px solid #ccc; width:700px;">
+			    <h3>기본정보</h3>
+			    <table style="width:500px;">
+					<input type="hidden" th:value="${solosession.sid}" name="sid" />
+			        <tr>
+			            <td th:text="${solosession.sname}"></td>
+			            <td th:text="${solosession.sgender}"></td>
+			            <td th:text="${solosession.sage}"></td>
+						</tr>
+						<tr>
+							<td>주소</td>
+							<td th:text="${solosession.saddress}"></td>
+							<td>이메일</td>
+							<td th:text="${solosession.semail}"></td>
+						</tr>
+						<tr>
+							<td >전화번호</td>
+							<td th:text="${solosession.sphone}"></td>
+						</tr>
+						<tr style="width:250px;">
+				    		<input type="file" id="file" th:field="*{rsmmff}" required />
+				    	</tr>
+					</div>
+				</table>
+
+
+            </div>
+            <!-- 이력서 제목 -->
+            <div style="border: 1px solid #ccc; width:700px;">
+                <p>이력서 제목</p>
+                <p><input type="text" th:field="*{rstitle}" required /></p>
+            </div>
+
+            <!-- 경력 사항 -->
+            <div style="border: 1px solid #ccc; width:700px;">
+                <p>경력</p>
+                <p>
+                    <label for="resumeCareerNew">
+                        <input type="radio" name="rscareer" id="resumeCareerNew" value="신입" th:field="*{rscareer}" required />
+                        신입
+                    </label>
+                    <label for="resumeCareerExperienced">
+                        <input type="radio" name="rscareer" id="resumeCareerExperienced" value="경력" th:field="*{rscareer}" />
+                        경력
+                    </label>
+                </p>
+            </div>
+
+            <!-- 경력 관련 입력란 (기본적으로는 숨김) -->
+            <div id="careerDetails" style="display: none;">
+                <table>
+					<tr>
+	                    <td>회사명</td>
+	                    <td><input type="text" id="rscompany" th:field="*{rscompany}" onchange="printCareer()"/></td>
+                    </tr>
+	                <tr>
+	                    <td>근무 기간</td>
+	                    <td>
+							<input type="date" id="rsworkstart" th:field="*{rsworkstart}" />
+	                    	<input type="date" id="rsworkend" th:field="*{rsworkend}"  />
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td>담당 업무</td>
+	                    <td><textarea id="rswork" th:field="*{rswork}" rows="4" cols="50" onchange="printCareer()" /></td>
+	                </tr>
+	            </table>
+            </div>
+            <div id="careerDetailsOutput" style="display: none; ">
+			    <h3>경력 정보</h3>
+			    <p><strong>회사명:</strong> <span th:text="${soloResumeDTO.rscompany}"></span></p>
+			    <p><strong>근무 기간:</strong> <span th:text="${soloResumeDTO.rsworkstart}" /><span th:text="${soloResumeDTO.rsworkend}" /></p>
+			    <p><strong>담당 업무:</strong> <span th:text="${soloResumeDTO.rswork}"></span></p>
+			</div>
+            <!-- 학력 -->
+			<div style="border: 1px solid #ccc; width: 700px;">
+			    <p>최종 학력</p>
+			    <p>
+				<select th:field="*{rsacademic}" required>
+				    <option value="">학교 유형 선택</option>
+				    <option value="대학원">대학원</option>
+				    <option value="대학(4년)">대학(4년)</option>
+				    <option value="대학(2, 3년)">대학(2, 3년)</option>
+				    <option value="고등학교">고등학교</option>
+				    <option value="중학교">중학교</option>
+				    <option value="초등학교">초등학교</option>
+				</select>
+
+				<select th:field="*{rsacademicstat}" required>
+				    <option value="">학력 상태</option>
+				    <option value="졸업">졸업</option>
+				    <option value="재학중">재학중</option>
+				    <option value="휴학중">휴학중</option>
+				    <option value="중퇴">중퇴</option>
+				    <option value="수료">수료</option>
+				    <option value="검정고시">검정고시</option>
+				    <option value="수료">수료</option>
+				</select>
+			    </p>
+			</div>
+            <!-- 자기소개 -->
+            <div style="border: 1px solid #ccc; width:700px;">
+                <p>
+                    <button onclick="showForm()" class="btn_show" id="show">+</button>자기소개서
+                </p>
+                <p id="introduce"><textarea name="rsintroduce" rows="4" cols="50" th:field="*{rsintroduce}"></textarea></p>
+                <button onclick="hideForm()" class="btn_hide" id="hide">-</button>
+            </div>
+            <!-- 자격증 -->
+            <div style="border: 1px solid #ccc; width:700px;">
+                <p>
+                    <button onclick="showLicense()" class="btn_show" id="showli">+</button>자격증
+                </p>
+                <table id="license">
+                    <tr>
+                        <td>자격증명</td>
+                        <td><input type="text" th:field="*{rslicense}" /></td>
+                    </tr>
+                    <tr>
+                        <td>발행기관</td>
+                        <td><input type="text" th:field="*{rslicenseorg}" placeholder="발행기관" /></td>
+                        <td>발행년도</td>
+                        <td><input type="date" id="rslicenseyear" th:field="*{rslicenseyear}" placeholder="발행년도"/></td>
+                    </tr>
+                </table>
+                <button onclick="hideLicense()" class="btn_hide" id="hideli">-</button>
+            </div>
+            
+            <!-- 어학 능력 -->
+            <div style="border: 1px solid #ccc; width:700px;">
+                <p>
+                	<button onclick="showLanguage()" class="btn_show" id="showlg">+</button>어학 능력
+				</p>
+				<table id="language" style="display:none;">
+					<tr>
+						<td>어학명</td>
+						<td>
+							<select th:field="*{rslanguage}">
+						        <option value="">어학명</option>
+							    <option value="그리스어">그리스어</option>
+							    <option value="네덜란드어">네덜란드어</option>
+							    <option value="노르웨이어">노르웨이어</option>
+							    <option value="독일어">독일어</option>
+							    <option value="러시아어">러시아어</option>
+							    <option value="몽골어">몽골어</option>
+							    <option value="미얀마어">미얀마어</option>
+							    <option value="베트남어">베트남어</option>
+							    <option value="스웨덴어">스웨덴어</option>
+							    <option value="스페인어">스페인어</option>
+							    <option value="아랍어">아랍어</option>
+							    <option value="영어">영어</option>
+							    <option value="이탈리아어">이탈리아어</option>
+							    <option value="일본어">일본어</option>
+							    <option value="중국어">중국어</option>
+							    <option value="태국어">태국어</option>
+							    <option value="터키어">터키어</option>
+							    <option value="포르투갈어">포르투갈어</option>
+							    <option value="폴란드어">폴란드어</option>
+							    <option value="프랑스어">프랑스어</option>
+							    <option value="히브리어">히브리어</option>
+							    <option value="힌디어">힌디어</option>
+							    <option value="기타">기타</option>
+						    </select>
+						</td>
+						<td>어학수준</td>
+						<td>
+   							<select th:field="*{rslanguagelevel}">
+						        <option value="">어학수준</option>
+							    <option value="회화 능숙">회화 능숙</option>
+							    <option value="일상 대화">일상 대화</option>
+							    <option value="간단 대화">간단 대화</option>
+						    </select>
+						</td>
+					</tr>
+                </table>
+                <button onclick="hideLanguage()" class="btn_hide" id="hidelg" style="display:none;">-</button>
+            </div>
+            
+            <div>
+                <input type="submit" value="이력서 등록" />
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

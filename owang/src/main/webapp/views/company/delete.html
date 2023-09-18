@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>delete</title>
+</head>
+<body>
+
+<form method="post" >
+	<input type="hidden" th:value="${cid}" name="cid"/>
+	<table border="">
+		<tr>
+			<td>암호</td>
+			<td><input type="text" name="cpw"/></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<input type="submit" value="삭제" />
+				<a href="/compnay/detail" th:text="뒤로"/>
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

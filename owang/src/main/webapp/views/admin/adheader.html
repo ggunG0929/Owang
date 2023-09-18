@@ -1,0 +1,61 @@
+	<header layout:fragment="adminHeader">
+	<link rel="stylesheet" th:href="@{/css/header/adheader.css}">	
+		<nav>
+			
+			<ul>
+				<li><a href="/">   로고 홈</a></li>
+				
+				<li>고객지원
+					<div class="submenu">
+						<ul>
+							<li><a href="/ask/list/1">1:1답변</a></li>
+							<li><a href="/notice/notice/1">공지사항작성</a></li>
+						</ul>
+					</div>
+				</li>
+
+				<li><a href="/admin_company/cmanagement">기업관리</a>
+					<div class="submenu">
+						<ul>
+							<li><a href="/admin_company/list/1">회원 관리</a></li>
+							<li><a href="/admin_company/cmanagement">공고 수정 삭제</a></li>
+						</ul>
+					</div>
+				</li>
+				<li><a href="/admin_solo/smanagement">개인관리</a>
+					<div class="submenu">
+						<ul>
+							<li><a href="/admin_solo/sololist/1">회원관리</a></li>
+							<li><a href="/admin_solo/solocompany/1">재직인증</a></li>
+						</ul>
+					</div>
+				</li>
+			
+				<li><a href="/admin_product/modify">상품추가</a>
+					
+				</li>
+				<li><a href="/admin_product/graph">상품정산</a>
+					
+				</li>
+				<li><a href="/admin_product/payment/1">결제내역</a>
+					
+				</li>
+				
+			
+			
+
+			</ul>
+
+			<!-- 로그인/로그아웃 링크 -->
+			<div th:if="${session['cid'] == null and session['sid'] == null}">
+				<a href="/join/company"> 기업회원가입</a>
+				<a href="/join/solo"> 개인회원가입</a>
+				<a href="/login/main">로그인</a>
+				<a href="/admin/adminLogin">관리자 로그인</a>
+			</div>
+			<div th:if="${session['cid'] != null or session['sid'] != null} or ${session.adminSession != null}">
+				<a href="/login/logout">로그아웃</a>
+			</div>
+			
+		</nav>
+    </header>

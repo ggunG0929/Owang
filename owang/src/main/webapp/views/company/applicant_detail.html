@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>지원서 디테일</h2>
+<table style="border: 1px solid #ccc; width:500px;" >
+	<tr>
+		<td><h3>지원 기업</h3></td><td th:text="${cadto.cname}" />
+	</tr>
+	<tr>
+		<td><h3>지원 공고</h2></td><td th:text="${cadto.recruitTitle}" />
+	</tr>
+</table>	
+<div>
+	<div>
+        <div style="border: 1px solid #ccc; width:500px;" >
+			<h3>기본정보</h3>
+			<div>
+				<table style="width:450px;">
+			        <tr>
+			            <td th:text="${cadto.sname}"></td>
+			            <td th:text="${cadto.sgender}"></td>
+			            <td th:text="${cadto.sage}"></td>
+					</tr>
+					<tr>
+						<td>주소</td>
+						<td th:text="${cadto.saddress}"></td>
+						<td>이메일</td>
+						<td th:text="${cadto.semail}"></td>
+					</tr>
+					<tr>
+						<td >전화번호</td>
+						<td th:text="${cadto.sphone}"></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<img th:if="${cadto.img}" th:src="|/resumephoto/${cadto.apphoto}|"
+				style="width:160px; height:200px; border: 1px solid #ccc;"/>
+			</div>
+		</div>
+		
+		<!-- 이력서 제목 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>이력서 제목</p>
+			<td th:text="${cadto.aptitle}" />
+		</div>
+		<!-- 경력 사항 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>경력</p>
+			<td th:text="${cadto.apcareer}" />
+			<table th:if="${cadto.apcareer == '경력'}">
+				<tr>
+				    <td th:if="${cadto.scompanyName != null or not #lists.isEmpty(cadto.scompanyName)}">
+						재직중인 회사 : <span th:text="${cadto.scompanyName}"></span>
+			    	</td>
+			    </tr>
+			    <tr>
+				    <td th:if="${cadto.scompanyFile != null or not #lists.isEmpty(cadto.scompanyFile)}">
+						재직증명서 : <span th:text="${cadto.scompanyFile}"></span>
+			    	</td>
+		    	</tr></n></n>
+			    <!-- 경력일 경우에만 아래 필드들을 보여줍니다. -->
+			    <tr>
+					<td>회사명 : <span th:text="${cadto.apcompany}"></span></td>
+				</tr>
+			    <tr>
+					<td>근무 기간 : <span th:text="${cadto.apworkstart}" />~<span th:text="${cadto.apworkend}" />
+					</td>
+				</tr>
+			    <tr>
+					<td>업무 내용 : <span th:text="${cadto.apwork}"></span></td>
+			    </tr>
+			</table>
+		</div>
+		<!-- 학력 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>학력</p>
+			<td th:text="${cadto.apacademic}" />
+			<td th:text="${cadto.apacademicstat}" />			
+		</div>
+		<!-- 자기소개 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+		    <p>자기소개서</p>
+		    <p th:if="${cadto.apintroduce == null or cadto.apintroduce.isEmpty()}" style="color:red;">등록된 자기소개서가 없습니다</p>
+			<table th:if="${cadto.apintroduce != null or not #lists.isEmpty(cadto.apintroduce)}">
+		    <p th:text="${cadto.apintroduce}" />
+		</div>
+		<!-- 자격증 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>자격증</p>
+			<p th:if="${cadto.aplicense == null or cadto.aplicense.isEmpty()}" style="color:red;">등록된 자격증이 없습니다</p>
+			<table th:if="${cadto.aplicense != null and not #lists.isEmpty(cadto.aplicense)}">
+				<tr>
+				    <td>자격증명</td>
+				    <td th:text="${cadto.aplicense}" />
+					<td>발행기관</td>
+				    <td th:text="${cadto.aplicenseorg}" />
+				    <td>취득일자</td>
+				    <td th:text="${cadto.aplicenseyear}" />
+				</tr>
+			</table>
+		</div>
+		<!-- 어학 능력 -->
+        <div style="border: 1px solid #ccc; width:500px;">
+			<p>어학능력</p>
+			<p th:if="${cadto.aplanguage == null or cadto.aplanguage.isEmpty()}" style="color:red;">등록된 어학능력이 없습니다</p>
+			<table th:if="${cadto.aplanguage != null or not #lists.isEmpty(cadto.aplanguage)}">
+			<p th:text="${cadto.aplanguage}" />
+			<p th:text="${cadto.aplanguagelevel}" />
+		</div>
+		<div>
+			<a th:href="|/company/applicant/1|">목록으로</a>
+		</div>
+	</div>
+</div>
+</body>
+</html>

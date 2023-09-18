@@ -17,13 +17,15 @@
 # cnt 체용 게시판 조회수
 CREATE TABLE recruit (
     recruit_id INT AUTO_INCREMENT PRIMARY KEY,
+    cid VARCHAR(100),
     recruit_title VARCHAR(100),
-    recruit_name VARCHAR(100),
     recruit_upfile VARCHAR(100),
     recruit_content VARCHAR(9999),
     reg_date TIMESTAMP,
-    recruit_magam int,
-    cnt INT
+    recruit_magam INT,
+    cnt INT,
+    recruit_money Int
+    
 );
 
 # 삽입 테스트

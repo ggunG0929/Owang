@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>기업회원가입 폼</title>
+	<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<style>
+		td>div {
+			background-color: #ff0;
+			color: #f00;
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
+	<h1>기업회원가입</h1>
+	<button id="showTermsButton">이용약관 보기</button>
+	<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
+		<table border="">
+			
+			<tr>
+					<td>아이디:</td>
+					<td><input type="text" name="cid" id="cid" required><input type="button" value="ID 중복체크" onclick="checkDuplicateID()"></td>
+					<div id="checkcId"></div>
+					
+				</tr>
+			<tr>
+				<td>비밀번호1:</td>
+				<td><input type="password" name="cpw" required></td>
+			</tr>
+			<tr>
+				<td>비밀번호2:</td>
+				<td><input type="password" name="cpw2" required></td>
+			</tr>
+			<tr>
+				<td>회사명:</td>
+				<td><input type="text" name="cname" required></td>
+			</tr>
+			<tr>
+				<td>설립년도:</td>
+				<td><input type="text" name="cbuild" required></td>
+			</tr>
+			<tr>
+				<td>업종:</td>
+				<td><input type="text" name="ccategory" required></td>
+			</tr>
+			<tr>
+				<td>직원수:</td>
+				<td><input type="number" name="cstaff" required></td>
+			</tr>
+			<tr>
+				<td>1년 매출액:(만원기준)</td>
+				<td>
+					<input type="number" id="csales" name="csales" oninput="updateText(this)" required>
+					<span id="csalesText"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>회사 전화번호:</td>
+				<td><input type="text" name="ccall" required></td>
+			</tr>
+			<tr>
+				<td>이메일:</td>
+				<td><input type="email" name="cemail" required></td>
+			</tr>
+			<tr>
+				<td>대표 이름:</td>
+				<td><input type="text" name="cceo" required></td>
+			</tr>
+			<tr>
+				<td>주소:</td>
+				<td><input type="text" name="caddress" required></td>
+			</tr>
+			<tr>
+				<td>사업자 등록증 파일(필수):</td>
+				<td><input type="file" name="mmff" required></td>
+			</tr>
+			<tr>
+				<td>회사 소개:</td>
+				<td>
+					<textarea name="ccontent" rows="5" cols="40" required></textarea>
+				</td>
+			</tr>
+			
+		</table>
+		
+		<input type="submit" value="가입">
+	</form>
+		
+	<script>
+		function updateText(input) {
+			var csalesText = document.getElementById("csalesText");
+			var value = input.value;
+
+			if (!isNaN(value) && value !== "") {
+				csalesText.innerText = value + "0000원";
+			} else {
+				csalesText.innerText = "null";
+			}
+		}
+
+		function checkDuplicateID() {
+
+			var cid = document.getElementById("cid").value;
+
+			$.ajax({
+				type: "POST",
+				url: "/join/checkcId",
+				data: "cid=" + cid,
+				error: function (response) {
+					$("#checkcId").text("실패");
+				},
+				success: function (response) {
+					if (response === "중복") {
+						$("#checkcId").text("이미 사용 중인 ID입니다.");
+
+					} else {
+						$("#checkcId").text("사용 가능한 ID입니다.");
+					}
+				}
+			});
+		}
+		function submitForm() {
+			var checkcId = document.getElementById("checkcId").innerText;
+			if (checkcId === "이미 사용 중인 ID입니다.") {
+				alert("아이디 중복을 확인하세요.");
+				return false; // 양식 제출 방지
+			}
+			return true; // 양식 제출 허용
+		}
+		document.getElementById('showTermsButton').addEventListener('click', function () {
+			// 이용약관 페이지를 팝업 창으로 엽니다.
+			var popup = window.open('cterms.html', '이용약관', 'width=600,height=400');
+
+			// 팝업 창이 차단되지 않도록 팝업 창 객체를 검사합니다.
+			if (popup && !popup.closed) {
+				// 팝업 창이 열려 있으면 포커스를 설정합니다.
+				popup.focus();
+			} else {
+				alert('팝업 창을 열 수 없습니다. 팝업 창이 차단되었을 수 있습니다.');
+			}
+		});
+	</script>
+</body>
+
+</html>

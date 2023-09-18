@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ask/수정</title>
+
+<script>
+	function fileDelete(){
+		frm.action = "/ask/fileDelete"
+		frm.submit()
+	}
+	
+</script>
+
+
+</head>
+<body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
+<h2> ask/수정페이지입니다. </h2>
+
+	<header>
+       <div th:include="header :: header"></div>
+    </header>
+    
+
+
+<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
+	<input type="hidden" th:field="*{id}" />
+	<input type="hidden" th:field="*{page}" />
+
+<table border="">
+		<tr>
+			<td>제목</td>
+			<td><input type="text" th:field="*{title}"/></td>
+			
+		</tr>
+		<tr>
+			<td>작성자</td>
+			<td><input type="text" th:field="*{pname}" readonly/></td>
+		</tr>
+		<tr>
+			<td>파일</td>
+			<td>
+				<th:block th:if="${dto.upfile != null}">	
+				<!--<input hidden="text" th:field="*{upfile}" readonly/>-->
+				<input hidden="hidden" th:field="*{upfile}" readonly/>
+				<input  type="button" onclick="fileDelete()" value="파일삭제"/>
+				</th:block>
+				<input th:if="${dto.upfile == null}" type="file" th:field="*{mmff}"/>
+			</td>
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td><textarea th:field="*{content}" /></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<input type="submit" value="수정" />
+				<!--<a th:href="|/ask/detail/${askdto.page}/${askdto.id}|" th:text="뒤로"/>-->
+			</td>
+		</tr>
+	</table>
+
+
+
+</body>
+
+
+</html>

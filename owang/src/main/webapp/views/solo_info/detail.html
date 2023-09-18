@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+   <meta charset="UTF-8">
+   <title>개인정보상세</title>
+</head>
+
+<body>
+<header>
+      <div th:insert="~{header :: header}"></div>
+   </header>
+   <h1>개인 정보 상세</h1>
+
+   <table border="">
+      <tr>
+         <th>아이디</th>
+         <td th:text="${dto.sid}"></td>
+      </tr>
+      <tr>
+         <th>회원유형</th>
+         <td>
+            <span th:if="${dto.stype == 2}">
+               <span th:if="${dto.sdate == null}">프리미엄회원(재직자리뷰) 평생이용</span>
+               <span th:unless="${dto.sdate == null}"
+                  th:text="|프리미엄회원 마감일:${#dates.format(dto.sdate, 'yyyy-MM-dd')}|"></span>
+            </span>
+            <span th:unless="${dto.stype == 2}" th:text="일반회원"></span>
+         </td>
+      </tr>
+      <tr>
+      <tr>
+         <th>이름</th>
+         <td th:text="${dto.sname}"></td>
+      </tr>
+      <tr>
+         <th>생년월일</th>
+         <td th:text="${dto.sbirth}"></td>
+      </tr>
+      <tr>
+         <th>나이</th>
+         <td th:text="${dto.sage}"></td>
+      </tr>
+      <tr>
+         <th>성별</th>
+         <td th:text="${dto.sgender}"></td>
+      </tr>
+      <tr>
+         <th>전화번호</th>
+         <td th:text="${dto.sphone}"></td>
+      </tr>
+      <tr>
+         <th>이메일</th>
+         <td th:text="${dto.semail}"></td>
+      </tr>
+      <tr>
+         <th>주소</th>
+         <td th:text="${dto.saddress}"></td>
+      </tr>
+      <tr th:unless="${dto.scompanyName == null || dto.scompanyName == ''}">
+         <th>재직중인 회사이름</th>
+         <td th:text="${dto.scompanyName}"></td>
+      </tr>
+      <tr th:unless="${dto.scompanyFile == null ||  dto.scompanyFile == ''}">
+         <th>재직증명서</th>
+         <td><a th:href="@{|/admin_solo/soloup/download/${dto.scompanyFile}|}" th:text="${dto.scompanyFile}">다운로드</a>
+         </td>
+      </tr>
+      <tr th:unless="${dto.scompanyFile == null ||  dto.scompanyFile == ''}">
+         <th>재직인증승인</th>
+         <td th:if="${dto.sinjueng==true}" th:text="승인완료"></td>
+         <td th:unless="${dto.sinjueng==true}" th:text="미승인"></td>
+      </tr>
+
+      <!--th:if="${dto.scompanyFile != null && dto.scompanyFile != '' && dto.scompanyFile != 'null' }"-->
+
+
+   </table>
+   <a href="/">홈</a>
+   <a href="/solo/modify">수정</a>
+   <a href="/solo/delete">삭제</a>
+
+</body>
+
+</html>

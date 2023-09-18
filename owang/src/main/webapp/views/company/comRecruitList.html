@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+<body>
+<header>
+   <div th:insert="~{header :: header}"></div>
+</header>
+   <h3>채용공고는 20개 까지 작성가능합니다.</h3>
+   <table border="">
+      <h1>채용중인 공고</h1>
+      <tr>
+         <td>번호</td>
+         <td>제목</td>
+         <td>회사이름</td>
+         <td>등록일</td>
+         <td>마감일</td>
+         <td>조회수</td>
+         <td>기업아이디(본편에선 제거)</td>
+      </tr>
+      <tr th:each="dto, dtoStat : ${mainData}">
+         <td th:text="${dtoStat.count + recruitDTO.start}"/>
+         <td >
+            <a th:href="|/recruit/detail/${dto.cid}/1/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
+         </td>
+         <td >
+            <a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
+         </td>
+         <td th:text="${dto.regDate}"/>
+         <td th:text="${dto.realMagam}"/>
+         <td th:text="${dto.cnt}"/>
+         <td th:text="${dto.cid}"/>
+      </tr>
+      
+   </table>
+   <table border="">
+      <h1>만료된공고</h1>
+      <tr>
+         <td>번호</td>
+         <td>제목</td>
+         <td>회사이름</td>
+         <td>등록일</td>
+         <td>마감일</td>
+         <td>조회수</td>
+         <td>기업아이디(본편에선 제거)</td>
+      </tr>
+      <tr th:each="dto, dtoStat : ${closeData}">
+         <td th:text="${dtoStat.count + closeDto.start}"/>
+         <td >
+            <a th:href="|/recruit/detail/${dto.cid}/1/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
+         </td>
+         <td >
+            <a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
+         </td>
+         <td th:text="${dto.regDate}"/>
+         <td th:text="${dto.realMagam}"/>
+         <td th:text="${dto.cnt}"/>
+         <td th:text="${dto.cid}"/>
+      </tr>
+   </table>
+         <a th:if="${closeDto.pageStart > 1}" th:href="${closeDto.page - 1}+1" th:text="'[처음]'" />
+      <a th:if="${closeDto.pageStart > 1}" th:href="${closeDto.pageStart - 1}" th:text="'[이전]'" />
+      <th:block th:each="no: ${#numbers.sequence(closeDto.pageStart, closeDto.pageEnd)}">
+         <span th:if="${no==closeDto.page}" th:text="${no}" />
+         <a th:unless="${no==closeDto.page || no==0}" th:href="${no}" th:text="${no}" />
+      </th:block>
+      <a th:if="${closeDto.pageEnd < closeDto.pageTotal}" th:href="${closeDto.pageEnd + 1}" th:text="'[다음]'" />
+      <a th:if="${closeDto.pageEnd < closeDto.pageTotal}" th:href="${closeDto.pageTotal}" th:text="'[맨끝]'" />
+</body>
+</html>

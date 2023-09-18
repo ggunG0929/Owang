@@ -1,25 +1,36 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
 </head>
+
 <body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	<h1>recruit/detail</h1>
-		[[${dto}]]
-		
+	[[${dto}]]
+	[[${dto.recruitId}]]
+	[[${dto.recruitTitle}]]
 	<table border="">
-			
-			<td>id</td>
-			<td th:text="${dto.recruitId}" />
-		</tr>
+
+
 		<tr>
 			<td>제목</td>
 			<td th:text="${dto.recruitTitle}" />
 		</tr>
 		<tr>
 			<td>작성자</td>
-			<td th:text="${dto.recruitName}" />
+			<td>
+				<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
+			</td>
 		</tr>
 		<tr>
 			<td>등록일</td>
@@ -27,40 +38,64 @@
 		</tr>
 		<tr>
 			<td>마감일</td>
-			 <td th:text="${magam}" />
-
-
-
-
+			<td th:text="${dto.realMagam}" />
 		</tr>
 		<tr>
 			<td>조회수</td>
 			<td th:text="${dto.cnt}" />
 		</tr>
-	
+
 		<tr th:if="${dto.recruitUpfile != null}">
 
 			<td>파일</td>
 			<td>
 				<img th:if="${dto.img}" th:src="|/up/${dto.recruitUpfile}|" />
-				<a th:unless="${dto.img}" th:text="${dto.recruitUpfile}" 
-				
+				<a th:unless="${dto.img}" th:text="${dto.recruitUpfile}"
 					th:href="|/recruit/download/${dto.recruitUpfile}|">
 					<!-- 생각해보니 다운로드가 필요없음.. 일단 냅두겠습닏. -->
 			</td>
 		</tr>
+		<!-- ==================== 은별 추가한부분 ====================-->
+		<!--급여추가-->
+		<tr>
+			<td>급여</td>
+			<td>
+				<span th:if="${dto.recruitMtype == '월급'}">월급</span>
+				<span th:if="${dto.recruitMtype == '연봉'}">연봉</span>
+				[[${dto.recruitMoney}]] 만원
+			</td>
+		</tr>
+		<!-- ==================== 은별 ====================-->
 		<tr>
 			<td>내용</td>
 			<td th:text="${dto.recruitContent}" />
 		</tr>
 		<tr>
-			<td colspan="2" align="right">
-				<a th:href="|/recruit/delete/${dto.page}/${dto.recruitId}|">삭제</a>
-				<a th:href="|/recruit/modify/${dto.page}/${dto.recruitId}|">수정</a>
-				<a th:href="|/recruit/list/${dto.page}|">목록으로</a>
+			<td align="right" colspan="6">
+
+				<th:block th:if="${session.adminSession != null or session.cid == dto.cid}">
+					<a th:href="|/recruit/delete/${dto.page}/${dto.recruitId}|">삭제</a>
+					<a th:href="|/recruit/modify/${dto.page}/${dto.recruitId}|">수정</a>
+				</th:block>
+
+				<a th:href="|/recruit/list/${dto.page}|">전체공고보기</a>
 			</td>
 		</tr>
+		<th:block th:if="${session['sid']}">
+			<tr>
+				<td th:if="${dto.rtype==1}">
+					<a th:href="|/solo_applicant/submit/${dto.page}/${dto.cid}/${dto.recruitId}|">입사지원</a>
+				</td>
+			</tr>
+		</th:block>
+		<tr>
+			<td colspan="2">
+				<a href="javascript:goBack()">이전 페이지로</a>
+			</td>
+		</tr>
+
 	</table>
-	
+
 </body>
+
 </html>

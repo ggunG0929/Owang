@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 import org.apache.ibatis.type.Alias;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -17,11 +18,18 @@ public class RecruitDTO {
 	// 만들고보니 등록일 마감일 필요 일단 진행
 	
 	int recruitId, start, limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
-	String recruitTitle, recruitName, recruitUpfile, recruitContent;
+	int rtype;
+	public String recruitTitle, recruitName, recruitUpfile, recruitContent, cid, cname;
+	String recruitMtype; //월급
 	String msg, goUrl;
+	boolean capproval;
 	Date regDate = new Date();
-	Date realMagam=new Date();
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	public Date realMagam = new Date();
 	int recruitMagam;
+	int recruitMoney; // 급여
+	String recruitlocatoin; // 근무지역
+	String searchOption, keyword;// 검색조건
 	
 	MultipartFile mmff;
 	
@@ -30,13 +38,13 @@ public class RecruitDTO {
 	public String getRegDate() {
 		return sdf.format(regDate);
 	}
-	public Date getRegDate2() {
-		return regDate;
+
+	public String getRealMagam() {
+		return sdf.format(realMagam);
 	}
 
-	public void setRegDate(Date regDate) {
-		this.regDate = regDate;
-	}
+
+
 
 	public String getRecruitUpfile() {
 		if(recruitUpfile == null || recruitUpfile.trim().equals("") ||  recruitUpfile.trim().equals("null") ) {
@@ -44,7 +52,7 @@ public class RecruitDTO {
 		}
 		return recruitUpfile;
 	}
-
+	
 	public boolean isImg() {
 		if(getRecruitUpfile()==null) {
 			return false;
@@ -72,7 +80,7 @@ public class RecruitDTO {
 	}
 	
 	
-
+	/*
 	public String getRealMagam() {
 		
 		LocalDate currentDate = LocalDate.now();
@@ -80,19 +88,59 @@ public class RecruitDTO {
 	    futureDate = currentDate.plusDays(getRecruitMagam());
 
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-		String formattedDate = futureDate.format(formatter);	
+		String formattedDate = futureDate.format(formatter);
+	
 		
 		return formattedDate;
 	}
+	*/
 
 	public RecruitDTO(String recruitTitle, String recruitName, String recruitContent) {
 		this.recruitTitle = recruitTitle;
 		this.recruitName = recruitName;
 		this.recruitContent = recruitContent;
 	}
+	public RecruitDTO() {
+		super();
+	}
 
+	public RecruitDTO(int recruitId, int start, int limit, int pageLimit, int page, int pageStart, int pageEnd,
+			int pageTotal, int cnt, int rtype, String recruitTitle, String recruitName, String recruitUpfile,
+			String recruitContent, String cid, String cname, String msg, String goUrl, boolean capproval, Date regDate,
+			Date realMagam, int recruitMagam, int recruitMoney, String recruitlocatoin, String searchOption,
+			String keyword, MultipartFile mmff, SimpleDateFormat sdf) {
+		super();
+		this.recruitId = recruitId;
+		this.start = start;
+		this.limit = limit;
+		this.pageLimit = pageLimit;
+		this.page = page;
+		this.pageStart = pageStart;
+		this.pageEnd = pageEnd;
+		this.pageTotal = pageTotal;
+		this.cnt = cnt;
+		this.rtype = rtype;
+		this.recruitTitle = recruitTitle;
+		this.recruitName = recruitName;
+		this.recruitUpfile = recruitUpfile;
+		this.recruitContent = recruitContent;
+		this.cid = cid;
+		this.cname = cname;
+		this.msg = msg;
+		this.goUrl = goUrl;
+		this.capproval = capproval;
+		this.regDate = regDate;
+		this.realMagam = realMagam;
+		this.recruitMagam = recruitMagam;
+		this.recruitMoney = recruitMoney;
+		this.recruitlocatoin = recruitlocatoin;
+		this.searchOption = searchOption;
+		this.keyword = keyword;
+		this.mmff = mmff;
+		this.sdf = sdf;
+	}
 
+	
 	
 	
 	

@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-<<<<<<< HEAD
-	<section name="SmartImportWizard">
-		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="false"/>
-		<item key="SmartImportRootWizardPage.STORE_CLOSE_IMPORTED" value="true"/>
-		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
-		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
-		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
-			<item value="C:\coding0\clone"/>
-		</list>
-	</section>
-=======
 	<list key="installedFeatures">
 		<item value="io.emmet.eclipse:1.0.0.201401132323"/>
 		<item value="org.eclipse.buildship:3.1.7.v20230428-1350"/>
@@ -46,37 +35,15 @@
 		<item value="org.eclipse.wst.web_ui.feature:3.30.0.v202305230750"/>
 		<item value="org.eclipse.wst.xml_ui.feature:3.30.0.v202305230750"/>
 		<item value="org.jboss.tools.m2e.wro4j.feature:1.2.1.202301111328"/>
-		<item value="org.jkiss.dbeaver.ide.feature:23.2.0.202309031556"/>
-		<item value="org.jkiss.dbeaver.runtime.feature:23.2.0.202309031556"/>
 		<item value="org.sonatype.m2e.egit.feature:0.17.0.202209271423"/>
 	</list>
-	<section name="NewWizardAction">
-		<item key="NewWizardSelectionPage.STORE_SELECTED_ID" value="org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot.NewSpringBootWizard"/>
-		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
-			<item value="org.springsource.ide.eclipse.boot.wizards.category"/>
-		</list>
-	</section>
 	<section name="SmartImportWizard">
 		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="false"/>
 		<item key="SmartImportRootWizardPage.STORE_CLOSE_IMPORTED" value="false"/>
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
-<<<<<<< HEAD
-			<item value="C:\final\Final_Team"/>
+			<item value="C:\coding0\clone"/>
 		</list>
 	</section>
-=======
-			<item value="C:\Users\콩쥐\Desktop\studyy\springwork"/>
-			<item value="C:\Users\콩쥐\Desktop\FFinal\Final_Team"/>
-		</list>
-	</section>
-	<section name="CleanDialogSettings">
-		<item key="TOGGLE_SELECTED" value="false"/>
-		<item key="DIALOG_WIDTH" value="418"/>
-		<item key="DIALOG_HEIGHT" value="393"/>
-		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
-	</section>
->>>>>>> 5ee8a3d557027ab2aeccfd5cb54ed07e5be9b894
->>>>>>> e7aaa660a6352244a2408c4d668961cb55ff7ffc
 </section>

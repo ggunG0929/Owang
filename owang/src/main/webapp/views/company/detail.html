@@ -1,33 +1,83 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>company/detail</title>
+	<meta charset="UTF-8">
+	<title>company/detail</title>
 </head>
+
 <body>
-<h1>company/detail</h1>
+
+
+	<h1>company/detail</h1>
 	<table border="">
+	
 		<tr>
-			<td>cid</td><td th:text="${dto.cid}"/>
-		</tr><tr>
-			<td>기업이름</td><td th:text="${dto.cname}"/>
-		</tr><tr>
-			<td>설립연도</td><td th:text="${dto.cbuild}"/>
-		</tr><tr>
-			<td>업종</td><td th:text="${dto.ccategory}"/>
-		</tr><tr>
-			<td>직원수</td><td th:text="${dto.cstaff}"/>
-		</tr><tr>
-			<td>매출액</td><td th:text="${dto.csales}"/>
+			<td>기업이름</td>
+			<td th:text="${dto.cname}" />
 		</tr>
 		<tr>
-			<td>내용</td><td th:text="${dto.ccontent}"/>
-		</tr><tr>
+			<td>대표자</td>
+			<td th:text="${dto.cceo}" />
+		</tr>
+		<tr>
+			<td>설립연도</td>
+			<td th:text="${dto.cbuild}" />
+		</tr>
+		<tr>
+			<td>업종</td>
+			<td th:text="${dto.ccategory}" />
+		</tr>
+		<tr>
+			<td>직원수</td>
+			<td th:text="${dto.cstaff}" />
+		</tr>
+		<tr>
+			<td>한해 매출액</td>
+			<td th:text="|${dto.csales}(단위:백만원)|" />
+		</tr>
+		<tr>
+			<td>이메일</td>
+			<td th:text="${dto.cemail}" />
+		</tr>
+		<tr>
+			<td>회사주소</td>
+			<td th:text="${dto.caddress}" />
+		</tr>
+		<tr>
+			<td>전화번호</td>
+			<td th:text="${dto.ccall}" />
+		</tr>
+		<tr th:if="${session.cid==dto.cid}">
+			<td>회원유형</td>
+			<td th:if="${dto.ctype == 2}" th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></td>
+			<td th:unless="${dto.ctype == 2}" th:text="일반회원"></td>
+		</tr>
+		<tr>
+			<td>기업인증여부</td>
+			<td th:if="${dto.capproval}" th:text="기업인증완료"></td>
+			<td th:unless="${dto.capproval}" th:text="기업인증 x"></td>
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td th:text="${dto.ccontent}" />
+		</tr>
+		<tr th:if="${session.cid == dto.cid}">
+			<th>사업자증명서</th>
+			<td th:text="${dto.ccompanyFile}"></td>
+		</tr>
+		<tr>
 			<td colspan="2" align="right">
-				<a th:href="|/company/modify/${dto.page}/${dto.cid}|">수정</a>
-				<a th:href="|/company/mypage/${dto.page}|">목록으로</a>
+				<a th:href="|/review/lo/${dto.cid}/1|">리뷰</a>
+				<a th:href="|/company/list/${dto.cid}/1|">채용공고</a>
+				<th:block th:if="${session.adminSession != null or session.cid == dto.cid}">
+					<a href="/company/modify">수정</a>
+					<a href="/company/delete">삭제</a>
+				</th:block>
 			</td>
 		</tr>
 	</table>
+	<a href="/">홈으로</a>
 </body>
+
 </html>

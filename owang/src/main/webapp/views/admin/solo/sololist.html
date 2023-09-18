@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>페이지 이동 템플릿</title>
+</head>
+
+<body>
+	<th:block th:replace="~{admin/adheader}"/>
+	<h2>전체회원관리</h2>
+
+	<!-- 프리미엄회원 결과 버튼 -->
+	<form action="/admin_solo/search" method="get">
+		<input type="hidden" name="searchOption" value="type">
+		<input type="hidden" name="keyword" value="2">
+		<button type="submit">프리미엄회원</button>
+	</form>
+
+	<!-- 일반회원 결과 버튼 -->
+	<form action="/admin_solo/search" method="get">
+		<input type="hidden" name="searchOption" value="type">
+		<input type="hidden" name="keyword" value="1">
+		<button type="submit">일반회원</button>
+	</form>
+
+	<form action="/admin_solo/search" method="get">
+		<select name="searchOption">
+
+			<option value="name">이름</option>
+			<option value="id">아이디</option>
+
+		</select>
+		<input type="text" name="keyword" placeholder="검색어 입력">
+		<button type="submit">검색</button>
+
+	</form>
+	
+	<table border="">
+		<tr>
+			<th>회원번호</th>
+			<th>아이디</th>
+			<th>이름</th>
+			<th>고객유형</th>
+			
+			<th>재직회사</th>
+			<th>재직인증</th>
+			<th>삭제</th>
+
+		</tr>
+		<tr th:each="dto, dtostat : ${soloData}">
+			<td th:text="${dto.sno}"></td>
+			<td>
+				<a th:text="${dto.sid}"></a>
+			</td>
+			<td>
+				<a th:href="|/admin_solo/detail/${dto.sid}|" th:text="${dto.sname}"></a>
+			</td>
+				<td>
+				<span th:if="${dto.stype == 2}">
+					<span th:if="${dto.sdate == null}" >프리미엄회원(재직자리뷰) 평생이용</span>
+					<span th:unless="${dto.sdate == null}" th:text="|프리미엄회원 마감일:${#dates.format(dto.sdate, 'yyyy-MM-dd')}|"></span>
+				</span>
+				<span  th:unless="${dto.stype == 2}" th:text="일반회원"></span>
+			</td>
+				<td th:if="${dto.sinjueng}" th:text="${dto.scompanyName}"></td>
+			<td th:if="${dto.sinjueng}" th:text="인증"></td>
+			<td th:unless="${dto.sinjueng}" th:text="미인증"></td>
+		
+			<td th:unless="${dto.sinjueng}" th:text="x"></td>
+			<td> <a th:href="@{|/admin_solo/delete/${dto.sid}|}"
+					th:onclick="return confirm('[[${dto.sname}]]회원님을 삭제하시겠습니까?')" th:text="회원삭제"></a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="9" align="center">
+				<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
+				<a th:if="${soloDTO.pageStart > 1}" th:href="${soloDTO.page-soloDTO.page}+1" th:text="'[이전페이지]'" />
+
+				<a th:if="${soloDTO.pageStart < soloDTO.page}" th:href="${soloDTO.page - 1}" th:text="'[이전]'" />
+				<th:block th:each="no: ${#numbers.sequence(soloDTO.pageStart, soloDTO.pageEnd)}">
+					<span th:if="${no==soloDTO.page}" th:text="${no}" />
+					<a th:unless="${no==soloDTO.page}" th:href="${no}" th:text="${no}" />
+				</th:block>
+				<a th:if="${soloDTO.page < soloDTO.pageEnd}" th:href="${soloDTO.page + 1}" th:text="'[다음]'" />
+				<a th:if="${soloDTO.pageEnd < soloDTO.pageTotal}" th:href="${soloDTO.pageTotal}" th:text="'[다음페이지]'" />
+			</td>
+		</tr>
+	</table>
+
+	<a href="/admin_solo/smanagement">목록으로</a>
+
+
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<th:block th:replace="~{admin/adheader}"/>
+	[[${mainData}]]
+	<table border="">
+		<tr>
+			<td>번호</td>
+			<td>기업 상세 페이지</td>
+			<td>기업아이디</td>
+			<td>결제일</td>
+			<td>조회수</td>
+			<td>회원 구분</td>
+			<td>간편 탈퇴</td>
+		</tr>
+		<tr th:each="dto, dtoStat : ${mainData}">
+			<td th:text="${dtoStat.count + MCompanyDTO.start}"/>
+			<td >
+				<a th:href="|/admin_company/detail/${MCompanyDTO.page}/${dto.cno}|" th:text="${dto.cname}"></a>
+			</td>
+			<td >
+				<a th:text="${dto.cid}"></a>
+			</td>
+			<td th:text="${dto.cdate}"/>
+			<td th:text="${dto.cnt}"/>
+			<td align="center">
+			    <span th:switch="${dto.ctype}">
+			        <span th:case="1">기본</span>
+			        <span th:case="2">유료</span>
+			        <span th:case="*">기타</span> <!-- 다른 값에 대한 기본 처리 -->
+			    </span>
+			</td>
+			<td align="center">
+				<a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')" th:text="삭제">삭제</a>
+
+			</td>
+			
+		</tr>
+		<tr>
+			<td colspan="6" align="center">
+					<!-- [처음] 링크 -->
+				<a th:if="${MCompanyDTO.pageStart > 1}"
+					th:href="@{/admin_company/search(keyword=${param.keyword},searchOption=${param.searchOption},page=1)}"
+					th:text="'[처음]'" />
+			
+				<!-- [이전] 링크 -->
+				<a th:if="${MCompanyDTO.page > 1}"
+					th:href="@{/admin_company/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${MCompanyDTO.page - 1})}"
+					th:text="'[이전]'" />
+			
+				<!-- 페이지 번호 링크 -->
+				<th:block th:each="no: ${#numbers.sequence(MCompanyDTO.pageStart, MCompanyDTO.pageEnd)}">
+					<span th:if="${no == MCompanyDTO.page}" th:text="${no}" />
+					<a th:unless="${no == MCompanyDTO.page}"
+						th:href="@{/admin_company/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${no})}"
+						th:text="${no}" />
+				</th:block>
+			
+				<!-- [다음] 링크 -->
+				<a th:if="${MCompanyDTO.page < MCompanyDTO.pageTotal}"
+					th:href="@{/admin_company/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${MCompanyDTO.page + 1})}"
+					th:text="'[다음]'" />
+			
+				<!-- [맨끝] 링크 -->
+				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}"
+					th:href="@{/admin_company/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${MCompanyDTO.pageTotal})}"
+					th:text="'[맨끝]'" />
+			</td>
+		</tr>
+	
+	</table>
+</body>
+</html>

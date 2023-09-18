@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+   <meta charset="UTF-8">
+   <title>ask/detail</title>
+</head>
+
+<body>
+   <h1>ask/detailㄴ</h1>
+   [[${askdto}]]
+
+   <header>
+      <div th:insert="~{header :: header}"></div>
+   </header>
+
+
+   <table border="">
+      <!--
+      <tr>
+         <td>id</td>
+         <td th:text="${askdto.id}" />
+      </tr>
+      -->
+      <tr>
+         <td>제목</td>
+         <td th:text="${askdto.title}" />
+      </tr>
+      <tr>
+         <td>작성자</td>
+         <td th:text="${askdto.pname}" />
+      </tr>
+      <tr>
+         <!--<td>등록일</td><td th:text="${askdto.regDate}"/>-->
+         <!--날짜 예쁘게 수정-->
+         <td>등록일</td>
+         <td th:text="${#dates.format(askdto.regDate, 'yyyy-MM-dd')}" />
+
+      </tr>
+      <tr>
+         <td>조회수</td>
+         <td th:text="${askdto.cnt}" />
+      </tr>
+
+      <tr th:if="${askdto.upfile != null}">
+         <td>사진</td>
+         <td>
+            <img th:if="${askdto.img}" th:src="|/askup/${askdto.upfile}|" />
+            <a th:unless="${askdto.img}" th:text="${askdto.upfile}"></a>
+         </td>
+      </tr>
+
+
+
+
+      <tr>
+         <td>내용</td>
+         <td th:text="${askdto.content}" />
+      </tr>
+      <!-- 답변 -->
+      <tr th:if="${askdto.pname == '관리자'}">
+         <td colspan="2" align="right">
+            <!-- 관리자만 삭제 -->
+            <a th:href="@{|/ask/delete/${askdto.page}/${askdto.id}|}" th:if="${session.adminSession}">삭제</a>
+
+            <!-- 관리자만 수정 -->
+            <a th:href="@{|/ask/modify/${askdto.page}/${askdto.id}|}" th:if="${session.adminSession}">수정</a>
+
+            <a th:href="@{|/ask/list/${askdto.page}|}">목록으로</a>
+
+           
+         </td>
+      </tr>
+
+      <!-- 문의글 -->
+      <tr th:unless="${askdto.pname == '관리자'}">
+         <td colspan="2" align="right">
+            
+            
+            <!-- 관리자나 개인만 삭제 -->
+            <a th:href="@{|/ask/delete/${askdto.page}/${askdto.id}|}"    th:if="${session.adminSession}">삭제</a>
+            <a th:href="@{|/ask/delete/${askdto.page}/${askdto.id}|}"    th:unless="${session.adminSession}">삭제</a>
+            
+
+
+
+            <!-- 개인만 수정 -->
+            <a th:href="@{|/ask/modify/${askdto.page}/${askdto.id}|}" th:unless="${session.adminSession}">수정</a>
+
+            
+
+            <!-- 관리자만 답글 -->
+            <a th:href="@{|/ask/reply/${askdto.page}/${askdto.id}|}" th:if="${session.adminSession}">답글</a>
+            
+            <a th:href="@{|/ask/list/${askdto.page}|}">목록으로</a>
+         </td>
+      </tr>
+
+   </table>
+</body>
+
+</html>

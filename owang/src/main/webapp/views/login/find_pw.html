@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>비밀번호</title>
+   <style>
+      /* 토글 버튼에 사용할 사용자 정의 스타일을 여기에 추가하세요 */
+      .toggle-button {
+         display: inline-block;
+         padding: 10px 20px;
+         background-color: rgb(35, 35, 35);
+         color: rgb(255, 255, 255);
+         border: 2px solid rgb(192, 192, 192);
+         /* 흰색 테두리 추가 */
+         cursor: pointer;
+      }
+
+      .toggle-button.selected {
+         background-color: rgb(255, 255, 128);
+         color: rgb(0, 0, 0);
+         font-size: large;
+         /* 선택된 옵션에 대한 색상을 변경하세요 */
+      }
+   </style>
+</head>
+
+<body>
+   <header>
+      <div th:insert="~{header :: header}"></div>
+   </header>
+   <h1>비밀번호 찾기</h1>
+   <form method="post" onsubmit="return validateForm()">
+      <div id="selectzz" align="center" style="font-weight: 100 ; color: rgb(0, 0, 0);"><a>타입을 선택해주세요.</a></div>
+
+      <div id="errorMessage" align="center" style="color: red;"></div>
+      <br>
+      <div align="center" class="login-type">
+         <button type="button" class="toggle-button" data-login-type="company"
+            onclick="toggleLoginType('company')">기업회원</button>
+         <button type="button" class="toggle-button" data-login-type="individual"
+            onclick="toggleLoginType('individual')">개인회원</button>
+         <input type="hidden" id="pwloginType" name="pwloginType">
+      </div>
+      <br>
+      <label for="pwid">아이디:</label>
+      <input type="text" id="pwid" name="pwid" required><br>
+
+      <label for="pwemail">이메일 주소:</label>
+      <input type="email" id="pwemail" name="pwemail" required><br>
+
+      <div id="solo" style="display: none;">
+         <label for="sbirth">생년월일 8자리:</label>
+         <input type="text" id="pwsbirth" name="pwsbirth" placeholder="yyyy-MM-dd"><br>
+      </div>
+
+      <div id="comp" style="display: none;">
+         <label for="cceo">회사 대표 이름:</label>
+         <input type="text" id="pwcceo" name="pwcceo">
+      </div>
+
+      <input type="submit" value="찾기">
+   </form>
+   <script>
+      // 폼 제출을 처리하는 JavaScript 함수
+      function validateForm() {
+         const loginTypeField = document.getElementById("pwloginType");
+         const errorMessage = document.getElementById("errorMessage");
+
+         if (loginTypeField.value === "") {
+            errorMessage.textContent = "로그인 유형을 선택해주세요.";
+            return false; // 폼 제출을 막음
+         } else {
+            errorMessage.textContent = ""; // 에러 메시지를 지움
+            return true; // 폼 제출 허용
+         }
+      }
+
+      function toggleLoginType(type) {
+         errorMessage.textContent = ""; // 에러 메시지를 지움
+         const selectzzDiv = document.getElementById("selectzz");
+         selectzzDiv.style.display = "none";
+
+         const buttons = document.querySelectorAll(".toggle-button");
+         const loginTypeField = document.getElementById("pwloginType");
+
+         // 개인회원을 선택한 경우
+         if (type === 'individual') {
+            document.getElementById('comp').style.display = 'none';
+            document.getElementById('solo').style.display = 'block';
+         } else if (type === 'company') {
+            // 기업회원을 선택한 경우
+            document.getElementById('solo').style.display = 'none';
+            document.getElementById('comp').style.display = 'block';
+         }
+
+         buttons.forEach(button => {
+            const buttonType = button.getAttribute("data-login-type");
+            if (buttonType === type) {
+               button.classList.add("selected");
+               loginTypeField.value = type;
+            } else {
+               button.classList.remove("selected");
+            }
+         });
+      }
+
+   </script>
+</body>
+
+</html>

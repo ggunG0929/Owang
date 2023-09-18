@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>매출 내역 상세</title>
+	<script>
+		function confirmCancellation() {
+			var confirmed = confirm("정말 결제를 취소하시겠습니까?");
+			if (confirmed) {
+				document.getElementById('cancelForm').submit();
+			}
+		}
+	</script>
+</head>
+
+<body>
+	<th:block th:replace="~{admin/adheader}" />
+	<h1>상세내역</h1>
+	<table border="">
+		<th:block th:if="${paymentData}!=null">
+			<tr>
+				<th colspan="6" align="center">회원정보</th>
+			</tr>
+			<tr>
+				<th>아이디</th>
+				<td colspan="5" align="center" th:text="${paymentData[0].id}" />
+			</tr>
+			<tr>
+				<th colspan="6" align="center">주문자정보</th>
+			</tr>
+			<tr>
+				<th>이름</th>
+				<td th:text="${paymentData[0].buyer_name}" />
+				<th>번호</th>
+				<td th:text="${paymentData[0].buyer_tel}" />
+				<th>메일</th>
+				<td th:text="${paymentData[0].buyer_email}" />
+			</tr>
+			<tr>
+				<th colspan="6" align="center">결제정보</th>
+			</tr>
+			<tr>
+				<th>고유번호</th>
+				<td colspan="2" th:text="${paymentData[0].imp_uid}"></td>
+				<th>주문번호</th>
+				<td colspan="2" th:text="${paymentData[0].merchant_uid}"></td>
+			</tr>
+			<tr>
+				<th colspan="3" th:text="${paymentData[0].name}"></th>
+
+				<th:block th:if="${paymentData[0].paid_at == '0'}">
+					<td colspan="2" th:text="${paymentData[0].started_at}"></td>
+				</th:block>
+				<th:block th:unless="${paymentData[0].paid_at == '0'}">
+					<td colspan="2" th:text="${paymentData[0].paid_at}"></td>
+				</th:block>
+				<td><a th:href="${paymentData[0].receipt_url}" target="_blank">매출전표</a></td>
+			</tr>
+			<tr>
+				<th>결제상태</th>
+				<td th:text="${paymentData[0].status}"></td>
+				<th>결제수단</th>
+				<td th:text="${paymentData[0].pay_method}"></td>
+				<th>결제대행사</th>
+				<td th:text="${paymentData[0].pg_provider}"></td>
+			</tr>
+			<tr>
+				<th>주문(결제)금액</th>
+				<td th:text="${paymentData[0].amount}"></td>
+				<th>결제취소금액</th>
+				<td th:text="${paymentData[0].cancel_amount}"></td>
+				<th:block th:if="${paymentData[0].failed_at != '0'}">
+					<!--결제실패 사유, 시각-->
+					<td th:text="${paymentData[0].fail_reason}"></td>
+					<td th:text="${paymentData[0].failed_at}"></td>
+				</th:block>
+				<th:block th:if="${paymentData[0].cancelled_at != '0'}">
+					<!--결제취소 사유, 시각-->
+					<td th:text="${paymentData[0].cancel_reason}"></td>
+					<td th:text="${paymentData[0].cancelled_at}"></td>
+				</th:block>
+				<th:block th:if="${paymentData[0].cancelled_at == '0' and paymentData[0].failed_at == '0'}">
+					<form action="/admin_product/payment/cancle" id="cancelForm" method="post">
+						<input type="hidden" name="id" th:value="${paymentData[0].id}" />
+						<input type="hidden" name="impUid" th:value="${paymentData[0].imp_uid}" />
+						<input type="hidden" name="name" th:value="${paymentData[0].name}" />
+						<td colspan="2" align="center"><button type="submit">결제취소</button></td>
+					</form>
+				</th:block>
+			</tr>
+			<tr>
+				<th>카드승인번호</th>
+				<td th:text="${paymentData[0].apply_num}" />
+				<th>카드사</th>
+				<td th:text="${paymentData[0].card_name}" />
+				<th>카드번호</th>
+				<td th:text="${paymentData[0].card_number}" />
+			</tr>
+			<tr>
+				<th>은행(실시간계좌이체)</th>
+				<td colspan="5" th:text="${paymentData[0].bank_name}"></td>
+			</tr>
+			<tr>
+				<th>가상계좌</th>
+				<td th:text="${paymentData[0].vbank_name}"></td>
+				<td th:text="${paymentData[0].vbank_holder}"></td>
+				<td th:text="${paymentData[0].vbank_num}"></td>
+				<th>입금기한</th>
+				<td th:text="${paymentData[0].vbank_date}"></td>
+			</tr>
+		</th:block>
+		<th:block th:if="${paymentData}==null">
+			<tr>
+				<td colspan="6">결제 내역이 없습니다.</td>
+			</tr>
+		</th:block>
+	</table>
+</body>
+
+</html>

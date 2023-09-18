@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>board/detail</title>
+</head>
+<body>
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
+<h1>notice/detail</h1>
+	<table border="">
+		<tr>
+			<td>id</td><td th:text="${ndto.id}"/>
+		</tr><tr>
+			<td>제목</td><td th:text="${ndto.title}"/>
+		</tr><tr>
+			<td>작성자</td><td th:text="${ndto.pname}"/>
+		</tr><tr>
+			<td>등록일</td><td th:text="${#dates.format(ndto.regDate, 'yyyy-MM-dd')}"/>
+		</tr><tr>
+			<td>조회수</td><td th:text="${ndto.cnt}"/>
+		</tr>
+		
+		<tr th:if="${ndto.upfile != null}">
+		    <td>사진</td>
+		    <td>
+		        <img th:if="${ndto.img}" th:src="|/up/${ndto.upfile}|"/>
+		        <a th:unless="${ndto.img}" th:text="${ndto.upfile}"></a>
+		    </td>
+		</tr>
+		
+		<tr>
+			<td>내용</td><td th:text="${ndto.content}"/>
+		</tr><tr>
+			<td colspan="2" align="right">
+				<!--공지사항 수정,삭제는 오직 관리자만!-->
+				<a th:href="|/notice/delete/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}">삭제</a>
+				<a th:href="|/notice/modify/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}">수정</a>
+				<a th:href="|/notice/notice/${ndto.page}|">목록으로</a>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
