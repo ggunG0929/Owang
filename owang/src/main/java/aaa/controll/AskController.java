@@ -70,7 +70,24 @@ public class AskController {
 		mapper.addCount(id);// 조회수증가
 		AskDTO dto = mapper.detail(id);
 		dto.setPage(page);
+
 		mm.addAttribute("askdto", dto);
+
+		String gid = String.valueOf(dto.getGid()); // int를 문자열로 변환
+		int result = mapper.gidChk(gid);
+
+		// gid count 1
+		String type = "";
+
+		if (result == 1) {
+			type = "1";
+		}
+		// gid count 2
+		if (result == 2) {
+			type = "2";
+		}
+		mm.addAttribute("type", type);
+
 		return "ask/ask_detail";
 	}
 
@@ -90,6 +107,7 @@ public class AskController {
 		return "ask/ask_insertForm";
 	}
 
+	// 주문번호를 가지고 온 경우
 	@GetMapping("insert/{page}/{impUid}")
 	String insertImpUid(Model mm, HttpSession session, AskDTO dto, @PathVariable String impUid) {
 		String sid = (String) session.getAttribute("sid");
@@ -114,16 +132,18 @@ public class AskController {
 		return "ask/ask_alert";
 	}
 
+	// 주문번호를 가지고 온 경우
 	@PostMapping("insert/{page}/{impUid}")
 	String insertReg2(AskDTO dto, HttpServletRequest request, @PathVariable String impUid) {
 		dto.setId(mapper.maxId() + 1);
 		fileSave(dto, request);
 		dto.setPname(request.getParameter("uid"));
+		// 주문번호를 넣어주기
 		dto.setPw(impUid);
 		mapper.askInsert(dto);
 		dto.setMsg("게시글 등록되었습니다.");
 		dto.setGoUrl("/ask/list/1");
-		
+
 		return "ask/ask_alert";
 	}
 

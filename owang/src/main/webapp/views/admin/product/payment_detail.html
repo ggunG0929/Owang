@@ -15,7 +15,7 @@
 </head>
 
 <body>
-	<th:block th:replace="~{admin/adheader}" />
+	<!--<th:block th:replace="~{admin/adheader}" />-->
 	<h1>상세내역</h1>
 	<table border="">
 		<th:block th:if="${paymentData}!=null">
@@ -55,7 +55,7 @@
 				<th:block th:unless="${paymentData[0].paid_at == '0'}">
 					<td colspan="2" th:text="${paymentData[0].paid_at}"></td>
 				</th:block>
-				<td><a th:href="${paymentData[0].receipt_url}" target="_blank">매출전표</a></td>
+				<td><a th:href="${paymentData[0].receipt_url}" onclick="window.open(this.href, '매출전표', 'width=450,height=450'); return false;" target="_blank">매출전표</a></td>
 			</tr>
 			<tr>
 				<th>결제상태</th>

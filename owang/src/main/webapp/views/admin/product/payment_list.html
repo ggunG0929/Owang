@@ -78,7 +78,9 @@
             <tr th:each="payment : ${paymentData}">
                 <td th:text="${payment.status}"></td>
                 <td>                  
-                   <a th:href="|/admin_product/payment/detail/${payment.imp_uid}|" th:text="${payment.imp_uid}" />
+                   <a th:href="|/admin_product/payment/detail/${payment.imp_uid}|"
+                    th:text="${payment.imp_uid}" onclick="window.open(this.href, '결제내역상세', 'width=600,height=700');
+                     return false;" target="_blank"/>
             </td>
                 <td th:text="${payment.name}"></td>
                 <td th:text="${payment.amount}"></td>

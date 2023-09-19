@@ -26,27 +26,26 @@
 				<th>결제금액</th>
 				<th>대행사</th>
 				<th>결제일</th>
-				<th></th>
-				<th></th>
+				<th>상태</th>
+				<th>결제문의</th>
 			</tr>
 		</thead>
 		<tbody>
 			<th:block th:if="${paymentData}!=null">
 				<tr th:each="payment : ${paymentData}">
-					<td th:text="${payment.merchant_uid}"></td>
+					<td th:text="${payment.imp_uid}"></td>
 					<td th:text="${payment.name}"></td>
 					<td th:text="${payment.amount}"></td>
 					<td th:text="${payment.pg_provider}"></td>
 					<th:block th:if="${payment.status=='완료'}">
 						<td th:text="${payment.paid_at}"></td>
-						<td><a th:href="|/ask/insert/1/${payment.imp_uid}|">취소요청</a></td>
-						<td><a th:href="${payment.receipt_url}">매출전표</a></td>
+						<td><a th:href="${payment.receipt_url}" onclick="window.open(this.href, '매출전표', 'width=450,height=450'); return false;" target="_blank">완료</a></td>
 					</th:block>
 					<th:block th:unless="${payment.status=='완료'}">
-						<td th:text="${payment.started_at}"></td>
 						<td th:text="${payment.cancelled_at}"></td>
 						<td th:text="${payment.status}"></td>
 					</th:block>
+					<td><a th:href="|/ask/insert/1/${payment.imp_uid}|"onclick="event.preventDefault(); alert('결제문의를 작성하셔야 해당 결제의 주문번호가 자동으로 첨부됩니다'); window.location.href = this.href;">결제문의</a></td>
 				</tr>
 			</th:block>
 			<th:block th:if="${paymentData}==null">
@@ -56,7 +55,6 @@
 			</th:block>
 		</tbody>
 	</table>
-	
 </body>
 
 </html>
