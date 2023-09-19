@@ -16,6 +16,7 @@ import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
 import aaa.model.ReviewDTO;
 import aaa.model.SoloDTO;
+import aaa.service.MCompanyMapper;
 import aaa.service.ReviewMapper;
 import aaa.service.SoloMapper;
 import jakarta.annotation.Resource;
@@ -31,6 +32,9 @@ public class ReviewController {
 
 	@Resource
 	SoloMapper srMapper;
+	
+	@Resource
+	MCompanyMapper mcMapper;
 	//현재날짜가져오기
 	Date today = new Date();
 	// 리뷰 리스트
@@ -42,14 +46,17 @@ public class ReviewController {
 		System.out.println("뀨" + sdto);
 		System.out.println("기업뀨" + cdto);
 		//System.out.println(sdto.isSinjueng() + "이게 트루가 아님뭐야임마");
-	
+		
+		
 		dto.setMsg("구매시이용가능!");
 		dto.setGoUrl("/product/notice");
 		if(cdto==null && sdto==null && adto==null) {
 			dto.setMsg("비회원은 이용이 불가합니다.");
 			dto.setGoUrl("/login/main");
-		}
+		} else {//비회원아닐때
+			
 		if (cdto != null) {
+			cdto = mcMapper.deatilCompany(cdto.getCid());
 			System.out.println(cdto);
 		    // 기업회원인 경우의 처리
 		    if (cdto.isCapproval()) {
@@ -63,11 +70,12 @@ public class ReviewController {
 				dto.setGoUrl("/product/notice");
 		    }
 		} else if (sdto != null) {
+			sdto = srMapper.detailSolo(sdto.getSid());
 		    // 개인회원인 경우의 처리
 		    if (sdto.isSinjueng() && sdto.getCid().equals(cid)) {
 		        dto.calc(reviewMapper.reviewCnt(cid));
 		        List<ReviewDTO> data = reviewMapper.reviewList(dto);
-		        mm.addAttribute("mainData", data);
+		        mm.addAttribute("mainData", data);		        
 		        dto.setMsg("재직회원님 입장");
 		        dto.setGoUrl("/review/list/" + dto.getCid() + "/1");
 		    }
@@ -83,7 +91,7 @@ public class ReviewController {
 			dto.setMsg("관리자 입장");
 	        dto.setGoUrl("/review/list/" + dto.getCid() + "/1");
 		}
-		
+		}
 		return "review/review_alert";
 	}
 	

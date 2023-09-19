@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -32,6 +33,7 @@ import aaa.model.SoloResumeDTO;
 import aaa.service.AdminCompanyMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.RecruitMapper;
+import aaa.service.SoloApplicantMapper;
 import aaa.service.SoloResumeMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
@@ -45,7 +47,7 @@ public class RecruitController {
 
 	// path 정의 다같이 쓰는거라 위에 빼둠 받으시고 테스트할때 폴더 경로 바꾸시면되여!!
 	// 승우꺼
-	static String path = "C:\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\up";
+	static String path = "E:\\BackEnd_hakwon\\Spring_Team\\owang\\src\\main\\webapp\\up";
 
 	@Resource
 	RecruitMapper recruitMapper;
@@ -58,6 +60,9 @@ public class RecruitController {
 
 	@Resource
 	AdminCompanyMapper adrmMapper;
+	
+	@Resource
+	SoloApplicantMapper applicantMapper;
 
 	@GetMapping("/search")
 	public String search(@RequestParam("keyword") String keyword, @RequestParam("searchOption") String searchOption,
@@ -152,32 +157,76 @@ public class RecruitController {
 	@PostMapping("calendar23")
 	public List<LinkedHashMap<String, String>> recruitTest2And3() {
 		List<LinkedHashMap<String, String>> list = new ArrayList<>();
-
-		// calendar2 데이터 가져오기
-		for (RecruitDTO recruitDTO : recruitMapper.recruitTest()) {
-			LinkedHashMap<String, String> map = new LinkedHashMap<>();
-			map.put("id", recruitDTO.getRecruitId() + "");
-			map.put("title", "시작    " + recruitDTO.getRecruitTitle() + "  " + recruitDTO.getRegDate());
-			map.put("cid", recruitDTO.getCid());
-			map.put("start", recruitDTO.getRegDate());
-
-			list.add(map);
-		}
 		
+		
+		for (RecruitDTO recruitDTO : recruitMapper.recruitTest()) {
+		    LocalDate startDate = recruitDTO.regDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		    LocalDate endDate = recruitDTO.realMagam.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		    
+		    LinkedHashMap<String, String> map = new LinkedHashMap<>();
+		    map.put("id", recruitDTO.getRecruitId() + "");
+		    map.put("title", "[시작]    " + recruitDTO.getRecruitTitle() + "  " + recruitDTO.getCname());
+		    
+		    if (!(endDate.isBefore(startDate) || endDate.isEqual(startDate))) {
+		        map.put("start", recruitDTO.getRegDate());
+		    }
+		    
+		    list.add(map);
+		}
+
 		// calendar3 데이터 가져오기
 		for (RecruitDTO recruitDTO : recruitMapper.recruitTest()) {
-			LinkedHashMap<String, String> map = new LinkedHashMap<>();
-			map.put("id", recruitDTO.getRecruitId() + "");
-			map.put("title", "마감    " + recruitDTO.getRecruitTitle() + "  " + recruitDTO.getRealMagam());
-			map.put("cid", recruitDTO.cid);
-			map.put("start", recruitDTO.getRealMagam());
-
-			list.add(map);
+		    LocalDate startDate = recruitDTO.regDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		    LocalDate endDate = recruitDTO.realMagam.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		    
+		    LinkedHashMap<String, String> map = new LinkedHashMap<>();
+		    map.put("id", recruitDTO.getRecruitId() + "");
+		    map.put("title", "[마감]    " + recruitDTO.getRecruitTitle() + "  " + recruitDTO.getCname());
+		    map.put("cid", recruitDTO.getCid());
+		    
+		    if (!(startDate.isAfter(endDate) || startDate.isEqual(endDate))) {
+		        map.put("start", recruitDTO.getRealMagam());
+		    }
+		    
+		    list.add(map);
 		}
 
+		// 채용가능
+		for (RecruitDTO recruitDTO : recruitMapper.recruitTest()) {
+			LocalDate startDate = recruitDTO.regDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate endDate = recruitDTO.realMagam.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			
+			// 공고의 시작일부터 마감일까지 모든 날짜에 해당하는 공고를 생성
+			while (!startDate.isAfter(endDate)) {
+				LinkedHashMap<String, String> map = new LinkedHashMap<>();
+				map.put("id", recruitDTO.getRecruitId() + "");
+				map.put("cid", recruitDTO.getCid());
+				
+				LocalDate currentDate = LocalDate.now();
+				if (!currentDate.isAfter(startDate) && !currentDate.isBefore(endDate)) {
+					map.put("title", "[마감] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
+					map.put("start", endDate.toString());
+				} else {
+					
+					map.put("title", "[모집중] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
+					
+					
+					if (!endDate.equals(startDate)||!startDate.equals(endDate)) {
+						map.put("start", startDate.toString());
+						
+					}
+					
+
+				}
+				
+				list.add(map);
+				startDate = startDate.plusDays(1);
+			}
+		}
+		
 		return list;
 	}
-
+	
 	// 채용 리스트
 	// 채용가능 리스트
 	@RequestMapping("list/{page}")
@@ -201,13 +250,15 @@ public class RecruitController {
 				recruitMapper.updateRtype(recruit);
 			}
 		}
-
+		
+		
+		
 		// "채용 가능" 탭에 대한 페이지 정보 계산
 		RecruitDTO openDto = new RecruitDTO();
 		openDto.setPage(page);
 		openDto.calc(recruitMapper.companyROpenCnt());
 		List<RecruitDTO> openData = recruitMapper.companyROpen(openDto);
-
+		
 		mm.addAttribute("openData", openData);
 		mm.addAttribute("openDto", openDto); // "채용 가능" 탭 페이지 정보
 
@@ -246,6 +297,17 @@ public class RecruitController {
 		mm.addAttribute("closeDto", closeDto); // "채용 마감" 탭 페이지 정보
 		
 		return "recruit/recruit_list2";
+	}
+	
+	@RequestMapping("list/all/{page}")
+	String open(Model mm, RecruitDTO dto, @PathVariable("page") int page) {
+		dto.calc(recruitMapper.recruitListCnt());
+		List<RecruitDTO> data = recruitMapper.recruitList(dto);
+		
+	
+		mm.addAttribute("mainData",data);
+		
+		return "recruit/recruit_list3";
 	}
 
 
@@ -296,10 +358,12 @@ public class RecruitController {
 	      Date date = new Date();
 	      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	      String today = sdf.format(date);
+	      mcseDto = crcMapper.deatilCompany(mcseDto.getCid());
 
 	      List<MCompanyDTO> data = adrmMapper.companyCapprovalList(company);
 	      mm.addAttribute("mainData", data);
 	      // 기업 또는 관리자 중 하나라도 로그인되었고 승인되었을 때 삽입 페이지로 이동
+	      session.setAttribute("companysession", mcseDto);
 	      if ((mcseDto != null && mcseDto.isCapproval() && mcseDto.getCtype() == 2)
 	            || (admin != null && admin.isCapproval())) {
 
@@ -312,6 +376,7 @@ public class RecruitController {
 	            }
 	         }
 	         mm.addAttribute("today", today);
+	        
 	         return "recruit/recruit_insert";
 	      }else if((mcseDto != null && mcseDto.isCapproval() && mcseDto.getCtype() == 1)) {         
 	         dto.setMsg("채용공고권 구매시 이용가능합니다.");

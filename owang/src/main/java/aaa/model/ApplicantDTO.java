@@ -66,7 +66,7 @@ public class ApplicantDTO {
 	int apread;
 	int appass;
 	Date apsubmitdate;
-		
+	int appnum;
 	// 페이징 처리
     private int start;
     private int limit = 5;
@@ -106,7 +106,8 @@ public class ApplicantDTO {
 		}
 		return Pattern.matches(".{1,}[.](bmp|png|gif|jpg|jpeg)", apphoto.toLowerCase());
 	}
-}
 
+ 
+}
 
 

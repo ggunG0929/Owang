@@ -25,9 +25,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	 select * from solo where sid = #{sid}
 </select>
 <update id="modifffy" parameterType="soloDTO">
-   update solo set
-   sname = #{sname},sbirth = #{sbirth},sage = #{sage},sgender = #{sgender}, sphone=#{sphone},semail=#{semail},saddress=#{saddress}, scompanyName= #{scompanyName}, scompanyFile = #{scompanyFile}, spw = #{spw}, cid=#{cid}
-   where sid = #{sid}
+	update solo set
+	sname = #{sname},sbirth = #{sbirth},sage = #{sage},sgender = #{sgender}, sphone=#{sphone},semail=#{semail},saddress=#{saddress}, scompanyName= #{scompanyName}, scompanyFile = #{scompanyFile}, spw = #{spw}, cid=#{cid}
+	where sid = #{sid}
 </update>
 <delete id="delettt" parameterType="soloDTO">
 	delete from solo where sid =

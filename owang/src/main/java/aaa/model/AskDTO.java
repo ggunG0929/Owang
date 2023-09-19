@@ -19,11 +19,21 @@ public class AskDTO {
 	
 
 	int id, cnt, seq, lev, gid, start, limit = 20,pageLimit=5, page, pageStart, pageEnd, pageTotal;
-	String title, pname, pw, upfile, content, msg, goUrl ;
+	String title, pname, imp, upfile, content, msg, goUrl;
 	String cid;
 	String grade;
 	
 	Date regDate;
+	
+	private boolean hasReply; // 답변 여부를 나타내는 플래그
+	
+	public boolean isHasReply() {
+        return hasReply;
+    }
+	
+	public void setHasReply(boolean hasReply) {
+        this.hasReply = hasReply;
+    }
 	
 	public AskDTO(){
 		
@@ -50,11 +60,11 @@ public class AskDTO {
 	}
 
 
-	public AskDTO(String title, String pname, String pw, String content) {
+	public AskDTO(String title, String pname, String imp, String content) {
 		super();
 		this.title = title;
 		this.pname = pname;
-		this.pw = pw;
+		this.imp = imp;
 		this.content = content;
 	}
 	
@@ -73,6 +83,7 @@ public class AskDTO {
 		}
 		return Pattern.matches(".{1,}[.](bmp|png|gif|jpg|jpeg)", upfile.toLowerCase());
 	}
+	
 	
 	
 	

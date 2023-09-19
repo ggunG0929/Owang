@@ -23,13 +23,18 @@ public class RecruitDTO {
 	String recruitMtype; //월급
 	String msg, goUrl;
 	boolean capproval;
-	Date regDate = new Date();
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	public Date regDate = new Date();
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public Date realMagam = new Date();
 	int recruitMagam;
 	int recruitMoney; // 급여
 	String recruitlocatoin; // 근무지역
 	String searchOption, keyword;// 검색조건
+	int appnum;
+	
+	// 중간일 계산 조건 sql에 없어도됨
+	boolean recruiting;
 	
 	MultipartFile mmff;
 	

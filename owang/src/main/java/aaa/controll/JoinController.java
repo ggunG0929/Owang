@@ -17,6 +17,8 @@ import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
 import aaa.model.SoloDTO;
 import aaa.service.AdminCompanyMapper;
+import aaa.service.EndCompanyMapper;
+import aaa.service.EndSoloMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.SoloMapper;
 import jakarta.annotation.Resource;
@@ -32,6 +34,10 @@ public class JoinController {
 	MCompanyMapper cmapper;
 	@Resource
 	AdminCompanyMapper acmapper;
+	@Resource
+	EndSoloMapper endSoloMapper;
+	@Resource
+	EndCompanyMapper endCompanyMapper;
 
 	Date currentDate = new Date();
 	//이용약관
@@ -52,8 +58,10 @@ public class JoinController {
 	public String checksId(@RequestParam("sid") String sid) {
 		System.out.println("아이디체크");
 		int Count = smapper.idChk(sid);
+		int byeCount = endSoloMapper.idChk(sid);
+		int total = Count + byeCount;
 		System.out.println(Count);
-		return Count > 0 ? "중복" : "고유";
+		return total > 0 ? "중복" : "고유";
 	}
 
 	// 기업아이디중복확인
@@ -61,8 +69,9 @@ public class JoinController {
 	@ResponseBody
 	public String checkcId(@RequestParam("cid") String cid) {
 		int Count = cmapper.idChk(cid);
-
-		return Count > 0 ? "중복" : "고유";
+		int byeCount = endCompanyMapper.idChk(cid);
+		int total = Count + byeCount;
+		return total > 0 ? "중복" : "고유";
 	}
 
 	// 개인회원가입

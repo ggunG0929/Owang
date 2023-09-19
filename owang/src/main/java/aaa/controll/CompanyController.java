@@ -25,6 +25,7 @@ import aaa.model.PageData;
 import aaa.model.PaymentResponseMember;
 import aaa.model.RecruitDTO;
 import aaa.model.SoloResumeDTO;
+import aaa.service.EndCompanyMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
@@ -48,6 +49,9 @@ public class CompanyController {
 	// 기업
 	@Resource
 	MCompanyMapper cccmapper;
+	
+	@Resource
+	EndCompanyMapper endCompanyMapper;
 
 	@RequestMapping("/list/{cid}/{page}")
 	String comRecruitList(Model mm, RecruitDTO dto, @PathVariable("page") int page, @PathVariable("cid") String cid) {
@@ -85,9 +89,11 @@ public class CompanyController {
 		// 세션에서 id 가져옴
 		MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
 		String cid = companysession.getCid();
+		// db에서 cdate 가져오기
+		MCompanyDTO compinfo = cccmapper.deatilCompany(cid);
 
 		// cdate가 오늘 이후인 경우 - 유효상품이 있는 경우
-		Date cdate = companysession.getCdate();
+		Date cdate = compinfo.getCdate();
 		Date today = new Date();
 		if (cdate != null && cdate.after(today)) {
 			mm.addAttribute("date", cdate);
@@ -173,10 +179,15 @@ public class CompanyController {
 
 		pd.setMsg("삭제실패");
 		pd.setGoUrl("/company/delete");
-
+		
+		MCompanyDTO bytdto = cccmapper.deatilCompany(dto.getCid());
+		
+		// 결제내역에 탈퇴일 추가
+		paym.endMem(dto.getCid());
 		int cnt = cccmapper.delettt(dto); // 메서드안의 값이 들어와서 cnt 값이 1이됌
 
 		if (cnt > 0) {
+			endCompanyMapper.endCompanyInsert(bytdto);
 			pd.setMsg("삭제되었습니다.");
 			pd.setGoUrl("/");
 			session.invalidate();
@@ -253,105 +264,4 @@ public class CompanyController {
 		}
 	}
 
-	// 재훈 추가
-	// 개인 지원서
-	@Resource
-	SoloApplicantMapper samapper;
-
-	// 기업회원 지원자 리스트
-	@RequestMapping("applicant/{page}")
-	String com_recruit(Model mm, ApplicantDTO adto, HttpSession session) {
-		String cid = (String) session.getAttribute("cid");
-		// 페이징
-		adto.calc(samapper.apptotal());
-		adto.setCid(cid);
-		System.out.println(adto);
-		List<ApplicantDTO> appdata = cccmapper.applist(adto);
-		List<ApplicantDTO> apppassdata = cccmapper.apppasslist(adto);
-		List<ApplicantDTO> appnonpassdata = cccmapper.appnonpasslist(adto);
-		mm.addAttribute("appdata", appdata);
-		mm.addAttribute("apppassdata", apppassdata);
-		mm.addAttribute("appnonpassdata", appnonpassdata);
-		System.out.println(appdata);
-		return "company/applicant";
-	}
-
-	// 기업회원 지원자 이력서 디테일
-	@RequestMapping("detail/{page}/{ano}")
-	String com_recruit_detail(Model mm, HttpSession session, ApplicantDTO adto, SoloResumeDTO rdto,
-			@PathVariable int page, @PathVariable int ano) {
-
-		// 세션
-		MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-		ApplicantDTO cadto = cccmapper.appdetail(adto.ano, companysession.getCid());
-		//
-		System.out.println("열람: " + cccmapper.appread(adto.getAno()));
-
-		adto.setPage(page);
-		mm.addAttribute("cadto", cadto);
-		System.out.println(cadto);
-		return "company/applicant_detail";
-	}
-
-	// 기업회원 지원자 삭제
-	@RequestMapping("delete/{page}/{ano}")
-	String com_recruit_delete(ApplicantDTO adto, PageData pd, @PathVariable int ano, @PathVariable int page,
-			HttpSession session) {
-		// 일단 삭제이벤트 생성
-		MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-		ApplicantDTO cadto = cccmapper.appdetail(adto.ano, companysession.getCid());
-
-		pd.setMsg("삭제실패");
-		pd.setGoUrl("/company/applicant");
-
-		int cnt = samapper.appdelete(ano);
-		System.out.println("deleteTest" + cnt);
-
-		if (cnt > 0) {
-			System.out.println();
-			// System.out.println(adto);
-			pd.setMsg("삭제되었습니다.");
-			pd.setGoUrl("/company/applicant" + "/" + adto.getPage());
-		}
-
-		return "company/alert";
-	}
-
-	// 지원자 합격
-	@RequestMapping("pass/{page}/{ano}")
-	String com_recruit_pass(ApplicantDTO adto, PageData pd, HttpServletRequest request, @PathVariable int ano,
-			@PathVariable int page, HttpSession session) {
-		System.out.println("modify어서와");
-		MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-		ApplicantDTO cadto = cccmapper.appdetail(adto.ano, companysession.getCid());
-		System.out.println(cadto);
-
-		// pd.setGoUrl("/company/applicant" + "/" + adto.getPage());
-		cccmapper.apppass(adto.getAno());
-		System.out.println(cadto);
-
-		String contextPath = request.getContextPath();
-		String redirectUrl = contextPath + "/company/applicant" + "/" + adto.getPage();
-
-		return "redirect:" + redirectUrl;
-	}
-
-	// 지원자 불합격
-	@RequestMapping("nonpass/{page}/{ano}")
-	String com_recruit_nonpass(ApplicantDTO adto, PageData pd, HttpServletRequest request, @PathVariable int ano,
-			@PathVariable int page, HttpSession session) {
-		System.out.println("modify어서와");
-		MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-		ApplicantDTO cadto = cccmapper.appdetail(adto.ano, companysession.getCid());
-		System.out.println(cadto);
-
-		// pd.setGoUrl("/company/applicant" + "/" + adto.getPage());
-		cccmapper.appnonpass(cadto.getAno());
-		System.out.println("cadto = " + cadto);
-
-		String contextPath = request.getContextPath();
-		String redirectUrl = contextPath + "/company/applicant" + "/" + adto.getPage();
-
-		return "redirect:" + redirectUrl;
-	}
 }

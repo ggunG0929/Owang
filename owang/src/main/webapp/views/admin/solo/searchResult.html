@@ -10,19 +10,6 @@
 	<th:block th:replace="~{admin/adheader}"/>
 	
 	<h2>전체회원관리</h2>
-	<!-- 프리미엄회원 결과 버튼 -->
-	<form action="/admin_solo/search" method="get">
-		<input type="hidden" name="searchOption" value="type">
-		<input type="hidden" name="keyword" value="2">
-		<button type="submit">프리미엄회원</button>
-	</form>
-
-	<!-- 일반회원 결과 버튼 -->
-	<form action="/admin_solo/search" method="get">
-		<input type="hidden" name="searchOption" value="type">
-		<input type="hidden" name="keyword" value="1">
-		<button type="submit">일반회원</button>
-	</form>
 	
 	<!-- 검색창 form -->
 	<form action="/admin_solo/search" method="get" th:object="${soloDTO}">
@@ -113,17 +100,12 @@
 			</tr>
 			<tr align="center">
 				<td colspan="2"><a href="/admin_solo/smanagement">목록으로</a></td>
+				<td colspan="2"><a href="/admin_solo/sololist/1">전체보기</a></td>
 			</tr>
 		</table>
 	</div>
 
 
-
-
-	<div align="center">
-		<a href="/admin_solo/sololist/1">전체보기</a>
-		<a href="/admin_solo/smanagement">목록으로</a>
-	</div>
 
 
 </body>

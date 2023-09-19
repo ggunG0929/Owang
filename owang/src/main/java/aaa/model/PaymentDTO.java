@@ -22,4 +22,6 @@ public class PaymentDTO {
 	int amount;
 	// 결제시간
 	Date paidAt;
+	// 탈퇴일
+	Date endDate;
 }

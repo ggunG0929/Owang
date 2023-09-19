@@ -26,6 +26,11 @@ public interface SoloApplicantMapper {
 	// 지원서 총 개수
 	int apptotal();
 	
+	// 해당공고의 지원자 수
+	int appnum(ApplicantDTO adto);
+	
 	// 지원서 상태 변경
 	int appstate(int ano);
+
+	void recnt(int id);
 }

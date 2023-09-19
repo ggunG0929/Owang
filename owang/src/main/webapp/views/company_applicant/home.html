@@ -4,13 +4,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<script>
-      function goBack() {
-         window.history.back();
-      }
-</script>
+<header>
+   <div th:insert="~{header :: header}"></div>
+</header>
 <body>
-	<a href="javascript:goBack()">이전 페이지</a>
 <h2>기업 지원자 관리</h2>
 <span th:if="${appdata.isEmpty()}">
 	<h2>지원자가 존재하지 않습니다</h2>
@@ -45,7 +42,7 @@
 		    <th:block th:if="${adto.apcancel == 1}">
 		        <span>취소된 지원입니다</span>
 		    </th:block>
-		    <a th:href="|/company/detail/${applicantDTO.page}/${adto.ano}|" th:text="${adto.aptitle}" th:unless="${adto.apcancel == 1}" />
+		    <a th:href="|/company_applicant/detail/${applicantDTO.page}/${adto.ano}|" th:text="${adto.aptitle}" th:unless="${adto.apcancel == 1}" />
 		</td>
 		<input type="hidden" th:value="${adto.ano}" name="ano"/>
 		<!-- 합격 -->
@@ -53,14 +50,14 @@
             <th:block th:if="${adto.appass == 1}" th:colspan="2">
 		        <span>합격자 입니다</span>
 		    </th:block>
-            <a th:if="${adto.appass != 1 and adto.appass == 0}" th:href="|/company/pass/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.sname}]]님을 합격처리 하시겠습니까?')">합격</a>
+            <a th:if="${adto.appass != 1 and adto.appass == 0}" th:href="|/company_applicant/pass/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.sname}]]님을 합격처리 하시겠습니까?')">합격</a>
         </td>
 		<!-- 불합격 -->
         <td>
 		    <th:block th:if="${adto.appass == 2}">
 		        <span>불합격자 입니다</span>
 		    </th:block>
-            <a th:if="${adto.appass != 2 and adto.appass == 0}"  th:href="|/company/nonpass/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.sname}]]님을 불합격처리 하시겠습니까?')">불합격</a>
+            <a th:if="${adto.appass != 2 and adto.appass == 0}"  th:href="|/company_applicant/nonpass/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.sname}]]님을 불합격처리 하시겠습니까?')">불합격</a>
         </td>
     </tr>
 	<!--<tr th:if="${not appdata.isEmpty()}">
@@ -106,7 +103,7 @@
 		    <th:block th:if="${appass.apcancel == 1}">
 		        <span>취소된 지원입니다</span>
 		    </th:block>
-		    <a th:href="|/company/detail/${applicantDTO.page}/${appass.ano}|" th:text="${appass.aptitle}" th:unless="${appass.apcancel == 1}" />
+		    <a th:href="|/company_applicant/detail/${applicantDTO.page}/${appass.ano}|" th:text="${appass.aptitle}" th:unless="${appass.apcancel == 1}" />
 		</td>
 		<input type="hidden" th:value="${appass.ano}" name="ano"/>
     </tr>
@@ -143,7 +140,7 @@
 		    <th:block th:if="${apnonpass.apcancel == 1}">
 		        <span>취소된 지원입니다</span>
 		    </th:block>
-		    <a th:href="|/company/detail/${applicantDTO.page}/${apnonpass.ano}|" th:text="${apnonpass.aptitle}" th:unless="${apnonpass.apcancel == 1}" />
+		    <a th:href="|/company_applicant/detail/${applicantDTO.page}/${apnonpass.ano}|" th:text="${apnonpass.aptitle}" th:unless="${apnonpass.apcancel == 1}" />
 		</td>
 		<input type="hidden" th:value="${apnonpass.ano}" name="ano"/>
     </tr>	

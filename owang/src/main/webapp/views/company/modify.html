@@ -19,6 +19,9 @@
 
 <body>
 	<h1>마이페이지 수정</h1>
+	<h3>기업아이디, 대표자, 개업일, 기업주소, 사업자등록증은 변경이 불가능합니다.</h3>
+	<h4>사업자등록증을 갱신하거나 주소이전을 하시면 1:1문의로 문의 바랍니다.</h4>
+	
 	<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
 		<input type="hidden" th:field="*{cid}" />
 		<table border="">
@@ -28,16 +31,16 @@
 			</tr>
 			<tr>
 				<td>대표자</td>
-				<td><input type="text" th:field="*{cceo}" /></td>
+				<td><input type="text" th:field="*{cceo}" readonly/></td>
 			</tr>
 			<tr>
-				<td>설립연도</td>
-				<td><input type="text" th:field="*{cbuild}" /></td>
+				<td>개업연월일</td>
+				<td><input type="date" th:field="*{cbuild}" readonly/></td>
 			</tr>
 			<tr id="zpassword">
 				<td>기존비밀번호</td>
 				<td>
-					<input type="password" th:value="*{cpw}" id="cpw" readonly />
+					<input type="password" th:value="*{cpw}" id="cpw" />
 					<input type="button" value="비밀번호 변경" id="changePasswordButton" />
 				</td>
 			</tr>
@@ -71,8 +74,8 @@
 				<td><input type="text" th:field="*{ccall}" /></td>
 			</tr>
 			<tr>
-				<td>기업주소</td>
-				<td><input type="text" th:field="*{caddress}" /></td>
+				<td>본점소재지</td>
+				<td><input type="text" th:field="*{caddress}" readonly /></td>
 			</tr>
 				<tr>
 				<td>내용</td>
@@ -82,11 +85,11 @@
 			
 
 			<tr>
-				<td>회사사업자등록증</td>
+				<td>사업자등록증</td>
 				<td>
 					<th:block th:if="${dto.ccompanyFile != null}">
-					<input type="hidden" th:field="*{ccompanyFile}" readonly/>
-					<input type="button" onclick="fileDelete()" th:value="|*{ccompanyFile} 파일삭제|" />
+					<input type="text" th:field="*{ccompanyFile}" readonly/>
+					
 					
 					</th:block>
 					<input th:unless="${dto.ccompanyFile != null}" type="file" th:field="*{mmff}"/>

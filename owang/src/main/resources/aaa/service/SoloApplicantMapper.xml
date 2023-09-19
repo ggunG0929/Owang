@@ -50,7 +50,8 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		    apsubmitdate, cname, cid, apcancel, apread, appass
 		FROM applicant 
 		WHERE sid = #{sid}
-		limit #{start}, #{limit}
+		ORDER BY apsubmitdate DESC
+
 
 	</select>
 	
@@ -78,6 +79,23 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		update applicant set
 		apcancel = 1
 		where ano = #{ano}
+	</update>
+	
+	<!-- 해당공고의 지원자 수  -->
+	<select id="appnum" resultType="Integer"  parameterType="aDTO">
+		select count(*) from applicant
+		where recruit_id = #{recruitId}
+	</select>
+	
+	<!-- 해당공고의 지원자 수  -->
+	<update  id="recnt" parameterType="Integer">
+	UPDATE recruit
+SET appnum = (
+    SELECT COUNT(*)
+    FROM applicant
+    WHERE recruit_id = #{id}
+)
+WHERE recruit_id = #{id}
 	</update>
 	
 </mapper>

@@ -34,8 +34,10 @@ public interface AskMapper {
 	
 	int fileDelete(AskDTO dto);
 	
-	int idPwChk(AskDTO dto);
-	
 	int insertReply(AskDTO dto);
+	
+	int gidChk(String gid);
+	
+	
 	
 }

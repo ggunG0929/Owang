@@ -27,6 +27,7 @@
 
 	<!-- 탭 -->
 	<ul class="tabs">
+		<li><a href="/recruit/list/all/1">채용</a></li>
 		<li><a href="/recruit/list/1">채용 가능</a></li>
 		<li><a href="/recruit/list/close/1">채용 마감</a></li>
 	</ul>
@@ -42,6 +43,8 @@
 				<td>마감일</td>
 				<td>조회수</td>
 				<td>기업아이디(본편에선제거)</td>
+				<td>공고누적수</td>
+				
 			</tr>
 			<tr th:each="dto, dtoStat : ${openData}">
 				<td th:text="${dtoStat.count + recruitDTO.start}" />
@@ -56,6 +59,8 @@
 				<td th:text="${dto.realMagam}" />
 				<td th:text="${dto.cnt}" />
 				<td th:text="${dto.cid}" />
+				<td th:text="${dto.appnum}" />
+				
 			</tr>
 		</table>
 	</div>

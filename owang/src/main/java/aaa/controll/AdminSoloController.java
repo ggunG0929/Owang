@@ -64,6 +64,26 @@ public class AdminSoloController {
 		return "admin/solo/sololist";
 	}
 
+	// 프리미엄회원리스트
+		@RequestMapping("soloonlist/{page}")
+		String soloonlist(@PathVariable int page, Model mm, SoloDTO dto) {
+			dto.setPage(page); // page 값을 설정합니다.
+			dto.calc(adminsmapper.soloonListCnt()); // 페이지 계산을 위해 적절한 total 값을 전달합니다.
+			List<SoloDTO> data = adminsmapper.soloonList(dto);
+			mm.addAttribute("soloData", data);
+			return "admin/solo/soloonlist";
+		}
+
+		// 일반회원리스트
+		@RequestMapping("soloofflist/{page}")
+		String soloofflist(@PathVariable int page, Model mm, SoloDTO dto) {
+			dto.setPage(page); // page 값을 설정합니다.
+			dto.calc(adminsmapper.solooffListCnt()); // 페이지 계산을 위해 적절한 total 값을 전달합니다.
+			List<SoloDTO> data = adminsmapper.solooffList(dto);
+			mm.addAttribute("soloData", data);
+			return "admin/solo/soloofflist";
+		}
+
 	// 개인정보상세보기
 	// 기업정보상세보기
 	@RequestMapping("detail/{sid}")

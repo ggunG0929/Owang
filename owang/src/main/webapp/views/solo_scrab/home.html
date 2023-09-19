@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<header>
+	<div th:insert="~{header :: header}"></div>
+</header>	
+<h2>공고 스크랩</h2>
+    <span th:if="${appdata.isEmpty()}">
+		<h2>스크랩 공고가 존재하지 않습니다. 지금 스크랩을 해보세요!</h2>
+	</span>
+	<p th:if="${appdata.isEmpty()}">
+        <h3><a href="/recruit/list/1">채용공고 보러가기</a></h3>
+    </p>	
+<table border="">
+	<tr th:if="${not appdata.isEmpty()}">
+	    <td>.no</td>
+	    <td>스크랩일자</td>
+	    <td>기업명</td>
+	    <td>공고제목</td>
+	    <td>스크랩 삭제</td>
+	</tr>
+    <!-- appdata가 값이 있는 경우 데이터 출력 -->
+    <tr th:each="scdto, astart : ${appdata}">
+        <td th:text="${astart.count}"/>
+        <td th:text="${scdto.scrabdate}" />
+        <!-- 기업 명 -->
+		<td>
+			<a th:href="'/company/detail/' + ${scdto.cid}" th:text="${scdto.cid}"></a>
+		</td>
+		<!-- 공고 제목 -->
+        <td>
+			<a th:href="'/recruit/detail/' + ${scdto.cid} + '/' + 1 +  '/' + ${scdto.recruitId}" th:text="${scdto.recruitTitle}"></a>
+		</td>
+        <input type="hidden" th:value="${scdto.scid}" name="scid"/>
+        <td>
+			<a th:href="'/solo_scrab/delete/' + ${scdto.scid}">삭제</a>
+		</td>
+    </tr>
+</table>
+</body>
+</html>

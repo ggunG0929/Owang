@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>수락버튼등장</title>
-<script>
+	<meta charset="UTF-8">
+	<title>수락버튼등장</title>
+	<script>
 		function fileDelete() {
 
 			frm.action = "/company/fileDelete"
@@ -12,88 +13,132 @@
 
 	</script>
 </head>
+
 <body>
-	<th:block th:replace="~{admin/adheader}"/>
+	<th:block th:replace="~{admin/adheader}" />
 	<h1>기업 수락 상세 보기</h1>
-	
+
 	[[${dto}]]
-	 <table border="">
+	<table border="">
 
-        <tr>
-            <td>ID</td>
-            <td th:text="${dto.cid}" />
-        </tr>
-        <tr>
-            <td>이름</td>
-            <td th:text="${dto.cname}" />
-        </tr>
-        <tr>
-            <td>설립 년도</td>
-            <td th:text="${dto.cbuild}" />
-        </tr>
-        <tr>
-            <td>카테고리</td>
-            <td th:text="${dto.ccategory}" />
-        </tr>
-        <tr>
-            <td>직원 수</td>
-            <td th:text="${dto.cstaff}" />
-        </tr>
-        <tr>
-            <td>연매출</td>
-            <td th:text="${dto.csales}" />
-        </tr>
-        <tr>
-            <td>전화번호</td>
-            <td th:text="${dto.ccall}" />
-        </tr>
-        <tr>
-            <td>대표자</td>
-            <td th:text="${dto.cceo}" />
-        </tr>
-        <tr>
-            <td>주소</td>
-            <td th:text="${dto.caddress}" />
-        </tr>
-        <form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
-        <tr>
-				<td>회사사업자등록증</td>
-				<td>
-					<th:block th:if="${dto.ccompanyFile != null}">
-					<input type="hidden" th:field="*{dto.ccompanyFile}" readonly/>
-					<input type="button" onclick="fileDelete()" th:value="|*{dto.ccompanyFile} 파일삭제|" />
-					
-					</th:block>
-					<input th:unless="${dto.ccompanyFile != null}" type="file" th:field="*{mmff}"/>
-					
-					
+		<tr>
+			<td>기업이름</td>
+			<td th:text="${dto.cname}" />
+		</tr>
+		<tr>
+			<td>기업아이디</td>
+			<td th:text="${dto.cid}" />
+		</tr>
+		<tr>
+			<td>대표자</td>
+			<td th:text="${dto.cceo}" />
+		</tr>
+		<tr>
+			<td>개업연월일</td>
+			<td th:text="${dto.cbuild}" />
+		</tr>
+		<tr>
+			<td>업종</td>
+			<td th:text="${dto.ccategory}" />
+		</tr>
+		<tr>
+			<td>직원수</td>
+			<td th:text="${dto.cstaff}" />
+		</tr>
+		<tr>
+			<td>한해 매출액</td>
+			<td th:text="|${dto.csales}(단위:백만원)|" />
+		</tr>
+		<tr>
+			<td>이메일</td>
+			<td th:text="${dto.cemail}" />
+		</tr>
+		<tr>
+			<td>본점소재지</td>
+			<td th:text="${dto.caddress}" />
+		</tr>
+		<tr>
+			<td>전화번호</td>
+			<td th:text="${dto.ccall}" />
+		</tr>
+		<tr th:if="${session.cid==dto.cid}">
+			<td>회원유형</td>
+			<td th:if="${dto.ctype == 2}" th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></td>
+			<td th:unless="${dto.ctype == 2}" th:text="일반회원"></td>
+		</tr>
+		<tr>
+			<td>기업인증여부</td>
+			<td th:if="${dto.capproval}" th:text="기업인증완료"></td>
+			<td th:unless="${dto.capproval}" th:text="기업미인증"></td>
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td th:text="${dto.ccontent}" />
+		</tr>
+		
+				 <tr>
+           <td>사업자등록증</td>
+            
+               <th:block th:if="${dto.ccompanyFile != null}">
+               <td><button onclick="openImageInNewWindow()">사업자등록증 확인</button></td>
+        
 
-			</td>
-			<td colspan="2" align="center">
-					<input type="submit" value="수정" />
-					<a href="/company/mypage" />
+               </th:block>
+               <th:block th:unless="${dto.ccompanyFile != null}" >
+				<td>사업자등록증이 존재하지않습니다.</td>
+               </th:block>
+
+
+
+            
+         </tr>
+
+
+
+		<tr th:if="${dto.capproval == false}">
+			<td>수락버튼</td>
+			<td>
+				<!--<a th:href="|/admin_company/checkId/{dto.cno}|" th:onclick="return confirm('회원가입을 [[${dto.cno}]] 허락하시겠습니까?')" th:text="수락"></a>-->
+				<a th:href="@{|/admin_company/checkId/${dto.cno}|}" onclick="return confirm('회원가입을 허락하시겠습니까?')"
+					th:text="수락"></a>
 			</td>
 		</tr>
-        </form>
-            <td>회사 소개</td>
-            <td th:text="${dto.ccontent}" />
-        </tr>
-        <tr th:if="${dto.capproval == false}">
-        	<td>수락버튼</td>
-        	<td>
-				<!--<a th:href="|/admin_company/checkId/{dto.cno}|" th:onclick="return confirm('회원가입을 [[${dto.cno}]] 허락하시겠습니까?')" th:text="수락"></a>-->
-			    <a th:href="@{|/admin_company/checkId/${dto.cno}|}" onclick="return confirm('회원가입을 허락하시겠습니까?')" th:text="수락"></a>
-			</td>
-        </tr>
-        <tr>
-        	<td>삭제 버튼</td>
-        	<td><a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')" th:text="삭제">삭제</a></td>
-        </tr>
-    	<tr align="center">
-    		<td colspan="2" th:if="${dto.capproval == false}"><a th:href="|/admin_company/cMiList/1|">목록으로</a></td>
-    		<td colspan="2" th:unless="${dto.capproval == false}"><a th:href="|/admin_company/cRegList/1|">목록으로</a></td>
-    	</tr> 
-    </table>
-	
+		<tr>
+			<td>수정 버튼</td>
+			<td><a th:href="'/admin_company/modify/' + ${dto.cno}" onclick="return confirm('회원수정을 진행하시겠습니까?')"
+					th:text="수정">수정</a></td>
+		</tr>
+		</td>
+		<tr>
+			<td>삭제 버튼</td>
+			<td><a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')"
+				th:text="삭제">삭제</a></td>
+
+		</tr>
+
+
+
+		<tr align="center">
+			<td colspan="2" th:if="${dto.capproval == false}"><a th:href="|/admin_company/cMiList/1|">목록으로</a></td>
+			<td colspan="2" th:unless="${dto.capproval == false}"><a th:href="|/admin_company/cRegList/1|">목록으로</a></td>
+		</tr>
+	</table>
+
+	<script>
+		function openImageInNewWindow() {
+			// 이미지 URL 설정
+			var image = "[[${dto.ccompanyFile}]]";
+
+			// 새 창 열기
+			var newWindow = window.open('', '_blank');
+
+			// 이미지를 새 창에 표시
+			newWindow.document.write('<img src="/companyup/' + image + '" alt="이미지" />');
+		}
+	</script>
+
+
+
 </body>
+
 </html>

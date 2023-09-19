@@ -8,7 +8,7 @@
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-<h1>notice/insertForm*</h1>
+<h1>notice/insertForm</h1>
 <form method="post" enctype="multipart/form-data" th:object="${noticeDTO}">
 	<table border="">
 		<tr>
@@ -17,7 +17,9 @@
 		</tr>
 		<tr>
 			<td>작성자</td>
-			<td><input type="text" th:field="*{pname}"/></td>
+			<!--<td><input type="text" th:field="*{pname}" readonly/></td>-->
+			<!--수정-->
+			<td><input type="text" name="pname" th:value="관리자" readonly/></td>
 		</tr>
 
 		<!--<tr>

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,8 +65,9 @@ public class SoloApplicantController {
 		adto.calc(appdata.size());
 		adto.setPage(page);
 		mm.addAttribute("appdata", appdata);
-		System.out.println("나오란망ㄹ야 : " + adto.getStart() + ", " +  adto.getLimit());
+		System.out.println("나오렴" + appdata.size());
 
+		System.out.println("나오란망ㄹ야 : " + adto.getStart() + ", " +  adto.getLimit());
 		//System.out.println(appdata);
 		return "solo_applicant/home";
 	}
@@ -121,51 +123,54 @@ public class SoloApplicantController {
 	// 1. SoloResumeDTO를 가져온다
 	// 2. applicant에 삽입 메서드 넣음
 	@PostMapping("submit/{page}/{cid}/{id}")
-	String submitReg(PageData pd, @PathVariable String cid, HttpSession session, ApplicantDTO adto,
+	String submitReg(PageData pd, @PathVariable String cid,
+			 HttpServletRequest request, HttpSession session, ApplicantDTO adto,
 			@PathVariable int id, int rsid, Model mm) {
+		 try {
+			// 개인세션 불러오기
+			String sid = (String) session.getAttribute("sid");
+			adto.setSDTO(smapper.detailSolo(sid));
+	
+			// 기업 불러오기
+			adto.setMcDTO(mcmapper.deatilCompany(cid));
+	
+			// 이력서 불러오기
+			adto.setSrDTO(rsmapper.resumedetail(rsid, sid));
+	
+			// 공고제목
+			adto.setRcDTO(recruitMapper.recruitDetail(id));
+			
+			// adto.setRecruitTitle(r.getRecruitTitle());
+			// System.out.println("data이야 :"+ r);
+	
+			// 지원서제목
+			// adto.setAptitle(data.getRstitle());
+			
+			int Ano = adto.getAno();
+			System.out.println("Ano는 :  " + Ano );
+			
+			System.out.println("adto고요 cname이 들어옵니다 : " + adto);
+			// System.out.println(alist);
+			System.out.println("==================================");
+			samapper.appinsert(adto);
+			samapper.recnt(id);
+			pd.setMsg("접수가 완료되었습니다.");
+			pd.setGoUrl("/solo_applicant/home" + "/" + adto.getPage());
+	
+			return "solo_applicant/alert";
+		} catch (DuplicateKeyException e) {
+	        // 중복된 데이터 삽입 시 DuplicateKeyException 처리
+	        pd.setMsg("기존에 지원한 이력이 존재합니다.");
 
-		// 개인세션 불러오기
-		String sid = (String) session.getAttribute("sid");
-		adto.setSDTO(smapper.detailSolo(sid));
+	        // 이전 페이지의 URL을 얻어옴
+	        String refererUrl = request.getHeader("Referer");
 
-		// 기업 불러오기
-		adto.setMcDTO(mcmapper.deatilCompany(cid));
+	        // 이전 페이지로 리디렉션
+	        pd.setGoUrl(refererUrl);
 
-		// 이력서 불러오기
-		adto.setSrDTO(rsmapper.resumedetail(rsid, sid));
-
-		// 공고제목
-		adto.setRcDTO(recruitMapper.recruitDetail(id));
-
-		// adto.setRecruitTitle(r.getRecruitTitle());
-		// System.out.println("data이야 :"+ r);
-
-		// 지원서제목
-		// adto.setAptitle(data.getRstitle());
-		samapper.appinsert(adto);
-		int Ano = adto.getAno();
-		System.out.println("Ano는 :  " + Ano );
-		// 지원자 명 == user2
-		// adto.setSid(sid);
-		// String adtoSid = adto.getSid();
-		// System.out.println("adtoSid는 : " + adtoSid);
-
-		// 기업 명 == ABC Company
-		// adto.setCname(mcd.getCname());
-		// String mcdCname = adto.getCname();
-		// System.out.println("mcdCname은 : " + mcdCname);
-
-		// List<ApplicantDTO> alist = rcmapper.appselect(adto);
-		System.out.println("adto고요 cname이 들어옵니다 : " + adto);
-		// System.out.println(alist);
-		System.out.println("==================================");
-
-		pd.setMsg("접수가 완료되었습니다.");
-		pd.setGoUrl("/solo_applicant/home" + "/" + adto.getPage());
-
-		return "solo_applicant/alert";
+	        return "solo_applicant/alert";
+	    }
 	}
-
 	// 개인회원 지원 취소
 	@RequestMapping("modify/{page}/{ano}")
 	String com_recruit_modify(ApplicantDTO adto, PageData pd, HttpServletRequest request

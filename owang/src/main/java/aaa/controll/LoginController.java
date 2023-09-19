@@ -177,90 +177,93 @@ public class LoginController {
 	}
 
 	// 비번찾기
-	@GetMapping("findpw")
-	String findpw() {
-		return "login/find_pw";
-	}
+	   @GetMapping("findpw")
+	   String findpw() {
+	      return "login/find_pw";
+	   }
 
-	@PostMapping("findpw")
-	String findpw(HttpServletRequest request, PageData pd) {
-		String loginType = request.getParameter("pwloginType");
-		String fid = request.getParameter("pwid");
-		String femail = request.getParameter("pwemail");
-		String fbirth = request.getParameter("pwsbirth");
-		String fceo = request.getParameter("pwcceo");
+	   @PostMapping("findpw")
+	   String findpw(HttpServletRequest request, PageData pd) {
+	      String loginType = request.getParameter("pwloginType");
+	      String fid = request.getParameter("pwid");
+	      String femail = request.getParameter("pwemail");
+	      String fbirth = request.getParameter("pwsbirth");
+	      String fceo = request.getParameter("pwcceo");
 
-		if (!fbirth.isEmpty() && fbirth.matches("^\\d{8}$")) {
-			fbirth = String.format("%s-%s-%s", fbirth.substring(0, 4), fbirth.substring(4, 6), fbirth.substring(6));
-			System.out.println(fbirth);
-		} else {
-			pd.setGoUrl("");
-			pd.setMsg("생년월일은 숫자만 8자리로 적어주세요");
-			return "join/join_alert";
-		}
-		System.out.println("아이디" + fid + ", 이메일" + femail + ", 생년월일" + fbirth + ", 대표이름" + fceo + ", 타입" + loginType);
-		// 디폴트값 설정
-		pd.setGoUrl("/login/findpw");
-		pd.setMsg("일치하는 정보가 없습니다.");
-		// 기업회원인 경우
-		if ("company".equals(loginType)) {
-			int cresult = ccmapper.findpwComp(fid, femail, fceo); // 일치하는 결과가 있는지 확인
-			if (cresult == 1) {
-				pd.setMsg("새로운 비밀번호를 입력하세요");
-				pd.setGoUrl("/login/findpwreg/c" + fid);
-			}
-		} else if ("individual".equals(loginType)) {
-			int sresult = ssmapper.findpwSolo(fid, femail, fbirth);
-			if (sresult == 1) {
-				pd.setMsg("새로운 비밀번호를 입력하세요");
-				pd.setGoUrl("/login/findpwreg/s" + fid); // URL에 sid 값을 문자열로 추가
-			}
-		}
-		return "join/join_alert";
-	}
+	      if (!fbirth.isEmpty()) {
+	    	  if(fbirth.matches("^\\d{8}$")) {	    		  
+	    		  fbirth = String.format("%s-%s-%s", fbirth.substring(0, 4), fbirth.substring(4, 6), fbirth.substring(6));
+	    		  System.out.println(fbirth);
+	    	  }else {
+	    		  pd.setGoUrl("");
+	    		  pd.setMsg("생년월일은 숫자만 8자리로 적어주세요");
+	    		  return "join/join_alert";
+	    	  }
+	      }
+	      System.out.println("아이디" + fid + ", 이메일" + femail + ", 생년월일" + fbirth + ", 대표이름" + fceo + ", 타입" + loginType);
+	      // 디폴트값 설정
+	      pd.setGoUrl("/login/findpw");
+	      pd.setMsg("일치하는 정보가 없습니다.");
+	      // 기업회원인 경우
+	      if ("company".equals(loginType)) {
+	         int cresult = ccmapper.findpwComp(fid, femail, fceo); // 일치하는 결과가 있는지 확인
+	         if (cresult == 1) {
+	            pd.setMsg("새로운 비밀번호를 입력하세요");
+	            pd.setGoUrl("/login/findpwreg/c" + fid);
+	         }
+	      } else if ("individual".equals(loginType)) {
+	         int sresult = ssmapper.findpwSolo(fid, femail, fbirth);
+	         if (sresult == 1) {
+	            pd.setMsg("새로운 비밀번호를 입력하세요");
+	            pd.setGoUrl("/login/findpwreg/s" + fid); // URL에 sid 값을 문자열로 추가
+	         }
+	      }
+	      return "join/join_alert";
+	   }
 
-	// 비번찾기결과창
-	@GetMapping("findpwreg/{csuserid}")
-	String findpwreg(@PathVariable String csuserid) {
-		return "login/find_pwreg";
-	}
+	   // 비번찾기결과창
+	   @GetMapping("findpwreg/{csuserid}")
+	   String findpwreg(@PathVariable String csuserid) {
+	      return "login/find_pwreg";
+	   }
 
-	@PostMapping("findpwreg/{csuserid}")
-	String modifyReg(PageData pd, @PathVariable String csuserid, String pw, String pw2) {
-		String userid = csuserid.substring(1);
-		char type = csuserid.charAt(0);
-		pd.setMsg("오류가 발생했습니다. 다시 시도해주세요");
-		pd.setGoUrl("/login/findpw");
-		if (pw == null || pw.isEmpty()) {
-			pd.setMsg("비밀번호를 입력하세요");
-			pd.setGoUrl("/login/findpwreg/" + csuserid);
-			return "join/join_alert";
-		}
-		if (!pw.isEmpty() && !pw.equals(pw2)) {
-			// 비밀번호 틀림
-			pd.setMsg("비밀번호가 일치하지 않습니다");
-			pd.setGoUrl("/login/findpwreg/" + csuserid);
-			return "join/join_alert";
-		}
-		if (pw.equals(pw2)) {
-			if (type == 'c') {
-				// 수정 성공시 결과가 1이 나옴
-				int cnt = ccmapper.modifycpw(userid, pw);
-				if (cnt > 0) {
-					System.out.println("기업수정성공");
-					pd.setMsg("수정되었습니다. 다시 로그인해주세요");
-					pd.setGoUrl("/login/main");
-				}
-			} else {
-				int cnt = ssmapper.modifyspw(userid, pw);
-				if (cnt > 0) {
-					System.out.println("개인수정성공");
-					pd.setMsg("수정되었습니다. 다시 로그인해주세요");
-					pd.setGoUrl("/login/main");
-				}
-			}
-		}
-		return "join/join_alert";
-	}
+	   @PostMapping("findpwreg/{csuserid}")
+	   String modifyReg(PageData pd, @PathVariable String csuserid, String pw, String pw2) {
+	      String userid = csuserid.substring(1);
+	      char type = csuserid.charAt(0);
+	      pd.setMsg("오류가 발생했습니다. 다시 시도해주세요");
+	      pd.setGoUrl("/login/findpw");
+	      if (pw == null || pw.isEmpty()) {
+	         pd.setMsg("비밀번호를 입력하세요");
+	         pd.setGoUrl("/login/findpwreg/" + csuserid);
+	         return "join/join_alert";
+	      }
+	      if (!pw.isEmpty() && !pw.equals(pw2)) {
+	         // 비밀번호 틀림
+	         pd.setMsg("비밀번호가 일치하지 않습니다");
+	         pd.setGoUrl("/login/findpwreg/" + csuserid);
+	         return "join/join_alert";
+	      }
+	      if (pw.equals(pw2)) {
+	         if (type == 'c') {
+	            // 수정 성공시 결과가 1이 나옴
+	            int cnt = ccmapper.modifycpw(userid, pw);
+	            if (cnt > 0) {
+	               System.out.println("기업수정성공");
+	               pd.setMsg("수정되었습니다. 다시 로그인해주세요");
+	               pd.setGoUrl("/login/main");
+	            }
+	         } else {
+	            int cnt = ssmapper.modifyspw(userid, pw);
+	            if (cnt > 0) {
+	               System.out.println("개인수정성공");
+	               pd.setMsg("수정되었습니다. 다시 로그인해주세요");
+	               pd.setGoUrl("/login/main");
+	            }
+	         }
+	      }
+	      return "join/join_alert";
+	   }
+
 
 }

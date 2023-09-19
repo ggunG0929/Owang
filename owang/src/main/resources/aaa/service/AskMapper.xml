@@ -46,26 +46,22 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	 	</select>  -->
 	
 	<select id="useraskList" resultType="askDTO" parameterType="askDTO">
-    SELECT *
-    FROM ask
-    WHERE gid IS NULL AND pname = #{pname}
-    UNION ALL
-    SELECT *
-    FROM ask
-    WHERE gid IN (
-        SELECT gid
-        FROM ask
-        WHERE pname = #{pname}
-    )
-    ORDER BY gid DESC, seq ASC
-    LIMIT #{start}, #{limit};
-</select>
+	    SELECT *
+	    FROM ask
+	    WHERE gid IS NULL AND pname = #{pname}
+	    UNION ALL
+	    SELECT *
+	    FROM ask
+	    WHERE gid IN (
+	        SELECT gid
+	        FROM ask
+	        WHERE pname = #{pname}
+	    )
+	    ORDER BY gid DESC, seq ASC
+	    LIMIT #{start}, #{limit};
+	</select>
 	
 	
-	
-	
-
-
 	
 	
 	<select id="listCnt" resultType="Integer">
@@ -87,9 +83,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	
 	
 	<insert id="askInsert" parameterType="askDTO">
-		insert into ask (title, pname, pw, content, upfile, reg_date, cnt, seq, lev, gid, id)
+		insert into ask (title, pname, imp, content, upfile, reg_date, cnt, seq, lev, gid, id)
 		values
-		(#{title},#{pname},#{pw},#{content},#{upfile}, sysdate(),0,0,0, #{id}, #{id})
+		(#{title},#{pname},#{imp},#{content},#{upfile}, sysdate(),0,0,0, #{id}, #{id})
 	</insert>
 	
 	
@@ -110,20 +106,25 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		update ask set upfile = null where id = #{id}
 	</update>
 	
-	<select id="idPwChk" parameterType="askDTO" resultType="Integer">
-		select count(*) from ask where id = #{id} and pw= #{pw}
+	<select id="gidChk" parameterType="String" resultType="Integer">
+		select count(*) from ask where gid = #{gid} 
 	</select>
 	
 	<!-- 답변쓰 원본쓰-->
 	<insert id="insertReply" parameterType="askDTO">
-	    insert into ask (title, pname, pw, content, upfile, reg_date, cnt, seq, lev, gid)
+	    insert into ask (title, pname, imp, content, upfile, reg_date, cnt, seq, lev, gid)
 	    values
-	    (#{title}, #{pname}, #{pw}, #{content}, '', sysdate(), 0, #{seq}, #{lev}, #{gid})
+	    (#{title}, #{pname}, #{imp}, #{content}, #{upfile}, sysdate(), 0, #{seq}, #{lev}, #{gid})
 	</insert> 
 	<!-- <insert id="insertReply" parameterType="askDTO">
 	    insert into ask (title, pname, pw, content, upfile, reg_date, cnt, seq, lev, gid)
 	    values
 	    (#{title}, '관리자', #{pw}, #{content}, '', sysdate(), 0, #{seq}, #{lev}, #{gid})
 	</insert> -->
+	
+	
+	
+	
+	
 
 </mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="aaa.service.EndCompanyMapper">
+	
+
+	
+	
+<insert id="endCompanyInsert" parameterType="mcDTO">
+    INSERT INTO endcompany (cemail,cid, cpw, cname, cbuild, ccategory, 
+    cstaff, csales, ccall, cceo, caddress, ccompanyFile, ccontent, ctype, cbcnt, capproval, cdeletedate)
+    VALUES (
+        #{cemail},#{cid},#{cpw},#{cname},#{cbuild},#{ccategory},#{cstaff},#{csales},
+        #{ccall},#{cceo},#{caddress},#{ccompanyFile},
+        #{ccontent},1,0,0, sysdate()
+    )
+</insert>
+
+<select id="idChk" resultType="int">
+    select count(*) from endcompany where cid = #{cid}
+</select>
+
+</mapper>

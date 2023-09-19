@@ -30,4 +30,8 @@ public interface ReviewMapper {
 	
 	// 리뷰 1개이상쓴사람
 	int ccnt(String sid);
+	
+
+	// 개인 리뷰 리스트
+	List<ReviewDTO> soloreviewList(ReviewDTO dto);
 }

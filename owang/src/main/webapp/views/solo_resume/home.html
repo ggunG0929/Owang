@@ -5,6 +5,9 @@
 <title>이력서 관리</title>
 </head>
 <body>
+<header>
+	<div th:insert="~{header :: header}"></div>
+</header>
 <script th:inline="javascript">
     // 서버에서 받아온 cnt 값
     var cnt = /*[[${mainData.size()}]]*/ 0;
@@ -16,12 +19,7 @@
             event.preventDefault(); // 링크 이동 취소
         }
     }
-    
-  function goBack() {
-         window.history.back();
-      }
 </script>
-<a href="javascript:goBack()">이전 페이지</a>
 <h2>이력서 관리</h2>
 <div>
     <span th:if="${mainData.isEmpty()}">

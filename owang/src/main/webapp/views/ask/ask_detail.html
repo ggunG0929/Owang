@@ -2,69 +2,71 @@
 <html xmlns="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>ask/detail</title>
+   <meta charset="UTF-8">
+   <title>ask/detail</title>
 </head>
 
 <body>
-	<header>
-		<div th:insert="~{header :: header}"></div>
-	</header>
-	<h1>ask/detailㄴ</h1>
-	[[${askdto}]]
+   <header>
+      <div th:insert="~{header :: header}"></div>
+   </header>
+   <h1>ask/detail</h1>
+   [[${askdto}]]
 
-	<table border="">
-		<tr>
-			<td>제목</td>
-			<td th:text="${askdto.title}" />
-		</tr>
-		<tr>
-			<td>작성자</td>
-			<td th:text="${askdto.pname}" />
-		</tr>
-		<tr>
-			<!--날짜 예쁘게 수정-->
-			<td>등록일</td>
-			<td th:text="${#dates.format(askdto.regDate, 'yyyy-MM-dd')}" />
-		</tr>
-		<tr>
-			<td>조회수</td>
-			<td th:text="${askdto.cnt}" />
-		</tr>
-		<tr th:if="${askdto.upfile != null}">
-			<td>사진</td>
-			<td>
-				<img th:if="${askdto.img}" th:src="|/askup/${askdto.upfile}|" />
-				<a th:unless="${askdto.img}" th:text="${askdto.upfile}"></a>
-			</td>
-		</tr>
-		<tr>
-			<td>내용</td>
-			<td th:text="${askdto.content}" />
-		</tr>
-		<!-- 관리자만 보임 -->
-		<th:block th:if="${session.adminSession}">
-			<!--주문번호가 첨부된 경우에만 보임-->
-			<tr th:if="${askdto.pw}">
-				<td>결제내역</td>
-				<td>
-					<a th:href="|/admin_product/payment/detail/${askdto.pw}|" onclick="window.open(this.href, '결제상세내역', 'width=600,height=700'); return false;" target="_blank">[[${askdto.pw}]]</a>
-				</td>
-			</tr>
-		</th:block>
-		<tr>
-			<td colspan="2" align="right">
-				<!-- 연결된 답글이 없을 경우만 삭제, 수정 가능-->
-				<div th:if="${type == '1'}">
-					<a th:href="@{|/ask/delete/${askdto.page}/${askdto.id}|}">삭제</a>
-					<a th:href="@{|/ask/modify/${askdto.page}/${askdto.id}|}">수정</a>
-					<!-- 관리자만 보임 -->
-					<a th:href="@{|/ask/reply/${askdto.page}/${askdto.id}|}" th:if="${session.adminSession}">답글</a>
-				</div>
-				<a th:href="@{|/ask/list/${askdto.page}|}">목록으로</a>
-			</td>
-		</tr>
-	</table>
+   <table border="">
+      <tr>
+         <td>제목</td>
+         <td th:text="${askdto.title}" />
+      </tr>
+      <tr>
+         <td>작성자</td>
+         <td th:text="${askdto.pname}" />
+      </tr>
+      <tr>
+         <td>등록일</td>
+         <td th:text="${#dates.format(askdto.regDate, 'yyyy-MM-dd')}" />
+      </tr>
+      <tr>
+         <td>조회수</td>
+         <td th:text="${askdto.cnt}" />
+      </tr>
+      <tr th:if="${askdto.upfile != null}">
+         <td>사진</td>
+         <td>
+            <img th:if="${askdto.img}" th:src="|/askup/${askdto.upfile}|" />
+            <a th:unless="${askdto.img}" th:text="${askdto.upfile}"></a>
+         </td>
+      </tr>
+      <tr>
+         <td>내용</td>
+         <td th:text="${askdto.content}" />
+      </tr>
+      <!-- 관리자만 보임 -->
+      <th:block th:if="${session.adminSession}">
+         <!--주문번호가 첨부된 경우에만 보임-->
+         <tr th:if="${askdto.imp}">
+            <td>결제내역</td>
+            <td>
+				<!--target="_blank": 링크를 새로운 브라우저 창이나 탭에서 열도록 지정하는 부분-->
+               <a th:href="|/admin_product/payment/detail/${askdto.imp}|" 
+               onclick="window.open(this.href, '결제상세내역', 'width=600,height=700'); return false;" target="_blank">[[${askdto.imp}]]</a>
+               
+            </td>
+         </tr>
+      </th:block>
+      <tr>
+         <td colspan="2" align="right">
+            <!-- 연결된 답글이 없을 경우만 삭제, 수정 가능  (type 1)-->
+            <div th:if="${type == '1'}">
+               <a th:href="@{|/ask/delete/${askdto.page}/${askdto.id}|}" th:unless="${session.adminSession}">삭제</a>
+               <a th:href="@{|/ask/modify/${askdto.page}/${askdto.id}|}" th:unless="${session.adminSession}">수정</a>
+               <!-- 관리자만 보임 -->
+               <a th:href="@{|/ask/reply/${askdto.page}/${askdto.id}|}" th:if="${session.adminSession}">답글</a>
+            </div>
+            <a th:href="@{|/ask/list/${askdto.page}|}">목록으로</a>
+         </td>
+      </tr>
+   </table>
 </body>
 
 </html>

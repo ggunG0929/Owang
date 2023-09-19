@@ -12,7 +12,9 @@ import aaa.model.SoloDTO;
 public interface AdminSolo {
 
 	// 게시글 정렬
-	List<SoloDTO> soloList(SoloDTO dto);
+		List<SoloDTO> soloList(SoloDTO dto);
+		List<SoloDTO> soloonList(SoloDTO dto);
+		List<SoloDTO> solooffList(SoloDTO dto);
 	
 	
 	//전체회원관리 수정삭제
@@ -20,8 +22,9 @@ public interface AdminSolo {
 	int delettt(String sid);
 
 	// 게시글 페이지 계산
-	int soloListCnt();
-
+		int soloListCnt();
+		int soloonListCnt();
+		int solooffListCnt();
 	// 게시글 정렬 재직인증x
 	List<SoloDTO> solocomList(SoloDTO dto);
 

@@ -27,7 +27,9 @@
          <td th:text="${paymentData[0].paid_at}"></td>
          <td th:text="${paymentData[0].name}"></td>
          <td th:text="${paymentData[0].amount}"></td>
-         <td><a th:href="${paymentData[0].receipt_url}" target="_blank">매출전표</a></td>
+         <td><a th:href="${paymentData[0].receipt_url}" 
+						onclick="window.open(this.href, '매출전표', 'width=450,height=450'); return false;"
+						target="_blank">매출전표</a></td>
       </tr>
    </table>
 </body>

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import aaa.model.RecruitDTO;
+import aaa.model.ReviewDTO;
 
 @Mapper
 public interface RecruitMapper {

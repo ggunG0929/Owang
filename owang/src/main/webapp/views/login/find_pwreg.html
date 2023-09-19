@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="UTF-8">
-	<title>비밀번호 찾기</title>
+	<title>Insert title here</title>
 </head>
-
 <body>
-	<header>
-		<div th:insert="~{header :: header}"></div>
-	</header>
-	<h2>비밀번호를 변경합니다</h2>
+   <header>
+      <div th:insert="~{header :: header}"></div>
+   </header>
+   	<h2>비밀번호를 변경합니다</h2>
 	<form name="frm" method="post">
+		<input type="hidden" name="id" th:text="${id}" />
 		<table border="">
-			<tr>
+			<tr id="passwordChangeRow">
 				<td>새 비밀번호</td>
-				<td><input type="password" name="pw" /></td>
+				<td><input type="password" name="pw" id="newpw" /></td>
 			</tr>
-			<tr>
+			<tr id="passwordConfirmationRow">
 				<td>비밀번호 확인</td>
-				<td><input type="password" name="pw2" /></td>
+				<td><input type="password" name="pw2" id="pw2" /></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<input type="submit" value="수정" />
-				</td>
-			</tr>
-		</table>
-	</form>
+				<input type="submit" value="수정" />
+			</td>
+		</tr>
+	</table>
+</form>
 </html>

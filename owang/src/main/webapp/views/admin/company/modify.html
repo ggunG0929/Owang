@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>마이페이지 수정</title>
+	<!-- jQuery 라이브러리 추가 -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script th:inlin="javascript">
+		
+		function fileDelete() {
+
+			frm.action = "/admin_company/fileDelete/"+"[[${dto.cno}]]";
+			frm.submit()
+		}
+
+	</script>
+</head>
+[[${dto}]]
+
+<body>
+	<h1>관리자 기업정보 수정</h1>
+	<h3> 개인정보문제로 회원으로부터 사업자등록증갱신 및 변경 요청시 대표자, 개업일, 기업주소, 사업자등록증만 변경 가능합니다.</h3>
+	
+	
+	<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
+		<input type="hidden" th:field="*{cid}" />
+		<table border="">
+			<tr>
+				<td>기업이름</td>
+				<td><input type="text" th:field="*{cname}"readonly /></td>
+			</tr>
+			<tr>
+				<td>대표자</td>
+				<td><input type="text" th:field="*{cceo}" /></td>
+			</tr>
+			<tr>
+				<td>개업연월일</td>
+				<td><input type="date" th:field="*{cbuild}" /></td>
+			</tr>
+			
+			<tr>
+				<td>업종</td>
+				<td><input type="text" th:field="*{ccategory}"  readonly/></td>
+			</tr>
+			
+			<tr>
+				<td>직원수</td>
+				<td><input type="text" th:field="*{cstaff}" readonly/></td>
+			</tr>
+			<tr>
+				<td>한해매출액(단위:100만원)</td>
+				<td><input type="text" th:field="*{csales}" readonly/></td>
+			</tr>
+			<tr>
+				<td>이메일</td>
+				<td><input type="email" th:field="*{cemail}" readonly/></td>
+			</tr>
+			<tr>
+				<td>전화번호</td>
+				<td><input type="text" th:field="*{ccall}" readonly/></td>
+			</tr>
+			<tr>
+				<td>본점소재지</td>
+				<td><input type="text" th:field="*{caddress}"  /></td>
+			</tr>
+				<tr>
+				<td>내용</td>
+				<td><textarea th:field="*{ccontent}" readonly/></td>
+			</tr>
+			
+			
+
+					 <tr>
+           <td>사업자등록증</td>
+            <td>
+               <th:block th:if="${dto.ccompanyFile != null}">
+               <input type="hidden" th:field="*{ccompanyFile}" />
+               <input type="button" onclick="fileDelete()" th:value="|*{ccompanyFile} 파일삭제|" />
+
+               </th:block>
+               <input th:unless="${dto.ccompanyFile != null}" type="file" th:field="*{mmff}" />
+
+
+
+            </td>
+         </tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="수정" />
+					<a href="/admin_company/detail"+"${dto.cno}" />
+				</td>
+			</tr>
+		</table>
+	</form>
+
+
+
+</body>
+
+</html>

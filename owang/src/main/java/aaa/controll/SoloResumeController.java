@@ -26,6 +26,7 @@ import aaa.service.SoloResumeMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import retrofit2.http.Path;
 
 @Controller
 @RequestMapping("solo_resume")
@@ -129,6 +130,7 @@ public class SoloResumeController {
 		if(cnt>0) {
 			System.out.println("수정후"+rdto);
 			// 수정이 되었을때 파일을 저장해야 함 (파일 저장)
+			
 			pd.setMsg("수정되었습니다.");
 			pd.setGoUrl("/solo_resume/detail/"+rdto.getRsid());
 		}

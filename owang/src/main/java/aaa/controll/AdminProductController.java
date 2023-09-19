@@ -184,7 +184,10 @@ public class AdminProductController {
 
 			for (PaymentResponseAll.PaymentAll payment : paymentData) {
 				// imp_uid로 db정보 검색해서 id 가져옴
-				String id = paym.idget(payment.getImp_uid());
+				String id = paym.idget(payment.getImp_uid());				
+				if(id != null && paym.isEndMem(id)) {
+					id += "(탈퇴)";
+				}
 				payment.setId(id);
 
 				// unixtimestamp정보들을 포맷팅
@@ -262,6 +265,7 @@ public class AdminProductController {
 		// 상품명에서 숫자추출
 		Pattern pattern = Pattern.compile("\\d+");
 		Matcher matcher = pattern.matcher(name);
+		Date today = new Date();
 		if (matcher.find()) {
 			String num = matcher.group();
 			valid = Integer.parseInt(num);
@@ -279,6 +283,10 @@ public class AdminProductController {
 			cdate = calendar.getTime();
 			compinfo.setCdate(cdate);
 			// db 수정
+			if (compinfo.getCtype() == 2 && cdate != null && cdate.before(today)) { //
+				compinfo.setCtype(1);
+				mcm.logincmember(compinfo);
+			}
 			mcm.paycmember(compinfo);
 		} else {
 			// 개인회원
@@ -289,7 +297,13 @@ public class AdminProductController {
 			calendar.add(Calendar.DATE, -valid);
 			sdate = calendar.getTime();
 			soloinfo.setSdate(sdate);
+			if (soloinfo.getStype() == 2 && sdate != null && sdate.before(today)) { //
+				soloinfo.setStype(1);
+				sm.loginsmember(soloinfo);
+			}
+
 			sm.paysmember(soloinfo);
+
 		}
 		// 취소진행
 		String token = payS.getToken();

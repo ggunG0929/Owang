@@ -6,10 +6,11 @@
 	<title>회원상품관리</title>
 </head>
 <script>
-      function goBack() {
-         window.history.back();
-      }
+	function goBack() {
+		window.history.back();
+	}
 </script>
+
 <body>
 	<th:block th:insert="~{header :: header}" />
 	<a href="javascript:goBack()">이전 페이지</a>
@@ -39,13 +40,17 @@
 					<td th:text="${payment.pg_provider}"></td>
 					<th:block th:if="${payment.status=='완료'}">
 						<td th:text="${payment.paid_at}"></td>
-						<td><a th:href="${payment.receipt_url}" onclick="window.open(this.href, '매출전표', 'width=450,height=450'); return false;" target="_blank">완료</a></td>
+						<td><a th:href="${payment.receipt_url}"
+								onclick="window.open(this.href, '매출전표', 'width=450,height=450'); return false;"
+								target="_blank">완료</a></td>
 					</th:block>
 					<th:block th:unless="${payment.status=='완료'}">
 						<td th:text="${payment.cancelled_at}"></td>
 						<td th:text="${payment.status}"></td>
 					</th:block>
-					<td><a th:href="|/ask/insert/1/${payment.imp_uid}|"onclick="event.preventDefault(); alert('결제문의를 작성하셔야 해당 결제의 주문번호가 자동으로 첨부됩니다'); window.location.href = this.href;">결제문의</a></td>
+					<td><a th:href="|/ask/insert/1/${payment.imp_uid}|"
+							onclick="event.preventDefault(); alert('결제문의를 작성하셔야 해당 결제의 주문번호가 자동으로 첨부됩니다'); window.location.href = this.href;">결제문의</a>
+					</td>
 				</tr>
 			</th:block>
 			<th:block th:if="${paymentData}==null">
@@ -55,6 +60,7 @@
 			</th:block>
 		</tbody>
 	</table>
+
 </body>
 
 </html>

@@ -30,6 +30,7 @@ public class SoloDTO {
 	public int stype;
 	public Date sdate;
 	public Date sjoindate;
+	public Date sdeletedate;//탈퇴날짜
 	
 	public int sbcnt;
 	boolean sinjueng;

@@ -34,6 +34,7 @@ public class MCompanyDTO {
 	Date cdate;
 	int cbcnt;
 	boolean capproval;
+	Date cdeletedate;// 탈퇴일
 	
 	int start, limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
 	

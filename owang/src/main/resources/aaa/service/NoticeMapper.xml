@@ -5,9 +5,11 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 <mapper namespace="aaa.service.NoticeMapper">
 
-	
+	<!-- 등록일을 최신순으로 정렬 -->
 	<select id="list" resultType="nDTO" parameterType="nDTO">
-		select * from notice order by gid desc, seq limit #{start}, #{limit}
+	    select * from notice
+	    order by reg_date desc, gid desc, seq
+	    limit #{start}, #{limit}
 	</select>
 	
 	
@@ -33,6 +35,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		values
 		(#{title},#{pname},#{pw},#{content},#{upfile}, sysdate(),0,0,0, #{id}, #{id})
 	</insert>
+	
 	<!-- 삭제하기 -->
 	<delete id="delettt" parameterType="nDTO">
 		delete from notice where id = #{id}

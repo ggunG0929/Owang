@@ -4,13 +4,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<script>
-      function goBack() {
-         window.history.back();
-      }
-</script>
 <body>
-<a href="javascript:goBack()">이전 페이지</a>
+<header>
+	<div th:insert="~{header :: header}"></div>
+</header>	
 <h2>지원서 관리</h2>
 	<span th:if="${#lists.isEmpty(appdata)}">
     	<h2>지원내역이 존재하지 않습니다</h2>
@@ -62,16 +59,7 @@
 		</td>
     </tr>
     <!-- 페이징 처리 -->
-	<tr th:if="${not appdata.isEmpty()}">
-	    <td colspan="9" align="center">
-	        <a th:if="${applicantDTO.pageStart > 1}" th:href="${applicantDTO.pageStart - 1}" th:text="'[이전]'" />
-	        <th:block th:each="ad: ${#numbers.sequence(applicantDTO.pageStart, applicantDTO.pageEnd)}">
-	            <span th:if="${ad == applicantDTO.page}" th:text="${ad}" />
-	            <a th:unless="${ad == applicantDTO.page}" th:href="${ad}" th:text="${ad}" th:if="${ad!=0}"></a>
-	        </th:block>
-	        <a th:if="${applicantDTO.pageEnd < applicantDTO.pageTotal}" th:href="${applicantDTO.pageEnd + 1}" th:text="'[다음]'" />
-	    </td>
-	</tr>
+
 
 </table>
 </body>

@@ -6,11 +6,6 @@
     <title>공지사항</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/notice/css.css}">
 </head>
-<script>
-      function goBack() {
-         window.history.back();
-      }
-</script>
 <style>
 h4,.notice_title{text-align: center;}	
 </style>
@@ -24,28 +19,24 @@ h4,.notice_title{text-align: center;}
 	
 	<h4>notice / list</h4><br/>
 	
-	
-	<div class="notice_title">
-            <strong>공지사항</strong>
+	<div class="board_wrap">
+        <div class="board_title">
+	            <strong>공지사항</strong>
         </div>
         
-	<hr>
-	<table border="">
-    <div class="notice_wrap">
-        
-
-        <div class="notice_list_wrap">
-
-            <div class="notice_list">
-                <tr>
-					<td>번호</td>
-					<td>제목</td>
-					<td>작성자</td>
-					<td>등록일</td>
-					<td>조회수</td>
+		<div class="board_list">
+			
+			<table border="" >
+				<trclass="top">
+					<td class="num">번호</td>
+					<td class="title">제목</td>
+					<td class="writer">작성자</td>
+					<td class="date">등록일</td>
+					<td class="count">조회수</td>
 				</tr>
-                
-                <tr th:each="ndto, dtoStat : ${mainData}">
+			
+				
+				<tr th:each="ndto, dtoStat : ${mainData}">
 					<td th:text="${dtoStat.count + noticeDTO.start}"/>
 					<td>
 						<a th:href="|/notice/detail/${noticeDTO.page}/${ndto.id}|" th:text="${ndto.title}"></a>
@@ -58,15 +49,15 @@ h4,.notice_title{text-align: center;}
 				<tr>
 					<td colspan="5" align="center">
 				
-				<a th:if="${noticeDTO.pageStart > 1}" th:href="${noticeDTO.pageStart - 1}" th:text="'[이전]'"/>		
+					<a th:if="${noticeDTO.pageStart > 1}" th:href="${noticeDTO.pageStart - 1}" th:text="'[이전]'"/>		
+							
+					<th:block th:each="no: ${#numbers.sequence(noticeDTO.pageStart, noticeDTO.pageEnd)}" >
 						
-				<th:block th:each="no: ${#numbers.sequence(noticeDTO.pageStart, noticeDTO.pageEnd)}" >
-					
-					<span th:if="${no==noticeDTO.page}" th:text="${no}"/>
-					<a th:unless="${no==noticeDTO.page}" th:href="${no}" th:text="${no}"/>
-				</th:block>
-				<a th:if="${noticeDTO.pageEnd < noticeDTO.pageTotal}" th:href="${noticeDTO.pageEnd + 1}" th:text="'[다음]'"/>
-					</td>
+						<span th:if="${no==noticeDTO.page}" th:text="${no}"/>
+						<a th:unless="${no==noticeDTO.page}" th:href="${no}" th:text="${no}"/>
+					</th:block>
+					<a th:if="${noticeDTO.pageEnd < noticeDTO.pageTotal}" th:href="${noticeDTO.pageEnd + 1}" th:text="'[다음]'"/>
+						</td>
 				</tr>
 				<tr>
 					<td colspan="5" align="right">
@@ -74,10 +65,9 @@ h4,.notice_title{text-align: center;}
 						<a th:href="|/notice/insert/${noticeDTO.page}|"th:if="${session.adminSession}">글쓰기</a>
 					</td>
 				</tr>
-            </div>
-        </div>
-    </div>  
-	</table>
-	<a href="javascript:goBack()">이전 페이지</a>
+    
+			</table>
+		</div>	
+	</div>
 </body>
 </html>

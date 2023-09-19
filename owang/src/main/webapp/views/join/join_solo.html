@@ -19,12 +19,12 @@
 		<div th:insert="~{header :: header}"></div>
 	</header>
 	<h1>개인회원가입</h1>
-	
-<button id="showTermsButton">이용약관 보기</button>
+
+	<button id="showTermsButton">이용약관 보기</button>
 
 	<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
 
-		
+
 		<table border="">
 			<tr>
 				<td>아이디:</td>
@@ -39,18 +39,18 @@
 			</tr>
 			<tr>
 				<td>암호확인</td>
-				<td><input type="password" name="spw2" required/></td>
+				<td><input type="password" name="spw2" required /></td>
 			</tr>
 			<tr>
 			<tr>
 				<td>이름</td>
-				<td><input type="text" name="sname" required/></td>
+				<td><input type="text" name="sname" required /></td>
 				</td>
 			</tr>
 			<tr>
 				<td>주민등록번호 앞자리</td>
 				<td>
-					<input type="text" id="jumin" name="sjumin" required/>
+					<input type="text" id="jumin" name="sjumin" required />
 					<input type="button" onclick="Birth()" value="클릭!" />
 				</td>
 			</tr>
@@ -71,12 +71,12 @@
 			</tr>
 			<tr>
 				<td>휴대폰번호</td>
-				<td><input type="text" name="sphone" required/></td>
+				<td><input type="text" name="sphone" required /></td>
 			</tr>
 			<tr>
 				<td>이메일</td>
 				<td>
-					<input type="text" id="email" name="email" required/>
+					<input type="text" id="email" name="email" required />
 					@
 					<select id="emailDomain">
 						<option value="naver.com">naver.com</option>
@@ -92,7 +92,7 @@
 			</tr>
 			<tr>
 				<td>주소</td>
-				<td><input type="text" name="saddress" required/>
+				<td><input type="text" name="saddress" required />
 				</td>
 			</tr>
 
@@ -110,63 +110,64 @@
 
 					<datalist id="company-list">
 						<th:block th:each="recruit : ${mainData}">
-						     <option th:text="${recruit.cname}" class="company-list" th:data-company-number="${recruit.cid}" />
-							 <span th:text="|회사번호 ${recruit.ccall}|" class="company-list"></span>
-							 
+							<option th:text="${recruit.cname}" class="company-list"
+								th:data-company-number="${recruit.cid}" />
+							<span th:text="|회사번호 ${recruit.ccall}|" class="company-list"></span>
+
 						</th:block>
 					</datalist>
 				</td>
-				</tr>
-				
-			
-				
-				
+			</tr>
+
+
+
+
 			<!-- 회사 재직증명서 파일 업로드 필드 -->
 			<tr id="companyFileMenu" style="display:none;">
 				<td>회사 재직증명서</td>
 				<td><input type="file" name="mmff" />
 				</td>
 			</tr>
-			</table> <!-- 나머지 필드들 -->
-		
+		</table> <!-- 나머지 필드들 -->
+
 
 		<input type="submit" value="가입" />
 	</form>
-	
-		
+
+
 
 	<script>
-	
-  document.addEventListener('DOMContentLoaded', function() {
-            const scompanyNameInput = document.querySelector('input[name="scompanyName"]');
-            const cidInput = document.getElementById('cid');
-            const dataListOptions = document.querySelectorAll('#company-list option');
-            const companyNumberElement = document.getElementById('company-number');
 
-            // 입력 필드에 입력이 발생할 때마다 실행되는 함수
-            scompanyNameInput.addEventListener('input', function() {
-                const inputValue = scompanyNameInput.value;
-                
-                // 모든 option 요소를 순회하면서 일치하는 값을 찾습니다.
-                for (const option of dataListOptions) {
-                    if (option.value === inputValue) {
-                        // 일치하는 값이 있으면 해당 회사번호를 숨겨진 input에 설정합니다.
-                        cidInput.value = option.getAttribute('data-company-number');
-                        // 회사번호를 출력합니다.
-                        companyNumberElement.textContent = `회사번호: ${cidInput.value}`;
-                        return; // 값을 찾았으므로 반복문 종료
-                    }
-                }
-         
-                // 일치하는 값이 없을 경우 숨겨진 input과 출력을 비웁니다.
-                cidInput.value = '';
-                companyNumberElement.textContent = '';
-            });
-        });
+		document.addEventListener('DOMContentLoaded', function () {
+			const scompanyNameInput = document.querySelector('input[name="scompanyName"]');
+			const cidInput = document.getElementById('cid');
+			const dataListOptions = document.querySelectorAll('#company-list option');
+			const companyNumberElement = document.getElementById('company-number');
+
+			// 입력 필드에 입력이 발생할 때마다 실행되는 함수
+			scompanyNameInput.addEventListener('input', function () {
+				const inputValue = scompanyNameInput.value;
+
+				// 모든 option 요소를 순회하면서 일치하는 값을 찾습니다.
+				for (const option of dataListOptions) {
+					if (option.value === inputValue) {
+						// 일치하는 값이 있으면 해당 회사번호를 숨겨진 input에 설정합니다.
+						cidInput.value = option.getAttribute('data-company-number');
+						// 회사번호를 출력합니다.
+						companyNumberElement.textContent = `회사번호: ${cidInput.value}`;
+						return; // 값을 찾았으므로 반복문 종료
+					}
+				}
+
+				// 일치하는 값이 없을 경우 숨겨진 input과 출력을 비웁니다.
+				cidInput.value = '';
+				companyNumberElement.textContent = '';
+			});
+		});
 
 
-		
-		
+
+
 		// 이메일 셀렉트 박스의 값을 변경할 때마다 호출되는 함수
 		document.getElementById("emailDomain").addEventListener("change", function () {
 			updateEmailField();
@@ -222,11 +223,13 @@
 				birthYear += 1900;
 			}
 
+
 			// 월과 일에 0을 붙여 2자리로 만들어줌
-			const fmtMonth = month < 10 ? `0${month}` : month;
-			const fmtDay = day < 10 ? `0${day}` : day;
+			const fmtMonth = month < 10 ? `0${month}` : month < 10 ? `0${month}` : month;
+			const fmtDay = day < 10 ? `0${day}` : day < 10 ? `0${day}` : day;
 
 			const birthDate = `${birthYear}-${fmtMonth}-${fmtDay}`;
+
 			const today = new Date();
 			ageField.value = today.getFullYear() - birthYear + 1;
 			birthField.value = birthDate;
@@ -273,7 +276,7 @@
 			}
 		});
 
-	
+
 	</script>
 </body>
 

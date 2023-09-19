@@ -86,7 +86,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		recruit_magam , cnt, realMagam )
 		values
 		(1, #{cname}, #{recruitTitle}, #{cid}, #{recruitContent},
-		#{recruitUpfile}, sysdate(),#{recruitMoney}, #{recruitMtype},
+		#{recruitUpfile}, #{regDate},#{recruitMoney}, #{recruitMtype},
 		#{recruitMagam},0,
 		#{realMagam})
 	</insert>
@@ -98,7 +98,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 	<select id="recruitTest" resultType="recruitDTO">
 		select recruit_title,
-		reg_date, recruit_id, cid, realMagam from recruit
+		reg_date, recruit_id, cid, realMagam, cname from recruit
 	</select>
 
 	<!-- 수정하기 -->

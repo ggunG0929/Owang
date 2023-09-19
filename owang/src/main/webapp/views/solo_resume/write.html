@@ -7,7 +7,13 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+      function goBack() {
+         window.history.back();
+      }
+</script>
 </head>
+
 <style>
     #introduce, #license {
         display: none;
@@ -345,6 +351,7 @@ $("#file").on('change',function(){
             </div>
         </div>
     </form>
+    <a href="javascript:goBack()">이전 페이지</a>
 </div>
 </body>
 </html>

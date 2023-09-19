@@ -63,7 +63,7 @@
       </tr>
       <tr th:unless="${dto.scompanyFile == null ||  dto.scompanyFile == ''}">
          <th>재직증명서</th>
-         <td><a th:href="@{|/admin_solo/soloup/download/${dto.scompanyFile}|}" th:text="${dto.scompanyFile}">다운로드</a>
+          <td><button onclick="openImageInNewWindow()">재직증명서확인</button></td>
          </td>
       </tr>
       <tr th:unless="${dto.scompanyFile == null ||  dto.scompanyFile == ''}">
@@ -79,7 +79,18 @@
    <a href="/">홈</a>
    <a href="/solo/modify">수정</a>
    <a href="/solo/delete">삭제</a>
+<script>
+		function openImageInNewWindow() {
+			// 이미지 URL 설정
+			var image = "[[${dto.scompanyFile}]]";
 
+			// 새 창 열기
+			var newWindow = window.open('', '_blank');
+
+			// 이미지를 새 창에 표시
+			newWindow.document.write('<img src="/soloup/' + image + '" alt="이미지" />');
+		}
+	</script>
 </body>
 
 </html>

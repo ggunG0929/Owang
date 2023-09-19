@@ -26,6 +26,7 @@ import aaa.model.PageData;
 import aaa.model.PaymentResponseMember;
 import aaa.model.SoloDTO;
 import aaa.service.AdminCompanyMapper;
+import aaa.service.EndSoloMapper;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
 import aaa.service.SoloMapper;
@@ -42,6 +43,9 @@ public class SoloController {
 	
 	@Resource
 	AdminCompanyMapper acmapper;
+	
+	@Resource
+	EndSoloMapper endSoloMapper;
 
 	// 회원관리
 
@@ -69,38 +73,38 @@ public class SoloController {
 	// 개인정보수정
 
 	@GetMapping("modify")
-	   String modify(Model mm, HttpSession session, MCompanyDTO company) {
-	      String sid = (String) session.getAttribute("sid");
-	      mm.addAttribute("dto", sssmapper.detailSolo(sid));
-	      List<MCompanyDTO> data = acmapper.join(company);
-	      mm.addAttribute("mainData",data);
-	      return "solo_info/modify";
-	   }
+	String modify(Model mm, HttpSession session, MCompanyDTO company) {
+		String sid = (String) session.getAttribute("sid");
+		mm.addAttribute("dto", sssmapper.detailSolo(sid));
+		List<MCompanyDTO> data = acmapper.join(company);
+		mm.addAttribute("mainData",data);
+		return "solo_info/modify";
+	}
 
-	   @PostMapping("modify")
-	   String modifyReg(SoloDTO dto, PageData pd,
-	         HttpServletRequest request, HttpSession session) {
-	     
-	       pd.setMsg("수정실패");
-	       pd.setGoUrl("/solo/modify");
+	@PostMapping("modify")
+	String modifyReg(SoloDTO dto, PageData pd,
+			HttpServletRequest request, HttpSession session) {
+	  
+	    pd.setMsg("수정실패");
+	    pd.setGoUrl("/solo/modify");
 
-	      if(dto.getScompanyFile()==null) {   //파일 없을때만 파일저장
-	         
-	      fileSavesolo(dto, request);         
-	      }
-	      
-	       int cnt = sssmapper.modifffy(dto); // 메서드 안의 값이 들어와서 cnt 값이 1이 됩니다.
-	       System.out.println(dto.cid+"보고싶다 너의 cid");
-	       if (cnt > 0) {
-	           pd.setMsg("수정되었습니다.");
-	           pd.setGoUrl("/solo/solo_info");
-	       }
-	       //세션수정
-	       SoloDTO solosession = sssmapper.resumeSolo(dto.getSid());
-	      
-	      session.setAttribute("solosession", solosession);
-	       return "join/join_alert";
-	   }
+		if(dto.getScompanyFile()==null) {	//파일 없을때만 파일저장
+			
+		fileSavesolo(dto, request);			
+		}
+		
+	    int cnt = sssmapper.modifffy(dto); // 메서드 안의 값이 들어와서 cnt 값이 1이 됩니다.
+	    System.out.println(dto.cid+"보고싶다 너의 cid");
+	    if (cnt > 0) {
+	        pd.setMsg("수정되었습니다.");
+	        pd.setGoUrl("/solo/solo_info");
+	    }
+	    //세션수정
+	    SoloDTO solosession = sssmapper.resumeSolo(dto.getSid());
+		
+		session.setAttribute("solosession", solosession);
+	    return "join/join_alert";
+	}
 
 	// 개인정보삭제
 
@@ -118,10 +122,15 @@ public class SoloController {
 
 		pd.setMsg("삭제실패");
 		pd.setGoUrl("/solo/delete");
-
+		
+		SoloDTO byedto = sssmapper.detailSolo(dto.sid);
+		// 결제내역에 탈퇴일 추가
+		paym.endMem(dto.getSid());
 		int cnt = sssmapper.delettt(dto); // 메서드안의 값이 들어와서 cnt 값이 1이됌
+		
 		System.out.println("deleteReg:" + cnt);
 		if (cnt > 0) {
+			endSoloMapper.endSoloInsert(byedto);
 			pd.setMsg("삭제되었습니다.");
 			pd.setGoUrl("/");
 			session.invalidate();
@@ -209,9 +218,11 @@ public class SoloController {
 			// 세션에서 id 가져옴
 			SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 			String sid = solosession.getSid();
+			// db에서 sdate 가져오기
+			SoloDTO soloinfo = sssmapper.detailSolo(sid);
 			
 			// sdate가 오늘 이후인 경우 - 유효상품이 있는 경우
-			Date sdate = solosession.getSdate();
+			Date sdate = soloinfo.getSdate();
 			Date today = new Date();
 			
 	        if(sdate!=null && sdate.after(today)) {
