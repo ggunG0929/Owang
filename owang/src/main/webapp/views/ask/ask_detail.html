@@ -5,11 +5,17 @@
    <meta charset="UTF-8">
    <title>ask/detail</title>
 </head>
+<script>
+      function goBack() {
+         window.history.back();
+      }
+</script>
 
 <body>
    <header>
       <div th:insert="~{header :: header}"></div>
    </header>
+               <a href="javascript:goBack()">뒤로</a>
    <h1>ask/detail</h1>
    [[${askdto}]]
 
@@ -47,7 +53,7 @@
          <tr th:if="${askdto.imp}">
             <td>결제내역</td>
             <td>
-				<!--target="_blank": 링크를 새로운 브라우저 창이나 탭에서 열도록 지정하는 부분-->
+            <!--target="_blank": 링크를 새로운 브라우저 창이나 탭에서 열도록 지정하는 부분-->
                <a th:href="|/admin_product/payment/detail/${askdto.imp}|" 
                onclick="window.open(this.href, '결제상세내역', 'width=600,height=700'); return false;" target="_blank">[[${askdto.imp}]]</a>
                

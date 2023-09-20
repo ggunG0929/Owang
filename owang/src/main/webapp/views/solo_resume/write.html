@@ -126,6 +126,55 @@ function printCareer()  {
   document.getElementById("workend").innerText = resumeWorkEnd;
   document.getElementById("work").innerText = resumeWork;
 }
+// 이력서 증명사진 jpg png로만
+function validateFile() {
+         var mmffInput = document.getElementById("rsmmff");
+         var fileError = document.getElementById("fileError");
+         var fileName = mmffInput.value;
+
+         if (fileName === "") {
+            // 파일이 선택되지 않은 경우
+            fileError.innerText = "";
+         } else {
+            var fileExtension = fileName.split('.').pop().toLowerCase();
+            var allowedExtensions = ["jpg", "png", "bmp", "gif", "jpeg"];
+
+            if (allowedExtensions.indexOf(fileExtension) === -1) {
+               // 파일 확장자가 허용되지 않는 경우
+               mmffInput.value = ""; // 파일 입력란 초기화
+               fileError.innerText = "이미지만 업로드 가능합니다.";
+            } else {
+               fileError.innerText = ""; // 오류 메시지 초기화
+            }
+         }
+      }
+
+// 이미지 미리보기
+ function previewImage() {
+        var fileInput = document.getElementById('rsmmff');
+        var imagePreview = document.getElementById('imagePreview');
+        var fileError = document.getElementById('fileError');
+
+        if (fileInput.files && fileInput.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                imagePreview.style.display = 'block';
+                imagePreview.src = e.target.result;
+                fileError.innerHTML = ''; // 이미지가 표시되면 에러 메시지를 지웁니다.
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        } else {
+            imagePreview.style.display = 'none';
+            fileError.innerHTML = '이미지를 선택하세요.';
+        }
+    }
+    
+    function handleFileChange() {
+    validateFile();
+    previewImage();
+}
 
 <!-- 파일명 표시 -->
 $("#file").on('change',function(){
@@ -166,32 +215,45 @@ $("#file").on('change',function(){
 <body>
 <h2>이력서 작성</h2>
 <div>
-	<form method="post" enctype="multipart/form-data" th:object="${soloResumeDTO}">
-		<div>
-			<div style="border: 1px solid #ccc; width:700px;">
-			    <h3>기본정보</h3>
-			    <table style="width:500px;">
-					<input type="hidden" th:value="${solosession.sid}" name="sid" />
-			        <tr>
-			            <td th:text="${solosession.sname}"></td>
-			            <td th:text="${solosession.sgender}"></td>
-			            <td th:text="${solosession.sage}"></td>
-						</tr>
-						<tr>
-							<td>주소</td>
-							<td th:text="${solosession.saddress}"></td>
-							<td>이메일</td>
-							<td th:text="${solosession.semail}"></td>
-						</tr>
-						<tr>
-							<td >전화번호</td>
-							<td th:text="${solosession.sphone}"></td>
-						</tr>
-						<tr style="width:250px;">
-				    		<input type="file" id="file" th:field="*{rsmmff}" required />
-				    	</tr>
-					</div>
-				</table>
+   <form method="post" enctype="multipart/form-data" th:object="${soloResumeDTO}">
+      <div>
+         <div style="border: 1px solid #ccc; width:700px;">
+             <h3>기본정보</h3>
+<table style="width:500px;">
+    <tr>
+        <td colspan="4">
+            <input type="hidden" th:value="${solosession.sid}" name="sid" />
+        </td>
+        <td rowspan="7" style="vertical-align: top;">
+            <img id="imagePreview" src="#" alt="미리보기 이미지" style="display: none; max-width:160px; max-height:200px;">
+        </td>
+    </tr>
+
+    <tr>
+        <td th:text="${solosession.sname}"></td>
+        <td th:text="${solosession.sgender}"></td>
+        <td th:text="${solosession.sage}"></td>
+    </tr>
+    <tr>
+        <td>주소</td>
+        <td colspan="3" th:text="${solosession.saddress}"></td>
+    </tr>
+    <tr>
+        <td>이메일</td>
+        <td colspan="3" th:text="${solosession.semail}"></td>
+    </tr>
+    <tr>
+        <td>전화번호</td>
+        <td colspan="3" th:text="${solosession.sphone}"></td>
+    </tr>
+    <tr>
+      <td colspan="4">
+          <input th:unless="${soloResumeDTO.rsphoto != null}" type="file" th:field="*{rsmmff}" id="rsmmff" onchange="handleFileChange()" required/>
+          <span id="fileError" style="color: red;"></span>
+      </td>
+    </tr>
+</table>
+
 
 
             </div>
@@ -210,7 +272,7 @@ $("#file").on('change',function(){
                         신입
                     </label>
                     <label for="resumeCareerExperienced">
-                        <input type="radio" name="rscareer" id="resumeCareerExperienced" value="경력" th:field="*{rscareer}" />
+                        <input type="radio" name="rscareer" id="resumeCareerExperienced" value="경력" th:field="*{rscareer}"  required/>
                         경력
                     </label>
                 </p>
@@ -219,55 +281,55 @@ $("#file").on('change',function(){
             <!-- 경력 관련 입력란 (기본적으로는 숨김) -->
             <div id="careerDetails" style="display: none;">
                 <table>
-					<tr>
-	                    <td>회사명</td>
-	                    <td><input type="text" id="rscompany" th:field="*{rscompany}" onchange="printCareer()"/></td>
+               <tr>
+                       <td>회사명</td>
+                       <td><input type="text" id="rscompany" th:field="*{rscompany}" onchange="printCareer()"/></td>
                     </tr>
-	                <tr>
-	                    <td>근무 기간</td>
-	                    <td>
-							<input type="date" id="rsworkstart" th:field="*{rsworkstart}" />
-	                    	<input type="date" id="rsworkend" th:field="*{rsworkend}"  />
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <td>담당 업무</td>
-	                    <td><textarea id="rswork" th:field="*{rswork}" rows="4" cols="50" onchange="printCareer()" /></td>
-	                </tr>
-	            </table>
+                   <tr>
+                       <td>근무 기간</td>
+                       <td>
+                     <input type="date" id="rsworkstart" th:field="*{rsworkstart}" />
+                          <input type="date" id="rsworkend" th:field="*{rsworkend}"  />
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>담당 업무</td>
+                       <td><textarea id="rswork" th:field="*{rswork}" rows="4" cols="50" onchange="printCareer()" /></td>
+                   </tr>
+               </table>
             </div>
             <div id="careerDetailsOutput" style="display: none; ">
-			    <h3>경력 정보</h3>
-			    <p><strong>회사명:</strong> <span th:text="${soloResumeDTO.rscompany}"></span></p>
-			    <p><strong>근무 기간:</strong> <span th:text="${soloResumeDTO.rsworkstart}" /><span th:text="${soloResumeDTO.rsworkend}" /></p>
-			    <p><strong>담당 업무:</strong> <span th:text="${soloResumeDTO.rswork}"></span></p>
-			</div>
+             <h3>경력 정보</h3>
+             <p><strong>회사명:</strong> <span th:text="${soloResumeDTO.rscompany}"></span></p>
+             <p><strong>근무 기간:</strong> <span th:text="${soloResumeDTO.rsworkstart}" /><span th:text="${soloResumeDTO.rsworkend}" /></p>
+             <p><strong>담당 업무:</strong> <span th:text="${soloResumeDTO.rswork}"></span></p>
+         </div>
             <!-- 학력 -->
-			<div style="border: 1px solid #ccc; width: 700px;">
-			    <p>최종 학력</p>
-			    <p>
-				<select th:field="*{rsacademic}" required>
-				    <option value="">학교 유형 선택</option>
-				    <option value="대학원">대학원</option>
-				    <option value="대학(4년)">대학(4년)</option>
-				    <option value="대학(2, 3년)">대학(2, 3년)</option>
-				    <option value="고등학교">고등학교</option>
-				    <option value="중학교">중학교</option>
-				    <option value="초등학교">초등학교</option>
-				</select>
+         <div style="border: 1px solid #ccc; width: 700px;">
+             <p>최종 학력</p>
+             <p>
+            <select th:field="*{rsacademic}" required>
+                <option value="">학교 유형 선택</option>
+                <option value="대학원">대학원</option>
+                <option value="대학(4년)">대학(4년)</option>
+                <option value="대학(2, 3년)">대학(2, 3년)</option>
+                <option value="고등학교">고등학교</option>
+                <option value="중학교">중학교</option>
+                <option value="초등학교">초등학교</option>
+            </select>
 
-				<select th:field="*{rsacademicstat}" required>
-				    <option value="">학력 상태</option>
-				    <option value="졸업">졸업</option>
-				    <option value="재학중">재학중</option>
-				    <option value="휴학중">휴학중</option>
-				    <option value="중퇴">중퇴</option>
-				    <option value="수료">수료</option>
-				    <option value="검정고시">검정고시</option>
-				    <option value="수료">수료</option>
-				</select>
-			    </p>
-			</div>
+            <select th:field="*{rsacademicstat}" required>
+                <option value="">학력 상태</option>
+                <option value="졸업">졸업</option>
+                <option value="재학중">재학중</option>
+                <option value="휴학중">휴학중</option>
+                <option value="중퇴">중퇴</option>
+                <option value="수료">수료</option>
+                <option value="검정고시">검정고시</option>
+                <option value="수료">수료</option>
+            </select>
+             </p>
+         </div>
             <!-- 자기소개 -->
             <div style="border: 1px solid #ccc; width:700px;">
                 <p>
@@ -299,49 +361,49 @@ $("#file").on('change',function(){
             <!-- 어학 능력 -->
             <div style="border: 1px solid #ccc; width:700px;">
                 <p>
-                	<button onclick="showLanguage()" class="btn_show" id="showlg">+</button>어학 능력
-				</p>
-				<table id="language" style="display:none;">
-					<tr>
-						<td>어학명</td>
-						<td>
-							<select th:field="*{rslanguage}">
-						        <option value="">어학명</option>
-							    <option value="그리스어">그리스어</option>
-							    <option value="네덜란드어">네덜란드어</option>
-							    <option value="노르웨이어">노르웨이어</option>
-							    <option value="독일어">독일어</option>
-							    <option value="러시아어">러시아어</option>
-							    <option value="몽골어">몽골어</option>
-							    <option value="미얀마어">미얀마어</option>
-							    <option value="베트남어">베트남어</option>
-							    <option value="스웨덴어">스웨덴어</option>
-							    <option value="스페인어">스페인어</option>
-							    <option value="아랍어">아랍어</option>
-							    <option value="영어">영어</option>
-							    <option value="이탈리아어">이탈리아어</option>
-							    <option value="일본어">일본어</option>
-							    <option value="중국어">중국어</option>
-							    <option value="태국어">태국어</option>
-							    <option value="터키어">터키어</option>
-							    <option value="포르투갈어">포르투갈어</option>
-							    <option value="폴란드어">폴란드어</option>
-							    <option value="프랑스어">프랑스어</option>
-							    <option value="히브리어">히브리어</option>
-							    <option value="힌디어">힌디어</option>
-							    <option value="기타">기타</option>
-						    </select>
-						</td>
-						<td>어학수준</td>
-						<td>
-   							<select th:field="*{rslanguagelevel}">
-						        <option value="">어학수준</option>
-							    <option value="회화 능숙">회화 능숙</option>
-							    <option value="일상 대화">일상 대화</option>
-							    <option value="간단 대화">간단 대화</option>
-						    </select>
-						</td>
-					</tr>
+                   <button onclick="showLanguage()" class="btn_show" id="showlg">+</button>어학 능력
+            </p>
+            <table id="language" style="display:none;">
+               <tr>
+                  <td>어학명</td>
+                  <td>
+                     <select th:field="*{rslanguage}">
+                          <option value="">어학명</option>
+                         <option value="그리스어">그리스어</option>
+                         <option value="네덜란드어">네덜란드어</option>
+                         <option value="노르웨이어">노르웨이어</option>
+                         <option value="독일어">독일어</option>
+                         <option value="러시아어">러시아어</option>
+                         <option value="몽골어">몽골어</option>
+                         <option value="미얀마어">미얀마어</option>
+                         <option value="베트남어">베트남어</option>
+                         <option value="스웨덴어">스웨덴어</option>
+                         <option value="스페인어">스페인어</option>
+                         <option value="아랍어">아랍어</option>
+                         <option value="영어">영어</option>
+                         <option value="이탈리아어">이탈리아어</option>
+                         <option value="일본어">일본어</option>
+                         <option value="중국어">중국어</option>
+                         <option value="태국어">태국어</option>
+                         <option value="터키어">터키어</option>
+                         <option value="포르투갈어">포르투갈어</option>
+                         <option value="폴란드어">폴란드어</option>
+                         <option value="프랑스어">프랑스어</option>
+                         <option value="히브리어">히브리어</option>
+                         <option value="힌디어">힌디어</option>
+                         <option value="기타">기타</option>
+                      </select>
+                  </td>
+                  <td>어학수준</td>
+                  <td>
+                        <select th:field="*{rslanguagelevel}">
+                          <option value="">어학수준</option>
+                         <option value="회화 능숙">회화 능숙</option>
+                         <option value="일상 대화">일상 대화</option>
+                         <option value="간단 대화">간단 대화</option>
+                      </select>
+                  </td>
+               </tr>
                 </table>
                 <button onclick="hideLanguage()" class="btn_hide" id="hidelg" style="display:none;">-</button>
             </div>

@@ -16,9 +16,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 	
 	<insert id="reveiwInsert"  parameterType="rrDTO">
-	INSERT INTO review (sid, cid, rvtitle, rvjang, rvdan, regdate)
+	INSERT INTO review (sid, cid, rvtitle, rvjang, rvdan, regdate, cname)
 	VALUES
-    (#{sid}, #{cid}, #{rvtitle}, #{rvjang}, #{rvdan}, sysdate())
+    (#{sid}, #{cid}, #{rvtitle}, #{rvjang}, #{rvdan}, sysdate(), #{cname})
 	</insert>
 	
 	<select  id="reviewDetail"   resultType="rrDTO"  parameterType="rrDTO" >

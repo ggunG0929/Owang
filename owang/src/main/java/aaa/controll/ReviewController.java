@@ -116,7 +116,8 @@ public class ReviewController {
 			@PathVariable String cid,
 			PageData pd) {
 		SoloDTO sdto = (SoloDTO) session.getAttribute("solosession");
-		
+		MCompanyDTO mcdto = mcMapper.deatilCompany(cid);
+		dto.setCname(mcdto.getCname());
 		  	dto.setMsg("리뷰작성불가");
 	        dto.setGoUrl("/company/detail/" + dto.getCid());
         int cnt = reviewMapper.ccnt(sdto.getSid());
@@ -172,6 +173,9 @@ public class ReviewController {
 	// 리뷰 작성 페이지
 	@PostMapping("/insert/{cid}/{page}")
 	String insertReg(ReviewDTO dto, @PathVariable String cid, SoloDTO sdto, HttpSession session) {
+		// 회사소환
+		
+		
 		// 리뷰 삽입
 		reviewMapper.reveiwInsert(dto);
 
@@ -201,7 +205,8 @@ public class ReviewController {
 	// 리뷰수정페이지
 	@GetMapping("/modify/{cid}/{page}/{sid}")
 	String modify(Model mm, @PathVariable String cid, ReviewDTO dto, @PathVariable String sid) {
-
+		MCompanyDTO mcdto = mcMapper.deatilCompany(cid);
+		dto.setCname(mcdto.getCname());
 		System.out.println(cid + "널이냐?");
 		dto.setCid(cid);
 		dto.setSid(sid);

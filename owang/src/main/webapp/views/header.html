@@ -43,8 +43,9 @@
 				<li th:if="${session['cid']}">기업서비스
 					<div class="submenu">
 						<ul>
-							<li><a href="/recruit/insert/1">공고 등록</a></li>
-						    <li><a href="/company/applicant/1">지원자 관리</a></li>
+							<li><a th:href="|/company/list/${session['cid']}/1|">공고 관리</a></li>
+							<!--<li><a href="/recruit/insert/1">공고 등록</a></li>-->
+						    <li><a href="/company_applicant/home/1">지원자 관리</a></li>
 							<li><a href="/company/mypage">기업 마이페이지</a></li>
 							<li><a th:href="|/review/list/${session['cid']}/1|">기업 리뷰</a></li>
 							<li><a href="/company/product">기업 결제내역</a></li>

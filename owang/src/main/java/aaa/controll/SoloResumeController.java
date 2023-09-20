@@ -123,8 +123,9 @@ public class SoloResumeController {
 		pd.setMsg("수정실패");
 		pd.setGoUrl("/solo_resume/modify/" + rdto.rsid);
 		System.out.println("수정전"+rdto);
-		
-		fileSave(rdto, request);
+		if(rdto.getRsmmff()!=null) {
+			fileSave(rdto, request);			
+		}
 		int cnt = rsmapper.resumemodify(rdto);
 		System.out.println("modifyReg:"+cnt);
 		if(cnt>0) {
@@ -207,7 +208,7 @@ public class SoloResumeController {
 		
 		String path = request.getServletContext().getRealPath("resumephoto");
 		// 이건 가상서버이다, 배포 시에는 realPath로 가져온다
-
+		
 		// 점 처리
 		int dot = rdto.getRsmmff().getOriginalFilename().lastIndexOf(".");
 		// 

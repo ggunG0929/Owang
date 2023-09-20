@@ -3,21 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+[[${appnumData}]]
 </head>
+<script>
+      function goBack() {
+         window.history.back();
+      }
+</script>
+
 <body>
 <header>
    <div th:insert="~{header :: header}"></div>
 </header>
+<th:block th:if="${self == 1}">   
+   <h3><a href="/recruit/insert/1">공고 등록</a></h3>
    <h3>채용공고는 20개 까지 작성가능합니다.</h3>
+</th:block>
    <table border="">
-      <h1>채용중인 공고</h1>
+      <h1>현재 채용중인 공고 [[${mainData.size()}]]개</h1>
       <tr>
          <td>번호</td>
          <td>제목</td>
          <td>회사이름</td>
-         <td>등록일</td>
-         <td>마감일</td>
+         <td>채용시작일</td>
+         <td>채용마감일</td>
          <td>조회수</td>
          <td>기업아이디(본편에선 제거)</td>
       </tr>
@@ -37,13 +46,13 @@
       
    </table>
    <table border="">
-      <h1>만료된공고</h1>
+      <h1>만료된공고 [[${endsize}]]개</h1>
       <tr>
          <td>번호</td>
          <td>제목</td>
          <td>회사이름</td>
-         <td>등록일</td>
-         <td>마감일</td>
+         <td>채용시작일</td>
+         <td>채용마감일</td>
          <td>조회수</td>
          <td>기업아이디(본편에선 제거)</td>
       </tr>

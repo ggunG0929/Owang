@@ -11,7 +11,7 @@
 		<div th:insert="~{header :: header}"></div>
 	</header>
 <form action="" method="post"  th:object="${mainData}">
-
+	<input type="hidden" th:field="*{cid}" />
 	<table border="">
 		<tr>
 			<td>작성자</td>
@@ -19,7 +19,7 @@
 		</tr>
 		<tr>
 			<td>기업이름</td>
-			<td><input type="text" th:field="*{cid}"  readonly/></td>
+			<td><input type="text" th:field="*{cname}"  readonly/></td>
 		</tr>
 		<tr>
 			<td>리뷰제목</td>

@@ -125,7 +125,8 @@
 			<!-- 회사 재직증명서 파일 업로드 필드 -->
 			<tr id="companyFileMenu" style="display:none;">
 				<td>회사 재직증명서</td>
-				<td><input type="file" name="mmff" />
+				<td><input type="file" name="mmff" id="mmff" onchange="validateFile()" />
+					<div id="fileError" style="color: red;"></div>
 				</td>
 			</tr>
 		</table> <!-- 나머지 필드들 -->
@@ -275,6 +276,28 @@
 				alert('팝업 창을 열 수 없습니다. 팝업 창이 차단되었을 수 있습니다.');
 			}
 		});
+		function validateFile() {
+			var mmffInput = document.getElementById("mmff");
+			var fileError = document.getElementById("fileError");
+			var fileName = mmffInput.value;
+
+			if (fileName === "") {
+				// 파일이 선택되지 않은 경우
+				fileError.innerText = "";
+			} else {
+				var fileExtension = fileName.split('.').pop().toLowerCase();
+				var allowedExtensions = ["jpg", "png"];
+
+				if (allowedExtensions.indexOf(fileExtension) === -1) {
+					// 파일 확장자가 허용되지 않는 경우
+					mmffInput.value = ""; // 파일 입력란 초기화
+					fileError.innerText = "지원되지 않는 파일 유형입니다. JPG 또는 PNG 파일을 업로드하세요.";
+				} else {
+					fileError.innerText = ""; // 오류 메시지 초기화
+				}
+			}
+		}
+
 
 
 	</script>

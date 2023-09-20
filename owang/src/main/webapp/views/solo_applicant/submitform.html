@@ -5,10 +5,11 @@
 <title>이력서 선택 페이지</title>
 </head>
 <body>
+   <header>
+      <div th:insert="~{header :: header}"></div>
+   </header>
 <h2>지원서 접수</h2>
 <h3>공고 제목: <span th:text="${recruitTitle}"></span></h3>
-[[${cid}]]의 이력서를 선택해주세요
-	[[${mainData}]]
 
 <form name="rss" method="post">
     <table border="">

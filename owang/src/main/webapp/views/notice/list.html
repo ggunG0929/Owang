@@ -1,73 +1,82 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">	
+<html xmlns="http://www.thymeleaf.org">   
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지사항</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/notice/css.css}">
 </head>
+<script>
+      function goBack() {
+         window.history.back();
+      }
+</script>
+
 <style>
-h4,.notice_title{text-align: center;}	
+h4,.notice_title{text-align: center;}   
 </style>
 
 <body>
-	
-	<header>
-		<div th:insert="~{header :: header}"></div>
-	</header>
-    
-	
-	<h4>notice / list</h4><br/>
-	
-	<div class="board_wrap">
+   
+   <header>
+      <div th:insert="~{header :: header}"></div>
+   </header>
+    <a href="javascript:goBack()">뒤로</a>
+   
+   <h4>notice / list</h4><br/>
+   
+   <div class="board_wrap">
         <div class="board_title">
-	            <strong>공지사항</strong>
+               <strong>공지사항</strong>
         </div>
         
-		<div class="board_list">
-			
-			<table border="" >
-				<trclass="top">
-					<td class="num">번호</td>
-					<td class="title">제목</td>
-					<td class="writer">작성자</td>
-					<td class="date">등록일</td>
-					<td class="count">조회수</td>
-				</tr>
-			
-				
-				<tr th:each="ndto, dtoStat : ${mainData}">
-					<td th:text="${dtoStat.count + noticeDTO.start}"/>
-					<td>
-						<a th:href="|/notice/detail/${noticeDTO.page}/${ndto.id}|" th:text="${ndto.title}"></a>
-					</td>
-					<td th:text="${ndto.pname}"/>
-					<!--날짜 포맷팅-->
-					<td th:text="${#dates.format(ndto.regDate, 'yyyy-MM-dd')}"/>
-					<td th:text="${ndto.cnt}"/>
-				</tr>
-				<tr>
-					<td colspan="5" align="center">
-				
-					<a th:if="${noticeDTO.pageStart > 1}" th:href="${noticeDTO.pageStart - 1}" th:text="'[이전]'"/>		
-							
-					<th:block th:each="no: ${#numbers.sequence(noticeDTO.pageStart, noticeDTO.pageEnd)}" >
-						
-						<span th:if="${no==noticeDTO.page}" th:text="${no}"/>
-						<a th:unless="${no==noticeDTO.page}" th:href="${no}" th:text="${no}"/>
-					</th:block>
-					<a th:if="${noticeDTO.pageEnd < noticeDTO.pageTotal}" th:href="${noticeDTO.pageEnd + 1}" th:text="'[다음]'"/>
-						</td>
-				</tr>
-				<tr>
-					<td colspan="5" align="right">
-						<!--관리자일때만 공지사항 작성 가능-->
-						<a th:href="|/notice/insert/${noticeDTO.page}|"th:if="${session.adminSession}">글쓰기</a>
-					</td>
-				</tr>
+      <div class="board_list">
+         
+         <table border="" >
+            <trclass="top">
+               <td class="num">번호</td>
+               <td class="title">제목</td>
+               <td class="writer">작성자</td>
+               <td class="date">등록일</td>
+               <td class="count">조회수</td>
+            </tr>
+         
+            
+            <tr th:each="ndto, dtoStat : ${mainData}">
+               <td th:text="${dtoStat.count + noticeDTO.start}"/>
+               <td>
+                  <a th:href="|/notice/detail/${noticeDTO.page}/${ndto.id}|" th:text="${ndto.title}"></a>
+               </td>
+               <td th:text="${ndto.pname}"/>
+               <!--날짜 포맷팅-->
+               <td th:text="${#dates.format(ndto.regDate, 'yyyy-MM-dd')}"/>
+               <td th:text="${ndto.cnt}"/>
+            </tr>
+            <tr>
+               <td colspan="5" align="center">
+            
+               <a th:if="${noticeDTO.pageStart > 1}" th:href="${noticeDTO.pageStart - 1}" th:text="'[이전]'"/>      
+                     
+               <th:block th:each="no: ${#numbers.sequence(noticeDTO.pageStart, noticeDTO.pageEnd)}" >
+                  
+                  <span th:if="${no==noticeDTO.page}" th:text="${no}"/>
+                  <a th:unless="${no==noticeDTO.page}" th:href="${no}" th:text="${no}"/>
+               </th:block>
+               <a th:if="${noticeDTO.pageEnd < noticeDTO.pageTotal}" th:href="${noticeDTO.pageEnd + 1}" th:text="'[다음]'"/>
+                  </td>
+            </tr>
+            <tr>
+               <td colspan="5" align="right">
+                  <!--관리자일때만 공지사항 작성 가능-->
+                  <a th:href="|/notice/insert/${noticeDTO.page}|"th:if="${session.adminSession}">글쓰기</a>
+               </td>
+            </tr>
     
-			</table>
-		</div>	
-	</div>
+         </table>
+      </div>   
+   </div>
+   <div>
+      <strong> <a href="http://www.moel.go.kr/info/defaulter/defaulterList.do" target="_blank">   [임금체불 사업주 바로가기] </a></strong>
+   </div>
 </body>
 </html>

@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 	<select id="recruitList" resultType="recruitDTO"
 		parameterType="recruitDTO">
-		select * from recruit order by reg_date desc limit
+		select * from recruit where reg_date &lt;= now() order by reg_date desc limit
 		#{start}, #{limit}
 	</select>
 
@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 	<select id="companyROpen" resultType="recruitDTO"
 		parameterType="recruitDTO">
-		select * from recruit where rtype =1 order by reg_date desc limit #{start},
+		select * from recruit where rtype =1 and reg_date &lt;= now() order by reg_date desc limit #{start},
 		#{limit}
 	</select>
 
@@ -29,10 +29,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 	
 	<select id="companyROpenCnt" resultType="Integer">
-		select count(*) from recruit where rtype =1
+		select count(*) from recruit where rtype =1 
 	</select>
 	<select id="companyRCloseCnt" resultType="Integer">
-		select count(*) from recruit where rtype =2
+		select count(*) from recruit where rtype =2 
 	</select>
 
 	<select id="recruitListCnt" resultType="Integer">
@@ -65,7 +65,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		reg_date desc
 	</select>
 	<select id="recruitCompanyOpen" resultType="recruitDTO">
-		select * from recruit where cid = #{cid} and rtype =1 order by
+		select * from recruit where cid = #{cid} and rtype =1 and reg_date &lt;= now()  order by
 		reg_date desc
 	</select>
 	<select id="recruitCompanyClose" resultType="recruitDTO">
@@ -142,7 +142,13 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		</where>
 		order by recruit_id desc
 	</select>
-
+	
+	<!-- cid로 rtype을 1로 업데이트 -->
+	<update id="payRTypeByCid">
+	    UPDATE recruit
+	    SET rtype = 1
+	    WHERE cid = #{cid}
+	</update>
 
 
 </mapper>

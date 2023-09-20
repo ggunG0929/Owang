@@ -90,19 +90,21 @@ public class SoloController {
 
 		if(dto.getScompanyFile()==null) {	//파일 없을때만 파일저장
 			
-		fileSavesolo(dto, request);			
+			fileSavesolo(dto, request);			
 		}
 		
 	    int cnt = sssmapper.modifffy(dto); // 메서드 안의 값이 들어와서 cnt 값이 1이 됩니다.
 	    System.out.println(dto.cid+"보고싶다 너의 cid");
 	    if (cnt > 0) {
-	        pd.setMsg("수정되었습니다.");
-	        pd.setGoUrl("/solo/solo_info");
+	        pd.setMsg("수정되었습니다. 다시로그인 부탁드립니다.");
+	        pd.setGoUrl("/login/main");
+	        //세션수정
+		    SoloDTO solosession = sssmapper.resumeSolo(dto.getSid());
+			
+			session.setAttribute("solosession", solosession);
+	        session.invalidate();
 	    }
-	    //세션수정
-	    SoloDTO solosession = sssmapper.resumeSolo(dto.getSid());
-		
-		session.setAttribute("solosession", solosession);
+	   
 	    return "join/join_alert";
 	}
 

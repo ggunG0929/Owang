@@ -111,8 +111,8 @@
 						<input type="button" onclick="fileDelete()" th:value="|*{scompanyFile} 파일삭제|" />
 
 					</th:block>
-					<input th:unless="${dto.scompanyFile != null}" type="file" th:field="*{mmff}" />
-
+					<input th:unless="${dto.scompanyFile != null}" type="file" th:field="*{mmff}" id="mmff" onchange="validateFile()"/>
+					<div id="fileError" style="color: red;"></div>
 
 
 				</td>
@@ -207,6 +207,27 @@
 			const today = new Date();
 			ageField.value = today.getFullYear() - birthYear + 1;
 			birthField.value = birthDate;
+		}
+		function validateFile() {
+			var mmffInput = document.getElementById("mmff");
+			var fileError = document.getElementById("fileError");
+			var fileName = mmffInput.value;
+
+			if (fileName === "") {
+				// 파일이 선택되지 않은 경우
+				fileError.innerText = "";
+			} else {
+				var fileExtension = fileName.split('.').pop().toLowerCase();
+				var allowedExtensions = ["jpg", "png"];
+
+				if (allowedExtensions.indexOf(fileExtension) === -1) {
+					// 파일 확장자가 허용되지 않는 경우
+					mmffInput.value = ""; // 파일 입력란 초기화
+					fileError.innerText = "지원되지 않는 파일 유형입니다. JPG 또는 PNG 파일을 업로드하세요.";
+				} else {
+					fileError.innerText = ""; // 오류 메시지 초기화
+				}
+			}
 		}
 	</script>
 </body>

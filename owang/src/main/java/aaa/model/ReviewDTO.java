@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @Alias("rrDTO")
 public class ReviewDTO {
-	String sid, cid, rvtitle, rvjang, rvdan, msg, goUrl;
+	String sid, cid, cname, rvtitle, rvjang, rvdan, msg, goUrl;
 	int rvid;
 	Date regDate = new Date();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

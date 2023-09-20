@@ -7,98 +7,107 @@
 <body>
 <h2>이력서 확인</h2>
 <div>
-	<div>
+   <div>
         <div style="border: 1px solid #ccc; width:500px;" >
-			<h3>기본정보</h3>
-			<div>
-				<table style="width:500px;">
-					<input type="hidden" th:value="${solosession.sid}" name="sid" />
-			        <tr>
-			            <td th:text="${solosession.sname}"></td>
-			            <td th:text="${solosession.sgender}"></td>
-			            <td th:text="${solosession.sage}"></td>
-					</tr>
-					<tr>
-						<td>주소</td>
-						<td th:text="${solosession.saddress}"></td>
-						<td>이메일</td>
-						<td th:text="${solosession.semail}"></td>
-					</tr>
-					<tr>
-						<td >전화번호</td>
-						<td th:text="${solosession.sphone}"></td>
-					</tr>
-				</table>
-			</div>
-			<div>
-				<img th:if="${rdto.img}" th:src="|/resumephoto/${rdto.rsphoto}|"
-				style="width:160px; height:200px; border: 1px solid #ccc;"/>
-			</div>
-		</div>
-		<!-- 이력서 제목 -->
+         <h3>기본정보</h3>
+         <div>
+            <table style="width:500px;">
+               <tr>
+                    <td colspan="4">
+                     <input type="hidden" th:value="${solosession.sid}" name="sid" />
+                  </td>
+                  <td rowspan="7" style="vertical-align: top;">
+                     <img th:if="${rdto.img}" th:src="|/resumephoto/${rdto.rsphoto}|"
+                     style="width:160px; height:200px; border: 1px solid #ccc;"/>
+                    </td>
+               </tr>
+                  <tr>
+                    <td th:text="${solosession.sname}"></td>
+                    <td th:text="${solosession.sgender}"></td>
+                    <td th:text="${solosession.sage}"></td>
+                </tr>
+                <tr>
+                    <td>주소</td>
+                    <td colspan="3" th:text="${solosession.saddress}"></td>
+                </tr>
+                <tr>
+                    <td>이메일</td>
+                    <td colspan="3" th:text="${solosession.semail}"></td>
+                </tr>
+                <tr>
+                    <td>전화번호</td>
+                    <td colspan="3" th:text="${solosession.sphone}"></td>
+                </tr>
+            </table>
+         </div>
+         <div>
+
+         </div>
+      </div>
+      <!-- 이력서 제목 -->
         <div style="border: 1px solid #ccc; width:500px;">
-			<p>이력서 제목</p>
-			<td th:text="${rdto.rstitle}" />
-		</div>
-		<!-- 경력 사항 -->
+         <p>이력서 제목</p>
+         <td th:text="${rdto.rstitle}" />
+      </div>
+      <!-- 경력 사항 -->
         <div style="border: 1px solid #ccc; width:500px;">
-			<p>경력</p>
-			<td th:text="${rdto.rscareer}" />
-			<table th:if="${rdto.rscareer == '경력'}">
-			    <!-- 경력일 경우에만 아래 필드들을 보여줍니다. -->
-			    <tr>
-					<td>회사명: <span th:text="${rdto.rscompany}"></span></td>
-				</tr>
-			    <tr>
-					<td>근무 기간: <span th:text="${rdto.rsworkstart}" />~<span th:text="${rdto.rsworkend}" />
-					</td>
-				</tr>
-			    <tr>
-					<td>업무 내용: <span th:text="${rdto.rswork}"></span></td>
-			    </tr>
-			</table>
-		</div>
-		<!-- 학력 -->
+         <p>경력</p>
+         <td th:text="${rdto.rscareer}" />
+         <table th:if="${rdto.rscareer == '경력'}">
+             <!-- 경력일 경우에만 아래 필드들을 보여줍니다. -->
+             <tr>
+               <td>회사명: <span th:text="${rdto.rscompany}"></span></td>
+            </tr>
+             <tr>
+               <td>근무 기간: <span th:text="${rdto.rsworkstart}" />~<span th:text="${rdto.rsworkend}" />
+               </td>
+            </tr>
+             <tr>
+               <td>업무 내용: <span th:text="${rdto.rswork}"></span></td>
+             </tr>
+         </table>
+      </div>
+      <!-- 학력 -->
         <div style="border: 1px solid #ccc; width:500px;">
-			<p>학력</p>
-			<td th:text="${rdto.rsacademic}" />
-			<td th:text="${rdto.rsacademicstat}" />			
-		</div>
-		<!-- 자기소개 -->
+         <p>학력</p>
+         <td th:text="${rdto.rsacademic}" />
+         <td th:text="${rdto.rsacademicstat}" />         
+      </div>
+      <!-- 자기소개 -->
         <div style="border: 1px solid #ccc; width:500px;">
-		    <p>자기소개서</p>
-		    <p th:if="${rdto.rsintroduce == null or rdto.rsintroduce.isEmpty()}" style="color:red;">등록된 자기소개서가 없습니다</p>
-			<table th:if="${rdto.rsintroduce != null or not #lists.isEmpty(rdto.rsintroduce)}">
-		    <p th:text="${rdto.rsintroduce}" />
-		</div>
-		<!-- 자격증 -->
+          <p>자기소개서</p>
+          <p th:if="${rdto.rsintroduce == null or rdto.rsintroduce.isEmpty()}" style="color:red;">등록된 자기소개서가 없습니다</p>
+         <table th:if="${rdto.rsintroduce != null or not #lists.isEmpty(rdto.rsintroduce)}">
+          <p th:text="${rdto.rsintroduce}" />
+      </div>
+      <!-- 자격증 -->
         <div style="border: 1px solid #ccc; width:500px;">
-			<p>자격증</p>
-			<p th:if="${rdto.rslicense == null or rdto.rslicense.isEmpty()}" style="color:red;">등록된 자격증이 없습니다</p>
-			<table th:if="${rdto.rslicense != null and not #lists.isEmpty(rdto.rslicense)}">
-				<tr>
-				    <td>자격증명</td>
-				    <td th:text="${rdto.rslicense}" />
-					<td>발행기관</td>
-				    <td th:text="${rdto.rslicenseorg}" />
-				    <td>취득일자</td>
-				    <td th:text="${rdto.rslicenseyear}" />
-				</tr>
-			</table>
-		</div>
-		<!-- 어학 능력 -->
+         <p>자격증</p>
+         <p th:if="${rdto.rslicense == null or rdto.rslicense.isEmpty()}" style="color:red;">등록된 자격증이 없습니다</p>
+         <table th:if="${rdto.rslicense != null and not #lists.isEmpty(rdto.rslicense)}">
+            <tr>
+                <td>자격증명</td>
+                <td th:text="${rdto.rslicense}" />
+               <td>발행기관</td>
+                <td th:text="${rdto.rslicenseorg}" />
+                <td>취득일자</td>
+                <td th:text="${rdto.rslicenseyear}" />
+            </tr>
+         </table>
+      </div>
+      <!-- 어학 능력 -->
         <div style="border: 1px solid #ccc; width:500px;">
-			<p>어학능력</p>
-			<p th:if="${rdto.rslanguage == null or rdto.rslanguage.isEmpty()}" style="color:red;">등록된 어학능력이 없습니다</p>
-			<table th:if="${rdto.rslanguage != null or not #lists.isEmpty(rdto.rslanguage)}">
-			<p th:text="${rdto.rslanguage}" />
-			<p th:text="${rdto.rslanguagelevel}" />
-		</div>
-		<div>
-			<a th:href="@{|/solo_resume/modify/${rdto.rsid}|}">수정</a>
-			<a href="/solo_resume/home">목록으로</a>
-		</div>
-	</div>
+         <p>어학능력</p>
+         <p th:if="${rdto.rslanguage == null or rdto.rslanguage.isEmpty()}" style="color:red;">등록된 어학능력이 없습니다</p>
+         <table th:if="${rdto.rslanguage != null or not #lists.isEmpty(rdto.rslanguage)}">
+         <p th:text="${rdto.rslanguage}" />
+         <p th:text="${rdto.rslanguagelevel}" />
+      </div>
+      <div>
+         <a th:href="@{|/solo_resume/modify/${rdto.rsid}|}">수정</a>
+         <a href="/solo_resume/home">목록으로</a>
+      </div>
+   </div>
 </div>
 </body>
 </html>

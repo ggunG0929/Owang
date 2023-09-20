@@ -47,7 +47,7 @@ public class RecruitController {
 
 	// path 정의 다같이 쓰는거라 위에 빼둠 받으시고 테스트할때 폴더 경로 바꾸시면되여!!
 	// 승우꺼
-	static String path = "E:\\BackEnd_hakwon\\Spring_Team\\owang\\src\\main\\webapp\\up";
+	static String path = "E:\\BackEnd_hakwon\\ver1\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\up";
 
 	@Resource
 	RecruitMapper recruitMapper;
@@ -336,8 +336,17 @@ public class RecruitController {
 	String cdetail(Model mm, @PathVariable int page, @PathVariable int id) {
 		// 조회수증가
 		recruitMapper.recruitAddCont(id);
-
+		
+		
 		RecruitDTO dto = recruitMapper.recruitDetail(id);
+		if (dto == null) {
+	        System.out.println("일루안빠졌나?");
+	        dto = new RecruitDTO();
+	        dto.setMsg("탈퇴한 기업 입니다.");
+	        dto.setGoUrl("/solo_applicant/home/1");
+	        mm.addAttribute("recruitDTO", dto); 
+	        return "recruit/recruit_alert";
+	    }
 		dto.setPage(page);
 		dto.calc(recruitMapper.recruitListCnt());
 		LocalDate currentDate = LocalDate.now();

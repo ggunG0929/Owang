@@ -59,5 +59,7 @@ public interface RecruitMapper {
 	List<RecruitDTO> recruitCompanyOpen(String cid);
 	List<RecruitDTO> recruitCompanyClose(RecruitDTO dto);
 	int recruitCompanyCloseCnt(String cid);
-
+	
+	// 결제시 일률적으로 채용rtype 바꿔줌
+	 void payRTypeByCid(String cid);
 }

@@ -184,8 +184,8 @@ public class AdminProductController {
 
 			for (PaymentResponseAll.PaymentAll payment : paymentData) {
 				// imp_uid로 db정보 검색해서 id 가져옴
-				String id = paym.idget(payment.getImp_uid());				
-				if(id != null && paym.isEndMem(id)) {
+				String id = paym.idget(payment.getImp_uid());
+				if (id != null && paym.isEndMem(id)) {
 					id += "(탈퇴)";
 				}
 				payment.setId(id);

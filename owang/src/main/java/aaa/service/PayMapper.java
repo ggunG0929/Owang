@@ -44,7 +44,8 @@ public interface PayMapper {
 
 	// 탈퇴멤 탈퇴일 추가
 	int endMem(String id);
-	
+
 	// id로 탈퇴멤인지 확인
 	boolean isEndMem(String id);
+
 }

@@ -92,7 +92,7 @@
 					</td>
 
 				
-					<td th:text="${review.cid}"></td>
+					<td th:text="${review.cname}"></td>
 					<td th:text="${review.rvjang}"></td>
 					<td th:text="${review.rvdan}"></td>
 					<td th:text="${review.regDate}"></td>
@@ -100,9 +100,7 @@
 					<td th:if="${session['sid'] == review.sid}">
 						<a th:href="|/review/modify/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">수정하기</a>
 					</td>
-					<td th:if="${session.adminSession}">
-						<a th:href="|/review/modify/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">수정하기</a>
-					</td>
+					
 					<td th:if="${session['sid'] == review.sid}">
 						<a th:href="|/review/delete/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">삭제하기</a>
 					</td>
