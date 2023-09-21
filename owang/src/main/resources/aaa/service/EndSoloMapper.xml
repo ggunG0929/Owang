@@ -5,8 +5,13 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 <mapper namespace="aaa.service.EndSoloMapper">
 	
-
+<select id="endSoloList" resultType="soloDTO">
+   	 	select * from endsolo
+</select>
 	
+<select id="endSolocnt" resultType="Integer" >
+	select count(*) from endsolo 
+</select>	
 	
 <insert id="endSoloInsert" parameterType="soloDTO">
     INSERT INTO endsolo (sjoindate,sid, cid, spw, sname, sbirth, sage, sgender, sphone, semail, saddress, scompanyName, scompanyFile, stype, sbcnt, sdeletedate)

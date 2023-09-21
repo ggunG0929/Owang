@@ -220,12 +220,15 @@ public class SoloController {
 			// 세션에서 id 가져옴
 			String sid = (String) session.getAttribute("sid");
 			SoloDTO soloinfo = sssmapper.detailSolo(sid);
+			
 			// sdate가 오늘 이후인 경우 - 유효상품이 있는 경우
 			Date sdate = soloinfo.getSdate();
-			Date today = new Date();			
+			Date today = new Date();
+			
 	        if(sdate!=null && sdate.after(today)) {
 	        	mm.addAttribute("date", sdate);
 	        }
+			
 			// 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴
 			List<String> impuidList = paym.impuids(sid);
 			if(!impuidList.isEmpty()) {				

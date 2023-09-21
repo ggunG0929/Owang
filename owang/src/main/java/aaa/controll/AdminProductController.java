@@ -120,6 +120,7 @@ public class AdminProductController {
 				endDate = null;
 			}
 		}
+
 		mm.addAttribute("graphData", dailytotal);
 		mm.addAttribute("slist", totalbys);
 		mm.addAttribute("clist", totalbyc);
@@ -134,6 +135,7 @@ public class AdminProductController {
 
 		return "admin/product/graph";
 	}
+
 	// 맵리스트에서 키 값들을 합하는 메서드
 	public int mapSum(List<Map<String, Object>> list, String key) {
 		return list.stream().mapToInt(entry -> ((BigDecimal) entry.get(key)).intValue()).sum();
@@ -285,9 +287,10 @@ public class AdminProductController {
 			if (compinfo.getCtype() == 2 && cdate != null && cdate.before(today)) { //
 				compinfo.setCtype(1);
 				mcm.logincmember(compinfo);
-			} else {
+			}else {
 				mcm.paycmember(compinfo);
 			}
+			
 		} else {
 			// 개인회원
 			SoloDTO soloinfo = sm.detailSolo(id);
@@ -300,7 +303,7 @@ public class AdminProductController {
 			if (soloinfo.getStype() == 2 && sdate != null && sdate.before(today)) { //
 				soloinfo.setStype(1);
 				sm.loginsmember(soloinfo);
-			} else {
+			}else {
 				sm.paysmember(soloinfo);
 			}
 		}

@@ -73,9 +73,13 @@
       <tr>
          <td align="right" colspan="6">
 
-            <th:block th:if="${session.adminSession != null or session.cid == dto.cid}">
-               <a th:href="|/recruit/delete/${dto.page}/${dto.recruitId}|">삭제</a>
+            <th:block th:if="${session.cid == dto.cid}">
+            
                <a th:href="|/recruit/modify/${dto.page}/${dto.recruitId}|">수정</a>
+            </th:block>
+              <th:block th:if="${session.adminSession != null or session.cid == dto.cid}">
+               <a th:href="|/recruit/delete/${dto.page}/${dto.recruitId}|">삭제</a>
+               
             </th:block>
 
             <a th:href="|/recruit/list/${dto.page}|">목록으로</a>

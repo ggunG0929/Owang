@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>관리자 기업 탈퇴 회원</title>
+</head>
+<th:block th:replace="~{admin/adheader}"/>
+<body>
+	<h2>기업 탈퇴 회원</h2>
+    <span th:if="${endcompanyData.isEmpty()}">
+		<h3>기업 탈퇴 회원이 존재하지 않습니다.</h3>
+	</span>
+	<table border="" th:if="${not endcompanyData.isEmpty()}">
+		<tr>
+			<th>번호</th>
+			<th>기업아이디</th>
+			<th>기업이름</th>
+			<th>대표자</th>
+			<th>개업연월일</th>
+			<th>업종</th>
+			<th>직원수</th>
+			<th>한해 매출액</th>
+			<th>이메일</th>
+			<th>본점소재지</th>
+			<th>탈퇴일자</th>
+		</tr>
+		<tr th:each="dto, dtostat : ${endcompanyData}">
+			<td th:text="${dto.cno}" />
+			<td th:text="${dto.cid}" />
+			<td th:text="${dto.cname}" />
+			<td th:text="${dto.cceo}" />
+			<td th:text="${dto.cbuild}" />
+			<td th:text="${dto.ccategory}" />
+			<td th:text="${dto.cstaff}" />
+			<td th:text="${dto.csales}" />
+			<td th:text="${dto.cemail}" />
+			<td th:text="${dto.caddress}" />
+			<td th:text="${dto.cdeletedate}" />
+		</tr>
+		<tr>
+			<td colspan="11" align="center">
+				<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
+				<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.page-MCompanyDTO.page}+1" th:text="'[처음]'"/>
+				
+				<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.pageStart - 1}" th:text="'[이전]'"/>			
+				<th:block th:each="no: ${#numbers.sequence(MCompanyDTO.pageStart, MCompanyDTO.pageEnd)}" >
+					<span th:if="${no==MCompanyDTO.page}" th:text="${no}"/>
+					<a th:unless="${no==MCompanyDTO.page}" th:href="${no}" th:text="${no}"/>
+				</th:block>
+				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageEnd + 1}" th:text="'[다음]'"/>
+				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageTotal}" th:text="'[맨끝]'"/>
+			</td>
+		</tr>
+	
+	</table>
+	
+	<script>
+    // 페이지가 로드될 때 실행
+    document.addEventListener("DOMContentLoaded", function() {
+        // 시작일과 마감일 input 요소 가져오기
+        var startDateInput = document.querySelector('input[name="regDate"]');
+        var endDateInput = document.querySelector('input[name="realMagam"]');
+        
+        // 시작일 input 요소의 변경 이벤트 감지
+        startDateInput.addEventListener("change", function() {
+            // 시작일과 마감일의 값을 가져옴
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(endDateInput.value);
+            
+            // 마감일이 시작일보다 빠른 경우
+            if (endDate < startDate) {
+                alert("마감일은 시작일 이후여야 합니다.");
+                endDateInput.value = ""; // 마감일을 비움
+            }
+        });
+        
+        // 마감일 input 요소의 변경 이벤트 감지
+        endDateInput.addEventListener("change", function() {
+            // 시작일과 마감일의 값을 가져옴
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(endDateInput.value);
+            
+            // 마감일이 시작일보다 빠른 경우
+            if (endDate < startDate) {
+                alert("마감일은 시작일 이후여야 합니다.");
+                endDateInput.value = ""; // 마감일을 비움
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

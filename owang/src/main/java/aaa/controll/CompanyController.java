@@ -46,31 +46,29 @@ public class CompanyController {
 	PayMapper paym;
 	@Autowired
 	PayService payS;
-	
 	// 기업
 	@Resource
 	MCompanyMapper cccmapper;
-	
+
 	@Resource
 	EndCompanyMapper endCompanyMapper;
 
 	@RequestMapping("/list/{cid}/{page}")
-	String comRecruitList(Model mm, HttpSession session,
-			RecruitDTO dto, @PathVariable("page") int page, @PathVariable("cid") String cid) {
+	String comRecruitList(Model mm, HttpSession session, RecruitDTO dto, @PathVariable("page") int page,
+			@PathVariable("cid") String cid) {
 		String sessioncid = (String) session.getAttribute("cid");
-	
-		
-		if (sessioncid !=null && sessioncid.equals(cid)) {
+
+		if (sessioncid != null && sessioncid.equals(cid)) {
 			int self = 1;
 			mm.addAttribute("self", self);
 		}
-		
+
 		// 오늘 날짜 보기
-		Date today=new Date();
+		Date today = new Date();
 		// 데이터 상세보기
 		List<RecruitDTO> alldata = remapper.recruitCompanyDetail(dto);
 		Integer ctype = (int) cccmapper.getctype(cid);
-		for(RecruitDTO recruit : alldata) {
+		for (RecruitDTO recruit : alldata) {
 			// 공고의 회사 타입 불러오기
 			Date ccdate = recruit.realMagam;
 			if (ccdate.before(today) || ctype == 1) {
@@ -86,8 +84,8 @@ public class CompanyController {
 		closeDto.setPage(page);
 		closeDto.calc(remapper.recruitCompanyCloseCnt(cid));
 		List<RecruitDTO> closeData = remapper.recruitCompanyClose(closeDto);
-		System.out.println("start가 없니 closeDto야? : "+closeDto);
-		mm.addAttribute("endsize",remapper.recruitCompanyCloseCnt(cid));
+		System.out.println("start가 없니 closeDto야? : " + closeDto);
+		mm.addAttribute("endsize", remapper.recruitCompanyCloseCnt(cid));
 		mm.addAttribute("mainData", openData);
 		mm.addAttribute("closeData", closeData);
 		mm.addAttribute("closeDto", closeDto); // "채용 마감" 탭 페이지 정보
@@ -106,6 +104,7 @@ public class CompanyController {
 		if (cdate != null && cdate.after(today)) {
 			mm.addAttribute("date", cdate);
 		}
+
 		// 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴
 		List<String> impuidList = paym.impuids(cid);
 		if (!impuidList.isEmpty()) {
@@ -162,16 +161,15 @@ public class CompanyController {
 		int cnt = cccmapper.modifffy(dto); // 메서드안의 값이 들어와서 cnt 값이 1이됌
 
 		if (cnt > 0) {
-			
-	        pd.setMsg("수정되었습니다. 다시로그인 부탁드립니다.");
-	        pd.setGoUrl("/login/main");
-	     // 세션수정
+
+			pd.setMsg("수정되었습니다. 다시로그인 부탁드립니다.");
+			pd.setGoUrl("/login/main");
+			// 세션수정
 			MCompanyDTO companysession = cccmapper.deatilaaaCompany(dto.getCid());
 			session.setAttribute("companysession", companysession);
 			session.invalidate();
-			
+
 		}
-		
 
 		return "join/join_alert";
 	}
@@ -192,9 +190,9 @@ public class CompanyController {
 
 		pd.setMsg("삭제실패");
 		pd.setGoUrl("/company/delete");
-		
+
 		MCompanyDTO byedto = cccmapper.deatilCompany(dto.getCid());
-		
+
 		// 결제내역에 탈퇴일 추가
 		paym.endMem(dto.getCid());
 		int cnt = cccmapper.delettt(dto); // 메서드안의 값이 들어와서 cnt 값이 1이됌

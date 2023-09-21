@@ -13,7 +13,9 @@ import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
 import aaa.model.RecruitDTO;
 import aaa.service.AdminCompanyMapper;
+import aaa.service.EndCompanyMapper;
 import aaa.service.MCompanyMapper;
+import aaa.service.PayMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +39,11 @@ public class AdminCompanyController {
 
 	@Resource
 	MCompanyMapper crccMapper;
+	
+	@Resource
+	PayMapper paym;
+	@Resource
+	EndCompanyMapper endCompanyMapper;
 
 	static String path = "E:\\BackEnd_hakwon\\Spring_Team\\owang\\src\\main\\webapp\\companyup";
 
@@ -134,7 +141,10 @@ public class AdminCompanyController {
 	@RequestMapping("delete/{cno}")
 	String delete(MCompanyDTO dto, Model mm, @PathVariable int cno, HttpServletRequest request) {
 		MCompanyDTO rcdto = adminMapper.adminCDetail(cno);
+		paym.endMem(rcdto.getCid());
+		endCompanyMapper.endCompanyInsert(rcdto);
 		int cnt = adminMapper.deleteCompany(cno);
+		
 		if (cnt > 0) {
 			fileDeleteModule(rcdto, request);
 		}

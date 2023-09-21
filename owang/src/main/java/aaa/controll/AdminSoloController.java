@@ -21,6 +21,8 @@ import aaa.model.PageData;
 import aaa.model.RecruitDTO;
 import aaa.model.SoloDTO;
 import aaa.service.AdminSolo;
+import aaa.service.EndSoloMapper;
+import aaa.service.PayMapper;
 import aaa.service.SoloMapper;
 import aaa.service.SoloResumeMapper;
 import jakarta.annotation.Resource;
@@ -35,8 +37,12 @@ public class AdminSoloController {
 
 	@Resource
 	AdminSolo adminsmapper;
-
-	
+	@Resource
+	EndSoloMapper endSoloMapper;
+	@Resource
+	SoloMapper soloMapper;
+	@Resource
+	PayMapper paym;
 	
 	@RequestMapping("smanagement")
 	String management() {
@@ -104,10 +110,13 @@ public class AdminSoloController {
 
 		pd.setMsg("삭제실패");
 		pd.setGoUrl("admin_solo/detail/{sid}");
-
+		SoloDTO byedto = soloMapper.detailSolo(sid);
+		paym.endMem(byedto.getSid());
+		System.out.println("byedto :"+byedto);
 		int cnt = adminsmapper.delettt(sid); // 메서드안의 값이 들어와서 cnt 값이 1이됌
 		
 		if (cnt > 0) {
+			endSoloMapper.endSoloInsert(byedto);
 			pd.setMsg("삭제되었습니다.");
 			pd.setGoUrl("/admin_solo/sololist/1");
 			
@@ -116,16 +125,18 @@ public class AdminSoloController {
 		return "join/join_alert";
 	}
 	//전체회원삭제
-	
+	/*
 	@RequestMapping("cdelete/{sid}")
 	String deleteReg(@PathVariable String sid, PageData pd) {
 		
 		pd.setMsg("삭제실패");
 		pd.setGoUrl("admin_solo/detail/{sid}");
-		
+	
 		int cnt = adminsmapper.delettt(sid); // 메서드안의 값이 들어와서 cnt 값이 1이됌
-		
+		System.out.println("cnt :"+cnt);
 		if (cnt > 0) {
+			
+			
 			pd.setMsg("삭제되었습니다.");
 			pd.setGoUrl("/admin_solo/solocompany/1");
 			
@@ -133,7 +144,7 @@ public class AdminSoloController {
 		
 		return "join/join_alert";
 	}
-
+	*/
 	// 재직증명솔로 리스트
 	@RequestMapping("solocompany/{page}")
 	String solocompany(@PathVariable int page, Model mm, SoloDTO dto) {

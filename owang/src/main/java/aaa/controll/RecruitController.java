@@ -60,7 +60,7 @@ public class RecruitController {
 
 	@Resource
 	AdminCompanyMapper adrmMapper;
-	
+
 	@Resource
 	SoloApplicantMapper applicantMapper;
 
@@ -157,76 +157,71 @@ public class RecruitController {
 	@PostMapping("calendar23")
 	public List<LinkedHashMap<String, String>> recruitTest2And3() {
 		List<LinkedHashMap<String, String>> list = new ArrayList<>();
-		
-		
+
 		for (RecruitDTO recruitDTO : recruitMapper.recruitTest()) {
-		    LocalDate startDate = recruitDTO.regDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		    LocalDate endDate = recruitDTO.realMagam.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		    
-		    LinkedHashMap<String, String> map = new LinkedHashMap<>();
-		    map.put("id", recruitDTO.getRecruitId() + "");
-		    map.put("title", "[시작]    " + recruitDTO.getRecruitTitle() + "  " + recruitDTO.getCname());
-		    
-		    if (!(endDate.isBefore(startDate) || endDate.isEqual(startDate))) {
-		        map.put("start", recruitDTO.getRegDate());
-		    }
-		    
-		    list.add(map);
+			LocalDate startDate = recruitDTO.regDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate endDate = recruitDTO.realMagam.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+			LinkedHashMap<String, String> map = new LinkedHashMap<>();
+			map.put("id", recruitDTO.getRecruitId() + "");
+			map.put("title", "[시작]    " + recruitDTO.getRecruitTitle() + "  " + recruitDTO.getCname());
+
+			if (!(endDate.isBefore(startDate) || endDate.isEqual(startDate))) {
+				map.put("start", recruitDTO.getRegDate());
+			}
+
+			list.add(map);
 		}
 
 		// calendar3 데이터 가져오기
 		for (RecruitDTO recruitDTO : recruitMapper.recruitTest()) {
-		    LocalDate startDate = recruitDTO.regDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		    LocalDate endDate = recruitDTO.realMagam.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		    
-		    LinkedHashMap<String, String> map = new LinkedHashMap<>();
-		    map.put("id", recruitDTO.getRecruitId() + "");
-		    map.put("title", "[마감]    " + recruitDTO.getRecruitTitle() + "  " + recruitDTO.getCname());
-		    map.put("cid", recruitDTO.getCid());
-		    
-		    if (!(startDate.isAfter(endDate) || startDate.isEqual(endDate))) {
-		        map.put("start", recruitDTO.getRealMagam());
-		    }
-		    
-		    list.add(map);
+			LocalDate startDate = recruitDTO.regDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate endDate = recruitDTO.realMagam.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+			LinkedHashMap<String, String> map = new LinkedHashMap<>();
+			map.put("id", recruitDTO.getRecruitId() + "");
+			map.put("title", "[마감]    " + recruitDTO.getRecruitTitle() + "  " + recruitDTO.getCname());
+			map.put("cid", recruitDTO.getCid());
+
+			if (!(startDate.isAfter(endDate) || startDate.isEqual(endDate))) {
+				map.put("start", recruitDTO.getRealMagam());
+			}
+
+			list.add(map);
 		}
 
 		// 채용가능
 		for (RecruitDTO recruitDTO : recruitMapper.recruitTest()) {
 			LocalDate startDate = recruitDTO.regDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			LocalDate endDate = recruitDTO.realMagam.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			
+
 			// 공고의 시작일부터 마감일까지 모든 날짜에 해당하는 공고를 생성
 			while (!startDate.isAfter(endDate)) {
 				LinkedHashMap<String, String> map = new LinkedHashMap<>();
 				map.put("id", recruitDTO.getRecruitId() + "");
 				map.put("cid", recruitDTO.getCid());
-				
+
 				LocalDate currentDate = LocalDate.now();
 				if (!currentDate.isAfter(startDate) && !currentDate.isBefore(endDate)) {
 					map.put("title", "[마감] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
 					map.put("start", endDate.toString());
 				} else {
-					
-					map.put("title", "[모집중] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
-					
-					
-					if (!endDate.equals(startDate)||!startDate.equals(endDate)) {
-						map.put("start", startDate.toString());
-						
-					}
-					
 
+					map.put("title", "[모집중] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
+
+					if (!endDate.equals(startDate) || !startDate.equals(endDate)) {
+						map.put("start", startDate.toString());
+					}
 				}
-				
+
 				list.add(map);
 				startDate = startDate.plusDays(1);
 			}
 		}
-		
+
 		return list;
 	}
-	
+
 	// 채용 리스트
 	// 채용가능 리스트
 	@RequestMapping("list/{page}")
@@ -250,15 +245,13 @@ public class RecruitController {
 				recruitMapper.updateRtype(recruit);
 			}
 		}
-		
-		
-		
+
 		// "채용 가능" 탭에 대한 페이지 정보 계산
 		RecruitDTO openDto = new RecruitDTO();
 		openDto.setPage(page);
 		openDto.calc(recruitMapper.companyROpenCnt());
 		List<RecruitDTO> openData = recruitMapper.companyROpen(openDto);
-		
+
 		mm.addAttribute("openData", openData);
 		mm.addAttribute("openDto", openDto); // "채용 가능" 탭 페이지 정보
 
@@ -270,17 +263,17 @@ public class RecruitController {
 	String listClose(Model mm, RecruitDTO dto, @PathVariable("page") int page) {
 		// 오늘 날짜 보기
 		Date today = new Date();
-		
+
 		// 데이터 상세보기
 		dto.calc(recruitMapper.recruitListCnt());
-		
+
 		List<RecruitDTO> alldata = recruitMapper.allrecruitList(dto);
-		
+
 		for (RecruitDTO recruit : alldata) {
 			// 공고의 회사 타입 불러오기
 			Integer ctype = (int) crcMapper.getctype(recruit.getCid());
 			Date ccdate = recruit.realMagam;
-			
+
 			if (ccdate.before(today) || ctype == 1) {
 				recruit.setRtype(2);
 				recruitMapper.updateRtype(recruit);
@@ -295,21 +288,19 @@ public class RecruitController {
 
 		mm.addAttribute("closeData", closeData);
 		mm.addAttribute("closeDto", closeDto); // "채용 마감" 탭 페이지 정보
-		
+
 		return "recruit/recruit_list2";
 	}
-	
+
 	@RequestMapping("list/all/{page}")
 	String open(Model mm, RecruitDTO dto, @PathVariable("page") int page) {
 		dto.calc(recruitMapper.recruitListCnt());
 		List<RecruitDTO> data = recruitMapper.recruitList(dto);
-		
-	
-		mm.addAttribute("mainData",data);
-		
+
+		mm.addAttribute("mainData", data);
+
 		return "recruit/recruit_list3";
 	}
-
 
 	// 채용 디테일
 	@RequestMapping("detail/{page}/{id}")
@@ -336,17 +327,16 @@ public class RecruitController {
 	String cdetail(Model mm, @PathVariable int page, @PathVariable int id) {
 		// 조회수증가
 		recruitMapper.recruitAddCont(id);
-		
-		
+
 		RecruitDTO dto = recruitMapper.recruitDetail(id);
 		if (dto == null) {
-	        System.out.println("일루안빠졌나?");
-	        dto = new RecruitDTO();
-	        dto.setMsg("탈퇴한 기업 입니다.");
-	        dto.setGoUrl("/solo_applicant/home/1");
-	        mm.addAttribute("recruitDTO", dto); 
-	        return "recruit/recruit_alert";
-	    }
+			System.out.println("일루안빠졌나?");
+			dto = new RecruitDTO();
+			dto.setMsg("탈퇴한 기업 입니다.");
+			dto.setGoUrl("/solo_applicant/home/1");
+			mm.addAttribute("recruitDTO", dto);
+			return "recruit/recruit_alert";
+		}
 		dto.setPage(page);
 		dto.calc(recruitMapper.recruitListCnt());
 		LocalDate currentDate = LocalDate.now();
@@ -360,72 +350,74 @@ public class RecruitController {
 		return "/recruit/recruit_detail";
 	}// 채용 디테일
 
-	   @GetMapping("insert/{page}")
-	   String insert(RecruitDTO dto, HttpSession session, MCompanyDTO company, Model mm) {
-	      MCompanyDTO mcseDto = (MCompanyDTO) session.getAttribute("companysession");
-	      AdminDTO admin = (AdminDTO) session.getAttribute("adminSession");
-	      Date date = new Date();
-	      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	      String today = sdf.format(date);
-	      mcseDto = crcMapper.deatilCompany(mcseDto.getCid());
+	@GetMapping("insert/{page}")
+	String insert(RecruitDTO dto, HttpSession session, MCompanyDTO company, Model mm) {
+		MCompanyDTO mcseDto = (MCompanyDTO) session.getAttribute("companysession");
+		AdminDTO admin = (AdminDTO) session.getAttribute("adminSession");
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String today = sdf.format(date);
 
-	      List<MCompanyDTO> data = adrmMapper.companyCapprovalList(company);
-	      mm.addAttribute("mainData", data);
-	      // 기업 또는 관리자 중 하나라도 로그인되었고 승인되었을 때 삽입 페이지로 이동
-	      session.setAttribute("companysession", mcseDto);
-	      if ((mcseDto != null && mcseDto.isCapproval() && mcseDto.getCtype() == 2)
-	            || (admin != null && admin.isCapproval())) {
+		mcseDto = crcMapper.deatilCompany(mcseDto.getCid());
 
-	         if (admin == null) {
-	            int a = recruitMapper.recruitCnt(mcseDto.getCid());
-	            if (a > 20) {
-	               dto.setMsg("채용공고는 20개를 초과할 수 없습니다.");
-	               dto.setGoUrl("/recruit/list/1");
-	               return "recruit/recruit_alert";
-	            }
-	         }
-	         mm.addAttribute("today", today);
-	        
-	         return "recruit/recruit_insert";
-	      }else if((mcseDto != null && mcseDto.isCapproval() && mcseDto.getCtype() == 1)) {         
-	         dto.setMsg("채용공고권 구매시 이용가능합니다.");
-	         dto.setGoUrl("/product/notice");
-	         return "recruit/recruit_alert";
-	      }else {
-	         dto.setMsg("로그인 시간이 만료되었거나 승인되지 않은 사용자입니다.");
-	         dto.setGoUrl("/recruit/list/1");
-	         return "recruit/recruit_alert";
-	      }
-	   }
+		List<MCompanyDTO> data = adrmMapper.companyCapprovalList(company);
+		mm.addAttribute("mainData", data);
+		// 기업 또는 관리자 중 하나라도 로그인되었고 승인되었을 때 삽입 페이지로 이동
+		session.setAttribute("companysession", mcseDto);
+		if ((mcseDto != null && mcseDto.isCapproval() && mcseDto.getCtype() == 2)
+				|| (admin != null && admin.isCapproval())) {
 
-	   // 채용 삽입
-	   @PostMapping("insert/{page}")
-	   String insertReg(RecruitDTO dto, HttpServletRequest request, HttpSession session) {
-	      
-	      MCompanyDTO mcseDto = (MCompanyDTO) session.getAttribute("companysession");
-	      AdminDTO admin = (AdminDTO) session.getAttribute("adminSession");
+			if (admin == null) {
+				// cid의 데이터 중 recruit테이블의 realMagam과 cdate가 지나지 않은 공고의 개수를 셈
+				int a = recruitMapper.recruitCnt(mcseDto.getCid(), mcseDto.getCdate());
+				if (a > 10) {
+					dto.setMsg("현재 채용 중인 공고는 10개를 초과할 수 없습니다.");
+					dto.setGoUrl("/recruit/list/1");
+					return "recruit/recruit_alert";
+				}
+			}
+			mm.addAttribute("today", today);
 
-	      if ((mcseDto != null && mcseDto.isCapproval()) || (admin != null && admin.isCapproval())) {
-	         dto.setMsg("아직 승인되지 않은 기업입니다.");
-	         dto.setGoUrl("/recruit/list/1");
-	      }
-	      System.out.println("mcseDto : " + mcseDto);
-	      MCompanyDTO mc = crcMapper.deatilaaaCompany(mcseDto.getCid());
+			return "recruit/recruit_insert";
+		} else if ((mcseDto != null && mcseDto.isCapproval() && mcseDto.getCtype() == 1)) {
+			dto.setMsg("채용공고권 구매시 이용가능합니다.");
+			dto.setGoUrl("/product/notice");
+			return "recruit/recruit_alert";
+		} else {
+			dto.setMsg("로그인 시간이 만료되었거나 승인되지 않은 사용자입니다.");
+			dto.setGoUrl("/recruit/list/1");
+			return "recruit/recruit_alert";
+		}
+	}
 
-	      dto.setCname(mc.getCname());
-	      dto.setCid(mcseDto.getCid());
-	      
-	      dto.setRecruitId(recruitMapper.recruitMaxId() + 1);
-	      
-	      // System.out.println(dto);
-	      fileSave(dto, request);
-	      recruitMapper.recruitInsert(dto);
-	      // System.out.println(dto);
-	      dto.setMsg("작성되었습니다.");
-	      dto.setGoUrl("/recruit/list/1");
-	      return "recruit/recruit_alert";
+	// 채용 삽입
+	@PostMapping("insert/{page}")
+	String insertReg(RecruitDTO dto, HttpServletRequest request, HttpSession session) {
 
-	   }// 채용 삽입
+		MCompanyDTO mcseDto = (MCompanyDTO) session.getAttribute("companysession");
+		AdminDTO admin = (AdminDTO) session.getAttribute("adminSession");
+
+		if ((mcseDto != null && mcseDto.isCapproval()) || (admin != null && admin.isCapproval())) {
+			dto.setMsg("아직 승인되지 않은 기업입니다.");
+			dto.setGoUrl("/recruit/list/1");
+		}
+		System.out.println("mcseDto : " + mcseDto);
+		MCompanyDTO mc = crcMapper.deatilaaaCompany(mcseDto.getCid());
+
+		dto.setCname(mc.getCname());
+		dto.setCid(mcseDto.getCid());
+
+		dto.setRecruitId(recruitMapper.recruitMaxId() + 1);
+
+		// System.out.println(dto);
+		fileSave(dto, request);
+		recruitMapper.recruitInsert(dto);
+		// System.out.println(dto);
+		dto.setMsg("작성되었습니다.");
+		dto.setGoUrl("/recruit/list/1");
+		return "recruit/recruit_alert";
+
+	}// 채용 삽입
 
 	// 파일 저장
 	void fileSave(RecruitDTO dto, HttpServletRequest request) {
@@ -515,6 +507,7 @@ public class RecruitController {
 		dto.setGoUrl("recruit/modify" + dto.getPage() + "/" + dto.getRecruitId());
 		dto.setPage(page);
 		// 수정된 데이터를 데이터베이스에 저장
+		fileSave(dto, request);
 		int cnt = recruitMapper.recruitModify(dto);
 		System.out.println("수정" + dto);
 		System.out.println("cnt" + cnt);
@@ -572,46 +565,41 @@ public class RecruitController {
 		// 이력서 열람만 가능
 		return "solo_resume/recruit_resume";
 	}
-	
-	//파일다운로드
+
+	// 파일다운로드
 	@GetMapping("download/{ff}")
-	void download(@PathVariable String ff, 
-			HttpServletRequest request,
-			HttpServletResponse response) {
-		
+	void download(@PathVariable String ff, HttpServletRequest request, HttpServletResponse response) {
+
 		String path = request.getServletContext().getRealPath("up");
-		
-		
-		
+
 		try {
-			FileInputStream fis = new FileInputStream(path+"\\"+ff);
-			String encFName = URLEncoder.encode(ff,"utf-8");
-			System.out.println(ff+"->"+encFName);
-			response.setHeader("Content-Disposition", "attachment;filename="+encFName);
-			
+			FileInputStream fis = new FileInputStream(path + "\\" + ff);
+			String encFName = URLEncoder.encode(ff, "utf-8");
+			System.out.println(ff + "->" + encFName);
+			response.setHeader("Content-Disposition", "attachment;filename=" + encFName);
+
 			ServletOutputStream sos = response.getOutputStream();
-			
-			byte [] buf = new byte[1024];
-			
-			//int cnt = 0;
-			while(fis.available()>0) { //읽을 내용이 남아 있다면
-				int len = fis.read(buf);  //읽어서 -> buf 에 넣음
-											//len : 넣은 byte 길이
-				
-				sos.write(buf, 0, len); //보낸다 :  buf의 0부터 len 만큼
-				
-				//cnt ++;
-				//System.out.println(cnt+":"+len);
+
+			byte[] buf = new byte[1024];
+
+			// int cnt = 0;
+			while (fis.available() > 0) { // 읽을 내용이 남아 있다면
+				int len = fis.read(buf); // 읽어서 -> buf 에 넣음
+											// len : 넣은 byte 길이
+
+				sos.write(buf, 0, len); // 보낸다 : buf의 0부터 len 만큼
+
+				// cnt ++;
+				// System.out.println(cnt+":"+len);
 			}
-			
+
 			sos.close();
 			fis.close();
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 }

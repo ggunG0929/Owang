@@ -4,8 +4,14 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="aaa.service.EndCompanyMapper">
-	
+		
+<select id="endCompanyList" resultType="mcDTO">
+	 select * from endcompany
+</select>
 
+<select id="endCompanycnt" resultType="Integer" >
+	select count(*) from endcompany
+</select>
 	
 	
 <insert id="endCompanyInsert" parameterType="mcDTO">

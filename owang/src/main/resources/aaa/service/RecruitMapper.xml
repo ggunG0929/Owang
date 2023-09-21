@@ -41,8 +41,12 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 
 	<select id="recruitCnt" resultType="Integer">
-		select count(*) from recruit where cid=#{cid}
+		<!-- select count(*) from recruit where cid=#{cid} -->
+	    select count(*) from recruit where cid = #{cid}
+	    and (#{cdate} is null or #{cdate} &lt;= now())
+	    and (realMagam is null or realMagam &lt;= now())
 	</select>
+	
 	<update id="updateRtype" parameterType="recruitDTO">
 		update recruit set
 		rtype=#{rtype} where recruit_id = #{recruitId}

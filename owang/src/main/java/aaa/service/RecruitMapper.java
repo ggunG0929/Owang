@@ -1,12 +1,12 @@
 package aaa.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import aaa.model.RecruitDTO;
-import aaa.model.ReviewDTO;
 
 @Mapper
 public interface RecruitMapper {
@@ -16,8 +16,8 @@ public interface RecruitMapper {
 	// 게시글 정렬
 	List<RecruitDTO> allrecruitList(RecruitDTO dto);
 
-	// 게시글 정렬
-	int recruitCnt(String cid);
+	// 채용중인 공고 수 계산
+	int recruitCnt(String cid, Date cdate);
 
 	List<RecruitDTO> companyROpen(RecruitDTO dto);
 	List<RecruitDTO> companyRClose(RecruitDTO dto);

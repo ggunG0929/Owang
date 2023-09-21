@@ -2,7 +2,6 @@ package aaa.controll;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
-import org.springframework.util.FileSystemUtils;
 
 @Controller
 @RequestMapping("/ask") // QnA게시판
@@ -48,17 +46,15 @@ public class AskController {
 		dto.calc(mapper.listCnt());
 		dto.setPname(zuserid);
 		System.out.println("askdto" + dto);
-	
-		
-		//값을 리스트로받아 그다음에
-		//그리스트를 하나씩 하나씩 
-	
+
+		// 값을 리스트로받아 그다음에
+		// 그리스트를 하나씩 하나씩
 
 		if (adto != null) {
 			System.out.println("관리자입니다.");
 			List<AskDTO> admindata = mapper.askList(dto);
 			mm.addAttribute("mainData", admindata);
-		} else {	//개인 
+		} else { // 개인
 			System.out.println("유저입니다.");
 			List<AskDTO> data = mapper.useraskList(dto);
 			mm.addAttribute("mainData", data);
@@ -76,25 +72,24 @@ public class AskController {
 		mapper.addCount(id);// 조회수증가
 		AskDTO dto = mapper.detail(id);
 		dto.setPage(page);
-		
+
 		mm.addAttribute("askdto", dto);
-		
+
 		String gid = String.valueOf(dto.getGid()); // int를 문자열로 변환
 		int result = mapper.gidChk(gid);
-		
-		//gid count 1
+
+		// gid count 1
 		String type = "";
-		
-		if(result == 1) {
+
+		if (result == 1) {
 			type = "1";
 		}
-		//gid count 2
-		if(result == 2) {
+		// gid count 2
+		if (result == 2) {
 			type = "2";
 		}
-		mm.addAttribute("type",type);
-		
-		
+		mm.addAttribute("type", type);
+
 //		mapper.gidChk(dto.getGid());
 //		
 //		String type = ""; // 초기화
@@ -106,24 +101,21 @@ public class AskController {
 //		}
 //		
 //		mm.addAttribute("type",type);
-		
-		 
-		
-		
-		//dto.setHasReply(dto.getSeq() > 0); // seq가 0보다 크면 답변이 있다고 판단
-		
-		//답변o-수정삭제x
-				//dto.setHasReply(dto.getSeq() > 0); // 예시: seq가 0보다 크면 답변이 있다고 판단
-				//gid가 같다면
-				
-				//dto.setHasReply(dto.getGid() != dto.getGid());
-				/*
-				 * 매퍼에서 이 gid인 애가 몇개야? 1 2 1이면 답변을안달고 2이면 두개가달리면
-				 * 
-				 * if (dto.setHasReply(dto.getGid() == dto.getGid())) { dto.setHasReply(true);
-				 * 답변이 있다면 true로 설정 } else { dto.setHasReply(false); // 답변이 없다면 false로 설정 }
-				 */				 
-				
+
+		// dto.setHasReply(dto.getSeq() > 0); // seq가 0보다 크면 답변이 있다고 판단
+
+		// 답변o-수정삭제x
+		// dto.setHasReply(dto.getSeq() > 0); // 예시: seq가 0보다 크면 답변이 있다고 판단
+		// gid가 같다면
+
+		// dto.setHasReply(dto.getGid() != dto.getGid());
+		/*
+		 * 매퍼에서 이 gid인 애가 몇개야? 1 2 1이면 답변을안달고 2이면 두개가달리면
+		 * 
+		 * if (dto.setHasReply(dto.getGid() == dto.getGid())) { dto.setHasReply(true);
+		 * 답변이 있다면 true로 설정 } else { dto.setHasReply(false); // 답변이 없다면 false로 설정 }
+		 */
+
 		return "ask/ask_detail";
 	}
 
@@ -142,20 +134,19 @@ public class AskController {
 
 		return "ask/ask_insertForm";
 	}
-	
-	 // 주문번호를 가지고 온 경우
-	   @GetMapping("insert/{page}/{impUid}")
-	   String insertImpUid(Model mm, HttpSession session, AskDTO dto, @PathVariable String impUid) {
-	      String sid = (String) session.getAttribute("sid");
-	      String cid = (String) session.getAttribute("cid");
-	      if (sid == null) {
-	         mm.addAttribute("uid", cid);
-	      } else {
-	         mm.addAttribute("uid", sid);
-	      }
-	      return "ask/ask_insertForm";
-	   }
 
+	// 주문번호를 가지고 온 경우
+	@GetMapping("insert/{page}/{impUid}")
+	String insertImpUid(Model mm, HttpSession session, AskDTO dto, @PathVariable String impUid) {
+		String sid = (String) session.getAttribute("sid");
+		String cid = (String) session.getAttribute("cid");
+		if (sid == null) {
+			mm.addAttribute("uid", cid);
+		} else {
+			mm.addAttribute("uid", sid);
+		}
+		return "ask/ask_insertForm";
+	}
 
 	@PostMapping("insert/{page}")
 	String insertReg(AskDTO dto, HttpServletRequest request) {
@@ -170,23 +161,21 @@ public class AskController {
 
 		return "ask/ask_alert";
 	}
-	
-	  // 주문번호를 가지고 온 경우
-	   @PostMapping("insert/{page}/{impUid}")
-	   String insertReg2(AskDTO dto, HttpServletRequest request, @PathVariable String impUid) {
-	      dto.setId(mapper.maxId() + 1);
-	      fileSave(dto, request);
-	      dto.setPname(request.getParameter("uid"));
-	      // 주문번호를 넣어주기
-	      dto.setImp(impUid);
-	      mapper.askInsert(dto);
-	      dto.setMsg("게시글 등록되었습니다.");
-	      dto.setGoUrl("/ask/list/1");
 
-	      return "ask/ask_alert";
-	   }
-	   
-	   
+	// 주문번호를 가지고 온 경우
+	@PostMapping("insert/{page}/{impUid}")
+	String insertReg2(AskDTO dto, HttpServletRequest request, @PathVariable String impUid) {
+		dto.setId(mapper.maxId() + 1);
+		fileSave(dto, request);
+		dto.setPname(request.getParameter("uid"));
+		// 주문번호를 넣어주기
+		dto.setImp(impUid);
+		mapper.askInsert(dto);
+		dto.setMsg("게시글 등록되었습니다.");
+		dto.setGoUrl("/ask/list/1");
+
+		return "ask/ask_alert";
+	}
 
 	// 사진첨부
 
@@ -198,8 +187,9 @@ public class AskController {
 		}
 
 		String path = request.getServletContext().getRealPath("askup");
-		//path = "C:\\Users\\콩쥐\\Desktop\\final\\fighting\\Spring_TeamVer_1\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\askup";
-		
+		// path =
+		// "C:\\Users\\콩쥐\\Desktop\\final\\fighting\\Spring_TeamVer_1\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\askup";
+
 		System.out.println(path);
 
 		int dot = dto.getMmff().getOriginalFilename().lastIndexOf("."); // . 위치 찾음
@@ -253,9 +243,7 @@ public class AskController {
 			dto.setMsg("삭제완료되었습니다.");
 			dto.setGoUrl("/ask/list/1");
 		}
-		
-	
-		
+
 		return "ask/ask_alert";
 	}
 
@@ -302,7 +290,7 @@ public class AskController {
 		AskDTO dto = new AskDTO();
 		dto.setPage(page);
 		dto.setId(id);
-		//dto.setTitle("호로로롤로"); // 초기값 설정
+		// dto.setTitle("호로로롤로"); // 초기값 설정
 		mm.addAttribute("askdto", dto);
 
 		return "ask/ask_replyForm";
@@ -338,7 +326,6 @@ public class AskController {
 		dto.setLev(1); // 답글의 계층을 1로 설정
 		dto.setSeq(1); // 답글의 순서를 1로 설정 (첫 번째 답글)
 		fileSave(dto, request);
-		
 
 		// Mapper를 사용하여 답글 데이터를 데이터베이스에 저장
 		int result = mapper.insertReply(dto);
@@ -381,7 +368,8 @@ public class AskController {
 		if (delDTO.getUpfile() != null) {// 파일이 있다면
 			// 시스템 경로를 문자열로 저장
 			String path = request.getServletContext().getRealPath("askup");
-			//path = "C:\\Users\\콩쥐\\Desktop\\final\\0912 Merge\\Spring_Team\\Spring_Team\\owang\\src\\main\\webapp\\askup";
+			// path = "C:\\Users\\콩쥐\\Desktop\\final\\0912
+			// Merge\\Spring_Team\\Spring_Team\\owang\\src\\main\\webapp\\askup";
 
 			new File(path + "\\" + delDTO.getUpfile()).delete();
 
@@ -392,30 +380,28 @@ public class AskController {
 		}
 
 	}
-	
+
 	// 파일 다운로드
 	@RequestMapping("/askup/download/{filename}")
-	void download(@PathVariable String filename,
-				   HttpServletRequest request,
-				   HttpServletResponse response) {
+	void download(@PathVariable String filename, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("이벤트체크=> 파일 다운로드");
 		try {
-			System.out.println(filename+", "+"파일님 오셧나요");
+			System.out.println(filename + ", " + "파일님 오셧나요");
 			String path = request.getServletContext().getRealPath("askup");
-			FileInputStream fis = new FileInputStream(path + "\\"+filename);
+			FileInputStream fis = new FileInputStream(path + "\\" + filename);
 			// 인코딩 설정
-			String encFName = URLEncoder.encode(filename,"utf-8");
+			String encFName = URLEncoder.encode(filename, "utf-8");
 			response.setHeader("Content-Disposition", "attachment; filename=" + encFName);
 			ServletOutputStream sos = response.getOutputStream();
 			byte[] buf = new byte[1024];
-			while (fis.available()>0) {
+			while (fis.available() > 0) {
 				int len = fis.read(buf); // 읽은후 buf에 저장
 				// len = 넣은 길이
-				sos.write(buf,0,len);// buf 0부터 len 만큼 
+				sos.write(buf, 0, len);// buf 0부터 len 만큼
 			}
 			sos.close();
 			fis.close();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

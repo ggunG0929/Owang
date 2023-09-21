@@ -19,7 +19,8 @@ public class EventConfig implements WebMvcConfigurer{
       .addPathPatterns("/admin_cs/**")
       .addPathPatterns("/admin_company/**")
       .addPathPatterns("/admin_solo/**")
-      .addPathPatterns("/admin_product/**");
+      .addPathPatterns("/admin_product/**")
+      .addPathPatterns("/admin_member/**");
       
       
    }
