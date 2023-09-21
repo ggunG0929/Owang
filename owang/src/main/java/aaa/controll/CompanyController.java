@@ -46,6 +46,7 @@ public class CompanyController {
 	PayMapper paym;
 	@Autowired
 	PayService payS;
+	
 	// 기업
 	@Resource
 	MCompanyMapper cccmapper;
@@ -96,9 +97,7 @@ public class CompanyController {
 	@RequestMapping("/product")
 	String product(Model mm, HttpSession session) throws Exception {
 		// 세션에서 id 가져옴
-		MCompanyDTO companysession = (MCompanyDTO) session.getAttribute("companysession");
-		String cid = companysession.getCid();
-		// db에서 cdate정보 다시 가져오기
+		String cid = (String) session.getAttribute("cid");
 		MCompanyDTO compinfo = cccmapper.deatilCompany(cid);
 
 		// cdate가 오늘 이후인 경우 - 유효상품이 있는 경우
@@ -107,13 +106,14 @@ public class CompanyController {
 		if (cdate != null && cdate.after(today)) {
 			mm.addAttribute("date", cdate);
 		}
-
 		// 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴
 		List<String> impuidList = paym.impuids(cid);
 		if (!impuidList.isEmpty()) {
 			List<PaymentResponseMember.Payment> paymentData = payS.getPaymentData(impuidList);
 			mm.addAttribute("paymentData", paymentData);
 		}
+		// 세션 업데이트
+		session.setAttribute("companysession", compinfo);
 		return "product/payment";
 	}
 

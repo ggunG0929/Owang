@@ -88,20 +88,20 @@ public class AdminProductController {
 		// db에서 회원종류별 매출액 순위리스트
 		List<Map<String, Object>> totalbys = paym.totalbys(startDate, endDate);
 		List<Map<String, Object>> totalbyc = paym.totalbyc(startDate, endDate);
-		// 회원자료 중 sid나 cid가 없는 자료 제외하기 - sid가 없는 자료면 cid자료들이고, cid가 없는 자료면 sid자료임
+		// 회원자료 중 sid나 cid가 없는 자료 제외하기 - sid가 없는 자료면 cid자료고, cid가 없는 자료면 sid자료임
 		totalbys = totalbys.stream().filter(map -> map.containsKey("sid")).collect(Collectors.toList());
 		totalbyc = totalbyc.stream().filter(map -> map.containsKey("cid")).collect(Collectors.toList());
 
 		// db에서 상품별 매출액 순위리스트
 		List<Map<String, Object>> totalbyp = paym.totalbyp(startDate, endDate);
 
-		// 기간내 값들 합산
+		// 기간내 값들 합산(원본맵,합산할 키)
 		int totalSum = mapSum(dailytotal, "totalAmount");
 		int sSum = mapSum(totalbys, "total");
 		int cSum = mapSum(totalbyc, "total");
 		int pSum = mapSum(totalbyp, "total");
 
-		// 오늘날짜 // 날짜 선택시 오늘 이후 날짜는 선택 불가하도록
+		// 오늘날짜(날짜 선택시 오늘 이후 날짜는 선택 불가하도록 따로 정보 주기-string으로)
 		String today = payS.dateformat(new Date());
 
 		// 미선택시 db가 들어간 첫날과 오늘을 자동선택
@@ -109,7 +109,8 @@ public class AdminProductController {
 		String strStartDate = "2022-09-01";
 		String strEndDate = today;
 		if (startDate != null && endDate != null) {
-			if (startDate.before(endDate)) {
+			// 시작일이 종료일보다 전인 경우 혹은 같은 경우
+			if (startDate.before(endDate) || startDate.equals(endDate)) {
 				strStartDate = payS.dateformat(startDate);
 				strEndDate = payS.dateformat(endDate);
 			} else {
@@ -119,7 +120,6 @@ public class AdminProductController {
 				endDate = null;
 			}
 		}
-
 		mm.addAttribute("graphData", dailytotal);
 		mm.addAttribute("slist", totalbys);
 		mm.addAttribute("clist", totalbyc);
@@ -134,7 +134,6 @@ public class AdminProductController {
 
 		return "admin/product/graph";
 	}
-
 	// 맵리스트에서 키 값들을 합하는 메서드
 	public int mapSum(List<Map<String, Object>> list, String key) {
 		return list.stream().mapToInt(entry -> ((BigDecimal) entry.get(key)).intValue()).sum();
@@ -286,8 +285,9 @@ public class AdminProductController {
 			if (compinfo.getCtype() == 2 && cdate != null && cdate.before(today)) { //
 				compinfo.setCtype(1);
 				mcm.logincmember(compinfo);
+			} else {
+				mcm.paycmember(compinfo);
 			}
-			mcm.paycmember(compinfo);
 		} else {
 			// 개인회원
 			SoloDTO soloinfo = sm.detailSolo(id);
@@ -300,10 +300,9 @@ public class AdminProductController {
 			if (soloinfo.getStype() == 2 && sdate != null && sdate.before(today)) { //
 				soloinfo.setStype(1);
 				sm.loginsmember(soloinfo);
+			} else {
+				sm.paysmember(soloinfo);
 			}
-
-			sm.paysmember(soloinfo);
-
 		}
 		// 취소진행
 		String token = payS.getToken();

@@ -40,6 +40,7 @@
          <td>사진</td>
          <td>
             <img th:if="${askdto.img}" th:src="|/askup/${askdto.upfile}|" />
+            <a th:if="${askdto.img}" th:href="|/ask/askup/download/${askdto.upfile}|">[[${askdto.upfile}]]</a>
             <a th:unless="${askdto.img}" th:text="${askdto.upfile}"></a>
          </td>
       </tr>

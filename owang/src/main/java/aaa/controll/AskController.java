@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.net.URLEncoder;
 import java.util.List;
 
 import aaa.model.AdminDTO;
@@ -17,7 +19,9 @@ import aaa.model.MCompanyDTO;
 import aaa.model.SoloDTO;
 import aaa.service.AskMapper;
 import jakarta.annotation.Resource;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
@@ -388,5 +392,34 @@ public class AskController {
 		}
 
 	}
+	
+	// 파일 다운로드
+	@RequestMapping("/askup/download/{filename}")
+	void download(@PathVariable String filename,
+				   HttpServletRequest request,
+				   HttpServletResponse response) {
+		System.out.println("이벤트체크=> 파일 다운로드");
+		try {
+			System.out.println(filename+", "+"파일님 오셧나요");
+			String path = request.getServletContext().getRealPath("askup");
+			FileInputStream fis = new FileInputStream(path + "\\"+filename);
+			// 인코딩 설정
+			String encFName = URLEncoder.encode(filename,"utf-8");
+			response.setHeader("Content-Disposition", "attachment; filename=" + encFName);
+			ServletOutputStream sos = response.getOutputStream();
+			byte[] buf = new byte[1024];
+			while (fis.available()>0) {
+				int len = fis.read(buf); // 읽은후 buf에 저장
+				// len = 넣은 길이
+				sos.write(buf,0,len);// buf 0부터 len 만큼 
+			}
+			sos.close();
+			fis.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}// 파일 다운로드
 
 }
