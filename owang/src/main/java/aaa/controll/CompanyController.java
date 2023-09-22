@@ -2,35 +2,26 @@ package aaa.controll;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
 
-import aaa.model.ApplicantDTO;
 import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
 import aaa.model.PaymentResponseMember;
 import aaa.model.RecruitDTO;
-import aaa.model.SoloResumeDTO;
 import aaa.service.EndCompanyMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
 import aaa.service.RecruitMapper;
-import aaa.service.SoloApplicantMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -93,7 +84,7 @@ public class CompanyController {
 	}
 
 	@RequestMapping("/product")
-	String product(Model mm, HttpSession session) throws Exception {
+	String product(Model mm, HttpSession session) {
 		// 세션에서 id 가져옴
 		String cid = (String) session.getAttribute("cid");
 		MCompanyDTO compinfo = cccmapper.deatilCompany(cid);

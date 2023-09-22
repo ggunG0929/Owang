@@ -20,4 +20,4 @@ CREATE TABLE endsolo (
     sdeletedate date
 );
 select * from endsolo;
-drop table dropsolo;
+drop table endsolo;

@@ -100,59 +100,59 @@
 				<th:block th:unless="${from == null or to == null}">
 					<a th:if="${prevPage > 1}"
 						th:href="|/admin_product/payment/1?status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|"
-						th:text="처음1" />
+						th:text="처음1"></a>
 				</th:block>
 				<th:block th:if="${from == null or to == null}">
 					<a th:if="${prevPage > 1}"
 						th:href="|/admin_product/payment/1?status=${status}&limit=${limit}&sorting=${sorting}|"
-						th:text="처음1" />
+						th:text="처음1"></a>
 				</th:block>
 				<!-- 이전 페이지 -->
 				<th:block th:unless="${from == null or to == null}">
-					<a th:if="${totalPages != 1 and prevPage != page}"
+					<a th:if="${prevPage != page}"
 						th:href="|/admin_product/payment/${prevPage}?status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|"
-						th:text="이전" />
+						th:text="이전"></a>
 				</th:block>
 				<th:block th:if="${from == null or to == null}">
-					<a th:if="${totalPages != 1 and prevPage != page}"
+					<a th:if="${prevPage != page}"
 						th:href="|/admin_product/payment/${prevPage}?status=${status}&limit=${limit}&sorting=${sorting}|"
-						th:text="이전" />
+						th:text="이전"></a>
 				</th:block>
 				<!-- 페이지 처리 -->
 				<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
-					<span th:if="${i == page} and i != 0" th:text="${i}"></span>
+					<span th:if="${i == page}" th:text="${i}"></span>
 					<th:block th:unless="${from == null or to == null}">
-						<a th:unless="${i == page or i == 0}"
+						<a th:unless="${i == page}"
 							th:href="|/admin_product/payment/${i}?status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|"
-							th:text="${i}" />
-					</th:block>		
+							th:text="${i}"></a>
+					</th:block>
 					<th:block th:if="${from == null or to == null}">
-						<a th:unless="${i == page or i == 0}"
+						<a th:unless="${i == page}"
 							th:href="|/admin_product/payment/${i}?status=${status}&limit=${limit}&sorting=${sorting}|"
-							th:text="${i}" />
+							th:text="${i}"></a>
 					</th:block>
 				</th:block>
 				<!-- 다음 페이지 -->
 				<th:block th:unless="${from == null or to == null}">
-					<a th:if="${totalPages != 0 and nextPage != page}"
+					<a th:if="${totalPages != 1 and nextPage != page}"
 						th:href="|/admin_product/payment/${nextPage}?status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|"
-						th:text="다음" />
+						th:text="다음"></a>
 				</th:block>
 				<th:block th:if="${from == null or to == null}">
-					<a th:if="${totalPages != 0 and nextPage != page}"
+					<a th:if="${totalPages != 1 and nextPage != page}"
 						th:href="|/admin_product/payment/${nextPage}?status=${status}&limit=${limit}&sorting=${sorting}|"
-						th:text="다음" />
+						th:text="다음"></a>
 				</th:block>
 				<!-- 맨끝 페이지 -->
 				<th:block th:unless="${from == null or to == null}">
-					<a th:if="${totalPages != 0 and nextPage < totalPages}"
+					<a th:if="${totalPages != 1 and nextPage < totalPages}"
 						th:href="|/admin_product/payment/${totalPages}?status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|"
-						th:text="|맨끝${totalPages}|" />
+						th:text="|맨끝${totalPages}|"></a>
 				</th:block>
 				<th:block th:if="${from == null or to == null}">
-					<a th:if="${totalPages != 0 and nextPage < totalPages}"
+					<a th:if="${totalPages != 1 and nextPage < totalPages}"
 						th:href="|/admin_product/payment/${totalPages}?status=${status}&limit=${limit}&sorting=${sorting}|"
-						th:text="|맨끝${totalPages}|" />
+						th:text="|맨끝${totalPages}|"></a>
 				</th:block>
 			</td>
 		</tr>

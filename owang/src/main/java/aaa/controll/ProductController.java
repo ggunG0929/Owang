@@ -134,7 +134,7 @@ public class ProductController {
    // 주문정보 전달받음
    @RequestMapping(value = "/complete", method = RequestMethod.POST)
    @ResponseBody
-   public int paymentComplete(@RequestBody PaymentDTO payDTO, HttpSession session) throws Exception {
+   public int paymentComplete(@RequestBody PaymentDTO payDTO, HttpSession session) {
 //      System.out.println("dto: " + payDTO);
 
       // 결제정보 검증(주문정보와 금액 비교)
@@ -229,7 +229,7 @@ public class ProductController {
 
    // 결제 금액 검증까지 성공했을 때 리다이렉트
    @RequestMapping("/result/{impUid}")
-   String result(@PathVariable String impUid, Model mm, HttpSession session) throws Exception {
+   String result(@PathVariable String impUid, Model mm, HttpSession session) {
       Date date;
       if (session.getAttribute("solosession") != null) {
          SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
