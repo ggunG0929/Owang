@@ -32,7 +32,8 @@ public class ApplicantDTO {
 	// 기업
 	String cid; // 기업명
 	String cname; // 기업이름
-
+	String cemail; // 기업이메일
+	
 	// 개인
 	String sid;
 	String sname; // 개인회원

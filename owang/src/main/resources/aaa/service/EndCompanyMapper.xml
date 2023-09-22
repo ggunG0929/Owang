@@ -28,4 +28,36 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
     select count(*) from endcompany where cid = #{cid}
 </select>
 
+<!-- 탈퇴한 지원서 접수 -->
+<insert id="endappinsert" parameterType="aDTO">
+  INSERT INTO endapplicant (
+    rsid, sid, cid, sname, sbirth, sage, sgender, sphone, semail, saddress, scompanyName, scompanyFile,
+    cname,   recruit_id,recruit_title, apphoto, aptitle, apcareer, apcompany, apworkstart, apworkend,
+    apwork, apacademic, apacademicstat, apintroduce, aplicense, aplicenseorg, aplicenseyear, aplanguage,
+    aplanguagelevel, apsubmitdate, deletedate
+  )
+	values(
+    #{rsid}, #{sid}, #{cid}, #{sname}, #{sbirth}, #{sage}, #{sgender}, #{sphone}, #{semail}, #{saddress}, #{scompanyName}, #{scompanyFile},
+    #{cname},  #{recruitId},#{recruitTitle}, #{apphoto}, #{aptitle}, #{apcareer}, #{apcompany}, #{apworkstart}, #{apworkend},
+    #{apwork}, #{apacademic}, #{apacademicstat}, #{apintroduce}, #{aplicense}, #{aplicenseorg}, #{aplicenseyear}, #{aplanguage},
+    #{aplanguagelevel}, #{apsubmitdate}, NOW() ) 
+ 
+  
+</insert>
+
+<select id="endapplist" resultType="aDTO"
+		parameterType="string">
+		select * from applicant where cid = #{cid}
+</select>
+
+
+
+<insert id="endaskInsert" parameterType="askDTO">
+	insert into endask (title, pname, imp, content, upfile, reg_date, cnt, seq, lev, gid, id, deletedate)
+	values
+	(#{title},#{pname},#{imp},#{content},#{upfile}, sysdate(),0,0,0, #{id}, #{id}, sysdate())
+</insert>
+
+
+
 </mapper>

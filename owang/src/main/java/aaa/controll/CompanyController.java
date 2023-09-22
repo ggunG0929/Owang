@@ -2,26 +2,36 @@ package aaa.controll;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 
+import aaa.model.ApplicantDTO;
 import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
 import aaa.model.PaymentResponseMember;
 import aaa.model.RecruitDTO;
+import aaa.model.SoloResumeDTO;
+import aaa.service.CompanyApplicantMapper;
 import aaa.service.EndCompanyMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
 import aaa.service.RecruitMapper;
+import aaa.service.SoloApplicantMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -35,31 +45,36 @@ public class CompanyController {
 
 	@Resource
 	PayMapper paym;
+	
 	@Autowired
 	PayService payS;
 	// 기업
 	@Resource
 	MCompanyMapper cccmapper;
-
+	
 	@Resource
 	EndCompanyMapper endCompanyMapper;
+	
+	@Resource
+	CompanyApplicantMapper applicantMapper;
 
 	@RequestMapping("/list/{cid}/{page}")
-	String comRecruitList(Model mm, HttpSession session, RecruitDTO dto, @PathVariable("page") int page,
-			@PathVariable("cid") String cid) {
+	String comRecruitList(Model mm, HttpSession session,
+			RecruitDTO dto, @PathVariable("page") int page, @PathVariable("cid") String cid) {
 		String sessioncid = (String) session.getAttribute("cid");
-
-		if (sessioncid != null && sessioncid.equals(cid)) {
+	
+		
+		if (sessioncid !=null && sessioncid.equals(cid)) {
 			int self = 1;
 			mm.addAttribute("self", self);
 		}
-
+		
 		// 오늘 날짜 보기
-		Date today = new Date();
+		Date today=new Date();
 		// 데이터 상세보기
 		List<RecruitDTO> alldata = remapper.recruitCompanyDetail(dto);
 		Integer ctype = (int) cccmapper.getctype(cid);
-		for (RecruitDTO recruit : alldata) {
+		for(RecruitDTO recruit : alldata) {
 			// 공고의 회사 타입 불러오기
 			Date ccdate = recruit.realMagam;
 			if (ccdate.before(today) || ctype == 1) {
@@ -75,8 +90,8 @@ public class CompanyController {
 		closeDto.setPage(page);
 		closeDto.calc(remapper.recruitCompanyCloseCnt(cid));
 		List<RecruitDTO> closeData = remapper.recruitCompanyClose(closeDto);
-		System.out.println("start가 없니 closeDto야? : " + closeDto);
-		mm.addAttribute("endsize", remapper.recruitCompanyCloseCnt(cid));
+		System.out.println("start가 없니 closeDto야? : "+closeDto);
+		mm.addAttribute("endsize",remapper.recruitCompanyCloseCnt(cid));
 		mm.addAttribute("mainData", openData);
 		mm.addAttribute("closeData", closeData);
 		mm.addAttribute("closeDto", closeDto); // "채용 마감" 탭 페이지 정보
@@ -87,6 +102,7 @@ public class CompanyController {
 	String product(Model mm, HttpSession session) {
 		// 세션에서 id 가져옴
 		String cid = (String) session.getAttribute("cid");
+		// db에서 cdate정보 다시 가져오기
 		MCompanyDTO compinfo = cccmapper.deatilCompany(cid);
 
 		// cdate가 오늘 이후인 경우 - 유효상품이 있는 경우
@@ -152,15 +168,16 @@ public class CompanyController {
 		int cnt = cccmapper.modifffy(dto); // 메서드안의 값이 들어와서 cnt 값이 1이됌
 
 		if (cnt > 0) {
-
-			pd.setMsg("수정되었습니다. 다시로그인 부탁드립니다.");
-			pd.setGoUrl("/login/main");
-			// 세션수정
+			
+	        pd.setMsg("수정되었습니다. 다시로그인 부탁드립니다.");
+	        pd.setGoUrl("/login/main");
+	     // 세션수정
 			MCompanyDTO companysession = cccmapper.deatilaaaCompany(dto.getCid());
 			session.setAttribute("companysession", companysession);
 			session.invalidate();
-
+			
 		}
+		
 
 		return "join/join_alert";
 	}
@@ -168,7 +185,7 @@ public class CompanyController {
 	// 개인정보삭제
 
 	@GetMapping("delete")
-	String delete(HttpSession session, Model mm) {
+	String delete(HttpSession session, Model mm, ApplicantDTO adto) {
 
 		String cid = (String) session.getAttribute("cid");
 		mm.addAttribute("cid", cid);
@@ -177,19 +194,25 @@ public class CompanyController {
 	}
 
 	@PostMapping("delete")
-	String deleteReg(MCompanyDTO dto, PageData pd, HttpSession session) {
+	String deleteReg(
+			MCompanyDTO dto, PageData pd, ApplicantDTO adto,
+			HttpSession session ) {
 
 		pd.setMsg("삭제실패");
 		pd.setGoUrl("/company/delete");
-
+		
 		MCompanyDTO byedto = cccmapper.deatilCompany(dto.getCid());
-
+		List<ApplicantDTO> byeapp = endCompanyMapper.endapplist(byedto.getCid());
 		// 결제내역에 탈퇴일 추가
 		paym.endMem(dto.getCid());
 		int cnt = cccmapper.delettt(dto); // 메서드안의 값이 들어와서 cnt 값이 1이됌
 
 		if (cnt > 0) {
 			endCompanyMapper.endCompanyInsert(byedto);
+		    for (ApplicantDTO applicant : byeapp) {
+	            endCompanyMapper.endappinsert(applicant);
+	        }
+			
 			pd.setMsg("삭제되었습니다.");
 			pd.setGoUrl("/");
 			session.invalidate();

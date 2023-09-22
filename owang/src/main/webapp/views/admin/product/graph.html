@@ -44,7 +44,7 @@
 					<th>[[${sSum}]]</th>
 					<td>
 						<!-- 퍼센트 값을 계산하여 출력 -->
-						<span th:if="${totalSum != 0}" th:text="${(sSum * 100) / totalSum + '%'}"></span>
+						<span th:unless="${totalSum==0}" th:text="${(sSum * 100) / totalSum + '%'}" />
 					</td>
 				</tr>
 			</thead>
@@ -67,7 +67,7 @@
 					<th colspan="2">기업회원</th>
 					<th>[[${cSum}]]</th>
 					<td>
-						<span th:if="${totalSum != 0}" th:text="${(cSum * 100) / totalSum + '%'}"></span>
+						<span th:unless="${totalSum==0}" th:text="${(cSum * 100) / totalSum + '%'}" />
 					</td>
 				</tr>
 			</thead>
@@ -114,6 +114,7 @@
 
 		let inputSd = document.querySelector('input[name="startDate"]');
 		let inputEd = document.querySelector('input[name="endDate"]');
+		
 		// startDate 선택시 endDate는 그 이후가 선택되도록
 		document.addEventListener('DOMContentLoaded', function () {
 			inputSd.addEventListener('input', function () {
@@ -221,9 +222,11 @@
 				// 자료 첫 주의 라벨 수정
 				let firstData = groupedData[0];
 				let currentWeekStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() - startDate.getDay());
+				let currentWeekEnd = new Date();
+				currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
 				firstData.date = (currentWeekStart.getMonth() + 1) + "월 "
 					+ (Math.ceil(currentWeekStart.getDate() / 7) + 1) + "주차("
-					+ startDate.getDate() + "일~" + (currentWeekStart.getDate() + 6) + "일)";
+					+ startDate.getDate() + "일~" + (currentWeekEnd).getDate() + "일)";
 			}
 			return groupedData;
 		}
@@ -390,10 +393,10 @@
 							display: false,
 							position: 'top',
 						},
-						//						title: {
-						//							display: true,
-						//							text: '매출액 회원 비율'
-						//						},
+//						title: {
+//							display: true,
+//							text: '매출액 회원 비율'
+//						},
 						tooltip: {
 							callbacks: {
 								label: function (context) {

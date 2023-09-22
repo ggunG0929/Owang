@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import aaa.model.ApplicantDTO;
+import aaa.model.AskDTO;
 import aaa.model.MCompanyDTO;
+import aaa.model.RecruitDTO;
 import aaa.model.SoloDTO;
 
 
@@ -21,4 +24,14 @@ public interface EndCompanyMapper {
 	
 	// 기업 탈퇴 회원 
 	int endCompanycnt();
+	
+	// 탈퇴 기업 지원 내역 저장 
+	void endappinsert(ApplicantDTO dto);
+	
+	// 1:1 내역 저장
+	int endaskInsert(AskDTO dto);
+	
+	//endapplist
+	List<ApplicantDTO> endapplist(String cid); 
+	//List<RecruitDTO> recruitList(RecruitDTO dto);
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import aaa.model.RecruitDTO;
 import aaa.model.SoloDTO;
 import aaa.model.SoloResumeDTO;
 import aaa.service.MCompanyMapper;
+import aaa.service.MailService;
 import aaa.service.RecruitMapper;
 import aaa.service.SoloMapper;
 import aaa.service.SoloApplicantMapper;
@@ -32,6 +34,12 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("solo_applicant")
 public class SoloApplicantController {
 
+	
+	
+	@Autowired
+    MailService mailService;
+	
+	
 	// 개인 지원서
 	@Resource
 	SoloApplicantMapper samapper;
@@ -126,51 +134,65 @@ public class SoloApplicantController {
 	String submitReg(PageData pd, @PathVariable String cid,
 			 HttpServletRequest request, HttpSession session, ApplicantDTO adto,
 			@PathVariable int id, int rsid, Model mm) {
-		 try {
-			// 개인세션 불러오기
-			String sid = (String) session.getAttribute("sid");
-			adto.setSDTO(smapper.detailSolo(sid));
-	
-			// 기업 불러오기
-			adto.setMcDTO(mcmapper.deatilCompany(cid));
-	
-			// 이력서 불러오기
-			adto.setSrDTO(rsmapper.resumedetail(rsid, sid));
-	
-			// 공고제목
-			adto.setRcDTO(recruitMapper.recruitDetail(id));
-			
-			// adto.setRecruitTitle(r.getRecruitTitle());
-			// System.out.println("data이야 :"+ r);
-	
-			// 지원서제목
-			// adto.setAptitle(data.getRstitle());
-			
-			int Ano = adto.getAno();
-			System.out.println("Ano는 :  " + Ano );
-			
-			System.out.println("adto고요 cname이 들어옵니다 : " + adto);
-			// System.out.println(alist);
-			System.out.println("==================================");
-			samapper.appinsert(adto);
-			samapper.recnt(id);
-			pd.setMsg("접수가 완료되었습니다.");
-			pd.setGoUrl("/solo_applicant/home" + "/" + adto.getPage());
-	
-			return "solo_applicant/alert";
-		} catch (DuplicateKeyException e) {
-	        // 중복된 데이터 삽입 시 DuplicateKeyException 처리
-	        pd.setMsg("기존에 지원한 이력이 존재합니다.");
+	 try {
+		// 개인세션 불러오기
+		String sid = (String) session.getAttribute("sid");
+		adto.setSDTO(smapper.detailSolo(sid));
+		MCompanyDTO companyDTO = mcmapper.deatilCompany(cid);
+	    RecruitDTO recruitDTO = recruitMapper.recruitDetail(id);
 
-	        // 이전 페이지의 URL을 얻어옴
-	        String refererUrl = request.getHeader("Referer");
+		// 기업 불러오기
+		adto.setMcDTO(mcmapper.deatilCompany(cid));
 
-	        // 이전 페이지로 리디렉션
-	        pd.setGoUrl(refererUrl);
+		// 이력서 불러오기
+		adto.setSrDTO(rsmapper.resumedetail(rsid, sid));
 
-	        return "solo_applicant/alert";
-	    }
-	}
+		// 공고제목
+		adto.setRcDTO(recruitMapper.recruitDetail(id));
+
+		// 이메일 삽입
+		adto.setCemail(companyDTO.getCemail());
+		
+		// 공고 제목
+		adto.setRecruitTitle(recruitDTO.getRecruitTitle());
+
+		// 기업 이메일
+		System.out.println("모니: " + adto.getCemail());
+        // 이메일 관련 변수 설정
+        String toEmail = adto.getCemail(); // 받는 사람 이메일 주소를 동적으로 설정
+        String subject = "[오왕] 신규지원자 알림"; // 이메일 제목을 동적으로 설정
+        String text = "공고 제목 : " + adto.getRecruitTitle() + "\n\n 신규 지원자가 존재합니다! \n\n오왕 홈페이지에서 지원자의 이력서를 열람해주세요 :)"; // 이메일 내용을 동적으로 설정
+
+        // 이메일 보내기
+
+        int Ano = adto.getAno();
+        System.out.println("Ano는 :  " + Ano );
+
+        System.out.println("adto고요 cname이 들어옵니다 : " + adto);
+        // System.println(alist);
+        System.out.println("==================================");
+        samapper.appinsert(adto);
+        samapper.recnt(id);
+        mailService.sendEmail("ajh1070337@naver.com", toEmail, subject, text);
+
+        pd.setMsg("접수가 완료되었습니다.");
+        pd.setGoUrl("/solo_applicant/home" + "/" + adto.getPage());
+
+        return "solo_applicant/alert";
+    } catch (DuplicateKeyException e) {
+        // 중복된 데이터 삽입 시 DuplicateKeyException 처리
+        pd.setMsg("기존에 지원한 이력이 존재합니다.");
+
+        // 이전 페이지의 URL을 얻어옴
+        String refererUrl = request.getHeader("Referer");
+
+        // 이전 페이지로 리디렉션
+        pd.setGoUrl(refererUrl);
+
+        return "solo_applicant/alert";
+    }
+}
+	
 	// 개인회원 지원 취소
 	@RequestMapping("modify/{page}/{ano}")
 	String com_recruit_modify(ApplicantDTO adto, PageData pd, HttpServletRequest request

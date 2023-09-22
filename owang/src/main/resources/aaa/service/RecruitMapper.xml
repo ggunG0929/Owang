@@ -41,12 +41,8 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</select>
 
 	<select id="recruitCnt" resultType="Integer">
-		<!-- select count(*) from recruit where cid=#{cid} -->
-	    select count(*) from recruit where cid = #{cid}
-	    and (#{cdate} is null or #{cdate} &lt;= now())
-	    and (realMagam is null or realMagam &lt;= now())
+		select count(*) from recruit where cid=#{cid}
 	</select>
-	
 	<update id="updateRtype" parameterType="recruitDTO">
 		update recruit set
 		rtype=#{rtype} where recruit_id = #{recruitId}
@@ -58,7 +54,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	</update>
 
 	<select id="recruitDetail">
-		select * from recruit where recruit_id = #{recruit_id}
+		select * from recruit where recruit_id = #{recruitId}
 	</select>
 
 	<!--select * from recruit where cid = #{cid} order by reg_date desc limit 
@@ -153,6 +149,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	    SET rtype = 1
 	    WHERE cid = #{cid}
 	</update>
-
+	<select id="recruitRegCnt" resultType="Integer">
+		select count(*) from recruit
+		where reg_date = #{date}
+	</select>
 
 </mapper>

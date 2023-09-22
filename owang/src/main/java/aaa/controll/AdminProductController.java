@@ -53,14 +53,14 @@ public class AdminProductController {
 		mm.addAttribute("ProductDTO", new ProductDTO());
 		return "admin/product/modify";
 	}
-
+	// 상품추가
 	@PostMapping("/insertProduct")
 	public String addProduct(@ModelAttribute ProductDTO productDTO) {
-		// DTO 정보를 db에 저장(상품추가)
+		// DTO에 담긴 정보를 db에 저장(상품추가)
 		pm.insert(productDTO);
 		return "redirect:/admin_product/modify"; // 목록 페이지로 리다이렉트(새로고침)
 	}
-
+	// 상품삭제
 	@RequestMapping("/deleteProduct")
 	public String deleteProduct(@RequestParam("productId") String productId) {
 		// 파라미터로 전달받은 상품 id를 통해 db 삭제(상품삭제)
@@ -75,25 +75,33 @@ public class AdminProductController {
 
 	// 결제정산
 	@RequestMapping("/graph")
-	String admin_product_graph(Model mm, @RequestParam(value = "startDate", required = false) String startDate,
+	String admin_product_graph(Model mm, 
+			@RequestParam(value = "startDate", required = false) String startDate,
 			@RequestParam(value = "endDate", required = false) String endDate) {
-
-		// 오늘날짜(날짜 선택시 오늘 이후 날짜는 선택 불가하도록-string으로)
+		
+		// 오늘날짜(날짜 선택시 Max값 목적) string으로 변환해서 html로 보내줌
 		String today = payS.dateformat(new Date());
-		// 날짜비교를 위해 date로 변환
-		Date dateStartDate = payS.stringToDate(startDate);
-		Date dateEndDate = payS.stringToDate(endDate);
+		
+		Date dateStartDate = null;
+		Date dateEndDate = null;
+		// 날짜 입력한 경우
 		if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
-			// 시작일이 종료일보다 전인 경우 혹은 같은 경우
-			if (dateStartDate.before(dateEndDate) || dateStartDate.equals(dateEndDate)) {
-			} else {
+			// 날짜비교를 위해 date로 변환
+			dateStartDate = payS.stringToDate(startDate);
+			dateEndDate = payS.stringToDate(endDate);
+			// 시작일이 종료일보다 후인 경우 - 예외처리
+			if (dateStartDate.after(dateEndDate)) {
 				String errorMsg = "기간을 확인하세요 \n이전으로 돌아갑니다";
 				mm.addAttribute("errorMsg", errorMsg);
-				startDate = null;
-				endDate = null;
 			}
+		// 날짜 미입력한 경우
+		} else {
+			startDate = "2022-09-01";
+			endDate = today;
+			// date변수가 null인 경우 db 첫날부터 마지막날까지 데이터를 표시함
+			// 따로 시작일과 종료일 초기값을 date로 형변환하지 않아도 됨
 		}
-
+		
 		// 그래프 데이타
 		// db에서 일매출 합산
 		List<Map<String, Object>> dailytotal = paym.dailytotal(dateStartDate, dateEndDate);
@@ -115,6 +123,9 @@ public class AdminProductController {
 		int cSum = mapSum(totalbyc, "total");
 		int pSum = mapSum(totalbyp, "total");
 
+		mm.addAttribute("today", today);
+		mm.addAttribute("startDate", startDate);
+		mm.addAttribute("endDate", endDate);
 		mm.addAttribute("graphData", dailytotal);
 		mm.addAttribute("slist", totalbys);
 		mm.addAttribute("clist", totalbyc);
@@ -123,19 +134,14 @@ public class AdminProductController {
 		mm.addAttribute("sSum", sSum);
 		mm.addAttribute("cSum", cSum);
 		mm.addAttribute("pSum", pSum);
-		mm.addAttribute("today", today);
-		mm.addAttribute("startDate", startDate);
-		mm.addAttribute("endDate", endDate);
 
 		return "admin/product/graph";
 	}
-
 	// 맵리스트에서 키 값들을 합하는 메서드
 	public int mapSum(List<Map<String, Object>> list, String key) {
 		return list.stream().mapToInt(entry -> ((BigDecimal) entry.get(key)).intValue()).sum();
 	}
 
-	
 	// 전체 매출내역
 	@RequestMapping("/payment/{page}")
 	public String getPayments(Model mm, @PathVariable(required = false) int page,
@@ -144,8 +150,6 @@ public class AdminProductController {
 			@RequestParam(value = "from", required = false) String from,
 			@RequestParam(value = "to", required = false) String to,
 			@RequestParam(value = "sorting", defaultValue = "-updated") String sorting) {
-		System.out.println("컨트롤러 진입");
-		
 		// 날짜 변환
 		String today = payS.dateformat(new Date());
 		String range = "";
@@ -154,7 +158,7 @@ public class AdminProductController {
 			long fromunix = payS.stringToUnix(from);
 			// 날짜의 전날까지의 결과만 나와서 to에 하루를 더해줌
 			long tounix = payS.stringToUnix(to) + 24 * 60 * 60; // 24시간 * 60분 * 60초
-			if (fromunix < tounix) {
+			if (fromunix <= tounix) {
 				range = "&from=" + fromunix + "&to=" + tounix;
 			} else {
 				String errorMsg = "기간을 확인하세요 \n이전으로 돌아갑니다";
@@ -172,24 +176,22 @@ public class AdminProductController {
 		RestTemplate restTemplate = new RestTemplate();
 		// PaymentResponse 형태로 정보받음
 		ResponseEntity<PaymentResponseAll> responseEntity = restTemplate.getForEntity(apiUrl, PaymentResponseAll.class);
-		System.out.println("응답코드 : " + responseEntity.getBody().getCode());
 		if (responseEntity.getBody().getCode() != 0) {
+			System.out.println("응답코드 : " + responseEntity.getBody().getCode());
 			System.out.println("메시지 : " + responseEntity.getBody().getMessage());
 			mm.addAttribute("errorMsg", responseEntity.getBody().getMessage());
-		}
-//		} else {
-
+		} else {
 			// 페이지처리
 			int total = responseEntity.getBody().getResponse().getTotal();
 			int totalPages = (int) Math.ceil((double) total / limit);
-			System.out.println("page "+page+" totalPages "+totalPages);
-			if(page > totalPages) {
+			System.out.println("page " + page + " totalPages " + totalPages);
+			if (page > totalPages) {
 				page = 1;
 				String errorMsg = "오류가 발생했습니다 \n이전으로 돌아갑니다";
 				mm.addAttribute("errorMsg", errorMsg);
 			}
 			System.out.println("page" + page);
-	//    System.out.println(responseEntity);
+			// System.out.println(responseEntity);
 			// 앞뒤로 몇페이지씩 보일건지
 			int ranged = 2;
 			// 둘 중에 큰 숫자
@@ -200,7 +202,7 @@ public class AdminProductController {
 			int prevPage = Math.max(1, page - ranged - 1);
 			// 다음버튼 눌렀을 때의 페이지
 			int nextPage = Math.min(totalPages, page + ranged + 1);
-			
+
 			List<PaymentAll> paymentData = responseEntity.getBody().getResponse().getList();
 
 			for (PaymentResponseAll.PaymentAll payment : paymentData) {
@@ -242,7 +244,7 @@ public class AdminProductController {
 			mm.addAttribute("prevPage", prevPage);
 			mm.addAttribute("nextPage", nextPage);
 			mm.addAttribute("totalPages", totalPages);
-//		}
+		}
 		return "admin/product/payment_list";
 	}
 
@@ -291,7 +293,6 @@ public class AdminProductController {
 			// db 수정
 			if (compinfo.getCtype() == 2 && cdate != null && cdate.before(today)) { //
 				compinfo.setCtype(1);
-				// cdate를 null로
 				mcm.logincmember(compinfo);
 			} else {
 				mcm.paycmember(compinfo);
@@ -310,6 +311,7 @@ public class AdminProductController {
 				soloinfo.setStype(1);
 				sm.loginsmember(soloinfo);
 			} else {
+
 				sm.paysmember(soloinfo);
 			}
 		}
@@ -318,5 +320,10 @@ public class AdminProductController {
 		payS.paymentCancel(token, impUid, "취소사유: 관리자에 의한 취소");
 		paym.payCancel(impUid);
 		return "redirect:/admin_product/payment/detail/" + impUid;
+	}
+
+	@RequestMapping("/index")
+	String index(Model mm) {
+		return "admin/product/index";
 	}
 }

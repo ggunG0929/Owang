@@ -4,11 +4,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>상품안내 및 신청</title>
-	<style>
-ul {
-    list-style: none;
-}
-	</style>
 </head>
 
 <body>
@@ -30,7 +25,7 @@ ul {
 			});
 		});
 	</script>
-	<!--<th:block th:insert="~{header :: header}" />-->
+	<th:block th:insert="~{header :: header}" />
 	<table border="">
 		<tr>
 			<td></td>
@@ -55,25 +50,6 @@ ul {
 			</td>
 		</tr>
 	</table>
-	<div class="cookie_menu v2 event_info" style="height: 100%">
-		<ul th:each="dto2 : ${data}" align="center" th:if="${dto2.productClient == '기업'}">
-			<li>
-				<dl>
-					<dt th:text="${dto2.productName}"></dt>
-					<dd><a href="#"><span><strong th:text="${dto2.productPrice}">100</strong>원</span></a></dd>
-				</dl>
-			</li>
-		</ul>
-		<ul th:each="dto2 : ${data}" align="center" th:if="${dto2.productClient == '개인'}">
-			<li>
-				<dl>
-					<dt th:text="${dto2.productName}"></dt>
-					<dd><a href="#"><span><strong th:text="${dto2.productPrice}">100</strong>원</span></a></dd>
-				</dl>
-			</li>
-		</ul>
-	</div>
-	  
 </body>
 
 </html>

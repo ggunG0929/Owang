@@ -17,7 +17,7 @@ import lombok.Data;
 public class RecruitDTO {
 	// 만들고보니 등록일 마감일 필요 일단 진행
 	
-	int recruitId, start, limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
+	int recruitId, start, limit = 10, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
 	int rtype;
 	public String recruitTitle, recruitName, recruitUpfile, recruitContent, cid, cname;
 	String recruitMtype; //월급

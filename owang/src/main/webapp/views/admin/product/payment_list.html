@@ -125,7 +125,7 @@
 						<a th:unless="${i == page or i == 0}"
 							th:href="|/admin_product/payment/${i}?status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|"
 							th:text="${i}" />
-					</th:block>		
+					</th:block>
 					<th:block th:if="${from == null or to == null}">
 						<a th:unless="${i == page or i == 0}"
 							th:href="|/admin_product/payment/${i}?status=${status}&limit=${limit}&sorting=${sorting}|"
@@ -152,7 +152,7 @@
 				<th:block th:if="${from == null or to == null}">
 					<a th:if="${totalPages != 0 and nextPage < totalPages}"
 						th:href="|/admin_product/payment/${totalPages}?status=${status}&limit=${limit}&sorting=${sorting}|"
-						th:text="|맨끝${totalPages}|" />
+						th:text="|맨끝${totalPages}|" /a>
 				</th:block>
 			</td>
 		</tr>

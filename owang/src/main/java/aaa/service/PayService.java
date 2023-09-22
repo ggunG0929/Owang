@@ -5,11 +5,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,6 +21,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -118,9 +117,6 @@ public class PayService {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -132,10 +128,7 @@ public class PayService {
 		String response = null;
 		try {
 			response = gson.fromJson(br.readLine(), Map.class).get("response").toString();
-		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (JsonSyntaxException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -162,18 +155,21 @@ public class PayService {
 		try {
 			url = new URL("https://api.iamport.kr/payments/" + imp_uid);
 		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// url 정보를 바탕으로 원격서버 통신을 위한 연결 오픈
 		try {
 			conn = (HttpsURLConnection) url.openConnection();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		try {
 			conn.setRequestMethod("GET");
 		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		conn.setRequestProperty("Authorization", access_token);
@@ -182,9 +178,8 @@ public class PayService {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -193,9 +188,8 @@ public class PayService {
 		JSONObject p = null;
 		try {
 			p = (JSONObject) parser.parse(br.readLine());
-		} catch (org.json.simple.parser.ParseException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (ParseException | IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -203,7 +197,8 @@ public class PayService {
 
 		try {
 			p = (JSONObject) parser.parse(response);
-		} catch (org.json.simple.parser.ParseException e) {
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -278,9 +273,6 @@ public class PayService {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -368,28 +360,25 @@ public class PayService {
 		return "0";
 	}
 
-	// 포맷팅된 형태(yyyy-MM-dd)의 String을 Unix타임스탬프로
-	public Long stringToUnix(String date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date datedDate = null;
-		try {
-			datedDate = sdf.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		// Date 객체를 Unix타임스탬프로 변환
-		long unixDate = datedDate.getTime() / 1000;
-		return unixDate;
-	}
 	// 포맷팅된 형태(yyyy-MM-dd)의 String을 date로
 	public Date stringToDate(String date) {		
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateDate = null; // 변수를 먼저 선언
-        try {
-            dateDate = sdf.parse(date); // 변수에 값을 할당
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return dateDate;
+        Date datedDate = null; // 변수를 먼저 선언
+            try {
+				datedDate = sdf.parse(date);
+			} catch (java.text.ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} // 변수에 값을 할당
+
+        return datedDate;
+	}
+	
+	// 포맷팅된 형태(yyyy-MM-dd)의 String을 Unix타임스탬프로
+	public Long stringToUnix(String date) {
+		Date datedDate = stringToDate(date);
+		// Date 객체를 Unix타임스탬프로 변환
+		long unixDate = datedDate.getTime() / 1000;
+		return unixDate;
 	}
 }

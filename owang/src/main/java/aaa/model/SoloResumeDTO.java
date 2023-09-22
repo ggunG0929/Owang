@@ -47,6 +47,7 @@ public class SoloResumeDTO {
 	
 	Date rsregdate;
 	Date rsmoddate; // 글 수정일 
+	Date deletedate;
 	
 	int cnt; // 총 이력서 개 수
 	

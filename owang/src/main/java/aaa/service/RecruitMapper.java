@@ -62,4 +62,7 @@ public interface RecruitMapper {
 	
 	// 결제시 일률적으로 채용rtype 바꿔줌
 	 void payRTypeByCid(String cid);
+	 
+	 // 날짜별 시작되는 공고 개수
+	 int recruitRegCnt(Date date);
 }

@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+   <meta charset="UTF-8">
+   <title>Insert title here</title>
 </head>
+
 <body>
-	<th:block th:replace="~{admin/adheader}"/>
-<a href="/admin_company/cRegList/1" target="cList" style="float: left;">인증</a>
-<a href="/admin_company/cMiList/1" target="cList" style="display: block; margin: 20px; padding-left: 20px;">미인증</a>
+   <container id="container">
+      <th:block th:replace="~{admin/adheader}" />
+      <div class="main">
+         <a href="/admin_company/cRegList/1" target="cList">인증</a>
+         <a href="/admin_company/cMiList/1" target="cList"
+            style="display: block; margin: 20px; padding-left: 20px;">미인증</a>
 
-<iframe src="/admin_company/cRegList/1" frameborder="1" width="1200px" height="600px" name="cList"> 
-	</iframe>
-	
+         <iframe src="/admin_company/cRegList/1" frameborder="1" width="1200px" height="600px" name="cList">
+         </iframe>
 
-<script>
-    // 인증 링크를 클릭했을 때
-    document.querySelector('a[href="/admin_company/cRegList"]').addEventListener('click', function() {
-        // iframe의 src 속성을 변경하여 인증 페이지를 로드합니다.
-        document.querySelector('iframe[name="cList"]').src = "/admin_company/cRegList";
-    });
 
-    // 미인증 링크를 클릭했을 때
-    document.querySelector('a[href="/admin_company/cMiList"]').addEventListener('click', function() {
-        // iframe의 src 속성을 변경하여 미인증 페이지를 로드합니다.
-        document.querySelector('iframe[name="cList"]').src = "/admin_company/cMiList";
-    });
-</script>
+         <script>
+            // 인증 링크를 클릭했을 때
+            document.querySelector('a[href="/admin_company/cRegList"]').addEventListener('click', function () {
+               // iframe의 src 속성을 변경하여 인증 페이지를 로드합니다.
+               document.querySelector('iframe[name="cList"]').src = "/admin_company/cRegList";
+            });
 
-	
-	
+            // 미인증 링크를 클릭했을 때
+            document.querySelector('a[href="/admin_company/cMiList"]').addEventListener('click', function () {
+               // iframe의 src 속성을 변경하여 미인증 페이지를 로드합니다.
+               document.querySelector('iframe[name="cList"]').src = "/admin_company/cMiList";
+            });
+         </script>
+      </div>
+
+   </container>
+
 </body>
+
 </html>

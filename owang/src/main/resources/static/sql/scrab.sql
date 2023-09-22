@@ -8,6 +8,3 @@ CREATE TABLE scrab (
     recruit_title VARCHAR(100),
     scrabdate TIMESTAMP
 );
-
-select * from scrab;
-
