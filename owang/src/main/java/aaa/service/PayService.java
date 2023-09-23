@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -216,21 +217,18 @@ public class PayService {
 		try {
 			url = new URL("https://api.iamport.kr/payments/cancel");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		try {
 			conn = (HttpsURLConnection) url.openConnection();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		try {
 			conn.setRequestMethod("POST");
 		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		conn.setRequestProperty("Content-type", "application/json");
@@ -247,26 +245,22 @@ public class PayService {
 		try {
 			bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		try {
 			bw.write(json.toString());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			bw.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -274,13 +268,11 @@ public class PayService {
 		try {
 			br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		conn.disconnect();
@@ -380,5 +372,14 @@ public class PayService {
 		// Date 객체를 Unix타임스탬프로 변환
 		long unixDate = datedDate.getTime() / 1000;
 		return unixDate;
+	}
+	
+	// 유효기간 변경
+	public Date dateAddValid(Date date, int valid) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DATE, valid);
+		Date mdate = calendar.getTime();
+		return mdate;
 	}
 }

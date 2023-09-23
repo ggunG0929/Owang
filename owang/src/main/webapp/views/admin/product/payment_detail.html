@@ -4,12 +4,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>매출 내역 상세</title>
-	<script>
-		function confirmCancellation() {
+	<script th:inline="javascript">
+		function confirmCancel() {
 			var confirmed = confirm("정말 결제를 취소하시겠습니까?");
-			if (confirmed) {
-				document.getElementById('cancelForm').submit();
-			}
+		    return confirmed;
+	    }
+
+		var msg = /*[[${param.alert}]]*/ null;
+		if (msg !== null) {
+			alert("결제가 취소되었습니다");
 		}
 	</script>
 </head>
@@ -83,7 +86,7 @@
 					<td th:text="${paymentData[0].cancelled_at}"></td>
 				</th:block>
 				<th:block th:if="${paymentData[0].cancelled_at == '0' and paymentData[0].failed_at == '0'}">
-					<form action="/admin_product/payment/cancle" id="cancelForm" method="post">
+					<form action="/admin_product/payment/cancle" id="cancelForm" method="post" onsubmit="return confirmCancel()">
 						<input type="hidden" name="id" th:value="${paymentData[0].id}" />
 						<input type="hidden" name="impUid" th:value="${paymentData[0].imp_uid}" />
 						<input type="hidden" name="name" th:value="${paymentData[0].name}" />

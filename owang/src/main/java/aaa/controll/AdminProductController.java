@@ -2,7 +2,6 @@ package aaa.controll;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
-import org.thymeleaf.util.StringUtils;
 
 import aaa.model.MCompanyDTO;
 import aaa.model.PaymentResponseAll;
@@ -126,10 +124,12 @@ public class AdminProductController {
 		mm.addAttribute("today", today);
 		mm.addAttribute("startDate", startDate);
 		mm.addAttribute("endDate", endDate);
+		
 		mm.addAttribute("graphData", dailytotal);
 		mm.addAttribute("slist", totalbys);
 		mm.addAttribute("clist", totalbyc);
 		mm.addAttribute("plist", totalbyp);
+		
 		mm.addAttribute("totalSum", totalSum);
 		mm.addAttribute("sSum", sSum);
 		mm.addAttribute("cSum", cSum);
@@ -142,6 +142,7 @@ public class AdminProductController {
 		return list.stream().mapToInt(entry -> ((BigDecimal) entry.get(key)).intValue()).sum();
 	}
 
+	
 	// 전체 매출내역
 	@RequestMapping("/payment/{page}")
 	public String getPayments(Model mm, @PathVariable(required = false) int page,
@@ -153,10 +154,10 @@ public class AdminProductController {
 		// 날짜 변환
 		String today = payS.dateformat(new Date());
 		String range = "";
-		if (!StringUtils.isEmpty(from) && !StringUtils.isEmpty(to)) {
+		if (from != null && !from.isEmpty() && to != null && !to.isEmpty()) {
 			// Unix타임스탬프로 변환
 			long fromunix = payS.stringToUnix(from);
-			// 날짜의 전날까지의 결과만 나와서 to에 하루를 더해줌
+			// to가 날짜의 0시까지의 결과만 나와서 하루를 더해줌
 			long tounix = payS.stringToUnix(to) + 24 * 60 * 60; // 24시간 * 60분 * 60초
 			if (fromunix <= tounix) {
 				range = "&from=" + fromunix + "&to=" + tounix;
@@ -176,22 +177,21 @@ public class AdminProductController {
 		RestTemplate restTemplate = new RestTemplate();
 		// PaymentResponse 형태로 정보받음
 		ResponseEntity<PaymentResponseAll> responseEntity = restTemplate.getForEntity(apiUrl, PaymentResponseAll.class);
-		if (responseEntity.getBody().getCode() != 0) {
-			System.out.println("응답코드 : " + responseEntity.getBody().getCode());
-			System.out.println("메시지 : " + responseEntity.getBody().getMessage());
-			mm.addAttribute("errorMsg", responseEntity.getBody().getMessage());
+		PaymentResponseAll responseBody = responseEntity.getBody();
+		if (responseBody.getCode() != 0 || responseBody.getResponse() == null) {
+			System.out.println("응답코드 : " + responseBody.getCode());
+			System.out.println("메시지 : " + responseBody.getMessage());
+			mm.addAttribute("errorMsg", responseBody.getMessage());
 		} else {
-			// 페이지처리
-			int total = responseEntity.getBody().getResponse().getTotal();
+			// 받아온 정보로 페이지처리
+			int total = responseBody.getResponse().getTotal();
 			int totalPages = (int) Math.ceil((double) total / limit);
 			System.out.println("page " + page + " totalPages " + totalPages);
-			if (page > totalPages) {
-				page = 1;
-				String errorMsg = "오류가 발생했습니다 \n이전으로 돌아갑니다";
-				mm.addAttribute("errorMsg", errorMsg);
-			}
-			System.out.println("page" + page);
-			// System.out.println(responseEntity);
+			// 처리가 안됨. 이전에 터지니까 - html에서 처리하기
+//			if(page > totalPages) {
+//				page = 1;
+//			}
+
 			// 앞뒤로 몇페이지씩 보일건지
 			int ranged = 2;
 			// 둘 중에 큰 숫자
@@ -203,10 +203,10 @@ public class AdminProductController {
 			// 다음버튼 눌렀을 때의 페이지
 			int nextPage = Math.min(totalPages, page + ranged + 1);
 
-			List<PaymentAll> paymentData = responseEntity.getBody().getResponse().getList();
+			List<PaymentAll> paymentData = responseBody.getResponse().getList();
 
 			for (PaymentResponseAll.PaymentAll payment : paymentData) {
-				// imp_uid로 db정보 검색해서 id 가져옴
+				// imp_uid로 db정보 검색해서 id 가져옴, 탈퇴회원의 경우 표시
 				String id = paym.idget(payment.getImp_uid());
 				if (id != null && paym.isEndMem(id)) {
 					id += "(탈퇴)";
@@ -231,24 +231,25 @@ public class AdminProductController {
 			}
 
 			mm.addAttribute("page", page);
-			mm.addAttribute("paymentData", paymentData);
 			mm.addAttribute("status", status);
 			mm.addAttribute("limit", limit);
 			mm.addAttribute("from", from);
 			mm.addAttribute("to", to);
 			mm.addAttribute("sorting", sorting);
-			mm.addAttribute("today", today);
 
+			mm.addAttribute("today", today);
+			mm.addAttribute("totalPages", totalPages);
 			mm.addAttribute("startPage", startPage);
 			mm.addAttribute("endPage", endPage);
 			mm.addAttribute("prevPage", prevPage);
 			mm.addAttribute("nextPage", nextPage);
-			mm.addAttribute("totalPages", totalPages);
+			
+			mm.addAttribute("paymentData", paymentData);
 		}
 		return "admin/product/payment_list";
 	}
 
-	// 매출내역상세
+	// 매출내역상세(단건 조회)
 	@RequestMapping("/payment/detail/{impuid}")
 	String paymentByImpuid(Model mm, @PathVariable String impuid) {
 		// impuid를 List에 추가
@@ -266,60 +267,72 @@ public class AdminProductController {
 
 	// 결제취소
 	@RequestMapping("/payment/cancle")
-	String paymentCancle(@RequestParam("impUid") String impUid, @RequestParam("id") String id,
-			@RequestParam("name") String name) {
-		// 유효기간 추출
-		int valid = 0;
-		// 상품명에서 숫자추출
-		Pattern pattern = Pattern.compile("\\d+");
-		Matcher matcher = pattern.matcher(name);
+	String paymentCancle(
+			@RequestParam("impUid") String impUid, 
+			@RequestParam("id") String id,
+			@RequestParam("name") String pname) {
+		// 취소진행
+		String token = payS.getToken();
+		payS.paymentCancel(token, impUid, "취소사유: 관리자에 의한 취소");
+		paym.payCancel(impUid);
+		
+		// db변경
+		// 유효기간: 상품명에서 숫자 추출, 없으면 0일
 		Date today = new Date();
+		int valid = 0;
+		Pattern pattern = Pattern.compile("\\d+");
+		Matcher matcher = pattern.matcher(pname);
 		if (matcher.find()) {
 			String num = matcher.group();
 			valid = Integer.parseInt(num);
 		}
+		// 유효기간, 타입 변경
 		// 상품명으로 기업회원인지 개인회원인지
-		if (name.contains("채용")) {
+		if (pname.contains("채용")) {
 			// 기업회원
-			// DTO 불러오기
-			MCompanyDTO compinfo = mcm.deatilaaaCompany(id);
-			// 유효기간 변경
-			Date cdate = compinfo.getCdate();
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(cdate);
-			calendar.add(Calendar.DATE, -valid);
-			cdate = calendar.getTime();
-			compinfo.setCdate(cdate);
-			// db 수정
-			if (compinfo.getCtype() == 2 && cdate != null && cdate.before(today)) { //
-				compinfo.setCtype(1);
-				mcm.logincmember(compinfo);
-			} else {
+			// 모든 정보 불러오기
+			MCompanyDTO compinfo = mcm.deatilCompany(id);
+			if(compinfo!=null) {
+				// 유효기간 확인
+				Date cdate = compinfo.getCdate();
+				// 결제취소 기업회원이 cdate가 없을 확률은 없지만 그래도
+				if(cdate != null) {
+					// 취소결제의 유효기간을 뺌
+					Date mcdate = payS.dateAddValid(cdate, -valid);
+					// cdate 변경
+					compinfo.setCdate(mcdate);
+					// ctype이 2(결제유효회원)이고, 변경된 유효기간이 오늘 이전이라면
+					if (compinfo.getCtype() == 2 && mcdate.before(today)) { //
+						// ctype 변경
+						compinfo.setCtype(1);
+					}
+				}
+				// 변경된 cdate와 ctype을 db에 저장
 				mcm.paycmember(compinfo);
 			}
 
 		} else {
 			// 개인회원
 			SoloDTO soloinfo = sm.detailSolo(id);
-			Date sdate = soloinfo.getSdate();
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(sdate);
-			calendar.add(Calendar.DATE, -valid);
-			sdate = calendar.getTime();
-			soloinfo.setSdate(sdate);
-			if (soloinfo.getStype() == 2 && sdate != null && sdate.before(today)) { //
-				soloinfo.setStype(1);
-				sm.loginsmember(soloinfo);
-			} else {
-
-				sm.paysmember(soloinfo);
+			if(soloinfo != null) {
+				Date sdate = soloinfo.getSdate();
+				// 리뷰를 쓰지않은 결제회원
+				if(sdate != null) {			
+					Date msdate = payS.dateAddValid(sdate, -valid);
+					// sdate 변경
+					soloinfo.setSdate(msdate);
+					// stype이 2(결제유효회원)이고, 변경된 유효기간이 오늘 이전이라면
+					if (soloinfo.getStype() == 2 && msdate.before(today)) {
+						// stype 변경
+						soloinfo.setStype(1);
+					}
+					// 변경된 sdate와 stype을 db에 저장
+					sm.paysmember(soloinfo);				
+				}
+			// 리뷰를 쓴 결제회원 - db변경 없음
 			}
 		}
-		// 취소진행
-		String token = payS.getToken();
-		payS.paymentCancel(token, impUid, "취소사유: 관리자에 의한 취소");
-		paym.payCancel(impUid);
-		return "redirect:/admin_product/payment/detail/" + impUid;
+		return "redirect:/admin_product/payment/detail/" + impUid + "?alert";
 	}
 
 	@RequestMapping("/index")
