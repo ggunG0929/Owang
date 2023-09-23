@@ -11,10 +11,10 @@ import aaa.model.PaymentDTO;
 @Mapper
 public interface PayMapper {
 
-	// 리스트보기
+	// 결제목록보기
 	List<PaymentDTO> list();
 
-	// 결제내역보기
+	// 결제상세보기
 	PaymentDTO detail(String impUid);
 
 	// 결제내역생성
@@ -22,13 +22,14 @@ public interface PayMapper {
 
 //	// 결제내역삭제
 //	int delete(PaymentDTO dto);
-	// 결제내역수정
+
+	// 결제취소시 금액 0으로 수정하기
 	void payCancel(String impUid);
 
-	// 아임포트고유번호로 db에서 아이디 가져오기
+	// 아임포트고유번호로 db에서 아이디 찾기
 	String idget(String impUid);
 
-	// id로 impuid리스트
+	// id로 impuid리스트 가져오기
 	List<String> impuids(String id);
 
 	// 일별 매출액
@@ -42,10 +43,10 @@ public interface PayMapper {
 	// 상품별 매출액
 	List<Map<String, Object>> totalbyp(Date startDate, Date endDate);
 
-	// 탈퇴멤 탈퇴일 추가
+	// 탈퇴회원 내역에 탈퇴일 추가
 	int endMem(String id);
 
-	// id로 탈퇴멤인지 확인
+	// id로 탈퇴회원인지 확인
 	boolean isEndMem(String id);
 
 }

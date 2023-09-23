@@ -3,7 +3,6 @@ package aaa.controll;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -23,8 +22,8 @@ import org.springframework.web.client.RestTemplate;
 
 import aaa.model.MCompanyDTO;
 import aaa.model.PaymentResponseAll;
-import aaa.model.PaymentResponseMember;
-import aaa.model.PaymentResponseAll.PaymentAll;
+import aaa.model.PaymentResponseAll.Pagedpayment;
+import aaa.model.PaymentResponseMember.Payment;
 import aaa.model.ProductDTO;
 import aaa.model.SoloDTO;
 import aaa.service.MCompanyMapper;
@@ -51,6 +50,7 @@ public class AdminProductController {
 		mm.addAttribute("ProductDTO", new ProductDTO());
 		return "admin/product/modify";
 	}
+
 	// 상품추가
 	@PostMapping("/insertProduct")
 	public String addProduct(@ModelAttribute ProductDTO productDTO) {
@@ -58,6 +58,7 @@ public class AdminProductController {
 		pm.insert(productDTO);
 		return "redirect:/admin_product/modify"; // 목록 페이지로 리다이렉트(새로고침)
 	}
+
 	// 상품삭제
 	@RequestMapping("/deleteProduct")
 	public String deleteProduct(@RequestParam("productId") String productId) {
@@ -73,13 +74,12 @@ public class AdminProductController {
 
 	// 결제정산
 	@RequestMapping("/graph")
-	String admin_product_graph(Model mm, 
-			@RequestParam(value = "startDate", required = false) String startDate,
+	String admin_product_graph(Model mm, @RequestParam(value = "startDate", required = false) String startDate,
 			@RequestParam(value = "endDate", required = false) String endDate) {
-		
+
 		// 오늘날짜(날짜 선택시 Max값 목적) string으로 변환해서 html로 보내줌
 		String today = payS.dateformat(new Date());
-		
+
 		Date dateStartDate = null;
 		Date dateEndDate = null;
 		// 날짜 입력한 경우
@@ -89,17 +89,17 @@ public class AdminProductController {
 			dateEndDate = payS.stringToDate(endDate);
 			// 시작일이 종료일보다 후인 경우 - 예외처리
 			if (dateStartDate.after(dateEndDate)) {
-				String errorMsg = "기간을 확인하세요 \n이전으로 돌아갑니다";
+				String errorMsg = "기간을 확인하세요";
 				mm.addAttribute("errorMsg", errorMsg);
 			}
-		// 날짜 미입력한 경우
+			// 날짜 미입력한 경우
 		} else {
 			startDate = "2022-09-01";
 			endDate = today;
 			// date변수가 null인 경우 db 첫날부터 마지막날까지 데이터를 표시함
 			// 따로 시작일과 종료일 초기값을 date로 형변환하지 않아도 됨
 		}
-		
+
 		// 그래프 데이타
 		// db에서 일매출 합산
 		List<Map<String, Object>> dailytotal = paym.dailytotal(dateStartDate, dateEndDate);
@@ -124,12 +124,12 @@ public class AdminProductController {
 		mm.addAttribute("today", today);
 		mm.addAttribute("startDate", startDate);
 		mm.addAttribute("endDate", endDate);
-		
+
 		mm.addAttribute("graphData", dailytotal);
 		mm.addAttribute("slist", totalbys);
 		mm.addAttribute("clist", totalbyc);
 		mm.addAttribute("plist", totalbyp);
-		
+
 		mm.addAttribute("totalSum", totalSum);
 		mm.addAttribute("sSum", sSum);
 		mm.addAttribute("cSum", cSum);
@@ -137,15 +137,15 @@ public class AdminProductController {
 
 		return "admin/product/graph";
 	}
+
 	// 맵리스트에서 키 값들을 합하는 메서드
 	public int mapSum(List<Map<String, Object>> list, String key) {
 		return list.stream().mapToInt(entry -> ((BigDecimal) entry.get(key)).intValue()).sum();
 	}
 
-	
 	// 전체 매출내역
 	@RequestMapping("/payment/{page}")
-	public String getPayments(Model mm, @PathVariable(required = false) int page,
+	public String getPayments(Model mm, @PathVariable int page,
 			@RequestParam(value = "status", defaultValue = "paid") String status,
 			@RequestParam(value = "limit", defaultValue = "15") int limit,
 			@RequestParam(value = "from", required = false) String from,
@@ -153,20 +153,25 @@ public class AdminProductController {
 			@RequestParam(value = "sorting", defaultValue = "-updated") String sorting) {
 		// 날짜 변환
 		String today = payS.dateformat(new Date());
-		String range = "";
+		String range = null;
 		if (from != null && !from.isEmpty() && to != null && !to.isEmpty()) {
 			// Unix타임스탬프로 변환
 			long fromunix = payS.stringToUnix(from);
 			// to가 날짜의 0시까지의 결과만 나와서 하루를 더해줌
 			long tounix = payS.stringToUnix(to) + 24 * 60 * 60; // 24시간 * 60분 * 60초
-			if (fromunix <= tounix) {
-				range = "&from=" + fromunix + "&to=" + tounix;
-			} else {
-				String errorMsg = "기간을 확인하세요 \n이전으로 돌아갑니다";
-				mm.addAttribute("errorMsg", errorMsg);
-				from = null;
-				to = null;
-			}
+		    if (fromunix > tounix) {
+		        String errorMsg = "기간을 확인하세요";
+		        mm.addAttribute("errorMsg", errorMsg);
+		        from = null;
+		        to = null;
+		    } else if ((tounix - fromunix) > 90 * 24 * 60 * 60) {
+		        String errorMsg = "결제내역은 최대 90일까지 조회 가능합니다";
+		        mm.addAttribute("errorMsg", errorMsg);
+		        from = null;
+		        to = null;
+		    } else {
+		        range = "&from=" + fromunix + "&to=" + tounix;
+		    }
 		}
 		// API 통신
 		String token = payS.getToken(); // PayService를 통해 토큰을 가져옴
@@ -186,11 +191,7 @@ public class AdminProductController {
 			// 받아온 정보로 페이지처리
 			int total = responseBody.getResponse().getTotal();
 			int totalPages = (int) Math.ceil((double) total / limit);
-			System.out.println("page " + page + " totalPages " + totalPages);
-			// 처리가 안됨. 이전에 터지니까 - html에서 처리하기
-//			if(page > totalPages) {
-//				page = 1;
-//			}
+//			System.out.println("page " + page + " totalPages " + totalPages);
 
 			// 앞뒤로 몇페이지씩 보일건지
 			int ranged = 2;
@@ -203,31 +204,9 @@ public class AdminProductController {
 			// 다음버튼 눌렀을 때의 페이지
 			int nextPage = Math.min(totalPages, page + ranged + 1);
 
-			List<PaymentAll> paymentData = responseBody.getResponse().getList();
-
-			for (PaymentResponseAll.PaymentAll payment : paymentData) {
-				// imp_uid로 db정보 검색해서 id 가져옴, 탈퇴회원의 경우 표시
-				String id = paym.idget(payment.getImp_uid());
-				if (id != null && paym.isEndMem(id)) {
-					id += "(탈퇴)";
-				}
-				payment.setId(id);
-
-				// unixtimestamp정보들을 포맷팅
-				payment.setPaid_at(payS.unixformat(payment.getPaid_at()));
-				payment.setStarted_at(payS.unixformat(payment.getStarted_at()));
-				payment.setFailed_at(payS.unixformat(payment.getFailed_at()));
-				payment.setCancelled_at(payS.unixformat(payment.getCancelled_at()));
-
-				// status를 수정
-				Map<String, String> statusToKor = new HashMap<>();
-				{
-					statusToKor.put("paid", "완료");
-					statusToKor.put("ready", "대기");
-					statusToKor.put("cancelled", "취소");
-					statusToKor.put("failed", "실패");
-				}
-				payment.setStatus(statusToKor.get(payment.getStatus()));
+			List<Pagedpayment> paymentData = responseBody.getResponse().getList();
+			for (Pagedpayment payment : paymentData) {
+				payS.dataformat(payment);
 			}
 
 			mm.addAttribute("page", page);
@@ -243,7 +222,7 @@ public class AdminProductController {
 			mm.addAttribute("endPage", endPage);
 			mm.addAttribute("prevPage", prevPage);
 			mm.addAttribute("nextPage", nextPage);
-			
+
 			mm.addAttribute("paymentData", paymentData);
 		}
 		return "admin/product/payment_list";
@@ -255,7 +234,7 @@ public class AdminProductController {
 		// impuid를 List에 추가
 		List<String> impuidList = new ArrayList<>();
 		impuidList.add(impuid);
-		List<PaymentResponseMember.Payment> paymentData = payS.getPaymentData(impuidList);
+		List<Payment> paymentData = payS.getPaymentData(impuidList);
 		mm.addAttribute("paymentData", paymentData);
 		return "admin/product/payment_detail";
 	}
@@ -267,15 +246,13 @@ public class AdminProductController {
 
 	// 결제취소
 	@RequestMapping("/payment/cancle")
-	String paymentCancle(
-			@RequestParam("impUid") String impUid, 
-			@RequestParam("id") String id,
+	String paymentCancle(@RequestParam("impUid") String impUid, @RequestParam("id") String id,
 			@RequestParam("name") String pname) {
 		// 취소진행
 		String token = payS.getToken();
 		payS.paymentCancel(token, impUid, "취소사유: 관리자에 의한 취소");
 		paym.payCancel(impUid);
-		
+
 		// db변경
 		// 유효기간: 상품명에서 숫자 추출, 없으면 0일
 		Date today = new Date();
@@ -292,11 +269,11 @@ public class AdminProductController {
 			// 기업회원
 			// 모든 정보 불러오기
 			MCompanyDTO compinfo = mcm.deatilCompany(id);
-			if(compinfo!=null) {
+			if (compinfo != null) {
 				// 유효기간 확인
 				Date cdate = compinfo.getCdate();
 				// 결제취소 기업회원이 cdate가 없을 확률은 없지만 그래도
-				if(cdate != null) {
+				if (cdate != null) {
 					// 취소결제의 유효기간을 뺌
 					Date mcdate = payS.dateAddValid(cdate, -valid);
 					// cdate 변경
@@ -314,10 +291,10 @@ public class AdminProductController {
 		} else {
 			// 개인회원
 			SoloDTO soloinfo = sm.detailSolo(id);
-			if(soloinfo != null) {
+			if (soloinfo != null) {
 				Date sdate = soloinfo.getSdate();
 				// 리뷰를 쓰지않은 결제회원
-				if(sdate != null) {			
+				if (sdate != null) {
 					Date msdate = payS.dateAddValid(sdate, -valid);
 					// sdate 변경
 					soloinfo.setSdate(msdate);
@@ -327,9 +304,9 @@ public class AdminProductController {
 						soloinfo.setStype(1);
 					}
 					// 변경된 sdate와 stype을 db에 저장
-					sm.paysmember(soloinfo);				
+					sm.paysmember(soloinfo);
 				}
-			// 리뷰를 쓴 결제회원 - db변경 없음
+				// 리뷰를 쓴 결제회원 - db변경 없음
 			}
 		}
 		return "redirect:/admin_product/payment/detail/" + impUid + "?alert";

@@ -19,6 +19,11 @@
 		<input type="date" name="endDate" th:value="${endDate}" th:max="${today}">
 		<button type="submit">확인</button>
 	</form>
+	<form action="/admin_product/payment/1" method="get">
+    <input type="hidden" name="from" th:value="${startDate}">
+    <input type="hidden" name="to" th:value="${endDate}">
+    <button type="submit">결제 내역 보기</button>
+</form>
 	<th:block th:if="${startDate != null and endDate != null}">
 		<h3>검색기간: [[${startDate}]]부터 [[${endDate}]]까지</h3>
 	</th:block>
