@@ -32,6 +32,7 @@ public interface MCompanyMapper {
 		int modifffy(MCompanyDTO dto); 
 		int delettt(MCompanyDTO company);
 		int fileDelete(MCompanyDTO dto);
+		int fileloDelete(MCompanyDTO dto);
 		// 결제회원처리
 		void paycmember(MCompanyDTO dto);
 		// 로그인회원처리

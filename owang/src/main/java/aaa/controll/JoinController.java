@@ -2,6 +2,7 @@ package aaa.controll;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -94,20 +95,25 @@ public class JoinController {
 	}
 
 	// 기업고객
-	@GetMapping("company")
-	String joincompanyForm(MCompanyDTO company) {
+		@GetMapping("company")
+		String joincompanyForm(MCompanyDTO company, Model mm) {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String today = sdf.format(date);
+			mm.addAttribute("today", today);
 
-		return "join/join_company";
-	}
+			return "join/join_company";
+		}
 
-	@PostMapping("company")
-	String joincompanyReg(MCompanyDTO company, PageData pd, HttpServletRequest request) {
-		fileSavecompany(company, request);
-		pd.setMsg("기업회원가입이 완료되었습니다.");
-		pd.setGoUrl("/");
-		cmapper.insertCompany(company); // sql에 개인정보입력
-		return "join/join_alert";
-	}
+		@PostMapping("company")
+		String joincompanyReg(MCompanyDTO company, PageData pd, HttpServletRequest request) {
+			fileSavecompany(company, request);
+			fileloSavecompany(company, request);
+			pd.setMsg("기업회원가입이 완료되었습니다.");
+			pd.setGoUrl("/");
+			cmapper.insertCompany(company); // sql에 개인정보입력
+			return "join/join_alert";
+		}
 
 	@RequestMapping("/join_ok")
 	String joinmain() {
@@ -191,5 +197,42 @@ public class JoinController {
 		}
 
 	}
+	// 로고파일저장
+		void fileloSavecompany(MCompanyDTO cto, HttpServletRequest request) {
+
+			// 파일 업로드 유무 확인
+			if (cto.getLommff() == null || cto.getLommff().isEmpty()) {
+				return;
+			}
+
+			String path = request.getServletContext().getRealPath("companylogoup");
+			// path = "C:\\Final_Team\\owang\\src\\main\\webapp\\member\\companyup";
+
+			int dot = cto.getLommff().getOriginalFilename().lastIndexOf(".");
+			String fDomain = cto.getLommff().getOriginalFilename().substring(0, dot);
+			String ext = cto.getLommff().getOriginalFilename().substring(dot);
+
+			cto.setClogo(fDomain + ext);
+			File ff = new File(path + "\\" + cto.getClogo());
+			int cnt = 1;
+			while (ff.exists()) {
+
+				cto.setClogo(fDomain + "_" + cnt + ext);
+				ff = new File(path + "\\" + cto.getClogo());
+				cnt++;
+			}
+
+			try {
+				FileOutputStream fos = new FileOutputStream(ff);
+
+				fos.write(cto.getLommff().getBytes());
+
+				fos.close();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 
 }

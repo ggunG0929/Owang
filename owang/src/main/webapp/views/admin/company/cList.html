@@ -2,38 +2,105 @@
 <html>
 
 <head>
-   <meta charset="UTF-8">
-   <title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet" th:href="@{/css/admin/company/css.css}">
 </head>
 
 <body>
-   <container id="container">
-      <th:block th:replace="~{admin/adheader}" />
-      <div class="main">
-         <a href="/admin_company/cRegList/1" target="cList">인증</a>
-         <a href="/admin_company/cMiList/1" target="cList"
-            style="display: block; margin: 20px; padding-left: 20px;">미인증</a>
 
-         <iframe src="/admin_company/cRegList/1" frameborder="1" width="1200px" height="600px" name="cList">
-         </iframe>
+	<th:block th:replace="~{admin/adheader}" />
+	<div class="board_wrap">
+
+		<form action="/admin_company/search" method="get" class="search">
+			<select name="searchOption">
+				<option value="all">전체</option>
+				<option value="cname">기업 이름</option>
+				<option value="ccid">기업 아이디</option>
+				<option value="cceo">대표 이름</option>
+				<option value="ccall">내용</option>
+			</select>
+			<input type="text" name="keyword" placeholder="검색어 입력">
+			<button type="submit">검색</button>
+		</form>
+		<div class="board_title">
+			<strong>전체회원</strong>
+		</div>
+		<a href="/admin_company/list/1">전체보기</a>
+				<a href="/admin_company/cRegList/1">승인기업</a>
+				<a href="/admin_company/cMiList/1">미승인기업</a>
+		<div class="board_list_wrap">
+			<div class="board_list">
+				<div class="top">
+					<div class="no">회원번호</div>
+					<div class="id">아이디</div>
+					<div class="name">회사이름</div>
+					<div class="ceo">회사대표이름</div>
+					<div class="cgubun">회원구분</div>
+					<div class="capproval">승인여부</div>
+					<div class="bye">삭제</div>
+
+				</div>
+
+				<th:block th:each="dto, dtostat : ${mainData}">
+					<div>
+
+						<div class="no" th:text="${dto.cno}" />
+						<div class="id">
+							<a th:text="${dto.cid}"></a>
+						</div>
+						<div class="name">
+							<a th:href="|/admin_company/detail/${MCompanyDTO.page}/${dto.cno}|"
+								th:text="${dto.cname}"></a>
+						</div>
+						<div class="ceo" th:text="${dto.cceo}" />
+						<div class="cgubun">
+							<span th:if="${dto.ctype == 2}"
+								th:text="|마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></span>
+							<span th:unless="${dto.ctype == 2}" th:text="일반회원"></span>
+						</div>
+						<div class="capproval">
+							<span th:if="${dto.capproval == true}" th:text="O" />
+							<span th:unless="${dto.capproval == true}" th:text="X" />
+						</div>
+						<div class="bye" align="center">
+							<a th:href="'/admin_company/delete/' + ${dto.cno}"
+								onclick="return confirm('회원삭제를 진행하시겠습니까?')" th:text="삭제">삭제</a>
+
+						</div>
 
 
-         <script>
-            // 인증 링크를 클릭했을 때
-            document.querySelector('a[href="/admin_company/cRegList"]').addEventListener('click', function () {
-               // iframe의 src 속성을 변경하여 인증 페이지를 로드합니다.
-               document.querySelector('iframe[name="cList"]').src = "/admin_company/cRegList";
-            });
 
-            // 미인증 링크를 클릭했을 때
-            document.querySelector('a[href="/admin_company/cMiList"]').addEventListener('click', function () {
-               // iframe의 src 속성을 변경하여 미인증 페이지를 로드합니다.
-               document.querySelector('iframe[name="cList"]').src = "/admin_company/cMiList";
-            });
-         </script>
-      </div>
+					</div>
+				</th:block>
+				<div class="board_page">
+					<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
+					<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.page-MCompanyDTO.page}+1"
+						th:text="'[처음]'" class="bt first" />
 
-   </container>
+					<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.pageStart - 1}" th:text="'[이전]'"
+						class="bt prev" />
+
+					<th:block th:each="no: ${#numbers.sequence(MCompanyDTO.pageStart, MCompanyDTO.pageEnd)}">
+						<a th:if="${no==MCompanyDTO.page}" th:text="${no}" class="num on" />
+						<a th:unless="${no==MCompanyDTO.page}" th:href="${no}" th:text="${no}" class="num" />
+					</th:block>
+					<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageEnd + 1}"
+						th:text="'[다음]'" class="bt next" />
+					<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageTotal}"
+						th:text="'[맨끝]'" class="bt last" />
+				</div>
+
+
+
+				
+
+			</div>
+		</div>
+
+
+
+		
 
 </body>
 

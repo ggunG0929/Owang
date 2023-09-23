@@ -1,0 +1,37 @@
+/* Footer */
+
+.footer {
+    height: 200px; /*높이 200*/
+    background-color: #ccc; /* 배경색상-grey */
+    /*padding: 0 17vw;*/ /*푸터 위 아래 패딩0, 왼쪽 오른쪽에는 17vw (뷰포트 너비의 17%) */
+    display: flex;
+    align-items: center; /*가운데정렬*/
+}
+
+.footer .box {
+    display: flex;
+    align-items: center;
+    margin-right: 100px;
+}
+
+.box img { /*로고사진*/
+    margin-right: 150px; /*마진 오른쪽 50px*/
+}
+
+.description { /*푸터내용*/
+    width: 1000px; 
+    font-size: 12px;
+}
+.description strong { /*주식회사 오왕 부분 굵게표시*/
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+/*.description ul {
+    display: flex;
+}*/
+
+ul li {
+    list-style: none;
+}  

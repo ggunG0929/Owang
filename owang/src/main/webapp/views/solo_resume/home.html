@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>이력서 관리</title>
 </head>
-<body>
+<link rel="stylesheet" th:href="@{/css/solo_resume/home.css}">
+
 <header>
 	<div th:insert="~{header :: header}"></div>
 </header>
@@ -19,38 +21,55 @@
             event.preventDefault(); // 링크 이동 취소
         }
     }
+    
 </script>
-<h2>이력서 관리</h2>
-<div>
-    <span th:if="${mainData.isEmpty()}">
-		<h2>등록된 이력서가 없습니다. 지금 이력서를 등록해보세요!</h2>
-	</span>
-	<h3><a href="write" onclick="checkResumeCount(event)">이력서 등록하기</a></h3>
-    <!-- mainData가 비어있을 때 -->
-    <!-- mainData가 비어있지 않을 때 -->
-    <p th:unless="${mainData.isEmpty()}">이력서는 최대 5개까지 등록할 수 있습니다.</p>
-	<span th:if="${not mainData.isEmpty()}" th:text="${'총 ' + mainData.size() + ' 건'}"></span>
-    <table border="">
-		<tr th:if="${not mainData.isEmpty()}">
-            <td>no.</td>
-            <td>이력서 제목</td>
-            <td>최초 작성일</td>
-            <td>최종 수정일</td>
-            <td>이력서 관리</td>
-        </tr>
-        <tr th:each="rdto, rstart : ${mainData}">
-            <td th:text="${rstart.count}" ></td>
-            <td width="200px;" align="left">
-                <a th:href="|detail/${rdto.rsid}|" th:text="${rdto.rstitle}" />
-            </td>
-            <td th:text="${rdto.rsregdate}"></td>
-            <td th:text="${rdto.rsmoddate}"></td>
-            <input type="hidden" th:value="${rdto.rsid}" name="rsid"/>
-            <td>
-                <a th:href="|delete/${rdto.rsid}|">삭제</a>
-            </td>
-        </tr>
-    </table>
+
+<body>
+<div id="solo_resume_home">
+	
+	<!-- 안내 문구 -->
+	<div id="resume_ad">
+		<span>지금 오왕의 구인구직 시스템을 이용해보세요.</span>
+	</div>
+	<div id="resume_text">
+		<span>이력서 관리</span>
+	</div>		
+    <div id="resume_limit">
+		<span th:unless="${mainData.isEmpty()}">이력서는 최대 5개까지 등록할 수 있습니다.</span>
+	</div>
+	<div id="resume_none">
+    	<span th:if="${mainData.isEmpty()}">등록된 이력서가 없습니다. 지금 이력서를 등록해보세요!</span>
+	</div>
+	<div id="rswrite">
+		<a href="write" onclick="checkResumeCount(event)" >이력서 등록하기</a>
+	</div>
+	<div id="rstotal">
+		<span th:if="${not mainData.isEmpty()}" th:text="${'총 ' + mainData.size() + ' 건'}"></span>
+	</div>
+			
+	<!-- 이력서 출력 -->		
+    <ul id="resume_list" th:if="${not mainData.isEmpty()}" th:each="rdto, rstart : ${mainData}">
+		No.<span th:text="${rstart.count}" />
+		<li><span>제목</span>
+            <a th:href="|detail/${rdto.rsid}|" th:text="${rdto.rstitle}" id="rstitle"/>
+		</li>
+		<li>
+			<i class="fa-solid fa-bag-shopping"></i>
+			<span th:text="${rdto.rscareer}" id="rscareer"/>
+		</li>
+        <li>이력서 작성일 
+			<span th:text="${rdto.rsregdate}" id="rsdate" />
+		</li>
+		<li>최근 수정일 
+			<span th:text="${rdto.rsmoddate}" id="rsmode"/>
+		</li>
+        <input type="hidden" th:value="${rdto.rsid}" name="rsid"/>
+		<li>
+			<a th:href="@{|/solo_resume/modify/${rdto.rsid}|}">수정</a>
+        	<a th:href="|delete/${rdto.rsid}|">삭제</a>
+		</li>
+    </ul>
+
 </div>
 </body>
 </html>

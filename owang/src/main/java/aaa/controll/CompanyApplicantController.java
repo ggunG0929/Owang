@@ -12,6 +12,7 @@ import aaa.model.ApplicantDTO;
 import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
 import aaa.model.RecruitDTO;
+import aaa.model.SoloDTO;
 import aaa.model.SoloResumeDTO;
 import aaa.service.CompanyApplicantMapper;
 import aaa.service.MailService;

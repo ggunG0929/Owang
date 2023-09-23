@@ -8,7 +8,7 @@
 	<style>
 		td>div {
 			background-color: #ff0;
-			color: #f00;
+			color: rgb(0, 0, 0);
 		}
 	</style>
 
@@ -21,16 +21,17 @@
 	<h1>개인회원가입</h1>
 
 	<button id="showTermsButton">이용약관 보기</button>
-
 	<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
-
+	<input type="radio" name="termsAgreement" required>이용약관동의</input>
+			
 
 		<table border="">
+			
 			<tr>
 				<td>아이디:</td>
 				<td><input type="text" name="sid" id="sid" required><input type="button" value="ID 중복체크"
-						onclick="checkDuplicateID()"></td>
-				<div id="checksId"></div>
+						onclick="checkDuplicateID()">
+				<div id="checksId"></div></td>
 
 			</tr>
 			<tr>
@@ -129,10 +130,18 @@
 					<div id="fileError" style="color: red;"></div>
 				</td>
 			</tr>
+			
+			<tr>
+				<td><input type="radio" name="termsAgreement" required>이용약관동의</input>
+				</td>
+				<td>
+					<input type="submit" value="가입">
+				</td>
+			</tr>
 		</table> <!-- 나머지 필드들 -->
 
+		
 
-		<input type="submit" value="가입" />
 	</form>
 
 
@@ -297,7 +306,7 @@
 				}
 			}
 		}
-
+	
 
 
 	</script>

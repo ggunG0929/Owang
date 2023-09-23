@@ -141,26 +141,17 @@ public class SoloResumeController {
 	
 	// 수정폼에서 파일 삭제
 	@PostMapping("fileDelete/{rsid}")
-	String fileDelete(SoloResumeDTO rdto,
-			PageData pd, 
-			HttpServletRequest request,
-			@PathVariable int rsid) {
+	String fileDelete(SoloResumeDTO rdto, PageData pd, HttpServletRequest request, @PathVariable int rsid) {
 		
-		System.out.println("파일딜리트에 어서와  :"+ rdto);
-		 System.out.println(rdto.getSid()+"안왔나요?");
 		SoloResumeDTO delDTO = rsmapper.resumefiledetail(rsid);
 		pd.setMsg("파일 삭제실패");
 		// 삭제 실패하면 수정페이지로
 		pd.setGoUrl("/solo_resume/modify/" + rdto.getRsid());
-		
-		
-		
-		
+				
 		// 파일 삭제 mapper 추가
 		int cnt = rsmapper.fileDelete(rdto.rsid);
 		System.out.println("fileDelete:"+cnt);
 		if(cnt>0) {
-			
 			fileDeleteModule(delDTO, request);
 			pd.setMsg("파일 삭제되었습니다.");
 			pd.setGoUrl("/solo_resume/modify/" + rdto.getRsid());

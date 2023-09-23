@@ -147,7 +147,9 @@
     <a th:if="${session['sid']}"
      th:href="|/review/insert/${reviewDTO.cid}/${reviewDTO.page}|" >글쓰기</a>
 
-
+	<footer>
+       <div th:insert="~{footer :: footer}"></div>
+    </footer>
 
 </body>
 

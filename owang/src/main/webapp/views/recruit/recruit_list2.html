@@ -77,6 +77,11 @@
    <div align="right" th:if="${session['cid']}">
       <a th:href="|/recruit/insert/${recruitDTO.page}|">글쓰기</a>
    </div>
+   
+   <footer>
+       <div th:insert="~{footer :: footer}"></div>
+    </footer>
+    
 </body>
 
 </html>

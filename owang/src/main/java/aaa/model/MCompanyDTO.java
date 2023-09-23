@@ -15,6 +15,7 @@ import lombok.Data;
 public class MCompanyDTO {
 	
 	MultipartFile mmff;
+	MultipartFile lommff;
 	int cno;	//개인 무결성참조번호
 	String cid;	//아이디
 	String cpw;	//비밀번호1
@@ -30,6 +31,8 @@ public class MCompanyDTO {
 	String caddress;	//주소
 	String ccompanyFile;	//사업자등록증파일 파일명 cid로저장해주기
 	String ccontent;
+	String cwelfare;
+	String clogo;
 	int ctype;
 	Date cdate;
 	int cbcnt;

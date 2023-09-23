@@ -14,31 +14,76 @@
 		.toggle-button {
 			display: inline-block;
 			padding: 10px 20px;
-			background-color: rgb(35, 35, 35);
-			color: rgb(255, 255, 255);
+			background-color: #FCFAE8;
+			color: rgb(0, 0, 0);
+
 			border: 2px solid rgb(192, 192, 192);
 			/* 흰색 테두리 추가 */
 			cursor: pointer;
 		}
 
 		.toggle-button.selected {
-			background-color: rgb(255, 255, 255);
-			color: rgb(0, 0, 0);
-			font-size: large;
+			background-color: rgba(0, 0, 0, 0.6);
+			color: #FCFAE8;
+
+			font-size: larger;
 			/* 선택된 옵션에 대한 색상을 변경하세요 */
+		}
+
+
+
+
+
+		.jb-box {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			margin: 0px auto;
+			position: relative;
+		}
+
+		video {
+			width: 100%;
+			height: 100%;
+			filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+			/* 그림자 효과 추가 */
+		}
+
+		.jb-text {
+			position: absolute;
+			top: 50%;
+			width: 100%;
+		}
+
+		.jb-text p {
+			margin-top: -350px;
+			text-align: center;
+			font-size: 48px;
+			color: #FCFAE8;
+			background-color: rgba(0, 0, 0, 0.6);
+			font-weight: 800;
 		}
 	</style>
 
 </head>
 
 <body>
-	
+	<div class="jb-box">
+		<video muted autoplay loop>
+			<source th:src="@{/videos/Network1.mp4}" type="video/mp4">
+			<strong>Your browser does not support the video tag.</strong>
+		</video>
+		<div class="jb-text">
+			<p>OWANG</p>
+		</div>
+	</div>
 	<div class="box">
 		<span class="borderLine"></span>
 		<form method="post" onsubmit="return validateForm()">
 
-			
-			<div id="selectzz" align="center" style="font-weight: 100 ; color: rgb(128, 255, 255);"><a>타입을 선택해주세요.</a></div>
+
+			<div id="selectzz" align="center" style="font-weight: 100 ; color: #865E2F;"><a>타입을 선택해주세요.</a>
+			</div>
 			<div id="errorMessage" align="center" style="color: red;"></div>
 			</br>
 			<div align="center" class="login-type">
@@ -48,7 +93,7 @@
 					onclick="toggleLoginType('individual')">개인회원</button>
 
 			</div>
-			<h2>로그인</h2>
+
 			<div class="inputbox">
 				<input type="text" name="userid" required="required" placeholder="이름">
 				<i></i>
@@ -60,74 +105,79 @@
 			<input type="hidden" id="loginType" name="loginType" value=""> <!-- 선택한 로그인 유형을 저장하는 숨은 필드 -->
 
 			<div class="links">
-				<a href="/login/find">비밀번호를 잊으셨나요?</a>
+				<a href="/login/find">비밀번호를 잊으셨나요?</a></br>
 
 				<a href="/join/company">기업회원가입</a>
 				<a href="/join/solo">개인회원가입</a>
 			</div>
-			
+
 			<input type="submit" value="로그인">
-			<a href="/" style="color: rgb(128, 255, 255);">메인화면</a>
-			</form>
-	</form>
-	<script>
-		// 폼 제출을 처리하는 JavaScript 함수
-		function validateForm() {
-			const loginTypeField = document.getElementById("loginType");
-			const errorMessage = document.getElementById("errorMessage");
+			<a href="/" style="color: rgb(255, 255, 255);">홈으로</a>
+		</form>
+		</form>
+		<script>
+			// 폼 제출을 처리하는 JavaScript 함수
+			function validateForm() {
+				const loginTypeField = document.getElementById("loginType");
+				const errorMessage = document.getElementById("errorMessage");
 
-			if (loginTypeField.value === "") {
-				errorMessage.textContent = "로그인 유형을 선택해주세요.";
-				return false; // 폼 제출을 막음
-			} else {
-				errorMessage.textContent = ""; // 에러 메시지를 지움
-				return true; // 폼 제출 허용
-			}
-		}
-
-		function toggleLoginType(type) {
-			errorMessage.textContent = ""; // 에러 메시지를 지움
-			// JavaScript 코드 추가
-			const selectzzDiv = document.getElementById("selectzz");
-			selectzzDiv.style.display = "none";
-
-			const buttons = document.querySelectorAll(".toggle-button");
-			const loginTypeField = document.getElementById("loginType");
-
-			buttons.forEach(button => {
-				const buttonType = button.getAttribute("data-login-type");
-				if (buttonType === type) {
-					button.classList.add("selected");
-					loginTypeField.value = type;
+				if (loginTypeField.value === "") {
+					errorMessage.textContent = "로그인 유형을 선택해주세요.";
+					return false; // 폼 제출을 막음
 				} else {
-					button.classList.remove("selected");
-				
+					errorMessage.textContent = ""; // 에러 메시지를 지움
+					return true; // 폼 제출 허용
 				}
-			});
-
-			const borderLine = document.querySelector(".borderLine");
-			const boxz = document.querySelector(".box");
-			
-
-
-			if (type === "individual") {
-
-				loginTypeField.value = "individual";
-				borderLine.style.background = "linear-gradient(0deg, transparent, transparent, rgb(255, 0, 0), rgb(255, 0, 0), rgb(255, 0, 0)) ";
-				boxz.style.background = "rgb(255, 0, 0)";
-			
-			} else if (type === "company") {
-
-				loginTypeField.value = "company";
-				borderLine.style.background = "linear-gradient(0deg, transparent, transparent, rgb(0, 0, 255), rgb(0, 0, 255), rgb(0, 0, 255))";
-				boxz.style.background = "rgb(0, 0, 255)";
-		
 			}
-		}
+
+			function toggleLoginType(type) {
+				errorMessage.textContent = ""; // 에러 메시지를 지움
+				// JavaScript 코드 추가
+				const selectzzDiv = document.getElementById("selectzz");
+				selectzzDiv.style.display = "none";
+
+				const buttons = document.querySelectorAll(".toggle-button");
+				const loginTypeField = document.getElementById("loginType");
+				const submitButton = document.querySelector('.box form input[type="submit"]');
+
+				buttons.forEach(button => {
+					const buttonType = button.getAttribute("data-login-type");
+					if (buttonType === type) {
+						button.classList.add("selected");
+						loginTypeField.value = type;
+						submitButton.style.color = "#FFFFFF"; // 글자 색상 설정
+						if (type === "individual") {
+							submitButton.style.background = "rgb(255, 99, 132)"; // 빨간 배경색
+						} else if (type === "company") {
+							submitButton.style.background = "rgb(54, 162, 235) "; // 파란 배경색
+						}
+					} else {
+						button.classList.remove("selected");
+
+					}
+				});
+
+				const borderLine = document.querySelector(".borderLine");
+				const boxz = document.querySelector(".box");
 
 
 
-	</script>
+				if (type === "individual") {
+
+					loginTypeField.value = "individual";
+					boxz.style.background = "rgb(255, 99, 132)";
+
+				} else if (type === "company") {
+
+					loginTypeField.value = "company";
+					boxz.style.background = "rgb(54, 162, 235)";
+
+				}
+			}
+
+
+
+		</script>
 </body>
 
 </html>

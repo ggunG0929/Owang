@@ -4,11 +4,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
-	
-<h1>미등록 회원</h1>
-	[[${mainData}]]
-	
+<body>	
+	<th:block th:replace="~{admin/adheader}"/>
+	<h1>미승인 회원</h1>
 	<table border="">
 		<tr>
 			<th>번호</th>
@@ -57,5 +55,8 @@
 		</tr>
 	
 	</table>
+	<a href="/admin_company/list/1">전체보기</a>
+	<a href="/admin_company/cRegList/1">승인기업</a>
+	<a href="/admin_company/cMiList/1">미승인기업</a>
 </body>
 </html>

@@ -8,11 +8,11 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 <insert id="insertCompany" parameterType="mcDTO">
     INSERT INTO company (cemail,cid, cpw, cname, cbuild, ccategory, 
-    cstaff, csales, ccall, cceo, caddress, ccompanyFile, ccontent, ctype, cbcnt, capproval)
+    cstaff, csales, ccall, cceo, caddress, ccompanyFile,clogo, ccontent, ctype, cbcnt, capproval,cwelfare)
     VALUES (
         #{cemail},#{cid},#{cpw},#{cname},#{cbuild},#{ccategory},#{cstaff},#{csales},
-        #{ccall},#{cceo},#{caddress},#{ccompanyFile},
-        #{ccontent},1,0,0
+        #{ccall},#{cceo},#{caddress},#{ccompanyFile},#{clogo},
+        #{ccontent},1,0,0,#{cwelfare}
     )
 </insert>
 
@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <update id="modifffy" parameterType="mcDTO">
 		update company set 
 		cname = #{cname},cemail = #{cemail}, cbuild= #{cbuild}, ccategory= #{ccategory}, ccompanyFile= #{ccompanyFile},
-		cstaff = #{cstaff}, csales = #{csales},ccall = #{ccall}, ccontent = #{ccontent},cpw=#{cpw}
+		cstaff = #{cstaff}, clogo=#{clogo}, cwelfare=#{cwelfare},csales = #{csales},ccall = #{ccall}, ccontent = #{ccontent},cpw=#{cpw}
 		where cid = #{cid} 
 </update>
 
@@ -69,6 +69,12 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <update id="fileDelete" parameterType="mcDTO">
 	update company set
 	ccompanyFile = null
+	where cid = #{cid} and cpw=#{cpw}
+</update>
+
+<update id="fileloDelete" parameterType="mcDTO">
+	update company set
+	clogo = null
 	where cid = #{cid} and cpw=#{cpw}
 </update>
 

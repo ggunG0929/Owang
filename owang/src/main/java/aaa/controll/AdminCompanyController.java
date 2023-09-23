@@ -65,7 +65,7 @@ public class AdminCompanyController {
 		return "admin/company/csearchResult";
 	}
 
-	// 기업 관리 페이지 ( 기업 리스트 )
+	// 공고 관리 페이지 ( 공고 리스트 )
 	@RequestMapping("/cmanagement")
 	String cmanagement(MCompanyDTO dto, Model mm, HttpServletRequest request) {
 
@@ -78,7 +78,7 @@ public class AdminCompanyController {
 
 		dto.calc(adminMapper.adminAddCont());
 
-		List<MCompanyDTO> data = adminMapper.companyList(dto);
+		List<MCompanyDTO> data = adminMapper.adminCompanyList(dto);
 		System.out.println(adminMapper.companyList(dto));
 		mm.addAttribute("mainData", data);
 		mm.addAttribute("realData", adminMapper.companyCapprovalList(dto));
@@ -251,7 +251,7 @@ public class AdminCompanyController {
 
 			fos.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

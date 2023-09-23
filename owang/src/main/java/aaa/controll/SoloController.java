@@ -82,7 +82,8 @@ public class SoloController {
 	}
 
 	@PostMapping("modify")
-	String modifyReg(SoloDTO dto, PageData pd, HttpServletRequest request, HttpSession session) {
+	String modifyReg(SoloDTO dto, PageData pd, 
+			HttpServletRequest request, HttpSession session) {
 
 		pd.setMsg("수정실패");
 		pd.setGoUrl("/solo/modify");
@@ -139,24 +140,27 @@ public class SoloController {
 
 		return "join/join_alert";
 	}
-
 	// 파일수정삭제
 	@PostMapping("fileDelete")
-	String fileDelete(SoloDTO dto, PageData pd, HttpServletRequest request) {
+		String fileDelete(SoloDTO dto,
+				PageData pd, 
+				HttpServletRequest request
+				) {
 
-		SoloDTO delDTO = sssmapper.detailSolo(dto.getSid());
-		pd.setMsg("파일 삭제실패");
-		pd.setGoUrl("/solo/modify");
+			SoloDTO delDTO = sssmapper.detailSolo(dto.getSid());
+			pd.setMsg("파일 삭제실패");
+			pd.setGoUrl("/solo/modify");
 
-		int cnt = sssmapper.fileDelete(dto);
-		System.out.println("modifyReg:" + cnt);
-		if (cnt > 0) {
-			fileDeleteModule(delDTO, request);
-			pd.setMsg("파일 삭제되었습니다.");
+			int cnt = sssmapper.fileDelete(dto);
+			System.out.println("modifyReg:" + cnt);
+			if (cnt > 0) {
+				fileDeleteModule(delDTO, request);
+				pd.setMsg("파일 삭제되었습니다.");
+			}
+
+			return "join/join_alert";
 		}
 
-		return "join/join_alert";
-	}
 
 	void fileSavesolo(SoloDTO dto, HttpServletRequest request) {
 		// 파일 업로드 유무 확인
@@ -193,7 +197,6 @@ public class SoloController {
 		}
 
 	}
-
 	// 파일지우기
 	void fileDeleteModule(SoloDTO delDTO, HttpServletRequest request) {
 		if (delDTO.getScompanyFile() != null) {

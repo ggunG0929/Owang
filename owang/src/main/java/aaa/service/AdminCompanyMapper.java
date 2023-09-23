@@ -15,9 +15,10 @@ import aaa.model.MCompanyDTO;
 @Mapper
 public interface AdminCompanyMapper {
 
+	// 전체회원
+	List<MCompanyDTO> adminCompanyList(MCompanyDTO dto);
 	// 기업 미등록 회원 정리
 	List<MCompanyDTO> companyList(MCompanyDTO dto);
-
 	// 기업 등록 회원 정리
 	List<MCompanyDTO> companyCapprovalList(MCompanyDTO dto);
 	

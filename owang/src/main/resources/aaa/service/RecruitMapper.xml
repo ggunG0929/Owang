@@ -149,9 +149,6 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	    SET rtype = 1
 	    WHERE cid = #{cid}
 	</update>
-	<select id="recruitRegCnt" resultType="Integer">
-		select count(*) from recruit
-		where reg_date = #{date}
-	</select>
+
 
 </mapper>

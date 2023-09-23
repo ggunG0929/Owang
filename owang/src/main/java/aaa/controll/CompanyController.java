@@ -133,7 +133,7 @@ public class CompanyController {
 
 		mm.addAttribute("dto", cccmapper.deatilCompany(cid));
 
-		return "company/detail";
+		return "company/detailmypages";
 	}
 
 	// 채용 리스트
@@ -166,6 +166,10 @@ public class CompanyController {
 			System.out.println("기존파일없음");
 			fileSavecompany(dto, request);
 		}
+		if (dto.getClogo() == null) {
+		System.out.println("로고파일없음");
+		fileloSavecompany(dto, request);
+		}
 
 		int cnt = cccmapper.modifffy(dto); // 메서드안의 값이 들어와서 cnt 값이 1이됌
 
@@ -195,7 +199,8 @@ public class CompanyController {
 	}
 
 	@PostMapping("delete")
-	String deleteReg(MCompanyDTO dto, PageData pd, ApplicantDTO adto, HttpSession session) {
+	String deleteReg(
+		MCompanyDTO dto, PageData pd, ApplicantDTO adto, HttpSession session) {
 
 		pd.setMsg("삭제실패");
 		pd.setGoUrl("/company/delete");
@@ -237,7 +242,60 @@ public class CompanyController {
 
 		return "join/join_alert";
 	}
+	// 로고수정삭제
+			@PostMapping("fileloDelete")
+			String fileloDelete(MCompanyDTO dto, PageData pd, HttpServletRequest request) {
+				System.out.println(dto + "안녕사ㅔ유'");
+				MCompanyDTO delDTO = cccmapper.deatilCompany(dto.getCid());
+				pd.setMsg("파일 삭제실패");
+				pd.setGoUrl("/company/modify");
+				
+				int cnt = cccmapper.fileloDelete(dto);
+				System.out.println("modifyReg:" + cnt);
+				if (cnt > 0) {
+					fileloDeleteModule(delDTO, request);
+					pd.setMsg("파일 삭제되었습니다.");
+				}
 
+				return "join/join_alert";
+			}
+			// 로고파일저장
+			void fileloSavecompany(MCompanyDTO cto, HttpServletRequest request) {
+
+				// 파일 업로드 유무 확인
+				if (cto.getLommff() == null || cto.getLommff().isEmpty()) {
+					return;
+				}
+
+				String path = request.getServletContext().getRealPath("companylogoup");
+				// path = "C:\\Final_Team\\owang\\src\\main\\webapp\\member\\companyup";
+
+				int dot = cto.getLommff().getOriginalFilename().lastIndexOf(".");
+				String fDomain = cto.getLommff().getOriginalFilename().substring(0, dot);
+				String ext = cto.getLommff().getOriginalFilename().substring(dot);
+
+				cto.setClogo(fDomain + ext);
+				File ff = new File(path + "\\" + cto.getClogo());
+				int cnt = 1;
+				while (ff.exists()) {
+
+					cto.setClogo(fDomain + "_" + cnt + ext);
+					ff = new File(path + "\\" + cto.getClogo());
+					cnt++;
+				}
+
+				try {
+					FileOutputStream fos = new FileOutputStream(ff);
+
+					fos.write(cto.getLommff().getBytes());
+
+					fos.close();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
 	// 사업자등록증파일저장
 	void fileSavecompany(MCompanyDTO cto, HttpServletRequest request) {
 
@@ -287,5 +345,15 @@ public class CompanyController {
 			new File(path + "\\" + delDTO.getCcompanyFile()).delete();
 		}
 	}
+	// 파일지우기
+			void fileloDeleteModule(MCompanyDTO delDTO, HttpServletRequest request) {
+				if (delDTO.getClogo() != null) {
+					String path = request.getServletContext().getRealPath("companylogoup");
+					/*
+					 * path = "E:\\BackEnd_hakwon\\N_SpringWorks\\exboard2\\src\\main\\webapp\\up";
+					 */
 
+					new File(path + "\\" + delDTO.getClogo()).delete();
+				}
+			}
 }

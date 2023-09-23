@@ -4,6 +4,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="aaa.service.AdminCompanyMapper">
+
+	<select id="adminCompanyList" resultType="mcDTO" parameterType="mcDTO">
+		select * from company order by cno desc limit #{start}, #{limit}
+	</select>
 	
 	<select id="companyList" resultType="mcDTO" parameterType="mcDTO">
 		select * from company where capproval = false  order by cno desc limit #{start}, #{limit}
