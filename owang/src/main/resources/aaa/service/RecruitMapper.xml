@@ -43,6 +43,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="recruitCnt" resultType="Integer">
 		select count(*) from recruit where cid=#{cid}
 	</select>
+
 	<update id="updateRtype" parameterType="recruitDTO">
 		update recruit set
 		rtype=#{rtype} where recruit_id = #{recruitId}
@@ -149,6 +150,19 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	    SET rtype = 1
 	    WHERE cid = #{cid}
 	</update>
-
+	
+	<!-- 공고시작일기준 공고가 몇개인지 리스트 -->
+	<select id="rctRegCnt" resultType="java.util.Map">
+        SELECT DATE_FORMAT(MIN(reg_date), '%Y-%m-%d') as date, COUNT(*) as rcrCnt
+	    FROM recruit
+        WHERE DATE(reg_date) BETWEEN #{startDate} AND #{endDate}
+	    GROUP BY DATE(reg_date)
+	    ORDER BY DATE_FORMAT(MIN(reg_date), '%Y-%m-%d')
+	</select>
+	<!-- 기간 중에 공고시작일이 있는 공고가 몇개인지 -->
+	<select id="rctRangeRegCnt">
+        SELECT COUNT(*) FROM recruit
+        WHERE DATE(reg_date) BETWEEN #{startDate} AND #{endDate}
+	</select>
 
 </mapper>

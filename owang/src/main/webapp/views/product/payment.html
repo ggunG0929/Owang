@@ -12,7 +12,9 @@
 </script>
 
 <body>
-	<th:block th:insert="~{header :: header}" />
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	<a href="javascript:goBack()">이전 페이지</a>
 	<!-- 유효기간이 오늘보다 이후일 경우 -->
 	<th:block th:if="${date != null}">
@@ -60,12 +62,9 @@
 			</th:block>
 		</tbody>
 	</table>
-	
 	<footer>
-       <div th:insert="~{footer :: footer}"></div>
-    </footer>
-    
-
+		<div th:insert="~{footer :: footer}"></div>
+	</footer>
 </body>
 
 </html>

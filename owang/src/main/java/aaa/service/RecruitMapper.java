@@ -2,6 +2,7 @@ package aaa.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -63,6 +64,8 @@ public interface RecruitMapper {
 	// 결제시 일률적으로 채용rtype 바꿔줌
 	 void payRTypeByCid(String cid);
 	 
-	 // 날짜별 시작되는 공고 개수
-	 int recruitRegCnt(Date date);
+	 // 기간동안 날짜별 시작된 공고 개수 리스트
+	 List<Map<String, Object>> rctRegCnt(String startDate, String endDate);
+	 // 기간동안 시작된 공고 개수
+	 int rctRangeRegCnt(String startDate, String endDate);
 }

@@ -25,7 +25,9 @@
 			});
 		});
 	</script>
-	<th:block th:insert="~{header :: header}" />
+	<header>
+		<div th:insert="~{header :: header}"></div>
+	</header>
 	<table border="">
 		<tr>
 			<td></td>
@@ -50,11 +52,8 @@
 			</td>
 		</tr>
 	</table>
-</body>
-
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>
-    
-
+</body>
 </html>

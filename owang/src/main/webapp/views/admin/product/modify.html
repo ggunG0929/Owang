@@ -55,41 +55,47 @@
 </head>
 
 <body>
-	<th:block th:replace="~{admin/adheader}" />
-	<h1>상품 변경</h1>
-	<!-- 폼제출시 동작은 상품추가 -->
-	<form action="insertProduct" method="post" th:object="${ProductDTO}" id="addForm">
-		<table border="">
-			<tr>
-				<td>대상</td>
-				<td>유효일</td>
-				<td>상품명</td>
-				<td>금액</td>
-				<td></td>
-			</tr>
-			<tr th:each="dto : ${data}" align="center">
-				<td th:text="${dto.productClient}"></td>
-				<td th:text="${dto.productValid}"></td>
-				<td th:text="${dto.productName}"></td>
-				<td th:text="${dto.productPrice}"></td>
-				<!-- 삭제버튼 아이디를 해당상품의 상품아이디로. th:attr로 동적으로 할당, 그렇지 않으면 동작 안됨 -->
-				<td><input type="button" value="삭제" class="delbtn" th:attr="id=${dto.productId}"></td>
-			</tr>
-			<tr>
-				<td>
-					<select th:field="*{productClient}">
-						<option value="" selected>선택해주세요</option>
-						<option value="개인">개인</option>
-						<option value="기업">기업</option>
-					</select>
-				</td>
-				<td><input type="number" th:field="*{productValid}" min="1"></td>
-				<td><input type="hidden" th:field="*{productName}">자동으로 생성합니다</td>
-				<td><input type="text" th:field="*{productPrice}" pattern="[0-9]*" required></td>
-				<td><input type="submit" value="추가"></td>
-			</tr>
-		</table>
-	</form>
+	<container id="container">
+		<header>
+			<div th:replace="~{admin/adheader}"></div>
+		</header>
+		<div class="main">
+			<h1>상품 변경</h1>
+			<!-- 폼제출시 동작은 상품추가 -->
+			<form action="insertProduct" method="post" th:object="${ProductDTO}" id="addForm">
+				<table border="">
+					<tr>
+						<td>대상</td>
+						<td>유효일</td>
+						<td>상품명</td>
+						<td>금액</td>
+						<td></td>
+					</tr>
+					<tr th:each="dto : ${data}" align="center">
+						<td th:text="${dto.productClient}"></td>
+						<td th:text="${dto.productValid}"></td>
+						<td th:text="${dto.productName}"></td>
+						<td th:text="${dto.productPrice}"></td>
+						<!-- 삭제버튼 아이디를 해당상품의 상품아이디로. th:attr로 동적으로 할당, 그렇지 않으면 동작 안됨 -->
+						<td><input type="button" value="삭제" class="delbtn" th:attr="id=${dto.productId}"></td>
+					</tr>
+					<tr>
+						<td>
+							<select th:field="*{productClient}">
+								<option value="" selected>선택해주세요</option>
+								<option value="개인">개인</option>
+								<option value="기업">기업</option>
+							</select>
+						</td>
+						<td><input type="number" th:field="*{productValid}" min="1"></td>
+						<td><input type="hidden" th:field="*{productName}">자동으로 생성합니다</td>
+						<td><input type="text" th:field="*{productPrice}" pattern="[0-9]*" required></td>
+						<td><input type="submit" value="추가"></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</container>
 </body>
 
 </html>

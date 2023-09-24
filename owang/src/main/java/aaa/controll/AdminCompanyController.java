@@ -11,19 +11,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
-import aaa.model.RecruitDTO;
 import aaa.service.AdminCompanyMapper;
 import aaa.service.EndCompanyMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.PayMapper;
+import aaa.service.RecruitMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URLEncoder;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,9 +44,13 @@ public class AdminCompanyController {
 	MCompanyMapper crccMapper;
 	
 	@Resource
-	PayMapper paym;
-	@Resource
 	EndCompanyMapper endCompanyMapper;
+
+	@Resource
+	PayMapper paym;
+
+	@Resource
+	RecruitMapper rcm;
 
 	static String path = "E:\\BackEnd_hakwon\\Spring_Team\\owang\\src\\main\\webapp\\companyup";
 
@@ -67,9 +74,40 @@ public class AdminCompanyController {
 
 	// 공고 관리 페이지 ( 공고 리스트 )
 	@RequestMapping("/cmanagement")
-	String cmanagement(MCompanyDTO dto, Model mm, HttpServletRequest request) {
+	String cmanagement(Model mm) {
+		// 날짜 포맷팅
+		Date today = new Date();
+		String day = rctCntDateFormat(today, 0);
+		String week = rctCntDateFormat(today, -7);
+		String month = rctCntDateFormat(today, -30);
+		String year = rctCntDateFormat(today, -365);
 
+		// 기간별 도넛그래프 data
+		int todayRct = rcm.rctRangeRegCnt(day, day);
+		int weekRct = rcm.rctRangeRegCnt(week, day);
+		int monthRct = rcm.rctRangeRegCnt(month, day);
+		int yearRct = rcm.rctRangeRegCnt(year, day);
+
+		// 1년간 월별 막대그래프 그릴 data
+		List<Map<String, Object>> graphData = rcm.rctRegCnt(year, day);
+
+		mm.addAttribute("todayRct", todayRct);
+		mm.addAttribute("weekRct", weekRct);
+		mm.addAttribute("monthRct", monthRct);
+		mm.addAttribute("yearRct", yearRct);
+		mm.addAttribute("graphData", graphData);
+		
 		return "admin/company/cmanagement";
+	}
+
+	// date형의 날짜, 변경할 일 수를 입력하면 계산해서 string형("yyyy-MM-dd")으로 반환
+	public String rctCntDateFormat(Date date, int valid) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DATE, valid);
+		Date mdate = calendar.getTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(mdate);
 	}
 
 	// 기업 리스트
@@ -144,15 +182,13 @@ public class AdminCompanyController {
 		paym.endMem(rcdto.getCid());
 		endCompanyMapper.endCompanyInsert(rcdto);
 		int cnt = adminMapper.deleteCompany(cno);
-		
+
 		if (cnt > 0) {
 			fileDeleteModule(rcdto, request);
 		}
 
 		return "redirect:/admin_company/list/1";
 	}
-
-	
 
 	// 관리자 기업 디테일
 	@RequestMapping("detail/{page}/{cno}")
@@ -251,20 +287,19 @@ public class AdminCompanyController {
 
 			fos.close();
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 		}
 
 	}
 
 	// 파일삭제
-		void fileDeleteModule(MCompanyDTO delDTO, HttpServletRequest request) {
-			if (delDTO.getCcompanyFile() != null) {
+	void fileDeleteModule(MCompanyDTO delDTO, HttpServletRequest request) {
+		if (delDTO.getCcompanyFile() != null) {
 
-				new File(path + "\\" + delDTO.getCcompanyFile()).delete();
-			}
-		}// 파일삭제
-	
+			new File(path + "\\" + delDTO.getCcompanyFile()).delete();
+		}
+	}// 파일삭제
 
 	// 파일수정삭제
 	@PostMapping("fileDelete/{cno}")
@@ -274,7 +309,7 @@ public class AdminCompanyController {
 
 		pd.setMsg("파일 삭제실패");
 		pd.setGoUrl("/admin_company/modify/" + dto.getCno());
-		System.out.println("삭제하기전dto"+dto);
+		System.out.println("삭제하기전dto" + dto);
 		int cnt = crccMapper.fileDelete(dto);
 		System.out.println("modifyReg:" + cnt);
 		if (cnt > 0) {
