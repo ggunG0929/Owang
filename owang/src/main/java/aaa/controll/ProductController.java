@@ -76,6 +76,9 @@ public class ProductController {
 		}
 		// 전체 상품 목록
 		List<ProductDTO> data = pm.list();
+		for (ProductDTO payment : data) {
+			payment.setFormatPrice(String.format("%,d", payment.getProductPrice())+"원");
+		}
 
 		mm.addAttribute("msg", alertMsg);
 		mm.addAttribute("goUrl", goUrl);
@@ -119,6 +122,7 @@ public class ProductController {
 		}
 		// 상품정보 채워주기
 		ProductDTO pdto = pm.detail(productId);
+		pdto.setFormatPrice(String.format("%,d", pdto.getProductPrice())+"원");
 
 		mm.addAttribute("name", name);
 		mm.addAttribute("tel", tel);

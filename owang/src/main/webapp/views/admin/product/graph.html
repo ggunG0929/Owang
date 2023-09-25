@@ -3,13 +3,140 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>상품 정산 그래프</title>
+	<title>상품 관리</title>
 	<!-- Chart.js 라이브러리 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 	<style>
 		.main {
 			padding-left: 20px;
-			margin-top: 100px;
+			margin-top: 35px;
+		}
+
+		h1 {
+			width: 850px;
+			text-align: center;
+			font-size: 42px;
+		}
+
+		.btn-container {
+			margin-left: 10px;
+		}
+
+		button {
+			margin: 5px 5px;
+			padding: 6px 12px;
+			border: 2px solid rgba(0, 64, 0, 0.1);
+			border-radius: 4px;
+			cursor: pointer;
+			color: #999;
+		}
+
+		button:hover {
+			border: 2px solid rgba(0, 64, 0, 1);
+			color: #000;
+			background-color: #f9f9f9;
+		}
+
+		form {
+			display: flex;
+			align-items: center;
+		}
+
+		form input[type="date"] {
+			width: 200px;
+			padding: 6px 12px;
+			border-radius: 4px;
+			margin: 5px 15px;
+		}
+
+		input[type="submit"] {
+			padding: 6px 12px;
+			background-color: rgba(0, 64, 0, 0.6);
+			border-radius: 20%;
+			border: none;
+			color: #fff;
+			cursor: pointer;
+		}
+
+		input[type="submit"]:hover {
+			background-color: rgba(0, 64, 0, 0.8);
+		}
+
+		form button {
+			margin-left: auto;
+			margin-right: 100px;
+			padding: 6px 12px;
+			border: none;
+			cursor: pointer;
+			color: #103305;
+		}
+
+		/* 버튼 호버 효과 */
+		form button:hover {
+			border: none;
+			color: #fff;
+			background-color: rgba(0, 64, 0, 0.7);
+		}
+
+		table {
+			width: 850px;
+			border-collapse: collapse;
+			border-top: 2px solid #000;
+			border-bottom: 2px solid #000;
+		}
+
+		th {
+			padding: 8px;
+			border-bottom: 1px solid #999;
+		}
+
+		td {
+			padding: 8px;
+			border-bottom: 1px solid #ddd;
+		}
+
+		div>table {
+
+			margin: 10px;
+		}
+
+		#btnrange-container {
+			margin-left: 15px;
+		}
+
+		#btnrange-container>button {
+			margin: 5px 0;
+		}
+
+		#solotbl {
+			width: 270px;
+		}
+
+		#comptbl {
+			width: 320px;
+		}
+
+		#member-container {
+			display: flex;
+			margin: 90px 0;
+		}
+
+		#member-container>div>canvas {
+			margin-top: 30px;
+		}
+
+		.alri {
+			text-align: right;
+		}
+
+		.pname {
+			text-align: left;
+			padding-left: 120px;
+		}
+
+		.price {
+			text-align: right;
+			padding-right: 80px;
 		}
 	</style>
 </head>
@@ -20,104 +147,94 @@
 			<div th:replace="~{admin/adheader}"></div>
 		</header>
 		<div class="main">
-			<button onclick="rangedays(365)">최근 365일</button>
-			<button onclick="rangedays(180)">최근 180일</button>
-			<button onclick="rangedays(90)">최근 90일</button>
-			<button onclick="rangedays(30)">최근 30일</button>
-			<button onclick="rangedays(7)">최근 7일</button>
+			<h1>결제 정산</h1>
+			<div class="btn-container">
+				<button onclick="rangedays(365)">1년</button>
+				<button onclick="rangedays(180)">6개월</button>
+				<button onclick="rangedays(90)">3개월</button>
+				<button onclick="rangedays(30)">1개월</button>
+				<button onclick="rangedays(7)">1주</button>
+			</div>
 			<form action="">
 				<input type="date" name="startDate" th:value="${startDate}" th:max="${today}">~
 				<input type="date" name="endDate" th:value="${endDate}" th:max="${today}">
-				<button type="submit">확인</button>
+				<input type="submit" value="검색">
 			</form>
 			<form action="/admin_product/payment/1" method="get">
 				<input type="hidden" name="from" th:value="${startDate}">
 				<input type="hidden" name="to" th:value="${endDate}">
-				<button type="submit">결제 내역 보기</button>
+				<button type="submit">결제 내역 보러가기 ></button>
 			</form>
-			<th:block th:if="${startDate != null and endDate != null}">
-				<h3>검색기간: [[${startDate}]]부터 [[${endDate}]]까지</h3>
-			</th:block>
-			<h3>기간내 총매출: [[${totalSum}]]</h3>
-			<div>
+			<h3>기간내 총매출: <span th:text="${#numbers.formatInteger(totalSum, 3, 'COMMA')+'원'}" /></h3>
+			<div id="btnrange-container">
 				<button id="btnMonth">월간</button>
 				<button id="btnWeek">주간</button>
 				<button id="btnDay">일간</button>
 			</div>
-			<br>
 			<div>
-				<canvas id="lineChart" width="650" height="300"></canvas>
+				<canvas id="lineChart" width="800" height="400"></canvas>
 			</div>
-			<h3>매출액 상위 회원</h3>
-			<div>
-				<canvas id="pieChart" width="250" height="150"></canvas>
-			</div>
-			<div>
-				<table border="">
-					<thead>
+
+			<div id="member-container">
+				<div>
+					<canvas id="pieChart" width="225" height="225"></canvas>
+				</div>
+				<div>
+					<table id="solotbl">
 						<tr>
 							<th colspan="2">개인회원</th>
-							<th>[[${sSum}]]</th>
-							<td>
+							<th th:text="${#numbers.formatInteger(sSum, 3, 'COMMA')+'원'}" />
+							<th>
 								<!-- 퍼센트 값을 계산하여 출력 -->
 								<span th:unless="${totalSum==0}" th:text="${(sSum * 100) / totalSum + '%'}" />
-							</td>
+							</th>
 						</tr>
-					</thead>
-					<tbody>
 						<tr th:each="item, index : ${slist}" th:if="${index.index < 5}">
-							<td th:text="${index.index + 1}"></td>
+							<td class="alri" th:text="${(index.index + 1)+'위'}" />
 							<td th:text="${item['sid']}"></td>
-							<td th:text="${item['total']}"></td>
-							<td>
+							<td class="alri" th:text="${#numbers.formatInteger(item['total'], 3, 'COMMA')+'원'}" />
+							<td class="alri">
 								<span th:if="${sSum != 0}" th:text="${((item['total'] * 100) / sSum) + '%'}"></span>
 							</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div>
-				<table border="">
-					<thead>
+					</table>
+				</div>
+				<div>
+					<table id="comptbl">
 						<tr>
 							<th colspan="2">기업회원</th>
-							<th>[[${cSum}]]</th>
-							<td>
+							<th th:text="${#numbers.formatInteger(cSum, 3, 'COMMA')+'원'}" />
+							<th>
 								<span th:unless="${totalSum==0}" th:text="${(cSum * 100) / totalSum + '%'}" />
-							</td>
+							</th>
 						</tr>
-					</thead>
-					<tbody>
 						<tr th:each="item, index : ${clist}" th:if="${index.index < 5}">
-							<td th:text="${index.index + 1}"></td>
-							<td th:text="${item['cid']}"></td>
-							<td th:text="${item['total']}"></td>
-							<td>
-								<span th:if="${cSum != 0}" th:text="${((item['total'] * 100) / cSum) + '%'}"></span>
+							<td class="alri" th:text="${(index.index + 1)+'위'}" />
+							<td th:text="${item['cid']}" />
+							<td class="alri" th:text="${#numbers.formatInteger(item['total'], 3, 'COMMA')+'원'}" />
+							<td class="alri">
+								<span th:if="${cSum != 0}" th:text="${((item['total'] * 100) / cSum) + '%'}" />
 							</td>
 						</tr>
-					</tbody>
-				</table>
+					</table>
+				</div>
 			</div>
-			<h3>매출액 상위 상품</h3>
+
 			<div>
-				<table border="">
-					<thead>
-						<tr>
-							<th colspan="2">상품</th>
-							<th>[[${pSum}]]</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="item, index : ${plist}" th:if="${index.index < 5}">
-							<td th:text="${index.index + 1}"></td>
-							<td th:text="${item['pname']}"></td>
-							<td th:text="${item['total']}"></td>
-							<td>
-								<span th:if="${pSum != 0}" th:text="${((item['total'] * 100) / pSum) + '%'}"></span>
-							</td>
-						</tr>
-					</tbody>
+				<table>
+					<tr>
+						<th colspan="2">상품</th>
+						<th th:text="${#numbers.formatInteger(pSum, 3, 'COMMA')+'원'}" />
+						<th></th>
+					</tr>
+					<tr th:each="item, index : ${plist}" th:if="${index.index < 5}">
+						<td class="alri" th:text="${(index.index + 1)+'위'}" />
+						<td class="pname" th:text="${item['pname']}"></td>
+						<td class="price" th:text="${#numbers.formatInteger(item['total'], 3, 'COMMA')+'원'}" />
+						<td class="alri">
+							<span th:if="${pSum != 0}" th:text="${((item['total'] * 100) / pSum) + '%'}"></span>
+						</td>
+					</tr>
 				</table>
 			</div>
 		</div>
@@ -307,7 +424,7 @@
 				datasets: [{
 					label: "매출",
 					data: data,
-					backgroundColor: 'yellow',
+					backgroundColor: '#f0f0f0',
 					borderColor: 'orange',
 					borderWidth: 2
 				}]

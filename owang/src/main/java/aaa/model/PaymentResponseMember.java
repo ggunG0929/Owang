@@ -15,6 +15,8 @@ public class PaymentResponseMember {
 	public static class Payment {
 		// 아이디 - 받아온 정보에는 없지만 db를 통해 매칭해서 넣음
 		String id;
+		// 금액의 천단위에 ,를 찍음
+		String formatAmount;
 		// 아임포트 고유번호
 		private String imp_uid;
 		// 주문번호

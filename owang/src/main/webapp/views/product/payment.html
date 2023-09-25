@@ -38,7 +38,7 @@
 				<tr th:each="payment : ${paymentData}">
 					<td th:text="${payment.imp_uid}"></td>
 					<td th:text="${payment.name}"></td>
-					<td th:text="${payment.amount}"></td>
+					<td th:text="${payment.formatAmount}"></td>
 					<td th:text="${payment.pg_provider}"></td>
 					<th:block th:if="${payment.status=='완료'}">
 						<td th:text="${payment.paid_at}"></td>

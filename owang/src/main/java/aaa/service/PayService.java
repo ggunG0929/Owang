@@ -145,6 +145,8 @@ public class PayService {
 		if (payment.getAmount() < 1000) {
 			payment.setAmount(payment.getAmount() * 1000);
 		}
+		// 천단위에 ,를 찍어서 표시
+		payment.setFormatAmount(String.format("%,d", payment.getAmount())+"원");
 	}
 
 	public void dataformat(PaymentResponseAll.Pagedpayment payment) {
@@ -179,6 +181,8 @@ public class PayService {
 		if (payment.getAmount() < 1000) {
 			payment.setAmount(payment.getAmount() * 1000);
 		}
+		// 천단위에 ,를 찍어서 표시
+		payment.setFormatAmount(String.format("%,d", payment.getAmount())+"원");
 	}
 
 	// Date형으로 받은 날짜 포맷팅 메서드

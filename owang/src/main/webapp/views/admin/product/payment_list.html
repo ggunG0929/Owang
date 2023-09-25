@@ -43,12 +43,6 @@
 		</header>
 		<div class="main">
 			<h1>상품 매출 내역</h1>
-			[[${status}]]
-			[[${limit}]]
-			[[${from}]]
-			[[${to}]]
-			[[${sorting}]]
-			[[${today}]]
 			<form action="/admin_product/payment/1">
 				<label for="status">결제상태</label>
 				<select name="status" id="status">
@@ -109,7 +103,7 @@
                      return false;" target="_blank" />
 							</td>
 							<td th:text="${payment.name}"></td>
-							<td th:text="${payment.amount}"></td>
+							<td th:text="${payment.formatAmount}"></td>
 							<td th:text="${payment.id}"></td>
 							<td th:text="${payment.started_at}"></td>
 							<td th:text="${payment.failed_at}"></td>

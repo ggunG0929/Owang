@@ -26,8 +26,8 @@
 			// 결제정보
 			var options = {
 				merchant_uid: uidnum,
-				name: /*[[${dto.productName}]]*/ null, // 상품명 입력값
-				amount: /*[[${dto.productPrice/1000}]]*/ null, // 상품전체가격 입력값
+				name: /*[[${pdto.productName}]]*/ null, // 상품명 입력값
+				amount: /*[[${pdto.productPrice/1000}]]*/ null, // 상품전체가격 입력값
 				buyer_name: /*[[${name}]]*/ null,
 				buyer_email: /*[[${email}]]*/ "",
 				buyer_tel: /*[[${tel}]]*/ null
@@ -61,7 +61,7 @@
 						// 거래고유번호
 						impUid: callback.imp_uid,
 						// 상품아이디
-						productId: /*[[${dto.productId}]]*/ null,
+						productId: /*[[${pdto.productId}]]*/ null,
 						// 상품명
 						pname: callback.name,
 						// 결제금액
@@ -118,16 +118,16 @@
 		<table border="">
 			<tr>
 				<td>구매상품</td>
-				<td th:text="${dto.productName}"></td>
+				<td th:text="${pdto.productName}"></td>
 			</tr>
 			<tr>
 				<td>상품가격</td>
-				<td th:text="${dto.productPrice}"></td>
+				<td th:text="${pdto.formatPrice}"></td>
 			</tr>
 			<tr>
 				<td>유효기간</td>
 				<!--<td th:text="|${endDate} 자정까지|"></td>-->
-				<td th:text="|결제시부터 +${dto.productValid}일 후 자정까지|"></td>
+				<td th:text="|결제시부터 +${pdto.productValid}일 후 자정까지|"></td>
 			</tr>
 			<tr>
 				<td colspan="2">

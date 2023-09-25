@@ -17,4 +17,6 @@ public class ProductDTO {
 	int productValid;
 	// 가격
 	int productPrice;
+	// 포맷팅
+	String formatPrice;
 }

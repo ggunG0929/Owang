@@ -55,16 +55,29 @@
 	<style>
 		.main {
 			padding-left: 20px;
+			margin-top: 35px;
+		}
+
+		h1 {
+			width: 850px;
+			text-align: center;
+			font-size: 42px;
 		}
 
 		table {
+			width: 850px;
 			border-collapse: collapse;
-			border: 1px solid #103305;
+			border-top: 2px solid #000;
+		}
+
+		th {
+			padding: 8px;
+			border-bottom: 1px solid #999;
 		}
 
 		td {
 			padding: 8px;
-			border: 1px solid #103305;
+			border-bottom: 1px solid #ddd;
 		}
 
 		input[type="text"],
@@ -99,22 +112,34 @@
 		.delbtn:hover {
 			background-color: #103305;
 		}
-		
-		.solo{
+
+		.solo {
 			color: rgb(255, 99, 132);
 		}
-		.comp{
+
+		.comp {
 			color: rgb(54, 162, 235);
 		}
-		.valid{
+
+		.valid {
 			text-align: right;
-			width: 65px;
-			padding-right: 15px;
+			width: 100px;
+			padding-right: 42px;
 		}
-		.price{
+
+		.pname {
+			text-align: left;
+			padding-left: 140px;
+		}
+
+		.price {
 			text-align: right;
-			width: 80px;
+			width: 100px;
 			padding-right: 10px;
+		}
+
+		.space {
+			border-top: 2px solid #000;
 		}
 	</style>
 </head>
@@ -125,30 +150,31 @@
 			<div th:replace="~{admin/adheader}"></div>
 		</header>
 		<div class="main">
-			<h1>상품 변경</h1>
+			<h1>상품 추가</h1>
 			<!-- 폼제출시 동작은 상품추가 -->
 			<form action="insertProduct" method="post" th:object="${ProductDTO}" id="addForm">
 				<table>
 					<tr align="center">
-						<td>대상</td>
-						<td>유효일</td>
-						<td>상품명</td>
-						<td>금액</td>
-						<td></td>
+						<th>대상</th>
+						<th>유효일</th>
+						<th>상품명</th>
+						<th>금액</th>
+						<th></th>
 					</tr>
 					<tr th:each="dto : ${data}" align="center">
-						<td th:if="${dto.productClient == '개인'}" class="solo"
-							th:text="${dto.productClient}"></td>
-						<td th:if="${dto.productClient == '기업'}" class="comp"
-							th:text="${dto.productClient}"></td>
+						<td th:if="${dto.productClient == '개인'}" class="solo" th:text="${dto.productClient}"></td>
+						<td th:if="${dto.productClient == '기업'}" class="comp" th:text="${dto.productClient}"></td>
 						<td class="valid" th:text="${dto.productValid}"></td>
-						<td align="left" th:text="${dto.productName}"></td>
-						<td class="price" th:text="${dto.productPrice}"></td>
+						<td class="pname" th:text="${dto.productName}"></td>
+						<td class="price" th:text="${dto.formatPrice}"></td>
 						<!-- 삭제버튼 아이디를 해당상품의 상품아이디로. th:attr로 동적으로 할당, 그렇지 않으면 동작 안됨 -->
 						<td><input type="button" value="삭제" class="delbtn" th:attr="id=${dto.productId}"></td>
 					</tr>
+					<tr class="space">
+						<td colspan="5"></td>
+					</tr>
 					<tr>
-						<td>
+						<td align="center">
 							<select th:field="*{productClient}">
 								<option value="" selected>선택</option>
 								<option value="개인">개인</option>
@@ -158,7 +184,7 @@
 						<td><input type="number" th:field="*{productValid}" min="1"></td>
 						<td align="center"><input type="hidden" th:field="*{productName}">자동으로 생성합니다</td>
 						<td><input type="text" th:field="*{productPrice}" pattern="[0-9]*" required></td>
-						<td><input type="submit" value="추가"></td>
+						<td align="center"><input type="submit" value="추가"></td>
 					</tr>
 				</table>
 			</form>

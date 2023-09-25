@@ -72,7 +72,7 @@
 			</tr>
 			<tr>
 				<th>주문(결제)금액</th>
-				<td th:text="${paymentData[0].amount}"></td>
+				<td th:text="${paymentData[0].formatAmount}"></td>
 				<th>결제취소금액</th>
 				<td th:text="${paymentData[0].cancel_amount}"></td>
 				<th:block th:if="${paymentData[0].failed_at != '0'}">

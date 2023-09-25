@@ -48,6 +48,9 @@ public class AdminProductController {
 	String admin_product_modify(Model mm) {
 		// 상품 목록
 		List<ProductDTO> data = pm.list();
+		for (ProductDTO payment : data) {
+			payment.setFormatPrice(String.format("%,d", payment.getProductPrice())+"원");
+		}
 		mm.addAttribute("data", data);
 		// 상품 추가 위한 DTO
 		mm.addAttribute("ProductDTO", new ProductDTO());
