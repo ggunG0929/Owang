@@ -48,5 +48,8 @@ public interface PayMapper {
 
 	// id로 탈퇴회원인지 확인
 	boolean isEndMem(String id);
+	
+	// date에 결제된 건수가 몇개인지
+	int dayPayCnt(String date);
 
 }

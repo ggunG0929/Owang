@@ -26,6 +26,9 @@ import aaa.model.PaymentResponseAll.Pagedpayment;
 import aaa.model.PaymentResponseMember.Payment;
 import aaa.model.ProductDTO;
 import aaa.model.SoloDTO;
+import aaa.service.AdminCompanyMapper;
+import aaa.service.AdminSolo;
+import aaa.service.AskMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
@@ -159,19 +162,19 @@ public class AdminProductController {
 			long fromunix = payS.stringToUnix(from);
 			// to가 날짜의 0시까지의 결과만 나와서 하루를 더해줌
 			long tounix = payS.stringToUnix(to) + 24 * 60 * 60; // 24시간 * 60분 * 60초
-		    if (fromunix > tounix) {
-		        String errorMsg = "기간을 확인하세요";
-		        mm.addAttribute("errorMsg", errorMsg);
-		        from = null;
-		        to = null;
-		    } else if ((tounix - fromunix) > 90 * 24 * 60 * 60) {
-		        String errorMsg = "결제내역은 최대 90일까지 조회 가능합니다";
-		        mm.addAttribute("errorMsg", errorMsg);
-		        from = null;
-		        to = null;
-		    } else {
-		        range = "&from=" + fromunix + "&to=" + tounix;
-		    }
+			if (fromunix > tounix) {
+				String errorMsg = "기간을 확인하세요";
+				mm.addAttribute("errorMsg", errorMsg);
+				from = null;
+				to = null;
+			} else if ((tounix - fromunix) > 90 * 24 * 60 * 60) {
+				String errorMsg = "결제내역은 최대 90일까지 조회 가능합니다";
+				mm.addAttribute("errorMsg", errorMsg);
+				from = null;
+				to = null;
+			} else {
+				range = "&from=" + fromunix + "&to=" + tounix;
+			}
 		}
 		// API 통신
 		String token = payS.getToken(); // PayService를 통해 토큰을 가져옴
@@ -312,8 +315,25 @@ public class AdminProductController {
 		return "redirect:/admin_product/payment/detail/" + impUid + "?alert";
 	}
 
+	@Resource
+	AdminSolo asm;
+	@Resource
+	AdminCompanyMapper acm;
+	@Resource
+	AskMapper am;
+
 	@RequestMapping("/index")
 	String index(Model mm) {
+		int soloChk = asm.solocomListCnt();
+		int compChk = acm.adminAddMiCont();
+		int askChk = am.noReCnt();
+		int payChk = paym.dayPayCnt(payS.dateformat(new Date()));
+
+		mm.addAttribute("soloChk", soloChk);
+		mm.addAttribute("compChk", compChk);
+		mm.addAttribute("askChk", askChk);
+		mm.addAttribute("payChk", payChk);
+
 		return "admin/product/index";
 	}
 }

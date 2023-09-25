@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -30,6 +30,10 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			cursor: pointer;
+		}
+		.card:hover {
+			background-color: rgba(0, 64, 0, 0.2);
 		}
 
 		.card-content {
@@ -83,37 +87,37 @@
 		<div class="main">
 			<div class="grid-container">
 				<!-- 첫 번째 카드 -->
-				<div class="card">
+				<div class="card" onclick="location.href='/admin_solo/solocompany/1';">
 					<div class="card-content">
 						<span class="material-symbols-outlined big">admin_panel_settings</span>
 						<h3>재직회원 승인</h3>
 					</div>
-					<div><span class="solo">2</span>건</div>
-					<a href="/admin_solo/solocompany/1">바로가기></a>
+					<div class="count"><span class="solo">[[${soloChk}]]</span>건</div>
+					<a class="link" href="/admin_solo/solocompany/1">바로가기></a>
 				</div>
-				<div class="card">
+				<div class="card" onclick="location.href='/ask/list/1';">
 					<div class="card-content">
 						<span class="material-symbols-outlined big">support_agent</span>
 						<h3>1:1답변</h3>
 					</div>
-					<div><span class="info">9</span>건</div>
-					<a href="/ask/list/1">바로가기></a>
+					<div class="count"><span class="info">[[${askChk}]]</span>건</div>
+					<a class="link" href="/ask/list/1">바로가기></a>
 				</div>
-				<div class="card">
+				<div class="card" onclick="location.href='/admin_company/cMiList/1';">
 					<div class="card-content">
 						<span class="material-symbols-outlined big">fact_check</span>
 						<h3>사업증명 승인</h3>
 					</div>
-					<div><span class="comp">9</span>건</div>
-					<a href="/admin_company/cMiList/1">바로가기></a>
+					<div class="count"><span class="comp">[[${compChk}]]</span>건</div>
+					<a class="link" href="/admin_company/cMiList/1">바로가기></a>
 				</div>
-				<div class="card">
+				<div class="card" onclick="location.href='/admin_product/payment/1';">
 					<div class="card-content">
 						<span class="material-symbols-outlined big">receipt_long</span>
 						<h3>결제내역</h3>
 					</div>
-					<div><span class="info">9</span>건</div>
-					<a href="/admin_product/payment/1">바로가기></a>
+					<div class="count"><span class="info">[[${payChk}]]</span>건</div>
+					<a class="link" href="/admin_product/payment/1">바로가기></a>
 				</div>
 			</div>
 		</div>

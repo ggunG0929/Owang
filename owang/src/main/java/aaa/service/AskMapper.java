@@ -38,6 +38,8 @@ public interface AskMapper {
 	
 	int gidChk(String gid);
 	
+	// 관리자 인덱스에서 사용하기 위해 생성 - gid가 1개만 있는 게시글(미답변)의 개수
+	int noReCnt();
 	
 	
 }
