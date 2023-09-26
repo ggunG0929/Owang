@@ -17,6 +17,7 @@ public class PaymentResponseMember {
 		String id;
 		// 금액의 천단위에 ,를 찍음
 		String formatAmount;
+		String formatCancle;
 		// 아임포트 고유번호
 		private String imp_uid;
 		// 주문번호

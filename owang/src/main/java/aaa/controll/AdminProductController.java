@@ -156,7 +156,7 @@ public class AdminProductController {
 			@RequestParam(value = "limit", defaultValue = "15") int limit,
 			@RequestParam(value = "from", required = false) String from,
 			@RequestParam(value = "to", required = false) String to,
-			@RequestParam(value = "sorting", defaultValue = "-updated") String sorting) {
+			@RequestParam(value = "sorting", defaultValue = "-started") String sorting) {
 		// 날짜 변환
 		String today = payS.dateformat(new Date());
 		String range = null;
@@ -223,6 +223,7 @@ public class AdminProductController {
 			mm.addAttribute("sorting", sorting);
 
 			mm.addAttribute("today", today);
+			mm.addAttribute("total", total);
 			mm.addAttribute("totalPages", totalPages);
 			mm.addAttribute("startPage", startPage);
 			mm.addAttribute("endPage", endPage);

@@ -129,10 +129,10 @@ public class PayService {
 
 		// status를 수정
 		Map<String, String> statusToKor = new HashMap<>();
-		statusToKor.put("paid", "완료");
-		statusToKor.put("ready", "대기");
-		statusToKor.put("cancelled", "취소");
-		statusToKor.put("failed", "실패");
+		statusToKor.put("paid", "결제완료");
+		statusToKor.put("ready", "결제대기");
+		statusToKor.put("cancelled", "결제취소");
+		statusToKor.put("failed", "결제실패");
 		payment.setStatus(statusToKor.get(payment.getStatus()));
 
 		// pg_provider를 수정
@@ -141,12 +141,21 @@ public class PayService {
 		pgToKor.put("html5_inicis", "이니시스");
 		payment.setPg_provider(pgToKor.get(payment.getPg_provider()));
 
+		// pay_method를 수정
+		Map<String, String> methodToKor = new HashMap<>();
+		methodToKor.put("trans", "계좌이체");
+		methodToKor.put("point", "포인트결제");
+		methodToKor.put("card", "카드결제");
+		payment.setPay_method(methodToKor.get(payment.getPay_method()));
+
 		// 테스트를 위해 금액을 1000으로 나누어서 결제했기에 다시 곱해서 표시
 		if (payment.getAmount() < 1000) {
 			payment.setAmount(payment.getAmount() * 1000);
+			payment.setCancel_amount(payment.getCancel_amount() * 1000);
 		}
 		// 천단위에 ,를 찍어서 표시
 		payment.setFormatAmount(String.format("%,d", payment.getAmount())+"원");
+		payment.setFormatCancle(String.format("%,d", payment.getCancel_amount())+"원");
 	}
 
 	public void dataformat(PaymentResponseAll.Pagedpayment payment) {
@@ -165,10 +174,10 @@ public class PayService {
 
 		// status를 수정
 		Map<String, String> statusToKor = new HashMap<>();
-		statusToKor.put("paid", "완료");
-		statusToKor.put("ready", "대기");
-		statusToKor.put("cancelled", "취소");
-		statusToKor.put("failed", "실패");
+		statusToKor.put("paid", "결제완료");
+		statusToKor.put("ready", "결제대기");
+		statusToKor.put("cancelled", "결제취소");
+		statusToKor.put("failed", "결제실패");
 		payment.setStatus(statusToKor.get(payment.getStatus()));
 
 		// pg_provider를 수정
@@ -180,9 +189,11 @@ public class PayService {
 		// 테스트를 위해 금액을 1000으로 나누어서 결제했기에 다시 곱해서 표시
 		if (payment.getAmount() < 1000) {
 			payment.setAmount(payment.getAmount() * 1000);
+			payment.setCancel_amount(payment.getCancel_amount() * 1000);
 		}
 		// 천단위에 ,를 찍어서 표시
 		payment.setFormatAmount(String.format("%,d", payment.getAmount())+"원");
+		payment.setFormatCancle(String.format("%,d", payment.getCancel_amount())+"원");
 	}
 
 	// Date형으로 받은 날짜 포맷팅 메서드

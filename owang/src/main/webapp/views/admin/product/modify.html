@@ -54,20 +54,24 @@
 	</script>
 	<style>
 		.main {
-			padding-left: 20px;
+			padding-left: 30px;
 			margin-top: 35px;
 		}
 
 		h1 {
-			width: 850px;
+			width: 900px;
 			text-align: center;
 			font-size: 42px;
 		}
 
 		table {
-			width: 850px;
+			width: 900px;
 			border-collapse: collapse;
 			border-top: 2px solid #000;
+		}
+
+		tr:not(:first-child):not(.space):hover {
+			background-color: #e0e0e0;
 		}
 
 		th {
@@ -141,6 +145,10 @@
 		.space {
 			border-top: 2px solid #000;
 		}
+
+		.alct {
+			text-align: center;
+		}
 	</style>
 </head>
 
@@ -154,7 +162,7 @@
 			<!-- 폼제출시 동작은 상품추가 -->
 			<form action="insertProduct" method="post" th:object="${ProductDTO}" id="addForm">
 				<table>
-					<tr align="center">
+					<tr class="alct">
 						<th>대상</th>
 						<th>유효일</th>
 						<th>상품명</th>
@@ -173,8 +181,8 @@
 					<tr class="space">
 						<td colspan="5"></td>
 					</tr>
-					<tr>
-						<td align="center">
+					<tr class="alct">
+						<td>
 							<select th:field="*{productClient}">
 								<option value="" selected>선택</option>
 								<option value="개인">개인</option>
@@ -182,9 +190,9 @@
 							</select>
 						</td>
 						<td><input type="number" th:field="*{productValid}" min="1"></td>
-						<td align="center"><input type="hidden" th:field="*{productName}">자동으로 생성합니다</td>
+						<td><input type="hidden" th:field="*{productName}">자동으로 생성합니다</td>
 						<td><input type="text" th:field="*{productPrice}" pattern="[0-9]*" required></td>
-						<td align="center"><input type="submit" value="추가"></td>
+						<td><input type="submit" value="추가"></td>
 					</tr>
 				</table>
 			</form>
