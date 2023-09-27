@@ -1,6 +1,7 @@
 package aaa.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -45,8 +46,8 @@ public class SoloResumeDTO {
 	String rslanguage; // 어학능력
 	String rslanguagelevel; // 어학수준
 	
-	Date rsregdate;
-	Date rsmoddate; // 글 수정일 
+	Timestamp rsregdate;
+	Timestamp rsmoddate; // 글 수정일 
 	Date deletedate;
 	
 	int cnt; // 총 이력서 개 수

@@ -29,17 +29,17 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
  -->
 	<insert id="scinsert" parameterType="scDTO">
 	    INSERT INTO scrab 
-	    (recruit_id, recruit_title, sid, rsid, scrabdate, cname, cid)
+	    (recruit_id, recruit_title, realMagam, recruit_money, recruit_location, recruit_mtype,
+	     sid, rsid, scrabdate, cname, cid)
 	    VALUES 
-	    (#{recruitId}, #{recruitTitle}, #{sid}, #{rsid}, now(), #{cname}, #{cid})
+	    (#{recruitId}, #{recruitTitle}, #{realMagam}, #{recruitMoney}, #{recruitLocation}, #{recruitMtype},
+	    #{sid}, #{rsid}, now(), #{cname}, #{cid})
 	</insert>
 	
 
 	<!-- 스크랩 리스트 출력 -->
 	<select id="sclist" resultType="scDTO" parameterType="scDTO">
-		SELECT 
-	    	scid, recruit_id, recruit_title,
-			sid, rsid, scrabdate, cname, cid
+		SELECT *
 		FROM scrab
 		WHERE sid = #{sid}
 		

@@ -43,11 +43,20 @@ public class AdminEndMemberController {
 	String endcompany(@PathVariable int page, Model mm, MCompanyDTO mdto) {
 		mdto.setPage(page);
 		mdto.calc(endCompanyMapper.endCompanycnt());
-
-		List<MCompanyDTO> data = endCompanyMapper.endCompanyList();
+		System.out.println(mdto.getStart() + ", " + mdto.getLimit());
+		List<MCompanyDTO> data = endCompanyMapper.endCompanyList(mdto);
+		
 		mm.addAttribute("endcompanyData", data);
 		return "admin/endmember/company";
 	}// 기업 리스트
+	
+	// 기업 상세보기
+	@RequestMapping("endcompany/detail/{cid}")
+	String endCompanyDetail( Model mm, MCompanyDTO mdto) {
+			
+		return "admin/endmember/companyDetail";
+	}
+	
 	
 	
 }

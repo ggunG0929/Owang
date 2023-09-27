@@ -12,39 +12,9 @@
 	</header>
 	<container>
 
-<!--
-		<h1>기업페이지</h1>
-		<h3>기업공고</h3>
-		<table border="">
-			<h1>현재 채용중인 공고 [[${mainData.size()}]]개</h1>
-			<tr>
-				<td>번호</td>
-				<td>제목</td>
-				<td>회사이름</td>
-				<td>채용시작일</td>
-				<td>채용마감일</td>
-				<td>조회수</td>
-				<td>기업아이디(본편에선 제거)</td>
-			</tr>
-			<tr th:each="dto, dtoStat : ${mainData}">
-				<td th:text="${dtoStat.count + recruitDTO.start}" />
-				<td>
-					<a th:href="|/recruit/detail/${dto.cid}/1/${dto.recruitId}|" th:text="${dto.recruitTitle}"></a>
-				</td>
-				<td>
-					<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
-				</td>
-				<td th:text="${dto.regDate}" />
-				<td th:text="${dto.realMagam}" />
-				<td th:text="${dto.cnt}" />
-				<td th:text="${dto.cid}" />
-			</tr>
-
-		</table>
-		<a th:href="|/company/list/${dto.cid}/1|">채용공고 더보기</a>-->
 		<h3>기업정보</h3>
 		<!-- 개인일때는 수정삭제가능ㄴ -->
-		<th:block th:if="${session.adminSession != null or session.cid == dto.cid}">
+		<th:block th:if="${session.adminSession != null or session.cid == dto.cid}"><!--관리자거나, 동일회사거나--> 
 			<table border="">
 
 				<tr>
@@ -107,7 +77,8 @@
 			<a href="/company/modify">수정</a>
 			<a href="/company/delete">삭제</a>
 		</th:block>
-		<th:block th:unless="${session.adminSession != null or session.cid == dto.cid}">
+		<th:block th:unless="${session.adminSession != null or session.cid == dto.cid}"><!--관리자도 아니고, 동일회사도 아닌것이요--> 
+			<table border="">
 			<table border="">
 				<tr>
 					<td>기업이름</td>
@@ -144,17 +115,17 @@
 
 		<a th:href="|/review/lo/${dto.cid}/1|">리뷰보러가기</a>
 
-		<a href="/">홈으로</a>
+		
 		<a href="javascript:goBack()">이전 페이지</a>
 
 		<aside><!-- 회사프로필 -->
 			<div class="position_title_image">
-				<a href="/company/5262">
+				<a href="|/company/${dto.cid}|">
 					<img src="https://cdn.jumpit.co.kr/sm/images/151241/20232701152751815_1001_1000.webp" alt="기업 로고">
 				</a>
 			</div>
 			<h2>백엔드 개발자(Python, Django)</h2>
-			<p><a href="/company/5262">어터</a></p>
+			<p><a href="|/company/${dto.cid}|"></p>
 		</aside>
 	</container><!-- 컨테이너 -->
 	<script>

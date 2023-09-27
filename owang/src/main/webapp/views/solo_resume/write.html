@@ -13,7 +13,10 @@
       }
 </script>
 </head>
-
+<link rel="stylesheet" th:href="@{/css/solo_resume/write.css}">
+<header>
+	<div th:insert="~{header :: header}"></div>
+</header>	
 <style>
     #introduce, #license {
         display: none;
@@ -87,35 +90,7 @@
         });
     });
 
-    var careerCount = 0;  // 경력 개수 초기값
 
-    function addCareer() {
-        careerCount++;  // 경력 개수 증가
-
-        // 경력 세부 정보 입력란을 동적으로 생성
-        var newCareerDetail = document.createElement('div');
-        newCareerDetail.innerHTML = `
-            <div id="careerDetails-${careerCount}" style="display: none;">
-                <div>
-                    <p>회사명</p>
-                    <p><input type="text" id="rscompany-${careerCount}" name="rscompany" th:field="*{rscompany}" /></p>
-                </div>
-                <div>
-                    <p>근무 기간</p>
-                    <p><input type="text" id="rsworkstart-${careerCount}" name="rsworkstart" th:field="*{rsworkstart}" /></p>
-                    <p><input type="text" id="rsworkend-${careerCount}" name="rsworkend" th:field="*{rsworkend}" /></p>
-                </div>
-                <div>
-                    <p>담당 업무</p>
-                    <p><textarea id="resumeWork-${careerCount}" name="rswork" th:field="*{rswork}" rows="4" cols="50"></textarea></p>
-                </div>
-            </div>
-        `;
-
-        // 경력 세부 정보 입력란을 추가한 후 보이도록 설정
-        document.getElementById('careerDetailsContainer').appendChild(newCareerDetail);
-        document.getElementById(`careerDetails-${careerCount}`).style.display = 'block';
-    }
 function printCareer()  {
   const rscompany = document.getElementById('rscompany').value;
   const rsworkstart = document.getElementById('rsworkstart').value;
@@ -213,205 +188,228 @@ $("#file").on('change',function(){
 }
 </style>
 <body>
-<h2>이력서 작성</h2>
-<div>
+<div id="resume_form">
+	<div id="resume_text">
+		<span>이력서 등록하기</span>
+	</div>
    <form method="post" enctype="multipart/form-data" th:object="${soloResumeDTO}">
-      <div>
-         <div style="border: 1px solid #ccc; width:700px;">
-             <h3>기본정보</h3>
-<table style="width:500px;">
-    <tr>
-        <td colspan="4">
-            <input type="hidden" th:value="${solosession.sid}" name="sid" />
-        </td>
-        <td rowspan="7" style="vertical-align: top;">
-            <img id="imagePreview" src="#" alt="미리보기 이미지" style="display: none; max-width:160px; max-height:200px;">
-        </td>
-    </tr>
+   <!-- 이력서 제목 -->
+    <div id="rstitle">
+		<!--<div id="rstitle_essential">
+			<span>필수사항입니다</span>
+		</div>-->
+        <span>이력서 제목</span>
+        <input type="text" th:field="*{rstitle}" required />
+    </div>
+	<div id="resume_info">
+		<input type="hidden" th:value="${solosession.sid}" name="sid" />
+		<div id="resume_name">
+			<li>
+				<!-- 이름 -->
+				<span th:text="${solosession.sname}"/>
+				<!-- 성별 -->
+		    	<span th:text="${solosession.sgender}" />
+		    	<!-- 나이 -->
+			    <span  th:text="|${solosession.sage}세|" />
+			</li>
+		</div>
+		<div id="resume_detail_info">
+			<li>
+			    <i class="fa-solid fa-house"></i>
+			    <span th:text="${solosession.saddress}" />
+			</li>
+			<li>
+			    <i class="fa-solid fa-phone"></i>
+			    <span colspan="3" th:text="${solosession.sphone}" />
+			</li>
+			<li>
+			    <i class="fa-solid fa-envelope"></i>
+			    <span colspan="3" th:text="${solosession.semail}" />
+			</li>
+		</div>
+		<!-- 증명사진 미리보기 -->
+		<div id="resume_photo">
+			<!-- 미리보기 이미지 -->
+			<div id="resume_prev">
+				<img id="imagePreview" src="#" alt="미리보기 이미지" style="display: none;" >
+			</div>
+			<!-- 파일 첨부-->
+			<div id="filebox">
+				<input th:unless="${soloResumeDTO.rsphoto != null}" type="file" th:field="*{rsmmff}" id="rsmmff" onchange="handleFileChange()" placeholder="증명사진 첨부" required/>
+			    <span id="fileError" style="color: red;"></span>
+			</div>
+		</div>
+	</div>
 
-    <tr>
-        <td th:text="${solosession.sname}"></td>
-        <td th:text="${solosession.sgender}"></td>
-        <td th:text="|${solosession.sage}살|"></td>
-    </tr>
-    <tr>
-        <td>주소</td>
-        <td colspan="3" th:text="${solosession.saddress}"></td>
-    </tr>
-    <tr>
-        <td>이메일</td>
-        <td colspan="3" th:text="${solosession.semail}"></td>
-    </tr>
-    <tr>
-        <td>전화번호</td>
-        <td colspan="3" th:text="${solosession.sphone}"></td>
-    </tr>
-    <tr>
-      <td colspan="4">
-          <input th:unless="${soloResumeDTO.rsphoto != null}" type="file" th:field="*{rsmmff}" id="rsmmff" onchange="handleFileChange()" required/>
-          <span id="fileError" style="color: red;"></span>
-      </td>
-    </tr>
-</table>
 
 
+    <!-- 경력 사항 -->
+    <div id="rscareer">
+		<!--<div id="rscareer_essential">
+			<span>필수사항입니다</span>
+		</div>-->
+        <span id="rscareer_text">경력</span>
+        <li>
+            <label for="resumeCareerNew">
+                <input type="radio" name="rscareer" id="resumeCareerNew" value="신입" th:field="*{rscareer}" required />
+                	<span id="newguy">신입</span>
+            </label>
+        </li>
+        <li>
+            <label for="resumeCareerExperienced">
+                <input type="radio" name="rscareer" id="resumeCareerExperienced" value="경력" th:field="*{rscareer}"  required/>
+                	<span id="oldguy">경력</span>
+            </label>
+        </li>
+        <!-- 경력 관련 입력란 (기본적으로는 숨김) -->
+	    <div id="careerDetails" style="display: none;">
+			<ul>
+				<li>
+			        <span>회사명</span>
+			        <input type="text" id="rscompany" th:field="*{rscompany}" onchange="printCareer()"/></td>
+		        </li>
+		        <li>
+		        	<span>근무 기간</span>
+					<input type="date" id="rsworkstart" th:field="*{rsworkstart}" />
+					<input type="date" id="rsworkend" th:field="*{rsworkend}"  />
+				</li>
+		        <li>
+		           <span>담당 업무</span>
+		           <textarea id="rswork" th:field="*{rswork}" onchange="printCareer()" />
+		        </li>
+			</ul>
+	    </div>
+    </div>
 
-            </div>
-            <!-- 이력서 제목 -->
-            <div style="border: 1px solid #ccc; width:700px;">
-                <p>이력서 제목</p>
-                <p><input type="text" th:field="*{rstitle}" required /></p>
-            </div>
-
-            <!-- 경력 사항 -->
-            <div style="border: 1px solid #ccc; width:700px;">
-                <p>경력</p>
-                <p>
-                    <label for="resumeCareerNew">
-                        <input type="radio" name="rscareer" id="resumeCareerNew" value="신입" th:field="*{rscareer}" required />
-                        신입
-                    </label>
-                    <label for="resumeCareerExperienced">
-                        <input type="radio" name="rscareer" id="resumeCareerExperienced" value="경력" th:field="*{rscareer}"  required/>
-                        경력
-                    </label>
-                </p>
-            </div>
-
-            <!-- 경력 관련 입력란 (기본적으로는 숨김) -->
-            <div id="careerDetails" style="display: none;">
-                <table>
-               <tr>
-                       <td>회사명</td>
-                       <td><input type="text" id="rscompany" th:field="*{rscompany}" onchange="printCareer()"/></td>
-                    </tr>
-                   <tr>
-                       <td>근무 기간</td>
-                       <td>
-                     <input type="date" id="rsworkstart" th:field="*{rsworkstart}" />
-                          <input type="date" id="rsworkend" th:field="*{rsworkend}"  />
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>담당 업무</td>
-                       <td><textarea id="rswork" th:field="*{rswork}" rows="4" cols="50" onchange="printCareer()" /></td>
-                   </tr>
-               </table>
-            </div>
-            <div id="careerDetailsOutput" style="display: none; ">
-             <h3>경력 정보</h3>
-             <p><strong>회사명:</strong> <span th:text="${soloResumeDTO.rscompany}"></span></p>
-             <p><strong>근무 기간:</strong> <span th:text="${soloResumeDTO.rsworkstart}" /><span th:text="${soloResumeDTO.rsworkend}" /></p>
-             <p><strong>담당 업무:</strong> <span th:text="${soloResumeDTO.rswork}"></span></p>
-         </div>
-            <!-- 학력 -->
-         <div style="border: 1px solid #ccc; width: 700px;">
-             <p>최종 학력</p>
-             <p>
-            <select th:field="*{rsacademic}" required>
-                <option value="">학교 유형 선택</option>
-                <option value="대학원">대학원</option>
-                <option value="대학(4년)">대학(4년)</option>
-                <option value="대학(2, 3년)">대학(2, 3년)</option>
-                <option value="고등학교">고등학교</option>
-                <option value="중학교">중학교</option>
-                <option value="초등학교">초등학교</option>
-            </select>
-
-            <select th:field="*{rsacademicstat}" required>
-                <option value="">학력 상태</option>
-                <option value="졸업">졸업</option>
-                <option value="재학중">재학중</option>
-                <option value="휴학중">휴학중</option>
-                <option value="중퇴">중퇴</option>
-                <option value="수료">수료</option>
-                <option value="검정고시">검정고시</option>
-                <option value="수료">수료</option>
-            </select>
-             </p>
-         </div>
-            <!-- 자기소개 -->
-            <div style="border: 1px solid #ccc; width:700px;">
-                <p>
-                    <button onclick="showForm()" class="btn_show" id="show">+</button>자기소개서
-                </p>
-                <p id="introduce"><textarea name="rsintroduce" rows="4" cols="50" th:field="*{rsintroduce}"></textarea></p>
-                <button onclick="hideForm()" class="btn_hide" id="hide">-</button>
-            </div>
-            <!-- 자격증 -->
-            <div style="border: 1px solid #ccc; width:700px;">
-                <p>
-                    <button onclick="showLicense()" class="btn_show" id="showli">+</button>자격증
-                </p>
-                <table id="license">
-                    <tr>
-                        <td>자격증명</td>
-                        <td><input type="text" th:field="*{rslicense}" /></td>
-                    </tr>
-                    <tr>
-                        <td>발행기관</td>
-                        <td><input type="text" th:field="*{rslicenseorg}" placeholder="발행기관" /></td>
-                        <td>발행년도</td>
-                        <td><input type="date" id="rslicenseyear" th:field="*{rslicenseyear}" placeholder="발행년도"/></td>
-                    </tr>
-                </table>
-                <button onclick="hideLicense()" class="btn_hide" id="hideli">-</button>
-            </div>
-            
-            <!-- 어학 능력 -->
-            <div style="border: 1px solid #ccc; width:700px;">
-                <p>
-                   <button onclick="showLanguage()" class="btn_show" id="showlg">+</button>어학 능력
-            </p>
-            <table id="language" style="display:none;">
-               <tr>
-                  <td>어학명</td>
-                  <td>
-                     <select th:field="*{rslanguage}">
-                          <option value="">어학명</option>
-                         <option value="그리스어">그리스어</option>
-                         <option value="네덜란드어">네덜란드어</option>
-                         <option value="노르웨이어">노르웨이어</option>
-                         <option value="독일어">독일어</option>
-                         <option value="러시아어">러시아어</option>
-                         <option value="몽골어">몽골어</option>
-                         <option value="미얀마어">미얀마어</option>
-                         <option value="베트남어">베트남어</option>
-                         <option value="스웨덴어">스웨덴어</option>
-                         <option value="스페인어">스페인어</option>
-                         <option value="아랍어">아랍어</option>
-                         <option value="영어">영어</option>
-                         <option value="이탈리아어">이탈리아어</option>
-                         <option value="일본어">일본어</option>
-                         <option value="중국어">중국어</option>
-                         <option value="태국어">태국어</option>
-                         <option value="터키어">터키어</option>
-                         <option value="포르투갈어">포르투갈어</option>
-                         <option value="폴란드어">폴란드어</option>
-                         <option value="프랑스어">프랑스어</option>
-                         <option value="히브리어">히브리어</option>
-                         <option value="힌디어">힌디어</option>
-                         <option value="기타">기타</option>
-                      </select>
-                  </td>
-                  <td>어학수준</td>
-                  <td>
-                        <select th:field="*{rslanguagelevel}">
-                          <option value="">어학수준</option>
-                         <option value="회화 능숙">회화 능숙</option>
-                         <option value="일상 대화">일상 대화</option>
-                         <option value="간단 대화">간단 대화</option>
-                      </select>
-                  </td>
-               </tr>
-                </table>
-                <button onclick="hideLanguage()" class="btn_hide" id="hidelg" style="display:none;">-</button>
-            </div>
-            
-            <div>
-                <input type="submit" value="이력서 등록" />
-            </div>
+    
+    <!-- 학력 -->
+ 	<div id="rsschool">
+		 <!--<div id="rsschool_essential">
+			 <span>필수사항입니다</span>
+		 </div>-->
+	     <span>최종 학력</span>
+	     <p>
+		    <select th:field="*{rsacademic}" required>
+		        <option value="">학교 유형 선택</option>
+		        <option value="대학원">대학원</option>
+		        <option value="대학(4년)">대학(4년)</option>
+		        <option value="대학(2, 3년)">대학(2, 3년)</option>
+		        <option value="고등학교">고등학교</option>
+		        <option value="중학교">중학교</option>
+		        <option value="초등학교">초등학교</option>
+		    </select>
+		
+		    <select th:field="*{rsacademicstat}" required>
+		        <option value="">학력 상태</option>
+		        <option value="졸업">졸업</option>
+		        <option value="재학중">재학중</option>
+		        <option value="휴학중">휴학중</option>
+		        <option value="중퇴">중퇴</option>
+		        <option value="수료">수료</option>
+		        <option value="검정고시">검정고시</option>
+		        <option value="수료">수료</option>
+		    </select>
+	     </p>
+	 </div>
+    <!-- 자기소개 -->
+    <div id="rsintroduce">
+		<span id="rsintroduce_text">자기소개서</span>
+        <p id="rsintroduce_show">
+            <button onclick="showForm()" class="btn_show" id="show">
+				<i class="fa-solid fa-plus"></i><span>추가</span>
+			</button>
+        </p>
+        <p id="introduce">
+			<textarea th:field="*{rsintroduce}" />
+		</p>
+        <p id="rsintroduce_hide">
+	        <button onclick="hideForm()" class="btn_hide" id="hide">
+				<i class="fa-solid fa-minus"></i><span>취소</span>
+			</button>
+		</p>
+    </div>
+    <!-- 자격증 -->
+    <div id="rslicense_content">
+		<span id="rslicense_text">자격증</span>
+        <div id="rslicense_show">
+            <button onclick="showLicense()" class="btn_show" id="showli">
+				<i class="fa-solid fa-plus"></i><span>추가</span>
+			</button>
         </div>
+        <div id="license">
+            <ul>
+                <li>
+					<span>자격증명</span>
+					<input type="text" th:field="*{rslicense}" />
+					<span>발행기관</span>
+	                <input type="text" th:field="*{rslicenseorg}" placeholder="발행기관" />					
+				</li>
+                <li>
+					<span>발행년도</span>
+                	<input type="date" id="rslicenseyear" th:field="*{rslicenseyear}" placeholder="발행년도"/>
+                </li>
+            </ul>
+        </div>
+        <div id="rslicense_hide">
+	        <button onclick="hideLicense()" class="btn_hide" id="hideli">
+				<i class="fa-solid fa-minus"></i><span>취소</span>
+			</button>
+        </div>
+    </div>
+            
+    <!-- 어학 능력 -->
+    <div id="rslanguage_content">
+		<span id="rslanguage_text">어학 능력</span>
+        <div id="rslanguage_show">
+           <button onclick="showLanguage()" class="btn_show" id="showlg">
+				<i class="fa-solid fa-plus"></i><span>추가</span>   
+		   </button>
+    	</div>
+	    <div id="language" style="display:none;">
+	       <span>어학명</span>
+		 	<select th:field="*{rslanguage}">
+				<option value="">어학명</option>
+		     	<option value="그리스어">그리스어</option>
+			    <option value="네덜란드어">네덜란드어</option>
+			    <option value="노르웨이어">노르웨이어</option>
+			    <option value="독일어">독일어</option>
+			    <option value="러시아어">러시아어</option>
+			    <option value="몽골어">몽골어</option>
+			    <option value="미얀마어">미얀마어</option>
+			    <option value="베트남어">베트남어</option>
+			    <option value="스웨덴어">스웨덴어</option>
+			    <option value="스페인어">스페인어</option>
+			    <option value="아랍어">아랍어</option>
+			    <option value="영어">영어</option>
+			    <option value="이탈리아어">이탈리아어</option>
+			    <option value="일본어">일본어</option>
+			    <option value="중국어">중국어</option>
+			    <option value="태국어">태국어</option>
+			    <option value="터키어">터키어</option>
+			    <option value="포르투갈어">포르투갈어</option>
+			    <option value="폴란드어">폴란드어</option>
+			    <option value="프랑스어">프랑스어</option>
+			    <option value="히브리어">히브리어</option>
+			    <option value="힌디어">힌디어</option>
+			    <option value="기타">기타</option>
+			</select>
+			<span>어학수준</span>
+			<select th:field="*{rslanguagelevel}">
+			     <option value="">어학수준</option>
+			     <option value="회화 능숙">회화 능숙</option>
+			     <option value="일상 대화">일상 대화</option>
+			     <option value="간단 대화">간단 대화</option>
+			</select>	
+		</div>
+        <div id="rslanguage_hide">
+        	<button onclick="hideLanguage()" class="btn_hide" id="hidelg" style="display:none;">
+				<i class="fa-solid fa-minus"></i><span>취소</span>
+			</button>
+        </div>
+    </div>
+    <div id="resume_submit">
+	    <input type="submit" value="이력서 등록" />
+	</div>
     </form>
     <a href="javascript:goBack()">이전 페이지</a>
 </div>

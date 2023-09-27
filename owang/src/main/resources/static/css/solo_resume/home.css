@@ -1,11 +1,12 @@
 body{
-	 height: auto; /* 기본값으로 설정되어 있음 */
+	 height: 100%; /* 기본값으로 설정되어 있음 */
 }
 
 #solo_resume_home{
 	font-family: 'Noto Sans KR', sans-serif;
 	padding: 30px;
 	background-color: white;
+ 	height: 100%; /* 기본값으로 설정되어 있음 */
 }
 
 /* 이력서 관리 */
@@ -15,11 +16,12 @@ body{
 	font-weight: 450;
 	margin-top: 80px;
 	margin-left: 60px;
+	padding-bottom: 40px;
 }
 
 /* 이력서 없음 문구 */
 #resume_none{
-	margin-top: 80px;
+	margin-top: 40px;
 	font-size: 40px;
 	text-align:center;
 	color: rgb(200, 206, 219);
@@ -28,13 +30,17 @@ body{
 
 /* 최대 안내 문구 */
 #resume_limit{
-	margin-left: 65px;
-	margin-bottom: 180px;
+	height: 25px;
+	text-align: right;
+	margin-right: 65px;
+	margin-bottom: -20px;
+	color: rgb(255, 70, 70);
+	
 }
 
 #resume_ad{
 	float:right;
-	font-size: 13px;
+	font-size: 15px;
 }
 
 #resume_list{
@@ -53,10 +59,11 @@ body{
 
 /* 이력서등록하기 */
 #rswrite{
-
+	margin-top:30px;
 	margin-right: 60px;
-	padding-bottom: 40px;
+	padding-bottom: 70px;
 }
+
 #rswrite a{
 	background-color: rgb(41, 46, 65);
 	padding: 15px 50px;
@@ -73,8 +80,9 @@ body{
 
 #rstotal{
 	font-size: 15px;
-	margin-left: 60px;	
-	margin-bottom: 10px;
+	margin-left: 60px;
+	margin-bottom: 10px;	
+	
 }
 
 #rstotal span{
@@ -83,6 +91,7 @@ body{
 
 /* 이력서 제목 */
 #resume_list li:nth-of-type(1){
+	
 	padding: 20px 0px;
 	font-size: 30px;
 	color: rgb(95, 99, 104);
@@ -100,8 +109,8 @@ body{
 
 #resume_list li:nth-of-type(1) span::after{
 	content: "|";
-	margin: 0 20px;
-	margin-right: 10px;
+	margin-left: 40px;
+	margin-right: 30px;
 	color: #eee;
 	font-size: 30px;
 }
@@ -121,25 +130,15 @@ body{
 #resume_list li:nth-of-type(3){
 	text-align: right;
 	margin-top: -50px;
+	font-size: 15px;
+	padding-top: 30px;
 }
 
-#resume_list  #rsdate::before{
-	content: "|";
-	margin: 0 10px;
-	color: #ccc;
-	font-size: 14px;
-}
 
 /* 이력서 수정일*/
 #resume_list li:nth-of-type(4){
 	text-align: right;
-}
-
-#resume_list  #rsmode::before{
-	content: "|";
-	margin: 0 10px;
-	color: #ccc;
-	font-size: 14px;	
+	font-size: 15px;
 }
 
 /* 수정 삭제 버튼 */
@@ -176,9 +175,4 @@ body{
 
 #resume_title{
 	font-size: 30px;
-}
-
-/* 총 ?? 건 */
-#rstotal{
-	font-size: 20px;
 }

@@ -60,7 +60,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
     select sid from solo where sname = #{fname} and semail = #{femail}
 </select>
 <select id="findpwSolo" resultType="Integer">
-    select count(*) from solo where sid = #{fid} and semail = #{femail} and sbirth = #{fbirth}
+    select count(*) from solo where sid = #{fid} and semail = #{femail}
+</select>
+<select id="findemail" resultType="String">
+    select semail from solo where sid = #{userid}
 </select>
 <update id="modifyspw">
 	update solo set spw = #{spw}

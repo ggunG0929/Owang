@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 <mapper namespace="aaa.service.SoloResumeMapper">
 	<select id="resumelist" resultType="rDTO">
-   	 	select * from resume where sid = #{sid}
+   	 	select * from resume where sid = #{sid} order by rsid desc
 	</select>
 	
 	<select id="resumedetail" resultType="rDTO">

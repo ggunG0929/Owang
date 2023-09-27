@@ -8,10 +8,10 @@ a{text-decoration: none;color: initial;}
 
 /* board_wrap : 게시판 가장 부모영역 가장외곽 영역*/
 .board_wrap{
-    width: 1000px;
-    margin: 20px auto;
+    width: 880px;
+    margin: 10px auto;
     margin-bottom: 100px;
-    padding:80px 50px 50px 50px;
+    padding:70px 50px 50px 50px;
     text-align: center;
 }
 /* ####  board_wrap : 게시판 가장 부모영역 가장외곽 영역 #### */
@@ -49,6 +49,7 @@ html{
 .board_list{
     width: 100%;
     border-top: 2px solid #000 ;
+    border-bottom: 2px solid #000 ;
 }
 
 .board_list > div{

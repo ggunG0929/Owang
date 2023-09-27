@@ -1,6 +1,7 @@
 package aaa.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -32,6 +33,12 @@ public class ScrabDTO {
 	String recruitTitle; // 공고 제목
 	int recruitId; // 지원한 공고의 번호
 	
+	// 추가
+	String realMagam; // 마감일자
+	int recruitMoney;  // 급여
+	String recruitLocation; // 근무지역
+	String recruitMtype; // 월급 ? 연봉 ?
+	
 	// 기업
 	String cid; // 기업명
 	String cname; // 기업이름
@@ -39,7 +46,7 @@ public class ScrabDTO {
 	// 개인
 	String sid;
 	
-	Date scrabdate;
+	Timestamp scrabdate;
 		
 }
 

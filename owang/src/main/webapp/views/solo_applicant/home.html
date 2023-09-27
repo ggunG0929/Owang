@@ -1,72 +1,69 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
+<link rel="stylesheet" th:href="@{/css/solo_applicant/home.css}">
 <header>
 	<div th:insert="~{header :: header}"></div>
 </header>	
-<h2>지원서 관리</h2>
-	<span th:if="${#lists.isEmpty(appdata)}">
-    	<h2>지원내역이 존재하지 않습니다</h2>
-	</span>
-	<p th:if="${appdata.isEmpty()}">
-        <h3><a href="/recruit/list/1">채용공고 보러가기</a></h3>
-    </p>    
-<span th:if="${not appdata.isEmpty()}" th:text="${'총 ' + appdata.size() + ' 건의 지원 내역이 있습니다.'}"></span>
-<table border="">
-	<tr th:if="${not appdata.isEmpty()}">
-	    <td>.no</td>
-	    <td>지원일</td>
-	    <td>지원자명</td>
-	    <td>기업명</td>
-	    <td>공고제목</td>
-	    <td>지원이력서</td>
-	    <td>지원상태</td>
-    	<td>합격여부</td>
-	</tr>
-    <!-- appdata가 값이 있는 경우 데이터 출력 -->
-    <tr th:each="adto, astart : ${appdata}">
-        <td th:text="${astart.count + applicantDTO.start}"/>
-        <td th:text="${adto.apsubmitdate}" />
-        <td th:text="${adto.sname}" />
-        <!-- 기업 명 -->
-		<td>
-			<a th:href="'/company/detail/' + ${adto.cid}" th:text="${adto.cname}"></a>
-		</td>
-		<!-- 공고 제목 -->
-        <td>
-			<a th:href="'/recruit/detail/' + ${adto.cid} + '/' + ${applicantDTO.page} + '/' + ${adto.recruitId}" th:text="${adto.recruitTitle}"></a>
-		</td>
-		<!-- 지원 이력서 -->
-        <td>
-			<a th:href="|/solo_applicant/detail/${applicantDTO.page}/${adto.ano}|" th:text="${adto.aptitle}" /> 
-		</td>
-		<input type="hidden" th:value="${adto.ano}" name="ano"/>
-		<!-- 지원 취소 -->
-		<td th:if="${adto.apcancel == 0}">
-		    <a th:href="|/solo_applicant/modify/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.cname}]]에 지원을 취소하겠습니까?')">지원취소</a>
-		</td>
-		<td th:if="${adto.apcancel == 1}" th:colspan="3">취소된 지원서 입니다</td>   
-		<!-- 합격여부 -->
-		<td th:if="${adto.apcancel != 1}">
-		    <span th:if="${adto.apread == 0}">미열람</span>
-		    <span th:if="${adto.apread == 1 and adto.appass == 0}">열람완료</span>
-		    <span th:if="${adto.apread == 1 and adto.appass == 1}">합격</span>
-		    <span th:if="${adto.appass == 2}">불합격</span>
-		</td>
-    </tr>
-    <!-- 페이징 처리 -->
+<body>
+<div id="solo_recruit_home">
+	<div id="recruit_ad">
+		<span>지금 오왕의 구인구직 시스템을 이용해보세요.</span>
+	</div>
+	<div id="recruit_text">
+		<span>지원서 관리</span>
+	</div>		
+	<div id="recruit_none">
+    	<span th:if="${#lists.isEmpty(appdata)}">앗! 지원내역이 존재하지 않습니다</span>
+	</div>
+	<div id="gotorc" th:if="${appdata.isEmpty()}">
+		<a href="/recruit/list/1">채용공고 보러가기&nbsp
+		<i class="fa-solid fa-arrow-right"></i>
+		</a>
+	</div>
+	<div id="rctotal">
+		<span th:if="${not appdata.isEmpty()}" th:text="${'총 ' + appdata.size() + ' 건의 지원내역이 존재합니다'}"></span>
+	</div>
 
-
-</table>
-
-<footer>
-       <div th:insert="~{footer :: footer}"></div>
-    </footer>
-    
-    
+	<div id="recruit_list" th:if="${not appdata.isEmpty()}" th:each="adto, astart : ${appdata}">
+		<div id="rcdate">
+			No.<span th:text="${astart.count}" />
+			<li>
+				<span th:text="${#dates.format(adto.apsubmitdate, 'yyyy-MM-dd HH:mm')}" />
+			</li>
+		</div>
+		<div id="rccontent">
+			<!-- 기업 명 -->
+			<li>
+				<a th:href="'/company/detail/' + ${adto.cid}" th:text="${adto.cname}"></a>
+			</li>
+			<!-- 공고 제목 -->
+	        <li>
+				<a th:href="'/recruit/detail/' + ${adto.cid} + '/' + ${applicantDTO.page} + '/' + ${adto.recruitId}" th:text="${adto.recruitTitle}"></a>
+			</li>
+			<!-- 지원 이력서 -->
+			<li><i class="fa-regular fa-file"></i>
+				<a th:href="|/solo_applicant/detail/${applicantDTO.page}/${adto.ano}|" th:text="${adto.aptitle}" />
+			</li>
+		</div>
+		<div id="rcpass">   
+			<!-- 합격여부 -->
+			<li th:if="${adto.apcancel != 1}">
+			    <span th:if="${adto.apread == 0}">미열람</span>
+			    <span th:if="${adto.apread == 1 and adto.appass == 0}">열람완료</span>
+			    <span th:if="${adto.apread == 1 and adto.appass == 1}" style="color: blue;">합격</span>
+			    <span th:if="${adto.appass == 2}" style="color: red;">불합격</span>
+			</li>
+			<!-- 지원 취소 -->
+			<li th:if="${adto.apcancel == 0}">
+			    <a th:href="|/solo_applicant/modify/${applicantDTO.page}/${adto.ano}|" th:onclick="return confirm('[[${adto.cname}]]에 지원을 취소하겠습니까?')">지원취소</a>
+			</li>
+			<li id="canceled" th:if="${adto.apcancel == 1}" th:colspan="3">취소된 지원 입니다</li>
+		</div>
+    </div>
 </body>
 </html>

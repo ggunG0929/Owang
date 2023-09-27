@@ -2,15 +2,9 @@ package aaa.service;
 
 
 
-import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-
-import aaa.model.ApplicantDTO;
 import aaa.model.MCompanyDTO;
-import aaa.model.RecruitDTO;
-
-
 
 @Mapper
 public interface MCompanyMapper {
@@ -44,9 +38,9 @@ public interface MCompanyMapper {
 		MCompanyDTO findid(String fname, String femail);	
 		
 		// 비번찾기
-		int findpwComp(String fid, String femail, String fceo);
+		int findpwComp(String fid, String femail);
 		int modifycpw(String cid, String cpw); 
-				
+		String findemail(String userid);
 		
 }
 

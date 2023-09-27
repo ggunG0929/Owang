@@ -85,7 +85,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
     select cid from company where cname = #{fname} and cemail = #{femail}
 </select>
 <select id="findpwComp" resultType="Integer">
-    select count(*) from company where cid = #{fid} and cemail = #{femail} and cceo = #{fceo}
+    select count(*) from company where cid = #{fid} and cemail = #{femail}
+</select>
+<select id="findemail" resultType="String">
+    select cemail from company where cid = #{userid}
 </select>
 <update id="modifycpw">
 		update company set cpw=#{cpw}

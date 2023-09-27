@@ -3,12 +3,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	<link rel="stylesheet" th:href="@{/css/login/pwreset.css}">
 </head>
 <body>
    <header>
       <div th:insert="~{header :: header}"></div>
    </header>
-   	<h2>비밀번호를 변경합니다</h2>
+   <div class="container">
+		<div class="page">
+   	<h1>비밀번호를 변경합니다</h1>
 	<form name="frm" method="post">
 		<input type="hidden" name="id" th:text="${id}" />
 		<table border="">
@@ -20,11 +23,10 @@
 				<td>비밀번호 확인</td>
 				<td><input type="password" name="pw2" id="pw2" /></td>
 			</tr>
-			<tr>
-				<td colspan="2" align="center">
-				<input type="submit" value="수정" />
-			</td>
-		</tr>
+			
 	</table>
+	<input type="submit" value="수정" />
 </form>
+		</div>
+   </div>
 </html>

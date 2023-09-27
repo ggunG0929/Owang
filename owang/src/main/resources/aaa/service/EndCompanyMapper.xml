@@ -4,16 +4,16 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="aaa.service.EndCompanyMapper">
-		
-<select id="endCompanyList" resultType="mcDTO">
-	 select * from endcompany
+<!-- 탈퇴 기업 조회 -->
+<select id="endCompanyList" parameterType="mcDTO" resultType="mcDTO">
+	 select * from endcompany limit #{start}, #{limit}
 </select>
 
 <select id="endCompanycnt" resultType="Integer" >
 	select count(*) from endcompany
 </select>
 	
-	
+<!--탈퇴 기업 추가 -->
 <insert id="endCompanyInsert" parameterType="mcDTO">
     INSERT INTO endcompany (cemail,cid, cpw, cname, cbuild, ccategory, 
     cstaff, csales, ccall, cceo, caddress, ccompanyFile, ccontent, ctype, cbcnt, capproval, cdeletedate)
@@ -44,12 +44,28 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
  
   
 </insert>
-
+<!--탈퇴한 지원서 조회 -->
 <select id="endapplist" resultType="aDTO"
 		parameterType="string">
 		select * from applicant where cid = #{cid}
 </select>
 
+<!--탈퇴 공고 추가 -->
+<insert id="endrecruitInsert" parameterType="recruitDTO">
+	insert into endrecruit(rtype,cname, recruit_title, cid, recruit_content,
+	recruit_upfile, reg_date, recruit_money, recruit_mtype,
+	recruit_magam , cnt, realMagam, deletedate )
+	values
+	(1, #{cname}, #{recruitTitle}, #{cid}, #{recruitContent},
+	#{recruitUpfile}, #{regDate},#{recruitMoney}, #{recruitMtype},
+	#{recruitMagam},0,
+	#{realMagam},sysdate())
+</insert>
+
+<!-- 탈퇴할 기업의 공고 조회 -->
+<select id="endrecruitList" resultType="recruitDTO"  parameterType="string">
+	select * from recruit where cid = #{cid}
+</select>
 
 
 <insert id="endaskInsert" parameterType="askDTO">

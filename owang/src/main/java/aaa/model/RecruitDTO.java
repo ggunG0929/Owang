@@ -29,7 +29,7 @@ public class RecruitDTO {
 	public Date realMagam = new Date();
 	int recruitMagam;
 	int recruitMoney; // 급여
-	String recruitlocatoin; // 근무지역
+	String recruitlocation; // 근무지역
 	String searchOption, keyword;// 검색조건
 	int appnum;
 	
@@ -138,7 +138,7 @@ public class RecruitDTO {
 		this.realMagam = realMagam;
 		this.recruitMagam = recruitMagam;
 		this.recruitMoney = recruitMoney;
-		this.recruitlocatoin = recruitlocatoin;
+		this.recruitlocation = recruitlocation;
 		this.searchOption = searchOption;
 		this.keyword = keyword;
 		this.mmff = mmff;

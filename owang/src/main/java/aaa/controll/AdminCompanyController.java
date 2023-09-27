@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import aaa.model.ApplicantDTO;
 import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
+import aaa.model.RecruitDTO;
 import aaa.service.AdminCompanyMapper;
+import aaa.service.CompanyApplicantMapper;
 import aaa.service.EndCompanyMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.PayMapper;
@@ -22,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -44,21 +49,26 @@ public class AdminCompanyController {
 	MCompanyMapper crccMapper;
 	
 	@Resource
-	EndCompanyMapper endCompanyMapper;
-
-	@Resource
 	PayMapper paym;
-
+	
 	@Resource
 	RecruitMapper rcm;
+	
+	@Resource
+	EndCompanyMapper endCompanyMapper;
+	@Resource
+	CompanyApplicantMapper applicantMapper;
 
-	static String path = "E:\\BackEnd_hakwon\\Spring_Team\\owang\\src\\main\\webapp\\companyup";
+	//static String path = "E:\\BackEnd_hakwon\\Spring_Team\\owang\\src\\main\\webapp\\companyup";
 
 	@GetMapping("/search")
 	String search(@RequestParam("keyword") String keyword, @RequestParam("searchOption") String searchOption,
 			@ModelAttribute MCompanyDTO dto,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page, Model model) {
 		List<MCompanyDTO> data = adminMapper.searchCompany(keyword, searchOption);
+		dto.setPage(page);
+		dto.calc(data.size());
+		
 		for (MCompanyDTO mCompanyDTO : data) {
 			mCompanyDTO.setPage(page);
 			mCompanyDTO.calc(data.size());
@@ -68,7 +78,17 @@ public class AdminCompanyController {
 		if (endIndex > data.size()) {
 			endIndex = data.size();
 		}
-		model.addAttribute("mainData", data);
+		List<MCompanyDTO> pageinatedData = data.subList(startIndex, endIndex);
+		try {
+			if (pageinatedData.size() > 0) {
+				model.addAttribute("mainData", pageinatedData);
+			}else {
+				
+			}
+		}catch (Exception e) {
+			model.addAttribute("mainData", "검색결과가 없습니다.");
+		}
+		
 		return "admin/company/csearchResult";
 	}
 
@@ -180,15 +200,33 @@ public class AdminCompanyController {
 	String delete(MCompanyDTO dto, Model mm, @PathVariable int cno, HttpServletRequest request) {
 		MCompanyDTO rcdto = adminMapper.adminCDetail(cno);
 		paym.endMem(rcdto.getCid());
-		endCompanyMapper.endCompanyInsert(rcdto);
+		// 탈퇴할 기업의 지원내역들
+		List<ApplicantDTO> byeapp = endCompanyMapper.endapplist(rcdto.getCid());
+		
+		// 탈퇴할 기업의 공고 조회
+		List<RecruitDTO> byerecruit = endCompanyMapper.endrecruitList(rcdto.getCid());
+		
 		int cnt = adminMapper.deleteCompany(cno);
-
+		
 		if (cnt > 0) {
+			// 탈퇴할 기업추가
+			endCompanyMapper.endCompanyInsert(rcdto);
+			// 탈퇴할 기업의 지원내역 추가(insert 한번에 안되더군요)
+			for (ApplicantDTO applicantDTO : byeapp) {
+				endCompanyMapper.endappinsert(applicantDTO);
+			}
+			// 탈퇴할 기업의 공고추가
+			for (RecruitDTO recruitDTO : byerecruit) {
+				endCompanyMapper.endrecruitInsert(recruitDTO);
+			}
+			
 			fileDeleteModule(rcdto, request);
 		}
 
 		return "redirect:/admin_company/list/1";
 	}
+
+	
 
 	// 관리자 기업 디테일
 	@RequestMapping("detail/{page}/{cno}")
@@ -287,19 +325,20 @@ public class AdminCompanyController {
 
 			fos.close();
 		} catch (Exception e) {
-
+			
 			e.printStackTrace();
 		}
 
 	}
 
 	// 파일삭제
-	void fileDeleteModule(MCompanyDTO delDTO, HttpServletRequest request) {
-		if (delDTO.getCcompanyFile() != null) {
-
-			new File(path + "\\" + delDTO.getCcompanyFile()).delete();
-		}
-	}// 파일삭제
+		void fileDeleteModule(MCompanyDTO delDTO, HttpServletRequest request) {
+			if (delDTO.getCcompanyFile() != null) {
+				String path = request.getServletContext().getRealPath("companyup");
+				new File(path + "\\" + delDTO.getCcompanyFile()).delete();
+			}
+		}// 파일삭제
+	
 
 	// 파일수정삭제
 	@PostMapping("fileDelete/{cno}")
@@ -309,7 +348,7 @@ public class AdminCompanyController {
 
 		pd.setMsg("파일 삭제실패");
 		pd.setGoUrl("/admin_company/modify/" + dto.getCno());
-		System.out.println("삭제하기전dto" + dto);
+		System.out.println("삭제하기전dto"+dto);
 		int cnt = crccMapper.fileDelete(dto);
 		System.out.println("modifyReg:" + cnt);
 		if (cnt > 0) {

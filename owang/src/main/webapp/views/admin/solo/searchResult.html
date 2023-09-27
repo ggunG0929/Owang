@@ -4,23 +4,131 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	<style>
+		/* 전체 페이지 스타일 */
+
+
+		h1 {
+			text-align: center;
+			margin: 0;
+		}
+
+		/* 검색 폼 스타일 */
+		form {
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		select,
+		input[type="text"],
+		button {
+			padding: 5px;
+			margin: 5px;
+			border: 1px solid #ddd;
+			border-radius: 3px;
+		}
+
+		/* 테이블 스타일 */
+		table {
+			width: 1000px;
+			border-collapse: collapse;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+		}
+
+		th,
+		td {
+			padding: 10px;
+			text-align: left;
+			border: 1px solid #ddd;
+		}
+
+		th {
+			text-align: center;
+		}
+
+		td:last-child {
+			text-align: center;
+		}
+
+		th {
+			background-color: #333;
+			color: #fff;
+		}
+
+		/* 링크 스타일 */
+		a {
+			text-decoration: none;
+			color: #007bff;
+			transition: color 0.2s;
+		}
+
+		a:hover {
+			color: #0056b3;
+		}
+
+		/* 삭제 버튼 스타일 */
+		.delete-button {
+			background-color: #dc3545;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+
+		.delete-button:hover {
+			background-color: #c82333;
+		}
+
+		/* 페이지 네비게이션 스타일 */
+		.pagination {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		.pagination a {
+			text-decoration: none;
+			color: #007bff;
+			margin: 0 5px;
+		}
+
+		.pagination a.current {
+			font-weight: bold;
+		}
+
+		/* 링크 스타일 */
+		a {
+			text-decoration: none;
+			color: #007bff;
+			transition: color 0.2s;
+		}
+
+		a:hover {
+			color: #0056b3;
+		}
+	</style>
 </head>
 
 <body>
-	<th:block th:replace="~{admin/adheader}"/>
-	
-	<h2>전체회원관리</h2>
+	<th:block th:replace="~{admin/adheader}" />
+
+	<h1>전체회원관리</h1>
 	
 	<!-- 검색창 form -->
 	<form action="/admin_solo/search" method="get" th:object="${soloDTO}">
-		<select name="searchOption" th:value="*{searchOption}" >
-		
+		<select name="searchOption" th:value="*{searchOption}">
+
 			<option th:selected="*{searchOption == 'name'}" value="name">이름</option>
-			
+
 			<option th:selected="*{searchOption == 'id'}" selected="true" value="id">아이디</option>
 		</select>
-		<input type="text" th:field="*{keyword}"  placeholder="검색어 입력">
+		<input type="text" th:field="*{keyword}" placeholder="검색어 입력">
 		<button type="submit">검색</button>
+		<br />
+		<span th:text="${'검색 결과 :'+ param.keyword}" style="text-align: left;"></span>
 	</form>
 
 	<!-- 검색 결과 -->
@@ -49,13 +157,14 @@
 				<td>
 					<a th:href="|/admin_solo/detail/${dto.sid}|" th:text="${dto.sname}"></a>
 				</td>
-					<td>
-				<span th:if="${dto.stype == 2}">
-					<span th:if="${dto.sdate == null}" >프리미엄회원(재직자리뷰) 평생이용</span>
-					<span th:unless="${dto.sdate == null}" th:text="|프리미엄회원 마감일:${#dates.format(dto.sdate, 'yyyy-MM-dd')}|"></span>
-				</span>
-				<span  th:unless="${dto.stype == 2}" th:text="일반회원"></span>
-			</td>
+				<td>
+					<span th:if="${dto.stype == 2}">
+						<span th:if="${dto.sdate == null}">프리미엄회원(재직자리뷰) 평생이용</span>
+						<span th:unless="${dto.sdate == null}"
+							th:text="|프리미엄회원 마감일:${#dates.format(dto.sdate, 'yyyy-MM-dd')}|"></span>
+					</span>
+					<span th:unless="${dto.stype == 2}" th:text="일반회원"></span>
+				</td>
 				<td th:if="${dto.sinjueng}" th:text="인증"></td>
 				<td th:unless="${dto.sinjueng}" th:text="미인증"></td>
 				<td th:if="${dto.sinjueng}" th:text="${dto.scompanyName}"></td>
@@ -72,35 +181,36 @@
 
 
 
-		<tr>
+			<tr>
 				<td colspan="9" align="center">
 					<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
-					<a th:if="${soloDTO.pageStart > 1}" 
-					th:href="@{/admin_solo/search(keyword=${param.keyword},searchOption=${param.searchOption},page=1)}"
-					 th:text="'[이전페이지]'" />
+					<a th:if="${soloDTO.pageStart > 1}"
+						th:href="@{/admin_solo/search(keyword=${param.keyword},searchOption=${param.searchOption},page=1)}"
+						th:text="'[이전페이지]'" />
 
 					<a th:if="${soloDTO.pageStart < soloDTO.page}"
 						th:href="@{/admin_solo/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${soloDTO.page -1})}"
-					 th:text="'[이전]'" />
-					
-					
+						th:text="'[이전]'" />
+
+
 					<th:block th:each="no: ${#numbers.sequence(soloDTO.pageStart, soloDTO.pageEnd)}">
 						<span th:if="${no==soloDTO.page}" th:text="${no}" />
-						<a th:unless="${no==soloDTO.page}" 
-						th:href="@{/admin_solo/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${no})}"
-						 th:text="${no}" />
+						<a th:unless="${no==soloDTO.page}"
+							th:href="@{/admin_solo/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${no})}"
+							th:text="${no}" />
 					</th:block>
 					<a th:if="${soloDTO.page < soloDTO.pageEnd}"
-					 th:href="@{/admin_solo/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${soloDTO.page + 1})}"
+						th:href="@{/admin_solo/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${soloDTO.page + 1})}"
 						th:text="'[다음]'" />
-					<a th:if="${soloDTO.pageEnd < soloDTO.pageTotal}" 
-					 th:href="@{/admin_solo/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${soloDTO.pageTotal})}"
-					 th:text="'[다음페이지]'" />
+					<a th:if="${soloDTO.pageEnd < soloDTO.pageTotal}"
+						th:href="@{/admin_solo/search(keyword=${param.keyword},searchOption=${param.searchOption},page=${soloDTO.pageTotal})}"
+						th:text="'[다음페이지]'" />
 				</td>
 			</tr>
 			<tr align="center">
+				<!--<td colspan="2" class="link-cell" onclick="window.location='/admin_solo/smanagement'">목록으로</td>-->
 				<td colspan="2"><a href="/admin_solo/smanagement">목록으로</a></td>
-				<td colspan="2"><a href="/admin_solo/sololist/1">전체보기</a></td>
+				<td colspan="5"><a href="/admin_solo/sololist/1">전체보기</a></td>
 			</tr>
 		</table>
 	</div>

@@ -20,7 +20,7 @@ public interface EndCompanyMapper {
 	int idChk(String cid);
 	
 	// 기업탈퇴회원리스트
-	List<MCompanyDTO> endCompanyList();
+	List<MCompanyDTO> endCompanyList(MCompanyDTO dto);
 	
 	// 기업 탈퇴 회원 
 	int endCompanycnt();
@@ -28,10 +28,15 @@ public interface EndCompanyMapper {
 	// 탈퇴 기업 지원 내역 저장 
 	void endappinsert(ApplicantDTO dto);
 	
-	// 1:1 내역 저장
-	int endaskInsert(AskDTO dto);
-	
-	//endapplist
+	// 기업의 지원 내역 리스트 
 	List<ApplicantDTO> endapplist(String cid); 
-	//List<RecruitDTO> recruitList(RecruitDTO dto);
+	
+	// 탈퇴할 기업의 공고 조회 
+	List<RecruitDTO> endrecruitList(String cid);
+	
+	// 기업의 공고 추가
+	int endrecruitInsert(RecruitDTO dto);
+	
+	// 1:1 내역 저장(아직안함)
+	int endaskInsert(AskDTO dto);
 }

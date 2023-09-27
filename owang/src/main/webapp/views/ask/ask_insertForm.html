@@ -2,64 +2,66 @@
 <html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>board/insertForm</title>
+<title>ask/insertForm</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/ask/ask.css}">
 </head>
 <body>
 <header>
-	<div th:insert="~{header :: header}"></div>
+<div th:insert="~{header :: header}"></div>
 </header>
-<h1>ask/insertForm*</h1>
-<h1>1:1 문의 게시판</h1>
 
-	
-    
+<!--ask 사진-->
+<!--<img src="/css/images/ask.jpg" alt="ask_header" width="1200px" height="250px">-->
+<!--1:1문의 box 사진-->
 
-<form method="post" enctype="multipart/form-data" th:object="${askDTO}">
-	<table border="">
-		<tr>
-			<td>문의글 제목*</td>
-			<td><input type="text" th:field="*{title}" required/></td>
-		</tr>
-		<tr>
-			<td>작성자 *</td>
-			<td><input type="text" name="uid" th:value="${uid}" readonly/></td>
-		</tr>
+<h1 id="title">1:1 문의</h1>
+
+<div id="box">
+	<h3>문의하실 내용을 작성해주시면
+		확인 후 빠른 시일 내 답변드리도록 하겠습니다.</h3>
+	*욕설 폭언 성희롱 등의 내용이 포함된 경우 상담이 불가능 합니다.<br> 
+	📢 작성하신 문의글에 관리자 답변이 없는 경우 수정 및 삭제가 가능하며,<br> 
+		관리자가 답변을 작성한 경우에는 수정 및 삭제 기능이 제한됩니다.
+</div>			
+		<hr>
 		
-		<!--<tr>
-			<td>암호 *</td>
-			<td><input type="text" th:field="*{pw}" />
-				<ul>
-					<li> 문의글 등록 후 수정, 삭제 시 비밀번호가 필요합니다.</li>
-					<li> 비밀번호를 입력해주세요</li>
-				</ul>
-			</td>
+
+<div id="wrap">    
+	<form method="post" enctype="multipart/form-data" th:object="${askDTO}">
+		<table border="0">
+			<tr>
+				<td id="label">문의글 제목*</td>
+				<td><input type="text" th:field="*{title}" placeholder="※ 제목을 입력해주세요" required /></td>
+			</tr>
+			<tr>
+				<td id="label">작성자 ID *</td>
+				<td><input type="text" name="uid" th:value="${uid}" readonly /></td>
+			</tr>
 			
-			
-		</tr>-->
-		<tr>
-			<td>사진첨부</td>
-			<td><input type="file" th:field="*{mmff}"/></td>
-		</tr>
+			<tr>
+				<td id="label">사진첨부</td>
+				<td><input type="file" th:field="*{mmff}"/></td>
+			</tr>	
+			<tr>
+				<td id="label">문의 내용 *</td>
+				<td><textarea th:field="*{content}" rows="20" cols="100" required id="content"
+					placeholder="※ 내용을 입력해주세요" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="문의하기" id="saveButton"/>
+					<!--목록으로-->
+					
+						<a th:href="|/ask/list/${askDTO.page}|" id="list"><span>취소</span></a>
+					
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>   
 
-		
-		<tr>
-			<td>문의내용 *</td>
-			<td><textarea th:field="*{content}" rows="25" cols="50" required
-				placeholder="※ 문의글 작성 시 
-							폭언,욕설 등을 하지 말아주세요
-							답변을 받지못하거나 불이익이 있을 수 있습니다." /></td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center">
-				<input type="submit" value="문의 접수" />
-				<a th:href="|/ask/list/${askDTO.page}|">목록으로</a>
-			</td>
-		</tr>
-	</table>
-</form>
-
-
-<footer>
+	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>
     

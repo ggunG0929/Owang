@@ -2,6 +2,8 @@
 <html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/notice/notice.css}">
 <title>Insert title here</title>
 <script>
 	function fileDelete(){
@@ -15,45 +17,47 @@
 <header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-<h2> 공지사항 - 수정페이지! </h2>
+<h2 style="text-align: center;"> 수정페이지 </h2>
+<div id="detail_wrap">
 <form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
 	<input type="hidden" th:field="*{id}" />
 	<input type="hidden" th:field="*{page}" />
 
-<table border="">
+<table border="" class="detail_table">
 		<tr>
-			<td>제목</td>
-			<td><input type="text" th:field="*{title}" /></td>
+			<th>제목</th>
+			<td><input type="text" th:field="*{title}" id="modi_title"/></td>
 		</tr>
 		<tr>
-			<td>작성자</td>
-			<td><input type="text" th:field="*{pname}"/></td>
+			<th>작성자</th>
+			<td><input type="text" th:field="*{pname}" readonly id="modi_pname"/></td>
 		</tr>
 		<tr>
-			<td>파일</td>
+			<th>파일</th>
 			<td>
 				<th:block th:if="${dto.upfile != null}">	
 				<!--원본-->
 				<!--<input type="text" th:field="*{upfile}" readonly/>-->
 				<!--hidden으로 수정하더라도 사진은 그대로-->
 				<input type="hidden" th:field="*{upfile}" readonly/>
-				<input  type="button" onclick="fileDelete()" value="파일삭제"/>
+				<input  type="button" onclick="fileDelete()" value="파일삭제" id="modi_filedel"/>
 				</th:block>
-				<input th:if="${dto.upfile == null}" type="file" th:field="*{noticemmf}"/>
+				<input th:if="${dto.upfile == null}" type="file" th:field="*{noticemmf}" id="modi_file"/>
 			</td>
 		</tr>
 		<tr>
-			<td>내용</td>
-			<td><textarea th:field="*{content}" /></td>
+			<th>내용</th>
+			<td><textarea th:field="*{content}"
+				rows="20" cols="70" /></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
 				<input type="submit" value="수정" />
-				<a th:href="|/notice/detail/${dto.page}/${dto.id}|" th:text="뒤로"/>
+				<a th:href="|/notice/detail/${dto.page}/${dto.id}|" th:text="뒤로" id="detail_list"/>
 			</td>
 		</tr>
 	</table>
-	
+</div>	
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>

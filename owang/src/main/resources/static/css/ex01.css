@@ -21,7 +21,7 @@ body{
     position: absolute;
     width: 380px;
     height: 500px;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(0, 0, 0,0.3);
     border-radius: 8px;
     overflow: hidden;
     z-index: 1;
@@ -86,10 +86,10 @@ body{
 .box form{
     position: absolute;
 
-    /* inset - padding 처럼 안쪽 여백을 줄수있지만 패딩도 주고싶을때 씀 */
+    /* inset - padding 처럼 안쪽 여백을 줄수있지만 패딩도 주고싶을때 씀 ,rgb(43, 43, 43)*/
     inset: 4px;
 
-   background: linear-gradient(to bottom, #FCFAE8, rgb(255, 128, 192));
+   background: linear-gradient(to bottom,rgb(62, 23, 9), rgb(79, 83, 77));
 
     padding: 50px 40px;
     border-radius: 8px;
@@ -168,24 +168,24 @@ body{
 .box form .links a{
     margin: 10px 0;
     font-size: 0.75em ;
-   color: rgb(128, 128, 128);
+   color: rgb(199, 199, 199);
     text-decoration: none;
 }
 
 .box form .links a:hover,
 .box form .links a:nth-child(2){
-    color: rgb(128, 128, 128);
+    color: rgb(255, 255, 255);
 }
 
 .box form input[type="submit"] {
     padding: 9px 89px;
     width: 250px;
-    background: rgb(255, 255, 255);
+   color:rgb(255, 255, 255);
     cursor: pointer;
     font-size: 0.9em;
     border-radius: 4px;
     font-weight: 600;
-    color: rgb(0 0 0);
+    background: rgb(0, 0, 0,0.6);
     /* width: 100px; */
     margin-top: 10px;
     margin-bottom: 10px;

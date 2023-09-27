@@ -7,111 +7,109 @@
 	<!DOCTYPE html>
 	<html xmlns:th="http://www.thymeleaf.org">
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-	<style>
-		td>div {
-			background-color: rgb(255, 255, 0);
-			color: rgb(0, 0, 0);
-		}
-	</style>
+	<link rel="stylesheet" th:href="@{/css/join/joincom.css}">
+	
 </head>
 
 <body>
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-	<h1>기업회원가입</h1>
-	<div>
-	<button id="showTermsButton">이용약관 보기</button>
-	</div>
-	<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
-		
-			
-		<table border="">
-				
-				<td>아이디:</td>
-				<td><input type="text" name="cid" id="cid" required><input type="button" value="ID 중복체크"
-						onclick="checkDuplicateID()">
-				<div id="checkcId"></div></td>
+	<div class="container">
+		<div class="join">
+			<h1><span style="color:#0400B8">기업</span> 회원가입</h1>
+			<hr>
+			<div>
+				<button id="showTermsButton">이용약관 보기</button>
+			</div>
+			<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
+				<div class="showTerm"><label><input type="radio" name="termsAgreement" required>이용약관동의</input>
+					</label></div>
 
-			</tr>
-			<tr>
-				<td>비밀번호1:</td>
-				<td><input type="password" name="cpw" required></td>
-			</tr>
-			<tr>
-				<td>비밀번호2:</td>
-				<td><input type="password" name="cpw2" required></td>
-			</tr>
-			<tr>
-				<td>회사명:</td>
-				<td><input type="text" name="cname" required></td>
-			</tr>
-			<tr>
-				<td>회사로고이미지(필수):</td>
-				<td>
-					<input type="file" name="lommff" id="lommff" required onchange="lovalidateFile()">
-					<div id="fileError" style="color: red;"></div>
-				</td>
-			</tr>
-			<tr>
-				<td>개업연월일:</td>
-				<td><input type="date" name="cbuild" th:max="${today}" required></td>
-			</tr>
-			<tr>
-				<td>업종:</td>
-				<td><input type="text" name="ccategory" required></td>
-			</tr>
-			<tr>
-				<td>직원수:</td>
-				<td><input type="number" name="cstaff" required></td>
-			</tr>
-			<tr>
-				<td>1년 매출액:(만원기준)</td>
-				<td>
-					<input type="number" id="csales" name="csales" oninput="updateText(this)" required>
-					<span id="csalesText"></span>
-				</td>
-			</tr>
-			<tr>
-				<td>회사 전화번호:</td>
-				<td><input type="text" name="ccall" required></td>
-			</tr>
-			<tr>
-				<td>이메일:</td>
-				<td><input type="email" name="cemail" required></td>
-			</tr>
-			<tr>
-				<td>대표자:</td>
-				<td><input type="text" name="cceo" required></td>
-			</tr>
-			<tr>
-				<td>본점소재지:</td>
-				<td><input type="text" name="caddress" required></td>
-			</tr>
-			<tr>
-				<td>사업자등록증(필수):</td>
-				<td>
-					<input type="file" name="mmff" id="mmff" required onchange="validateFile()">
-					<div id="fileError" style="color: red;"></div>
-				</td>
-			</tr>
-			<tr>
-				<td>회사 소개:</td>
-				<td>
-					<textarea name="ccontent" rows="10" cols="50" required
-					placeholder="ex) TNH는 2007년 창업이후 병.의원용 CRM솔루션 및 EMR 소프트웨어 개발을 시작으로 의료마케팅과 전자의무기록 시스템의 혁신을 위해 끊임없이 도전해 왔습니다.
+				<table border="">
+					<tr>
+						<th>아이디</th>
+						<td><input type="text" name="cid" id="cid" required><input type="button" value="ID 중복체크"
+								onclick="checkDuplicateID()">
+							<div id="checkcId"></div>
+						</td>
+					</tr>
+					<tr>
+						<th>비밀번호1</th>
+						<td><input type="password" name="cpw" required></td>
+					</tr>
+					<tr>
+						<th>비밀번호2</th>
+						<td><input type="password" name="cpw2" required></td>
+					</tr>
+					<tr>
+						<th>회사명</th>
+						<td><input type="text" name="cname" required></td>
+					</tr>
+					<tr>
+						<th>회사로고이미지(필수)</th>
+						<td>
+							<input type="file" name="lommff" id="lommff" required onchange="lovalidateFile()">
+							<div id="fileError" style="color: red;"></div>
+						</td>
+					</tr>
+					<tr>
+						<th>개업연월일</th>
+						<td><input type="date" name="cbuild" th:max="${today}" required></td>
+					</tr>
+					<tr>
+						<th>업종</th>
+						<td><input type="text" name="ccategory" required></td>
+					</tr>
+					<tr>
+						<th>직원수</th>
+						<td><input type="number" name="cstaff" required></td>
+					</tr>
+					<tr>
+						<th>1년 매출액(만원기준)</th>
+						<td>
+							<input type="number" id="csales" name="csales" oninput="updateText(this)" required>
+							<span id="csalesText"></span>
+						</td>
+					</tr>
+					<tr>
+						<th>회사 전화번호</th>
+						<td><input type="text" name="ccall" required></td>
+					</tr>
+					<tr>
+						<th>이메일</th>
+						<td><input type="email" name="cemail" required></td>
+					</tr>
+					<tr>
+						<th>대표자</th>
+						<td><input type="text" name="cceo" required></td>
+					</tr>
+					<tr>
+						<th>본점소재지</th>
+						<td><input type="text" name="caddress" required></td>
+					</tr>
+					<tr>
+						<th>사업자등록증(필수)</th>
+						<td>
+							<input type="file" name="mmff" id="mmff" required onchange="validateFile()">
+							<div id="fileError" style="color: red;"></div>
+						</td>
+					</tr>
+					<tr>
+						<th>회사 소개</th>
+						<td>
+							<textarea name="ccontent" rows="10" cols="50" required placeholder="ex) TNH는 2007년 창업이후 병.의원용 CRM솔루션 및 EMR 소프트웨어 개발을 시작으로 의료마케팅과 전자의무기록 시스템의 혁신을 위해 끊임없이 도전해 왔습니다.
 
 TNH는 탁월한 개발자, 마케팅 전문가와 의료인 자문단이 주축이된 의료 소프트웨어 전문기업입니다.
 2008년 온라인 기반의 혁신적이고 편리한 환자관리용 매니저 솔루션 및 2010년 업계최초 온/오프라인 연동형 전자의무기록을 탄생 시켰습니다.
 
 TNH는 새로운 10년을 위해 솔루션 및 서비스를 고객 및 사용자 관점에서 혁신을 하고자 하며, 이를 위해 같이 동행할 능력있는 신입/경력 Front-End 개발자 분들을 찾고 있습니다."></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td>복지 및 해택:</td>
-				<td>
-					<textarea name="cwelfare" rows="10" cols="50" required
-					placeholder="ex) • 지원금/보험 : 각종 경조사 지원
+						</td>
+					</tr>
+					<tr>
+						<th>복지 및 해택</th>
+						<td>
+							<textarea name="cwelfare" rows="10" cols="50" required placeholder="ex) • 지원금/보험 : 각종 경조사 지원
 • 급여제도 : 퇴직금, 4대 보험
 • 선물 : 명절선물/귀향비, 생일선물/파티
 • 교육/생활 : 우수사원시상식, 워크샵, 플레이샵, 도서구입비지원, 점심, 저녁식사 제공, 음료제공(차, 커피)
@@ -119,119 +117,114 @@ TNH는 새로운 10년을 위해 솔루션 및 서비스를 고객 및 사용자
 • 조직문화 : 자유복장
 • 리프레시 : 연차, 경조휴가제, 근로자의 날 휴무, 휴가비지원
 • 중식지원"></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td><input type="radio" name="termsAgreement" required>이용약관동의</input>
-				</td>
-				<td>
+						</td>
+					</tr>
+				</table>
+				<div align="middle">
 					<input type="submit" value="가입">
-				</td>
-			</tr>
-		</table>
-	
-		
-	</form>
+				</div>
 
-	<script>
-		function updateText(input) {
-			var csalesText = document.getElementById("csalesText");
-			var value = input.value;
+			</form>
 
-			if (!isNaN(value) && value !== "") {
-				csalesText.innerText = value + "0000원";
-			} else {
-				csalesText.innerText = "null";
-			}
-		}
+			<script>
+				function updateText(input) {
+					var csalesText = document.getElementById("csalesText");
+					var value = input.value;
 
-		function checkDuplicateID() {
-
-			var cid = document.getElementById("cid").value;
-
-			$.ajax({
-				type: "POST",
-				url: "/join/checkcId",
-				data: "cid=" + cid,
-				error: function (response) {
-					$("#checkcId").text("실패");
-				},
-				success: function (response) {
-					if (response === "중복") {
-						$("#checkcId").text("이미 사용 중인 ID입니다.");
-
+					if (!isNaN(value) && value !== "") {
+						csalesText.innerText = value + "0000원";
 					} else {
-						$("#checkcId").text("사용 가능한 ID입니다.");
+						csalesText.innerText = "null";
 					}
 				}
-			});
-		}
-		function submitForm() {
-			var checkcId = document.getElementById("checkcId").innerText;
-			if (checkcId === "이미 사용 중인 ID입니다.") {
-				alert("아이디 중복을 확인하세요.");
-				return false; // 양식 제출 방지
-			}
-			return true; // 양식 제출 허용
-		}
-		document.getElementById('showTermsButton').addEventListener('click', function () {
-			// 이용약관 페이지를 팝업 창으로 엽니다.
-			var popup = window.open('cterms.html', '이용약관', 'width=600,height=400');
 
-			// 팝업 창이 차단되지 않도록 팝업 창 객체를 검사합니다.
-			if (popup && !popup.closed) {
-				// 팝업 창이 열려 있으면 포커스를 설정합니다.
-				popup.focus();
-			} else {
-				alert('팝업 창을 열 수 없습니다. 팝업 창이 차단되었을 수 있습니다.');
-			}
-		});
-		function validateFile() {
-			var mmffInput = document.getElementById("mmff");
-			var fileError = document.getElementById("fileError");
-			var fileName = mmffInput.value;
-			var allowedExtensions = ["jpg", "png"];
+				function checkDuplicateID() {
 
-			if (fileName === "") {
-				// 파일이 선택되지 않은 경우
-				fileError.innerText = "파일을 선택하세요.";
-				mmffInput.value = ""; // 파일 입력란 초기화
-			} else {
-				var fileExtension = fileName.split('.').pop().toLowerCase();
+					var cid = document.getElementById("cid").value;
 
-				if (allowedExtensions.indexOf(fileExtension) === -1) {
-					// 파일 확장자가 허용되지 않는 경우
-					mmffInput.value = ""; // 파일 입력란 초기화
-					fileError.innerText = "지원되지 않는 파일 유형입니다. JPG 또는 PNG 파일을 업로드하세요.";
-				} else {
-					fileError.innerText = ""; // 오류 메시지 초기화
+					$.ajax({
+						type: "POST",
+						url: "/join/checkcId",
+						data: "cid=" + cid,
+						error: function (response) {
+							$("#checkcId").text("실패");
+						},
+						success: function (response) {
+							if (response === "중복") {
+								$("#checkcId").text("이미 사용 중인 ID입니다.");
+
+							} else {
+								$("#checkcId").text("사용 가능한 ID입니다.");
+							}
+						}
+					});
 				}
-			}
-		}
-		function lovalidateFile() {
-			var lommffInput = document.getElementById("lommff");
-			var fileError = document.getElementById("fileError");
-			var fileName = lommffInput.value;
-			var allowedExtensions = ["jpg", "png"];
-
-			if (fileName === "") {
-				// 파일이 선택되지 않은 경우
-				fileError.innerText = "파일을 선택하세요.";
-				lommffInput.value = ""; // 파일 입력란 초기화
-			} else {
-				var fileExtension = fileName.split('.').pop().toLowerCase();
-
-				if (allowedExtensions.indexOf(fileExtension) === -1) {
-					// 파일 확장자가 허용되지 않는 경우
-					lommffInput.value = ""; // 파일 입력란 초기화
-					fileError.innerText = "지원되지 않는 파일 유형입니다. JPG 또는 PNG 파일을 업로드하세요.";
-				} else {
-					fileError.innerText = ""; // 오류 메시지 초기화
+				function submitForm() {
+					var checkcId = document.getElementById("checkcId").innerText;
+					if (checkcId === "이미 사용 중인 ID입니다.") {
+						alert("아이디 중복을 확인하세요.");
+						return false; // 양식 제출 방지
+					}
+					return true; // 양식 제출 허용
 				}
-			}
-		}
-			
-	</script>
+				document.getElementById('showTermsButton').addEventListener('click', function () {
+					// 이용약관 페이지를 팝업 창으로 엽니다.
+					var popup = window.open('cterms.html', '이용약관', 'width=600,height=400');
+
+					// 팝업 창이 차단되지 않도록 팝업 창 객체를 검사합니다.
+					if (popup && !popup.closed) {
+						// 팝업 창이 열려 있으면 포커스를 설정합니다.
+						popup.focus();
+					} else {
+						alert('팝업 창을 열 수 없습니다. 팝업 창이 차단되었을 수 있습니다.');
+					}
+				});
+				function validateFile() {
+					var mmffInput = document.getElementById("mmff");
+					var fileError = document.getElementById("fileError");
+					var fileName = mmffInput.value;
+					var allowedExtensions = ["jpg", "png"];
+
+					if (fileName === "") {
+						// 파일이 선택되지 않은 경우
+						fileError.innerText = "파일을 선택하세요.";
+						mmffInput.value = ""; // 파일 입력란 초기화
+					} else {
+						var fileExtension = fileName.split('.').pop().toLowerCase();
+
+						if (allowedExtensions.indexOf(fileExtension) === -1) {
+							// 파일 확장자가 허용되지 않는 경우
+							mmffInput.value = ""; // 파일 입력란 초기화
+							fileError.innerText = "지원되지 않는 파일 유형입니다. JPG 또는 PNG 파일을 업로드하세요.";
+						} else {
+							fileError.innerText = ""; // 오류 메시지 초기화
+						}
+					}
+				}
+				function lovalidateFile() {
+					var lommffInput = document.getElementById("lommff");
+					var fileError = document.getElementById("fileError");
+					var fileName = lommffInput.value;
+					var allowedExtensions = ["jpg", "png"];
+
+					if (fileName === "") {
+						// 파일이 선택되지 않은 경우
+						fileError.innerText = "파일을 선택하세요.";
+						lommffInput.value = ""; // 파일 입력란 초기화
+					} else {
+						var fileExtension = fileName.split('.').pop().toLowerCase();
+
+						if (allowedExtensions.indexOf(fileExtension) === -1) {
+							// 파일 확장자가 허용되지 않는 경우
+							lommffInput.value = ""; // 파일 입력란 초기화
+							fileError.innerText = "지원되지 않는 파일 유형입니다. JPG 또는 PNG 파일을 업로드하세요.";
+						} else {
+							fileError.innerText = ""; // 오류 메시지 초기화
+						}
+					}
+				}
+
+			</script>
 </body>
 
 </html>

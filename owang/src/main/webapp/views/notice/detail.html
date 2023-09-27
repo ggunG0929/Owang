@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>board/detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/notice/notice.css}">
 </head>
 <script>
       function goBack() {
@@ -14,40 +16,45 @@
       <div th:insert="~{header :: header}"></div>
    </header>
     <a href="javascript:goBack()">뒤로</a>
-<h1>notice/detail</h1>
-   <table border="">
+    
+<h2 style="text-align: center;">㈜오왕의 <br>공지사항을 알려드립니다.</h2>
+<div id="detail_wrap">
+   <table border="" class="detail_table">
       <!--<tr>
          <td>id</td><td th:text="${ndto.id}"/>
       </tr>-->
       <tr>
-         <td>제목</td><td th:text="${ndto.title}"/>
+         <th >제목</th><td th:text="${ndto.title}" id="detail_title"/>
       </tr><tr>
-         <td>작성자</td><td th:text="${ndto.pname}"/>
+         <th>작성자</th><td th:text="${ndto.pname}" id="detail_pname"/>
       </tr><tr>
-         <td>등록일</td><td th:text="${#dates.format(ndto.regDate, 'yyyy-MM-dd')}"/>
+         <th>등록일</th><td th:text="${#dates.format(ndto.regDate, 'yyyy-MM-dd')}" id="detail_reg"/>
       </tr><tr>
-         <td>조회수</td><td th:text="${ndto.cnt}"/>
+         <th>조회수</th><td th:text="${ndto.cnt}" id="detail_cnt"/>
       </tr>
       
       <tr th:if="${ndto.upfile != null}">
-          <td>사진</td>
+          <th>사진</th>
           <td>
-              <img th:if="${ndto.img}" th:src="|/up/${ndto.upfile}|"/>
+              <img th:if="${ndto.img}" th:src="|/up/${ndto.upfile}|"/ id="detail_img">
               <a th:unless="${ndto.img}" th:text="${ndto.upfile}"></a>
           </td>
       </tr>
       
       <tr>
-         <td>내용</td><td th:text="${ndto.content}"/>
+         <th>내용</th><td th:text="${ndto.content}"/>
       </tr><tr>
          <td colspan="2" align="right">
             <!--공지사항 수정,삭제는 오직 관리자만!-->
-            <a th:href="|/notice/delete/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}">삭제</a>
-            <a th:href="|/notice/modify/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}">수정</a>
-            <a th:href="|/notice/notice/${ndto.page}|">목록으로</a>
-         </td>
+            <a th:href="|/notice/delete/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}" id="detail_del">삭제</a>
+            <a th:href="|/notice/modify/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}" id="detail_modi">수정</a>
+            <a th:href="|/notice/notice/${ndto.page}|" id="detail_list">목록</a>
+        </td>
+            
+         
       </tr>
    </table>
+ </div>
    
    <footer>
        <div th:insert="~{footer :: footer}"></div>

@@ -2,14 +2,14 @@
 <html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>ask/수정</title>
-
+<title>1:1 수정페이지</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/ask/ask.css}">
 <script>
 	function fileDelete(){
 		frm.action = "/ask/fileDelete"
 		frm.submit()
 	}
-	
 </script>
 
 
@@ -18,47 +18,57 @@
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-<h2> ask/수정페이지입니다. </h2>
+<h2 id="title">수정 페이지</h2>
 
-    
+<div id="box">
+	<h3>문의하실 내용을 작성해주시면
+		확인 후 빠른 시일 내 답변드리도록 하겠습니다.</h3>
+	*욕설 폭언 성희롱 등의 내용이 포함된 경우 상담이 불가능 합니다.<br> 
+	📢 작성하신 문의글에 관리자 답변이 없는 경우 수정 및 삭제가 가능하며,<br> 
+		관리자가 답변을 작성한 경우에는 수정 및 삭제 기능이 제한됩니다.
+</div>			
+<hr>
 
-
-<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
-	<input type="hidden" th:field="*{id}" />
-	<input type="hidden" th:field="*{page}" />
-
-<table border="">
-		<tr>
-			<td>제목</td>
-			<td><input type="text" th:field="*{title}"/></td>
-			
-		</tr>
-		<tr>
-			<td>작성자</td>
-			<td><input type="text" th:field="*{pname}" readonly/></td>
-		</tr>
-		<tr>
-			<td>파일</td>
-			<td>
-				<th:block th:if="${dto.upfile != null}">	
-				<!--<input hidden="text" th:field="*{upfile}" readonly/>-->
-				<input hidden="hidden" th:field="*{upfile}" readonly/>
-				<input  type="button" onclick="fileDelete()" value="파일삭제"/>
-				</th:block>
-				<input th:if="${dto.upfile == null}" type="file" th:field="*{mmff}"/>
-			</td>
-		</tr>
-		<tr>
-			<td>내용</td>
-			<td><textarea th:field="*{content}" /></td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center">
-				<input type="submit" value="수정" />
-				<!--<a th:href="|/ask/detail/${askdto.page}/${askdto.id}|" th:text="뒤로"/>-->
-			</td>
-		</tr>
-	</table>
+<div id="wrap">   		
+	<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
+		<input type="hidden" th:field="*{id}" />
+		<input type="hidden" th:field="*{page}" />
+	
+	<table border="0">
+			<tr>
+				<td id="label">제목</td>
+				<td><input type="text" th:field="*{title}"
+					placeholder="※ 제목을 입력해주세요" required /></td>
+			</tr>
+			<tr>
+				<td id="label">작성자</td>
+				<td><input type="text" th:field="*{pname}" readonly/></td>
+			</tr>
+			<tr>
+				<td id="label">사진첨부</td>
+				<td>
+					<th:block th:if="${dto.upfile != null}">	
+					<!--<input hidden="text" th:field="*{upfile}" readonly/>-->
+					<input hidden="hidden" th:field="*{upfile}" readonly/>
+					<input  type="button" onclick="fileDelete()" value="파일삭제"/>
+					</th:block>
+					<input th:if="${dto.upfile == null}" type="file" th:field="*{mmff}"/>
+				</td>
+			</tr>
+			<tr>
+				<td id="label">내용</td>
+				<td><textarea th:field="*{content}" 
+						rows="20" cols="100" required id="content"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="수정하기" id="modiButton"/>
+					<!--<a th:href="|/ask/detail/${askdto.page}/${askdto.id}|" th:text="뒤로"/>-->
+				</td>
+			</tr>
+		</table>
+	</form>
+</div> 
 	
 	<footer>
        <div th:insert="~{footer :: footer}"></div>

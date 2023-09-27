@@ -1,6 +1,7 @@
 package aaa.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -66,7 +67,7 @@ public class ApplicantDTO {
 	int apcancel;
 	int apread;
 	int appass;
-	Date apsubmitdate;
+	Timestamp apsubmitdate;
 	int appnum;
 	// 페이징 처리
     private int start;

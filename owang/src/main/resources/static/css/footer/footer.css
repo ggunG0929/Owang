@@ -2,16 +2,21 @@
 
 .footer {
     height: 200px; /*높이 200*/
+    max-width: 1200px;
+    width: 100%;
     background-color: #ccc; /* 배경색상-grey */
     /*padding: 0 17vw;*/ /*푸터 위 아래 패딩0, 왼쪽 오른쪽에는 17vw (뷰포트 너비의 17%) */
     display: flex;
     align-items: center; /*가운데정렬*/
 }
 
+/*1200넘어서 box 수정함*/
 .footer .box {
+	width: 1000px;
     display: flex;
     align-items: center;
     margin-right: 100px;
+    
 }
 
 .box img { /*로고사진*/

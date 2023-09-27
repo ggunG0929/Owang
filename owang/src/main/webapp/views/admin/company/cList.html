@@ -5,6 +5,19 @@
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<link rel="stylesheet" th:href="@{/css/admin/company/css.css}">
+	<style>
+		form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+select, input[type="text"], button {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+	</style>
 </head>
 
 <body>
@@ -24,7 +37,7 @@
 			<button type="submit">검색</button>
 		</form>
 		<div class="board_title">
-			<strong>전체회원</strong>
+			<h1 style="padding-left: 514px;">전체회원</h1>
 		</div>
 		<a href="/admin_company/list/1">전체보기</a>
 				<a href="/admin_company/cRegList/1">승인기업</a>

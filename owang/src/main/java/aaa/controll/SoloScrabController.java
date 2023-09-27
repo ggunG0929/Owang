@@ -67,6 +67,7 @@ public class SoloScrabController {
 		return "solo_scrab/home";
 	}
 	
+	// 스크랩 추가
 	@GetMapping("insert/{cid}/{page}/{recruitId}")
 	String scrab_insert(PageData pd,  HttpSession session, ScrabDTO scdto,
 	        @PathVariable int recruitId, @PathVariable String cid, Model mm) {
@@ -88,7 +89,10 @@ public class SoloScrabController {
 	    scdto.setCname(companyDTO.getCname());
 	    scdto.setRecruitId(recruitDTO.getRecruitId());
 	    scdto.setRecruitTitle(recruitDTO.getRecruitTitle());
-
+	    scdto.setRealMagam(recruitDTO.getRealMagam());
+	    scdto.setRecruitMoney(recruitDTO.getRecruitMoney());
+	    scdto.setRecruitLocation(recruitDTO.getRecruitlocation());
+	    
 	    // 스크랩 정보 추가
 	    scmapper.scinsert(scdto);
 	    int scid = scdto.getScid();

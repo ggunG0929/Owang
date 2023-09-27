@@ -27,7 +27,7 @@ public class AdminController {
         if (adminDTO.idPwChk(dto)) {
             session.setAttribute("adminSession", adminDTO);
             dto.setMsg("로그인 완료");
-            dto.setGoUrl("/admin/adminM");
+            dto.setGoUrl("/admin_product/index");
             System.out.println("이벤트체크2");
             return "/admin/adminAlert";
         } else {

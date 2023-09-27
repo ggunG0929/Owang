@@ -133,7 +133,7 @@ public class CompanyController {
 
 		mm.addAttribute("dto", cccmapper.deatilCompany(cid));
 
-		return "company/detailmypages";
+		return "company/detailmypage";
 	}
 
 	// 채용 리스트
@@ -204,17 +204,30 @@ public class CompanyController {
 
 		pd.setMsg("삭제실패");
 		pd.setGoUrl("/company/delete");
-
+		// 탈퇴할 기업 조회
 		MCompanyDTO byedto = cccmapper.deatilCompany(dto.getCid());
+		
+		// 탈퇴할 기업의 지원내역들
 		List<ApplicantDTO> byeapp = endCompanyMapper.endapplist(byedto.getCid());
+		
+		// 탈퇴할 기업의 공고 조회
+		List<RecruitDTO> byerecruit = endCompanyMapper.endrecruitList(dto.getCid());
+		
 		// 결제내역에 탈퇴일 추가
 		paym.endMem(dto.getCid());
+		
 		int cnt = cccmapper.delettt(dto); // 메서드안의 값이 들어와서 cnt 값이 1이됌
 
 		if (cnt > 0) {
+			// 탈퇴할 기업추가
 			endCompanyMapper.endCompanyInsert(byedto);
+			// 탈퇴할 기업의 지원내역 추가(insert 한번에 안되더군요)
 			for (ApplicantDTO applicant : byeapp) {
 				endCompanyMapper.endappinsert(applicant);
+			}
+			// 탈퇴할 기업의 공고추가
+			for (RecruitDTO recruitDTO : byerecruit) {
+				endCompanyMapper.endrecruitInsert(recruitDTO);
 			}
 
 			pd.setMsg("삭제되었습니다.");

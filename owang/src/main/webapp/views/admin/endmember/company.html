@@ -3,6 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 기업 탈퇴 회원</title>
+<style>
+		/* 전체 페이지 스타일 */
+
+
+		h1 {
+			text-align: center;
+			margin: 0;
+		}
+
+		/* 검색 폼 스타일 */
+		form {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		select,
+		input[type="text"],
+		button {
+			padding: 5px;
+			margin: 5px;
+			border: 1px solid #ddd;
+			border-radius: 3px;
+		}
+
+		/* 테이블 스타일 */
+		table {
+			width: 1000px;
+			border-collapse: collapse;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+		}
+
+		th,
+		td {
+			padding: 10px;
+			text-align: left;
+			border: 1px solid #ddd;
+		}
+
+		th {
+			text-align: center;
+		}
+
+		td:last-child {
+			text-align: center;
+		}
+
+		th {
+			background-color: #333;
+			color: #fff;
+		}
+
+		/* 링크 스타일 */
+		a {
+			text-decoration: none;
+			color: #007bff;
+			transition: color 0.2s;
+		}
+
+		a:hover {
+			color: #0056b3;
+		}
+
+		/* 삭제 버튼 스타일 */
+		.delete-button {
+			background-color: #dc3545;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+
+		.delete-button:hover {
+			background-color: #c82333;
+		}
+
+		/* 페이지 네비게이션 스타일 */
+		.pagination {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		.pagination a {
+			text-decoration: none;
+			color: #007bff;
+			margin: 0 5px;
+		}
+
+		.pagination a.current {
+			font-weight: bold;
+		}
+
+		/* 링크 스타일 */
+		a {
+			text-decoration: none;
+			color: #007bff;
+			transition: color 0.2s;
+		}
+
+		a:hover {
+			color: #0056b3;
+		}
+	</style>
 </head>
 <th:block th:replace="~{admin/adheader}"/>
 <body>
@@ -12,30 +118,29 @@
 	</span>
 	<table border="" th:if="${not endcompanyData.isEmpty()}">
 		<tr>
-			<th>번호</th>
-			<th>기업아이디</th>
-			<th>기업이름</th>
+			
+			<th>기업<br>아이디</th>
+			<th>기업<br>이름</th>
 			<th>대표자</th>
-			<th>개업연월일</th>
+			<th>개업일</th>
 			<th>업종</th>
-			<th>직원수</th>
-			<th>한해 매출액</th>
 			<th>이메일</th>
-			<th>본점소재지</th>
 			<th>탈퇴일자</th>
+			
 		</tr>
 		<tr th:each="dto, dtostat : ${endcompanyData}">
-			<td th:text="${dto.cno}" />
+			
 			<td th:text="${dto.cid}" />
-			<td th:text="${dto.cname}" />
+			<td  >
+				<a th:href="|/admin_member/endcompany/detail/${dto.cid}|" th:text="${dto.cname}"></a>
+			</td>
 			<td th:text="${dto.cceo}" />
 			<td th:text="${dto.cbuild}" />
 			<td th:text="${dto.ccategory}" />
-			<td th:text="${dto.cstaff}" />
-			<td th:text="${dto.csales}" />
-			<td th:text="${dto.cemail}" />
-			<td th:text="${dto.caddress}" />
-			<td th:text="${dto.cdeletedate}" />
+			
+			<td th:text="${dto.cemail}" style="font-size: 14px;"/>
+			
+			<td th:text="${#dates.format(dto.cdeletedate, 'yyyy-MM-dd')}" />
 		</tr>
 		<tr>
 			<td colspan="11" align="center">

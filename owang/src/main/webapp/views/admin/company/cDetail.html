@@ -12,13 +12,97 @@
 		}
 
 	</script>
+	<style>
+		/* 전체 페이지 스타일 */
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f5f5f5;
+			margin: 0;
+			padding: 0;
+		}
+
+		h1 {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		/* 테이블 스타일 */
+		table {
+			width: 1000px;
+			border-collapse: collapse;
+			margin-bottom: 20px;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+		}
+
+		th,
+		td {
+			padding: 10px;
+			text-align: left;
+			border: 1px solid #ddd;
+		}
+
+		td:first-child {
+			width: 15%;
+
+
+		}
+
+		/* 링크 스타일 */
+		a {
+			text-decoration: none;
+			color: #007bff;
+			transition: color 0.2s;
+		}
+
+		a:hover {
+			color: #0056b3;
+		}
+
+		/* 버튼 스타일 */
+		button {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 알림 메시지 스타일 */
+		.alert {
+			background-color: #f8d7da;
+			border-color: #f5c6cb;
+			color: #721c24;
+			padding: 10px;
+			border: 1px solid transparent;
+			border-radius: 5px;
+			margin-bottom: 10px;
+		}
+
+		/* 컨테이너 스타일 */
+		.container {
+			max-width: 800px;
+			margin: 20px auto;
+			padding: 20px;
+			background-color: #fff;
+			border-radius: 5px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+		}
+	</style>
 </head>
 
 <body>
 	<th:block th:replace="~{admin/adheader}" />
 	<h1>기업 수락 상세 보기</h1>
 
-	[[${dto}]]
+
 	<table border="">
 
 		<tr>
@@ -29,7 +113,7 @@
 			<td>사업자등록증</td>
 
 			<th:block th:if="${dto.clogo != null}">
-				<td><button onclick="logoImageInNewWindow()">사업자등록증 확인</button></td>
+				<td><button onclick="logoImageInNewWindow()">로고 확인</button></td>
 
 
 			</th:block>
@@ -98,7 +182,7 @@
 		</tr>
 
 		<tr>
-			<td>사업자등록증</td>
+			<td>기업 로고</td>
 
 			<th:block th:if="${dto.ccompanyFile != null}">
 				<td><button onclick="openImageInNewWindow()">사업자등록증 확인</button></td>
@@ -137,14 +221,17 @@
 
 		</tr>
 
-
-
-		<tr align="center">
-			<td colspan="2" th:if="${dto.capproval == false}"><a th:href="|/admin_company/cMiList/1|">목록으로</a></td>
-			<td colspan="2" th:unless="${dto.capproval == false}"><a th:href="|/admin_company/cRegList/1|">목록으로</a></td>
-		</tr>
 	</table>
+	<th:block th:if="${dto.capproval == false}">
 
+		<a th:href="|/admin_company/cMiList/1|">목록으로</a>
+		<a href="javascript:goBack()">이전 페이지</a>
+
+	</th:block>
+	<th:block th:unless="${dto.capproval == false}">
+		<a th:href="|/admin_company/cRegList/1|">목록으로</a>
+		<a href="javascript:goBack()">이전 페이지</a>
+	</th:block>
 	<script>
 		function openImageInNewWindow() {
 			// 이미지 URL 설정
@@ -155,6 +242,8 @@
 
 			// 이미지를 새 창에 표시
 			newWindow.document.write('<img src="/companyup/' + image + '" alt="이미지" />');
+
+
 		}
 		function logoImageInNewWindow() {
 			// 이미지 URL 설정
@@ -165,6 +254,9 @@
 
 			// 이미지를 새 창에 표시
 			newWindow.document.write('<img src="/companylogoup/' + image + '" alt="이미지" />');
+		}
+		function goBack() {
+			window.history.back();
 		}
 	</script>
 
