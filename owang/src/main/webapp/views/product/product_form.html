@@ -102,6 +102,63 @@
 			});
 		}
 	</script>
+	<style>
+		body{
+			background-color: #f9f9f9;
+		}
+		#paymentForm {
+			margin: 50px auto;
+			border: 1px solid #ccc;
+			padding: 20px;
+			background-color: #f9f9f9;
+			border-radius: 8px;
+			width: 880px;
+			
+		}
+
+		table {
+			width: 600px;
+			margin: 0 auto;
+		}
+
+		table td {
+			padding: 8px;
+			border-bottom: 1px solid #ddd;
+		}
+
+		table td:first-child {
+			font-weight: bold;
+			width: 30%;
+		}
+
+		button {
+			padding: 10px 20px;
+			font-size: 16px;
+			margin: 10px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		button:focus {
+			outline: none;
+		}
+
+		button:nth-child(1) {
+			background-color: #4caf50;
+			color: white;
+		}
+
+		button:nth-child(2) {
+			background-color: #2196f3;
+			color: white;
+		}
+
+		button:nth-child(3) {
+			background-color: #ff9800;
+			color: white;
+		}
+	</style>
 </head>
 
 <body>
@@ -109,13 +166,10 @@
 		<div th:insert="~{header :: header}"></div>
 	</header>
 	<th:block th:if="${sdate != null}">
-		<h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
+		<h4 align="center">현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h4>
 	</th:block>
-	<div>
-		상품에 대한 설명입니다.
-	</div>
 	<form id="paymentForm" method="post" onsubmit="return false;">
-		<table border="">
+		<table>
 			<tr>
 				<td>구매상품</td>
 				<td th:text="${pdto.productName}"></td>

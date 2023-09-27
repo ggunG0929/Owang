@@ -4,34 +4,102 @@
 <head>
 	<meta charset="UTF-8">
 	<title>결제결과</title>
+	<style>
+		body {
+			text-align: center;
+			background-color: #f8f8f8;
+			margin: 0;
+			padding: 20px;
+		}
+
+		.payment-success {
+			background-color: #fff;
+			padding: 20px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			margin: 0 auto;
+		}
+
+		.payment-success h1 {
+			color: #4caf50;
+		}
+
+		.payment-success h3 {
+			color: #333;
+		}
+
+		.payment-details {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+		}
+
+		.payment-details th,
+		.payment-details td {
+			border: 1px solid #ddd;
+			padding: 8px;
+		}
+
+		.payment-details th {
+			background-color: #f2f2f2;
+		}
+
+		.payment-details td {
+			text-align: center;
+		}
+
+		.payment-details a {
+			text-decoration: none;
+			color: #2196f3;
+		}
+
+		.home-button {
+			display: inline-block;
+			background-color: #4caf50;
+			color: #fff;
+			padding: 10px 20px;
+			border-radius: 5px;
+			text-decoration: none;
+			font-size: 16px;
+			margin-top: 20px;
+			transition: background-color 0.3s;
+		}
+
+		.home-button:hover {
+			background-color: #45a049;
+		}
+	</style>
 </head>
 
 <body>
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-	<h1>결제가 완료되었습니다.</h1>
-	<th:block th:if="${date != null}">
-		<h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
-	</th:block>
-	<table border="">
-		<tr>
-			<td>주문번호</td>
-			<td>결제시간</td>
-			<td>상품명</td>
-			<td>결제금액</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td th:text="${paymentData[0].merchant_uid}"></td>
-			<td th:text="${paymentData[0].paid_at}"></td>
-			<td th:text="${paymentData[0].name}"></td>
-			<td th:text="${paymentData[0].formatAmount}"></td>
-			<td><a th:href="${paymentData[0].receipt_url}"
-					onclick="window.open(this.href, '매출전표', 'width=450,height=450'); return false;"
-					target="_blank">매출전표</a></td>
-		</tr>
-	</table>
+	<div class="payment-success">
+		<h1>결제가 완료되었습니다.</h1>
+		<th:block th:if="${date != null}">
+			<h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
+		</th:block>
+		<table class="payment-details">
+			<tr>
+				<td>주문번호</td>
+				<td>결제시간</td>
+				<td>상품명</td>
+				<td style="width: 90px;">결제금액</td>
+				<td style="width: 70px;"></td>
+			</tr>
+			<tr>
+				<td th:text="${paymentData[0].merchant_uid}"></td>
+				<td th:text="${paymentData[0].paid_at}"></td>
+				<td th:text="${paymentData[0].name}"></td>
+				<td th:text="${paymentData[0].formatAmount}"></td>
+				<td><a th:href="${paymentData[0].receipt_url}"
+						onclick="window.open(this.href, '매출전표', 'width=450,height=450'); return false;"
+						target="_blank">매출전표</a></td>
+			</tr>
+		</table>
+		<a href="/" class="home-button">메인으로</a>
+	</div>
+
 	<footer>
 		<div th:insert="~{footer :: footer}"></div>
 	</footer>

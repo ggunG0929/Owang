@@ -39,6 +39,12 @@ public class ProductController {
 	@Resource
 	ProductMapper pm;
 
+	// 상품안내
+	@RequestMapping("/intro")
+	String product_intro() {
+		return "product/product_intro";
+	}
+	
 	// 상품신청
 	@RequestMapping("/notice")
 	String product_notice(Model mm, HttpSession session) {

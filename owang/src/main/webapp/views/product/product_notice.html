@@ -3,7 +3,54 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>상품안내 및 신청</title>
+	<title>상품신청</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			border-top: 2px solid #000;
+			margin: 0 auto;
+		}
+
+		tr:not(:first-child):not(.space):hover {
+			background-color: #e0e0e0;
+		}
+
+		th {
+			padding: 8px;
+			border-bottom: 1px solid #999;
+		}
+
+		td {
+			padding: 8px;
+			border-bottom: 1px solid #ddd;
+		}
+
+		button {
+			padding: 10px 20px;
+			font-size: 16px;
+			cursor: pointer;
+			text-align: center;
+			text-decoration: none;
+			outline: none;
+			background-color: #007BFF;
+			color: #ffffff;
+			border: none;
+			border-radius: 5px;
+			transition: background-color 0.3s;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		.alct {
+			text-align: center;
+		}
+
+		.price {
+			text-align: right;
+		}
+	</style>
 </head>
 
 <body>
@@ -28,32 +75,33 @@
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-	<table border="">
-		<tr>
-			<td></td>
-			<td>대상</td>
-			<td>상품명</td>
-			<td>금액</td>
-		</tr>
-		<tr th:each="dto : ${data}" align="center">
-			<td>
-				<input type="radio" th:if="${dto.productClient == '기업' and pay == 'comp'}" th:value="${dto.productId}"
-					name="productRadio"> <!-- 기업 선택 -->
-				<input type="radio" th:if="${dto.productClient == '개인' and pay == 'solo'}" th:value="${dto.productId}"
-					name="productRadio"> <!-- 개인 선택 -->
-			</td>
-			<td th:text="${dto.productClient}"></td>
-			<td th:text="${dto.productName}"></td>
-			<td th:text="${dto.formatPrice}"></td>
-		</tr>
-		<tr>
-			<td colspan="4" align="center">
-				<button id="submitBtn">신청</button>
-			</td>
-		</tr>
-	</table>
+	<div style="display: flex; justify-content: space-between;">
+		<table>
+			<tr class="alct">
+				<td></td>
+				<td>대상</td>
+				<td>상품명</td>
+				<td>금액</td>
+			</tr>
+			<tr th:each="dto : ${data}">
+				<td>
+					<input type="radio" th:if="${dto.productClient == '기업' and pay == 'comp'}"
+						th:value="${dto.productId}" name="productRadio"> <!-- 기업 선택 -->
+					<input type="radio" th:if="${dto.productClient == '개인' and pay == 'solo'}"
+						th:value="${dto.productId}" name="productRadio"> <!-- 개인 선택 -->
+				</td>
+				<td class="alct" th:text="${dto.productClient}"></td>
+				<td th:text="${dto.productName}"></td>
+				<td class="price" th:text="${dto.formatPrice}"></td>
+			</tr>
+		</table>
+	</div>
+	<div style="text-align: center; margin-top: 20px;">
+		<button id="submitBtn">신청</button>
+	</div>
 	<footer>
-       <div th:insert="~{footer :: footer}"></div>
-    </footer>
+		<div th:insert="~{footer :: footer}"></div>
+	</footer>
 </body>
+
 </html>
