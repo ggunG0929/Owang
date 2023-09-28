@@ -27,7 +27,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select * from recruit where rtype =2 order by reg_date desc limit #{start},
 		#{limit}
 	</select>
-	
+	<select id="icompanyROpenCnt" resultType="Integer">
+		select count(*) from recruit where cid=#{cid} and rtype =1 
+	</select>
 	<select id="companyROpenCnt" resultType="Integer">
 		select count(*) from recruit where rtype =1 
 	</select>

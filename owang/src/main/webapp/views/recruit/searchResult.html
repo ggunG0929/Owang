@@ -27,7 +27,7 @@
    </form>
    </th:block>
    <th:block th:unless="${mainData == null}">   
-   <h1 th:text="${param.searchOption + ' 검색 결과 :'+ param.keyword}"></h1>
+   <h1 th:text="${'검색 결과 :'+ param.keyword}"></h1>
    
    <form action="/recruit/search" method="get" th:object="${recruitDTO}">
        <select name="searchOption">

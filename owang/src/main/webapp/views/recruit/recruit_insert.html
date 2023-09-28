@@ -4,25 +4,37 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/recruit/recruit_insert.css}">
 </head>
 
 <body>
+<div id="home">		
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-	[[${recruitDTO}]]
+	<!--[[${recruitDTO}]]-->
 	<br>
-	[[${mainData}]]<br>
-	[[${session.companysession.cdate}]]
-	<p><input type="text" th:value="${session['cid']}" readonly /></p>
-	<h1>recruit/insert</h1>
+	<!--[[${mainData}]]--><br>
+	<!--[[${session.companysession.cdate}]]-->
+	<!--<p><input type="text" th:value="${session['cid']}" readonly style="border: none;"/></p>-->
+	
+	
+	<div class="title_box">
+	   <h1>공고등록 <i class="fa-solid fa-building" style="color: #000000;"></i></h1>
+	   <br><br><br><br>
+	   <h3 id="p" style="color:  rgb(45, 101, 242);;">[[${session['cid']}]]의 채용공고를 등록하실 수 있습니다.</h3>
+   </div>
+	
+	
+<div id="insert_wrap"> 
 	<form action="" method="post" enctype="multipart/form-data" th:object="${recruitDTO}">
-
-		<table border="">
+		<table border="0" id="insert_table">
 			<tr>
-				<td>공고제목</td>
-				<td><input type="text" th:field="*{recruitTitle}" required /></td>
+				<td id="label">공고제목</td>
+				<td id="labe2"><input type="text" th:field="*{recruitTitle}" required /></td>
 			</tr>
+			<hr>
 			<!--
 			<tr>
 				<td>회사명</td>
@@ -39,14 +51,13 @@
 			
 			</tr>
 			-->
-			<!--정규직만있어서 readonly로 설정했습니다.-->
 			<tr>
-				<td>근무형태</td>
-				<td><input type="text" readonly value="정규직" /></td>
+				<td id="label" >근무형태</td>
+				<td id="labe2"><input type="text" readonly value="정규직" /></td>
 			</tr>
 			<tr>
 			<tr>
-				<td>급여(*만원)</td>
+				<td id="label">급여(*만원)</td>
 				<td>
 					<input type="radio" value="월급" th:field="*{recruitMtype}" required />
 					월급
@@ -72,8 +83,8 @@
     				</td>
 			</tr>-->
 			<tr>
-				<td>파일</td>
-				<td><input type="file" th:field="*{mmff}" /></td>
+				<td id="label">파일</td>
+				<td><input type="file" th:field="*{mmff}" id="imgfile" accept=".jpg, .jpeg, .png, .gif"/></td>
 			</tr>
 			<!--
 			<select name="마감일" th:field="*{recruitMagam}">
@@ -83,74 +94,103 @@
 			</select>
 			-->
 			<tr>
-				<td>시작일</td>
-				<td><input type="date"   name="regDate" th:min="${today}" required /></td>
-			</tr>
-			
-			<tr>
-				<td>마감일</td>
-				<td><input type="date"   name="realMagam" th:min="${today}" required /></td>
-			</tr>
-
-
-
+				<td id="label">시작일</td>
+				<td><input type="date" name="regDate" th:min="${today}" required /></td>
 			</tr>
 
 			<tr>
-				<td>내용</td>
-				<td><textarea type="text" th:field="*{recruitContent}" rows="10" cols="30" required /></td>
+				<td id="label">마감일</td>
+				<td><input type="date" name="realMagam" th:min="${today}" required /></td>
+			</tr>
+
+			<tr>
+				<td id="label">지역</td>
+				<td>
+					<select th:field="*{recruitLocation}">
+						<option value="서울특별시">서울특별시</option>
+						<option value="경기도">경기도</option>
+						<option value="부산광역시">부산광역시</option>
+						<option value="대구광역시">대구광역시</option>
+						<option value="인천광역시">인천광역시</option>
+						<option value="광주광역시">광주광역시</option>
+						<option value="대전광역시">대전광역시</option>
+						<option value="제주도">제주도</option>
+					</select>
+				</td>
+			</tr>
+
+			</tr>
+
+			<tr>
+				<td id="label">상세내용</td>
+				<td><textarea type="text" th:field="*{recruitContent}" 
+						rows="30" cols="80" 
+						placeholder="⚠️허위공고 및 스팸공고를 등록할 경우, &#13;&#10;사내 운영규정 13조 2항에 따라 불이익을 받을 수 있습니다." required /></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<input type="submit" value="작성" />
-					<a th:href="|/recruit/list/${recruitDTO.page}|">뒤로가기</a>
+					<input type="submit" value="작성하기" id="writeButton"/>
+					<!--뒤로-->
+					<a th:href="|/recruit/list/${recruitDTO.page}|" i class="fa-solid fa-reply" style="color: #000000;"></a>
 				</td>
-
 			</tr>
 		</table>
-
-
 	</form>
-	
+</div>
+
 	<script>
-    // 페이지가 로드될 때 실행
-    document.addEventListener("DOMContentLoaded", function() {
-        // 시작일과 마감일 input 요소 가져오기
-        var startDateInput = document.querySelector('input[name="regDate"]');
-        var endDateInput = document.querySelector('input[name="realMagam"]');
-        
-        // 시작일 input 요소의 변경 이벤트 감지
-        startDateInput.addEventListener("change", function() {
-            // 시작일과 마감일의 값을 가져옴
-            var startDate = new Date(startDateInput.value);
-            var endDate = new Date(endDateInput.value);
-            
-            // 마감일이 시작일보다 빠른 경우
-            if (endDate < startDate) {
-                alert("마감일은 시작일 이후여야 합니다.");
-                endDateInput.value = ""; // 마감일을 비움
-            }
-        });
-        
-        // 마감일 input 요소의 변경 이벤트 감지
-        endDateInput.addEventListener("change", function() {
-            // 시작일과 마감일의 값을 가져옴
-            var startDate = new Date(startDateInput.value);
-            var endDate = new Date(endDateInput.value);
-            
-            // 마감일이 시작일보다 빠른 경우
-            if (endDate < startDate) {
-                alert("마감일은 시작일 이후여야 합니다.");
-                endDateInput.value = ""; // 마감일을 비움
-            }
-        });
-    });
-    
-    
-</script>
+		// 페이지가 로드될 때 실행
+		document.addEventListener("DOMContentLoaded", function () {
+			// 시작일과 마감일 input 요소 가져오기
+			var startDateInput = document.querySelector('input[name="regDate"]');
+			var endDateInput = document.querySelector('input[name="realMagam"]');
+
+			// 시작일 input 요소의 변경 이벤트 감지
+			startDateInput.addEventListener("change", function () {
+				// 시작일과 마감일의 값을 가져옴
+				var startDate = new Date(startDateInput.value);
+				var endDate = new Date(endDateInput.value);
+
+				// 마감일이 시작일보다 빠른 경우
+				if (endDate < startDate) {
+					alert("마감일은 시작일 이후여야 합니다.");
+					endDateInput.value = ""; // 마감일을 비움
+				}
+			});
+
+			// 마감일 input 요소의 변경 이벤트 감지
+			endDateInput.addEventListener("change", function () {
+				// 시작일과 마감일의 값을 가져옴
+				var startDate = new Date(startDateInput.value);
+				var endDate = new Date(endDateInput.value);
+
+				// 마감일이 시작일보다 빠른 경우
+				if (endDate < startDate) {
+					alert("마감일은 시작일 이후여야 합니다.");
+					endDateInput.value = ""; // 마감일을 비움
+				}
+				
+			// 파일 입력 필드 가져오기
+            var imageInput = document.getElementById('imgfile');
+
+            // 파일 선택 이벤트 감지
+            imageInput.addEventListener('change', function () {
+                var selectedFile = imageInput.files[0]; // 선택된 파일 가져오기
+
+                // 파일이 선택되지 않은 경우 또는 이미지 파일이 아닌 경우
+                if (!selectedFile || !selectedFile.type.startsWith('image/')) {
+                    alert('이미지 파일만 업로드할 수 있습니다.');
+                    imageInput.value = ''; // 파일 입력 필드 비우기
+                }
+			});
+		});
+
+
+	</script>
 	<footer>
-       <div th:insert="~{footer :: footer}"></div>
-    </footer>
+		<div th:insert="~{footer :: footer}"></div>
+	</footer>
+</div>		
 </body>
 
 </html>

@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import aaa.model.ApplicantDTO;
 import aaa.model.MCompanyDTO;
+import aaa.model.RecruitDTO;
 import aaa.model.SoloDTO;
 import aaa.service.AdminCompanyMapper;
 import aaa.service.AdminSolo;
@@ -38,6 +40,9 @@ public class AdminEndMemberController {
 		return "admin/endmember/solo";
 	}
 	
+	
+	///////////////////////////////////////// 개인(위에) 기업(아래) 구분선
+	
 	// 기업탈퇴회원
 	@RequestMapping("endcompany/{page}")
 	String endcompany(@PathVariable int page, Model mm, MCompanyDTO mdto) {
@@ -52,9 +57,22 @@ public class AdminEndMemberController {
 	
 	// 기업 상세보기
 	@RequestMapping("endcompany/detail/{cid}")
-	String endCompanyDetail( Model mm, MCompanyDTO mdto) {
-			
+	String endCompanyDetail( Model mm, MCompanyDTO mdto,@PathVariable String cid) {
+		List<RecruitDTO> data = endCompanyMapper.endRecruitRealList(cid);
+		mm.addAttribute("mainData",data);
 		return "admin/endmember/companyDetail";
+	}
+	
+	// 기업 지원자 상세보기
+	@RequestMapping("appnum/detail/{cid}/{recruit_title}")
+	String appnumDeatil( Model mm, MCompanyDTO mdto,@PathVariable String cid,@PathVariable String recruit_title,ApplicantDTO dto) {
+		System.out.println("ApplicantDTO" + dto);
+		System.out.println("MCompanyDTO" + mdto);
+		RecruitDTO rdto = endCompanyMapper.endrecruitone(recruit_title);
+		
+		List<ApplicantDTO> adto = endCompanyMapper.endApplicantList(rdto.cid,rdto.recruitTitle);
+		mm.addAttribute("mainData",adto);
+		return "admin/endmember/appnum";
 	}
 	
 	

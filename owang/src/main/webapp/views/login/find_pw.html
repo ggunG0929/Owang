@@ -39,7 +39,7 @@
 
 		<input type="submit" value="찾기">
 		 <div class="buttonzz">
-			<a href="javascript:goBack()">뒤로</a>
+			<a href="/login/find">뒤로</a>
 		</div>
 	</form>
 		</div>
@@ -78,11 +78,12 @@
 			});
 		}
 
-		function goBack() {
-			window.history.back();
-		}
-
+		
 	</script>
 </body>
+<footer>
+       <div th:insert="~{footer :: footer}"></div>
+    </foote>
+    
 
 </html>

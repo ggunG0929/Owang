@@ -21,6 +21,8 @@ public interface AdminCompanyMapper {
 	List<MCompanyDTO> companyList(MCompanyDTO dto);
 	// 기업 등록 회원 정리
 	List<MCompanyDTO> companyCapprovalList(MCompanyDTO dto);
+	// 기업 등록 전체 회원 정리
+	List<MCompanyDTO> companyCapprovalList2(MCompanyDTO dto);
 	
 	List<MCompanyDTO> join(MCompanyDTO dto);
 

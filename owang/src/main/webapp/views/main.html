@@ -1,12 +1,744 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+	<style>
+		*{padding: 0;margin: 0;}
+		
+		body{
+			font-family:  'Noto Sans KR', sans-serif;
+		}
+		
+		/* 로그인 옆 슬라이드 */
+		.section {
+			box-sizing: border-box;
+			float: left;
+		}
+
+		.section input[id*="slide"] {
+			display: none;
+		}
+
+		.section .slidewrap {
+			box-sizing: border-box;
+			max-width: 800px;
+			padding: 16px;
+		}
+
+		.section .slidelist {
+			box-sizing: border-box;
+			white-space: nowrap;
+			font-size: 0;
+			overflow: hidden;
+			position: relative;
+		}
+
+		.section .slidelist>li {
+			display: inline-block;
+			vertical-align: middle;
+			width: 100%;
+			transition: all .5s;
+		}
+
+		.section .slidelist>li>a {
+			display: block;
+			position: relative;
+		}
+
+		.section .slidelist>li>a img {
+			width: 100%;
+		}
+
+		.section .slidelist label {
+			position: absolute;
+			z-index: 10;
+			top: 50%;
+			transform: translateY(-50%);
+			padding: 50px;
+			cursor: pointer;
+		}
+
+		.section .slidelist .textbox {
+			position: absolute;
+			z-index: 1;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			line-height: 1.6;
+			text-align: center;
+		}
+
+		.section .slidelist .textbox h3 {
+			font-size: 36px;
+			color: #fff;
+
+			transform: translateY(30px);
+			transition: all .5s;
+		}
+
+		.section .slidelist .textbox p {
+			font-size: 16px;
+			color: #fff;
+			opacity: 0;
+			transform: translateY(30px);
+			transition: all .5s;
+		}
+
+		/* input에 체크되면 슬라이드 효과 */
+		.section input[id="slide01"]:checked~.slidewrap .slidelist>li {
+			transform: translateX(0%);
+		}
+
+		.section input[id="slide02"]:checked~.slidewrap .slidelist>li {
+			transform: translateX(-100%);
+		}
+
+		.section input[id="slide03"]:checked~.slidewrap .slidelist>li {
+			transform: translateX(-200%);
+		}
+
+		/* input에 체크되면 텍스트 효과 */
+		.section input[id="slide01"]:checked~.slidewrap li:nth-child(1) .textbox h3 {
+			opacity: 1;
+			transform: translateY(0);
+			transition-delay: .2s;
+		}
+
+		.section input[id="slide01"]:checked~.slidewrap li:nth-child(1) .textbox p {
+			opacity: 1;
+			transform: translateY(0);
+			transition-delay: .4s;
+		}
+
+		.section input[id="slide02"]:checked~.slidewrap li:nth-child(2) .textbox h3 {
+			opacity: 1;
+			transform: translateY(0);
+			transition-delay: .2s;
+		}
+
+		.section input[id="slide02"]:checked~.slidewrap li:nth-child(2) .textbox p {
+			opacity: 1;
+			transform: translateY(0);
+			transition-delay: .4s;
+		}
+
+		.section input[id="slide03"]:checked~.slidewrap li:nth-child(3) .textbox h3 {
+			opacity: 1;
+			transform: translateY(0);
+			transition-delay: .2s;
+		}
+
+		.section input[id="slide03"]:checked~.slidewrap li:nth-child(3) .textbox p {
+			opacity: 1;
+			transform: translateY(0);
+			transition-delay: .4s;
+		}
+
+		/* 좌,우 슬라이드 버튼 */
+		.slide-control>div {
+			display: none;
+		}
+
+		.section .left {
+			left: 30px;
+			background: url('../images/main/left.png') center center / 100% no-repeat;
+		}
+
+		.section .right {
+			right: 30px;
+			background: url('../images/main/right.png') center center / 100% no-repeat;
+		}
+
+		.section input[id="slide01"]:checked~.slidewrap .slide-control>div:nth-child(1) {
+			display: block;
+		}
+
+		.section input[id="slide02"]:checked~.slidewrap .slide-control>div:nth-child(2) {
+			display: block;
+		}
+
+		.section input[id="slide03"]:checked~.slidewrap .slide-control>div:nth-child(3) {
+			display: block;
+		}
+
+		/* 페이징 */
+		.slide-pagelist {
+			width: 300px;
+			position: relative;
+			top: -60px;
+			left: 275px;
+		}
+
+		.slide-pagelist>li {
+			
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.slide-pagelist>li>label {
+			display: block;
+			padding: 8px 30px;
+			border-radius: 30px;
+			background: #ccc;
+			margin: 20px 10px;
+			cursor: pointer;
+		}
+
+		.section input[id="slide01"]:checked~.slidewrap .slide-pagelist>li:nth-child(1)>label {
+			background: #999;
+		}
+
+		.section input[id="slide02"]:checked~.slidewrap .slide-pagelist>li:nth-child(2)>label {
+			background: #999;
+		}
+
+		.section input[id="slide03"]:checked~.slidewrap .slide-pagelist>li:nth-child(3)>label {
+			background: #999;
+		}
+
+		/* 로그인 옆 슬라이드 끝 */
+
+		/* 공지사항 시작 */
+		.notice {
+			box-sizing: border-box;
+			display: inline-block;
+			padding: 16px;
+			border: 1px solid rgb(228, 228, 228);
+			margin-top: 25px;
+			width: 390px;
+			height: 95px;
+			border-radius: 4px;
+			background-color: white;
+		}
+
+		.notice h1 {
+			color: rgb(221, 0, 0);
+			font-size: 13px;
+
+		}
+
+		.notice a {
+			text-decoration: none;
+			color: black;
+			white-space: nowrap;
+			/* 텍스트가 한 줄로만 표시되도록 설정 */
+			overflow: hidden;
+			/* 넘치는 텍스트를 숨김 */
+			text-overflow: ellipsis;
+			/* 생략 부호(...)를 표시 */
+			width: 250px;
+			/* 표시할 너비를 지정 (필요에 따라 조절) */
+		}
+
+		.notice span {
+			color: rgb(153, 153, 153);
+		}
+
+		.sort {
+			display: flex;
+			-webkit-box-pack: justify;
+			justify-content: space-between;
+			margin-top: 18px;
+		}
+
+		/* 공지사항 끝 */
+
+		/* 가운데 검색 폼 */
+		#searchForm {
+			text-align: center;
+			padding: 16px;
+
+		}
+
+		#searchForm>label {
+			font-size: 22px;
+		}
+
+		#searchForm>input {
+			width: 800px;
+			appearance: none;
+			height: 50px;
+			vertical-align: middle;
+			border-radius: 16px;
+			font-size: 16px;
+			padding-left: 22px;
+		}
+
+		datalist::-ms-expand {
+			display: none;
+
+		}
+
+		datalist {
+			-o-appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+
+
+		#searchForm button {
+			position: relative;
+			top: 6px;
+			width: 100px;
+			height: 50px;
+			padding: 10px 5px;
+			background-color: white;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		/* 가운데 검색 폼 끝 */
+
+		/* 로그인 */
+		.mainLogin {
+			box-sizing: border-box;
+			display: inline-block;
+			padding: 16px;
+			border: 1px solid rgb(228, 228, 228);
+			margin-top: 15px;
+			width: 390px;
+			height: 100%;
+			border-radius: 4px;
+			background-color: white;
+		}
+		
+		.mainLogin button:first-child{
+			margin-top: 20px;
+			width: 100%;		
+		    background: rgb(0, 0, 0);
+		    border: 1px solid rgb(0, 0, 0);
+		    color: rgb(255, 255, 255);
+		    height: 48px;
+		    line-height: 46px;
+		    font-size: 15px;
+		    border-radius: 8px;
+		}
+		
+		.mainLogin button{
+			width: 49%;
+			height: 48px;
+			line-height: 46px;
+			font-size: 15px;
+		    border-radius: 8px;
+		    cursor: pointer;
+		}
+		
+		#joinsolo{
+			border: none;
+			background-color: rgb(255, 99, 132);
+			color: white;
+			
+		}
+		#joincom{
+			border: 1px solid ;
+			background-color: rgb(128, 128, 255);
+			color: white;
+			
+		}
+		
+		#upup{
+			display: block;
+			margin-top: 20px;
+		}
+		
+		.LoginContent{
+			margin-top: 12px;
+		} 
+		
+		/* 기업로그인 */
+		#companytitle {
+		    font-size: 22px;
+		    font-weight: bolder;
+		    float: left;
+		    margin-bottom: 20px;
+		}
+		
+		#companyout {
+		    cursor: pointer;
+		    color: #333;
+		    float: right;
+		    margin: inherit;
+		}
+		
+		#companySkil{
+			
+			border-radius: 8px;
+			
+			text-align: center;
+			width: 100%;
+		    padding: 20px 0px;
+		    height: 50px;
+		    margin-top: 40px;
+		    display: flex;
+		    background-color: #ccc;
+		    justify-content: space-around;
+		    position: relative;
+		    box-shadow: 2px 2px 5px #333;
+		}
+		
+		#companySkil > a{
+			text-decoration: none;
+			color: black;
+		}
+		#companySkil > a:hover > p:last-of-type{
+			text-decoration: underline;
+		}
+		
+		/* 기업로그인 끝 */
+		
+		.divider {
+		    border-right: 1px solid #333; /* 구분선의 스타일을 정의합니다. */
+		    margin: 0px; /* 좌우 여백을 조절할 수 있습니다. */
+		    height: 50px; /* 구분선의 높이를 조절할 수 있습니다. */
+		    display: inline-block;
+		    vertical-align: middle; /* 내용과 수직 정렬을 위해 사용합니다. */
+		}
+				
+		
+		/* 로그인 끝 */
+	</style>
+	<link rel="stylesheet" th:href="@{/css/main/middleSide.css}">
+	<link rel="stylesheet" th:href="@{/css/main/endSide.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+
 </head>
+
+
 <body>
-<script>
-	location.href="/main"
-</script>
+<header >
+	<div th:insert="~{header :: header}"></div>
+</header>
+	
+	<div class="section">
+		<input type="radio" name="slide" id="slide01" checked>
+		<input type="radio" name="slide" id="slide02">
+		<input type="radio" name="slide" id="slide03">
+		<div class="slidewrap">
+
+			<ul class="slidelist">
+				<!-- 슬라이드 영역 -->
+				<li class="slideitem">
+					<a>
+						<div class="textbox">
+
+							<p>첫번째 슬라이드 입니다.</p>
+						</div>
+						<img src="https://cdn.jumpit.co.kr/home_contents/main_banner/20230919/v_home_img_mainbanner_1.png">
+					</a>
+				</li>
+				<li class="slideitem">
+					<a>
+
+						<div class="textbox">
+
+							<p>두번째 슬라이드 입니다.</p>
+						</div>
+						<img src="https://cdn.jumpit.co.kr/home_contents/main_banner/20230919/v_home_img_mainbanner_2.png">
+					</a>
+				</li>
+				<li class="slideitem">
+					<a>
+
+						<div class="textbox">
+
+							<p>세번째 슬라이드 입니다.</p>
+						</div>
+						<img src="up/변경3.png" style="  filter: brightness(50%);">
+					</a>
+				</li>
+
+				<!-- 좌,우 슬라이드 버튼 -->
+				<div class="slide-control">
+					<div>
+						<label for="slide03" class="left"></label>
+						<label for="slide02" class="right"></label>
+					</div>
+					<div>
+						<label for="slide01" class="left"></label>
+						<label for="slide03" class="right"></label>
+					</div>
+					<div>
+						<label for="slide02" class="left"></label>
+						<label for="slide01" class="right"></label>
+					</div>
+				</div>
+
+			</ul>
+			<!-- 페이징 -->
+			<ul class="slide-pagelist">
+				<li><label for="slide01"></label></li>
+				<li><label for="slide02"></label></li>
+				<li><label for="slide03"></label></li>
+			</ul>
+		</div>
+
+
+	</div>
+
+	<div class="mainLogin">
+
+		<div class="LoginContent">
+		<th:block th:if="${session['cid'] == null && session['sid'] == null}">
+			<div class="login_title">
+				<p>회원가입/로그인하고</p>
+				<p>오왕의 다양한 혜택을 만나보세요.</p>
+			</div>
+			<div>
+				<button onclick=" window.location.href = '/login/main'">로그인</button>
+				<span id="upup">오왕을 더 안전하고 편리하게 이용하세요</span>
+				<button id="joinsolo" onclick=" window.location.href = '/join/solo'">개인회원가입</button>
+				<button id="joincom" onclick=" window.location.href = '/join/company'">기업회원가입</button>
+			</div>
+	   </th:block>
+       <th:block th:if="${session['cid'] != null}">
+		   
+            <div class="login_title">
+				
+				<p id="companytitle" th:text="|${session['companysession'].cname}+님 반가워요|"></p>
+				<span id="companyout" onclick=" window.location.href = '/login/logout'">로그아웃</button>
+			</div>
+			<div id="companySkil">
+				
+				<a th:href="|/recruit/insert/${recruitDTO.page}|">
+				<p>📝</p>
+					<p>공고 작성</p>
+				</a>
+				<span class="divider"></span>
+				<a href="/company/mypage">
+					<p>😎</p>
+					<p>내 정보보기</p>
+				</a>
+			
+				
+			</div>
+			
+        </th:block>
+        <th:block th:if="${session['sid'] != null}">
+			
+            <div class="login_title">
+				<p id="companytitle" th:text="|${session['solosession'].sname}+님 반가워요|"></p>
+				<span id="companyout" onclick=" window.location.href = '/login/logout'">로그아웃</button>
+			</div>
+			<div id="companySkil">
+				
+				<a href="/solo_resume/write">
+				<p>📝</p>
+					<p>이력서 작성</p>
+				</a>
+				<span class="divider"></span> 
+				<a href="/solo/solo_info">
+					<p>😎</p>
+					<p>내 정보보기</p>
+				</a>
+
+			</div>
+        </th:block>
+		</div>
+	</div>
+
+
+	<div class="notice">
+
+		<th:block th:each="ndto, dtoStat : ${mainData}">
+
+			<h1>Notcie</h1>
+
+			<div class="sort">
+				<a th:href="|/notice/detail/${noticeDTO.page}/${ndto.id}|" th:text="${ndto.title}"></a>
+
+
+				<!--날짜 포맷팅-->
+				<span th:text="${#dates.format(ndto.regDate, 'yyyy-MM')}" />
+			</div>
+		</th:block>
+
+	</div>
+
+	<hr style="clear: both;" />
+	<br />
+
+	<form id="searchForm">
+		<label for="site">기업 검색</label>
+		<input type="text" id="site-input" list="site-option">
+		<datalist inputmode="text" id="site-option">
+			<!-- 나름 html을 다뤄봣지만 처음보는 속성이 등장했다 data-url -->
+			<!-- 해당 속성은 html의 변수같은 느낌으로 사용할수있다 -->
+			<!-- 자세한 설명은 아래를 참고하자 -->
+			<!-- https://inpa.tistory.com/entry/JS-%F0%9F%93%9A-HTML-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8Bdata-%EC%86%8D%EC%84%B1 -->
+			<th:block th:each="dto, dtoStat : ${realData}">
+				<option th:value="${dto.cname}" th:data-url="'/company/detail/' + ${dto.cid}"></option>
+			</th:block>
+		</datalist>
+
+
+		<button onclick="redirectToPage()">
+		
+			<i id="reviewzz" class="material-icons">search</i>
+		</button>
+		<button type="reset">
+			<i id="reviewzz" class="material-icons">cancel</i>
+		</button>
+
+	</form>
+	<script>
+		function redirectToPage() {
+			var inputElement = document.getElementById("site-input");
+			var inputdata = inputElement.value;
+
+			let option = document.getElementById('site-option');
+			// "${}" <- 리터럴 템플릿이라 부름 
+			// 참고자료 https://eblee-repo.tistory.com/38
+			let selectedOption = option.querySelector(`option[value="${inputdata}"]`); // 선택된 옵션을 가져옴
+
+			if (selectedOption) {
+				let optiondata = selectedOption.getAttribute('data-url');
+				console.log(inputdata);
+				console.log(optiondata);
+				window.open(optiondata); // 올바른 URL을 가져와서 열도록 수정
+			} else {
+				alert("선택된 기업이 없습니다.");
+			}
+		}
+		function testgogo() {
+			document.getElementById('testgogo')
+		}
+		
+	</script>
+
+
+	<div class="wrapper">
+		<i id="left" class="fa-solid fa-angle-left"></i>
+
+		<ul class="carousel">
+			<th:block th:each="dto, dtoStat : ${realData}">
+
+				<li class="card">
+					<div class="img">
+
+						<img th:src="'companylogoup/기업기본이미지.png'" alt="img" draggable="false"
+							th:if="${dto.clogo == null}">
+						<img th:src="'companylogoup/'+${dto.clogo}" alt="img" draggable="false"
+							th:unless="${dto.clogo == null}">
+					</div>
+					<h2 th:text="${dto.cname}" />
+					<span th:text="'사원수 '+${dto.cstaff}+'명'" />
+					<a th:href="'/company/detail/' + ${dto.cid}" th:text="공고상세보기"></a>
+				</li>
+
+			</th:block>
+		</ul>
+		<i id="right" class="fa-solid fa-angle-right"></i>
+	</div>
+	<script>
+		const wrapper = document.querySelector(".wrapper");
+		const carousel = document.querySelector(".carousel");
+		const firstCardWidth = carousel.querySelector(".card").offsetWidth;
+		const arrowBtns = document.querySelectorAll(".wrapper i");
+		const carouselChildrens = [...carousel.children];
+
+		let isDragging = false, isAutoPlay = true, startX, startScrollLeft, timeoutId;
+
+		// Get the number of cards that can fit in the carousel at once
+		let cardPerView = Math.round(carousel.offsetWidth / firstCardWidth);
+
+		// Insert copies of the last few cards to beginning of carousel for infinite scrolling
+		carouselChildrens.slice(-cardPerView).reverse().forEach(card => {
+			carousel.insertAdjacentHTML("afterbegin", card.outerHTML);
+		});
+
+		// Insert copies of the first few cards to end of carousel for infinite scrolling
+		carouselChildrens.slice(0, cardPerView).forEach(card => {
+			carousel.insertAdjacentHTML("beforeend", card.outerHTML);
+		});
+
+		// Scroll the carousel at appropriate postition to hide first few duplicate cards on Firefox
+		carousel.classList.add("no-transition");
+		carousel.scrollLeft = carousel.offsetWidth;
+		carousel.classList.remove("no-transition");
+
+		// Add event listeners for the arrow buttons to scroll the carousel left and right
+		arrowBtns.forEach(btn => {
+			btn.addEventListener("click", () => {
+				carousel.scrollLeft += btn.id == "left" ? -firstCardWidth : firstCardWidth;
+			});
+		});
+
+		const dragStart = (e) => {
+			isDragging = true;
+			carousel.classList.add("dragging");
+			// Records the initial cursor and scroll position of the carousel
+			startX = e.pageX;
+			startScrollLeft = carousel.scrollLeft;
+		}
+
+		const dragging = (e) => {
+			if (!isDragging) return; // if isDragging is false return from here
+			// Updates the scroll position of the carousel based on the cursor movement
+			carousel.scrollLeft = startScrollLeft - (e.pageX - startX);
+		}
+
+		const dragStop = () => {
+			isDragging = false;
+			carousel.classList.remove("dragging");
+		}
+
+		const infiniteScroll = () => {
+			// If the carousel is at the beginning, scroll to the end
+			if (carousel.scrollLeft === 0) {
+				carousel.classList.add("no-transition");
+				carousel.scrollLeft = carousel.scrollWidth - (2 * carousel.offsetWidth);
+				carousel.classList.remove("no-transition");
+			}
+			// If the carousel is at the end, scroll to the beginning
+			else if (Math.ceil(carousel.scrollLeft) === carousel.scrollWidth - carousel.offsetWidth) {
+				carousel.classList.add("no-transition");
+				carousel.scrollLeft = carousel.offsetWidth;
+				carousel.classList.remove("no-transition");
+			}
+
+			// Clear existing timeout & start autoplay if mouse is not hovering over carousel
+			clearTimeout(timeoutId);
+			if (!wrapper.matches(":hover")) autoPlay();
+		}
+
+		const autoPlay = () => {
+			if (window.innerWidth < 800 || !isAutoPlay) return; // Return if window is smaller than 800 or isAutoPlay is false
+			// Autoplay the carousel after every 2500 ms
+			timeoutId = setTimeout(() => carousel.scrollLeft += firstCardWidth, 2500);
+		}
+		autoPlay();
+
+		carousel.addEventListener("mousedown", dragStart);
+		carousel.addEventListener("mousemove", dragging);
+		document.addEventListener("mouseup", dragStop);
+		carousel.addEventListener("scroll", infiniteScroll);
+		wrapper.addEventListener("mouseenter", () => clearTimeout(timeoutId));
+		wrapper.addEventListener("mouseleave", autoPlay);
+	</script>
+
+	<div class="list_wrap">
+		<ul>
+			<th:block th:each="dto, dtoStat : ${openData}" th:count="9">
+				<li th:class="'item item' + ${dtoStat.index + 1}">
+					<div class="image" th:style="'background-image: url(up/' + ${dto.recruitUpfile} + ');'">사진</div>
+					<div class="cont">
+						<strong th:text="${dto.recruitTitle}"></strong>
+						<p>내용이 들어갑니다.</p>
+						<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|">바로가기</a>
+					</div>
+				</li>
+			</th:block>
+		</ul>
+	</div>
+	
+	<footer>
+		<div th:insert="~{footer :: footer}"></div>
+	</footer>
 </body>
+
 </html>

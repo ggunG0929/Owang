@@ -4,102 +4,117 @@
 <head>
 	<meta charset="UTF-8">
 	<title>company/detail</title>
+	<link rel="stylesheet" th:href="@{/css/company/mypage.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
 </head>
 
 <body>
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-	[[${dto}]]
+	<main class="content-box">
 
-	<h1>기업정보페이지</h1>
+		<div class="footer-box"> <!-- Container -->
+			
 
-
-	<h3>기업정보</h3>
-	<!-- 개인일때는 수정삭제가능ㄴ -->
-	<table border="">
-
-		<tr>
-			<td>기업이름</td>
-			<td th:text="${dto.cname}" />
-		</tr>
-		<tr>
-			<td>기업로고</td>
-
-			<th:block th:if="${dto.clogo != null}">
-				<td><button onclick="logoImageInNewWindow()">기업로고 확인</button></td>
-
-
-			</th:block>
-			<th:block th:unless="${dto.clogo != null}">
-				<td>로고가 존재하지않습니다.</td>
-			</th:block>
-		</tr>
-		<tr>
-			<td>대표자</td>
-			<td th:text="${dto.cceo}" />
-		</tr>
-		<tr>
-			<td>개업연월일</td>
-			<td th:text="${dto.cbuild}" />
-		</tr>
-		<tr>
-			<td>업종</td>
-			<td th:text="${dto.ccategory}" />
-		</tr>
-		<tr>
-			<td>직원수</td>
-			<td th:text="${dto.cstaff}" />
-		</tr>
-		<tr>
-			<td>한해 매출액</td>
-			<td th:text="|${dto.csales}(단위:백만원)|" />
-		</tr>
-		<tr>
-			<td>이메일</td>
-			<td th:text="${dto.cemail}" />
-		</tr>
-		<tr>
-			<td>본점소재지</td>
-			<td th:text="${dto.caddress}" />
-		</tr>
-		<tr>
-			<td>전화번호</td>
-			<td th:text="${dto.ccall}" />
-		</tr>
-		<tr th:if="${session.cid==dto.cid}">
-			<td>회원유형</td>
-			<td th:if="${dto.ctype == 2}" th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></td>
-			<td th:unless="${dto.ctype == 2}" th:text="일반회원"></td>
-		</tr>
-		<tr>
-			<td>기업인증여부</td>
-			<td th:if="${dto.capproval}" th:text="기업인증완료"></td>
-			<td th:unless="${dto.capproval}" th:text="기업미인증"></td>
-		</tr>
-		<tr>
-			<td>회사소개</td>
-			<td th:text="${dto.ccontent}" />
-		</tr>
-		<tr>
-			<td>복지 및 해택</td>
-			<td th:text="${dto.cwelfare}" />
-		</tr>
-		<tr th:if="${session.cid == dto.cid}">
-			<th>사업자증명서</th>
-			<td><button onclick="openImageInNewWindow()">사업자등록증 확인</button></td>
-		</tr>
-
-	</table>
-
-	<a href="/company/modify">수정</a>
-	<a href="/company/delete">삭제</a>
-	</th:block>
-	<a href="/">홈으로</a>
+			<h1 style="font-size: 55px; color: rgb(52 54 63); margin-left: 10px;	margin-bottom: 55px;">기업정보페이지</h1>
 
 
 
+			<!-- 개인일때는 수정삭제가능ㄴ -->
+			<table border="">
 
+				<tr>
+					<th>기업이름</th>
+					<td th:text="${dto.cname}" />
+				</tr>
+				<tr>
+					<th>기업로고</th>
+
+					<th:block th:if="${dto.clogo != null}">
+							<td><img id="logoImage" th:src="|/companylogoup/${dto.clogo}|" alt="기업 로고">
+						<button onclick="logoImageInNewWindow()">크게보기</button></td>
+
+
+					</th:block>
+					<th:block th:unless="${dto.clogo != null}">
+						<td>로고가 존재하지않습니다.</td>
+					</th:block>
+				</tr>
+				<tr>
+					<th>대표자</th>
+					<td th:text="${dto.cceo}" />
+				</tr>
+				<tr>
+					<th>개업연월일</th>
+					<td th:text="${dto.cbuild}" />
+				</tr>
+				<tr>
+					<th>업종</th>
+					<td th:text="${dto.ccategory}" />
+				</tr>
+				<tr>
+					<th>직원수</th>
+					<td th:text="|${dto.cstaff}명|" />
+				</tr>
+				<tr>
+					<th>한해 매출액</th>
+					<td th:text="|${dto.csales}(단위:백만원)|" />
+				</tr>
+				<tr>
+					<th>이메일</th>
+					<td th:text="${dto.cemail}" />
+				</tr>
+				<tr>
+					<th>본점소재지</th>
+					<td th:text="${dto.caddress}" />
+				</tr>
+				<tr>
+					<th>전화번호</th>
+					<td th:text="${dto.ccall}" />
+				</tr>
+				<tr th:if="${session.cid==dto.cid}">
+					<th>회원유형</th>
+					<td th:if="${dto.ctype == 2}" th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></td>
+					<td th:unless="${dto.ctype == 2}" th:text="일반회원"></td>
+				</tr>
+				<tr>
+					<th>기업인증여부</th>
+					<td th:if="${dto.capproval}" th:text="기업인증완료"></td>
+					<td th:unless="${dto.capproval}" th:text="기업미인증"></td>
+				</tr>
+				<tr>
+					<th>회사소개</th>
+					<td th:text="${dto.ccontent}" />
+				</tr>
+				<tr>
+					<th>복지 및 혜택</th>
+					<td th:text="${dto.cwelfare}" />
+				</tr>
+				<tr th:if="${session.cid == dto.cid}">
+					<th>사업자증명서</th>
+					<td><button onclick="openImageInNewWindow()">사업자등록증 확인</button></td>
+				</tr>
+
+			</table>
+
+			<div class="left-button-container">
+				<a class="button" href="/">홈으로</a>
+			</div>
+			<div class="right-button-container">
+				<a class="buttonz"  href="/company/modify">수정</a>
+				<a class="button" href="/company/delete">삭제</a>
+			</div>
+
+
+		</div>
+	</main>
 	<script>
 		function openImageInNewWindow() {
 			// 이미지 URL 설정
@@ -122,7 +137,12 @@
 			// 이미지를 새 창에 표시
 			newWindow.document.write('<img src="/companylogoup/' + image + '" alt="이미지" />');
 		}
+
 	</script>
 </body>
+<footer>
+       <div th:insert="~{footer :: footer}"></div>
+    </foote>
+    
 
 </html>

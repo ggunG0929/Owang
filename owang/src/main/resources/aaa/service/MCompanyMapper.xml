@@ -27,7 +27,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <select id="getctype" resultType="Integer">
     select ctype from company where cid = #{cid}
 </select>
-
+<select id="getzzcname" resultType="String">
+    select cname from company where cid = #{cid}
+</select>
 <select  id="deatilCompany">
 	select * from company where cid = #{cid}
 </select>

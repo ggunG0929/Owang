@@ -4,111 +4,142 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" th:href="@{/css/solo_applicant/detail.css}">
+<header>
+	<div th:insert="~{header :: header}"></div>
+</header>
 <body>
-<h2>지원서 디테일</h2>
-<table style="border: 1px solid #ccc; width:500px;" >
-	<tr>
-		<td><h3>지원 기업</h3></td><td th:text="${adto.cname}" />
-	</tr>
-	<tr>
-		<td><h3>지원 공고</h2></td><td th:text="${adto.recruitTitle}" />
-	</tr>
-</table>	
-<div>
-	<div>
-        <div style="border: 1px solid #ccc; width:500px;" >
-			<h3>기본정보</h3>
-			<div>
-				<table style="width:450px;">
-					<input type="hidden" th:value="${solosession.sid}" name="sid" />
-			        <tr>
-			            <td th:text="${solosession.sname}"></td>
-			            <td th:text="${solosession.sgender}"></td>
-			            <td th:text="${solosession.sage}"></td>
-					</tr>
-					<tr>
-						<td>주소</td>
-						<td th:text="${solosession.saddress}"></td>
-						<td>이메일</td>
-						<td th:text="${solosession.semail}"></td>
-					</tr>
-					<tr>
-						<td >전화번호</td>
-						<td th:text="${solosession.sphone}"></td>
-					</tr>
-				</table>
-			</div>
-			<div>
-				<img th:if="${adto.img}" th:src="|/resumephoto/${adto.apphoto}|"
-				style="width:160px; height:200px; border: 1px solid #ccc;"/>
-			</div>
-		</div>
-		
+<div id="resume_detail">
+	<div id="resume_text">
+		<li>
+			<span class="material-symbols-outlined">corporate_fare
+			</span>
+			<span th:text="${adto.cname}" />
+			<span th:text="${adto.recruitTitle}" />
+		</li>
+	</div>
+	<div id="resume_detail_wrap">
 		<!-- 이력서 제목 -->
-        <div style="border: 1px solid #ccc; width:500px;">
-			<p>이력서 제목</p>
-			<td th:text="${adto.aptitle}" />
+		<div id="rstitle">
+			<span class="material-symbols-outlined" style="transform: scaleX(-1);">format_quote</span>
+			&nbsp;
+			<span th:text="${adto.aptitle}" />
+			&nbsp;
+			<span class="material-symbols-outlined">format_quote</span>
 		</div>
-		<!-- 경력 사항 -->
-        <div style="border: 1px solid #ccc; width:500px;">
-			<p>경력</p>
-			<td th:text="${adto.apcareer}" />
-			<table th:if="${adto.apcareer == '경력'}">
-			    <!-- 경력일 경우에만 아래 필드들을 보여줍니다. -->
-			    <tr>
-					<td>회사명: <span th:text="${adto.apcompany}"></span></td>
-				</tr>
-			    <tr>
-					<td>근무 기간: <span th:text="${adto.apworkstart}" />~<span th:text="${adto.apworkend}" />
-					</td>
-				</tr>
-			    <tr>
-					<td>업무 내용: <span th:text="${adto.apwork}"></span></td>
-			    </tr>
-			</table>
+		<!-- 기본 정보 -->
+		<div id="resume_info">
+			<input type="hidden" th:value="${solosession.sid}" name="sid" />
+			<div id="resume_name">
+				<li>
+					<!-- 이름 -->
+					<span th:text="${solosession.sname}"/>
+					<!-- 성별 -->
+			    	<span th:text="${solosession.sgender}" />
+			    	<!-- 나이 -->
+				    <span  th:text="|${solosession.sage}세|" />
+				</li>
+			</div>
+			<div id="resume_detail_info">
+				<li>
+				    <span class="material-symbols-outlined">home</span>
+				    <span th:text="${solosession.saddress}" />
+				</li>
+				<li>
+				    <span class="material-symbols-outlined">call</span>
+				    <span colspan="3" th:text="${solosession.sphone}" />
+				</li>
+				<li>
+					<span class="material-symbols-outlined">mail</span>
+				    <span colspan="3" th:text="${solosession.semail}" />
+				</li>
+			</div>
+			<!-- 증명사진 -->
+			<div id="resume_photo">
+				<img th:if="${adto.img}" th:src="|/resumephoto/${adto.apphoto}|"
+	                 style="width:160px; height:200px; border: 1px solid #ccc;"/>			
+			</div>
 		</div>
+	    <!-- 경력 사항 -->
+	    <div id="rscareer">
+			<span id="rscareer_text">경력</span>
+			<span id="rscareer_value" th:text="${adto.apcareer}" />
+			<ul th:if="${adto.apcareer == '경력'}">
+		         <!-- 경력일 경우에만 아래 필드들을 보여줍니다. -->
+				 <li>
+					 <span id="rscompany">기업 이름</span>
+					 <span id="rscompany_text" th:text="${adto.apcompany}"></span>
+			 	 </li>
+				 <li>
+					 <span id="rscompany">근무 기간</span>
+					 <span id="rscompany_text" th:text="${adto.apworkstart}" /> ~ <span id="rscompany_text" th:text="${adto.apworkend}" />
+				 </li>
+				 <li>
+					 <span id="rscompany">업무 내용</span>
+					 <span id="rscompany_text" th:text="${adto.apwork}"></span>
+				 </li>
+			</ul>
+	  	</div>
+	  	
 		<!-- 학력 -->
-        <div style="border: 1px solid #ccc; width:500px;">
-			<p>학력</p>
-			<td th:text="${adto.apacademic}" />
-			<td th:text="${adto.apacademicstat}" />			
+		<div id="rsschool">
+			 <span id="rsschool_text">최종 학력</p>
+			 <span id="rsschool_one" th:text="${adto.apacademic}" />
+			 <span id="rsschool_two" th:text="${adto.apacademicstat}" />         
 		</div>
 		<!-- 자기소개 -->
-        <div style="border: 1px solid #ccc; width:500px;">
-		    <p>자기소개서</p>
-		    <p th:if="${adto.apintroduce == null or adto.apintroduce.isEmpty()}" style="color:red;">등록된 자기소개서가 없습니다</p>
-			<table th:if="${adto.apintroduce != null or not #lists.isEmpty(adto.apintroduce)}">
-		    <p th:text="${adto.apintroduce}" />
+		<div id="rsintroduce" th:if="${adto.apintroduce != null or not #lists.isEmpty(adto.apintroduce)}">
+			<span id="rsintroduce_text">자기소개서</span>
+			<!-- 자기소개 없으면 : 등록된 자기소개서가 없습니다 -->
+			<span id="rsintroduce_no" th:if="${adto.apintroduce == null or adto.apintroduce.isEmpty()}">등록된 자기소개서가 없습니다</span>
+			<!-- 자기소개 있으면 -->
+			<div id="rsintroduce_yes" th:if="${adto.apintroduce != null or not #lists.isEmpty(adto.apintroduce)}">
+				<div id="rsintroduce_yes_text" th:text="${adto.apintroduce}" />
+			</div>
 		</div>
 		<!-- 자격증 -->
-        <div style="border: 1px solid #ccc; width:500px;">
-			<p>자격증</p>
-			<p th:if="${adto.aplicense == null or adto.aplicense.isEmpty()}" style="color:red;">등록된 자격증이 없습니다</p>
-			<table th:if="${adto.aplicense != null and not #lists.isEmpty(adto.aplicense)}">
-				<tr>
-				    <td>자격증명</td>
-				    <td th:text="${adto.aplicense}" />
-					<td>발행기관</td>
-				    <td th:text="${adto.aplicenseorg}" />
-				    <td>취득일자</td>
-				    <td th:text="${adto.aplicenseyear}" />
-				</tr>
-			</table>
+		<div id="rslicense_content">
+			<span id="rslicense_text">자격증</span>
+			<!-- 자격증 없으면 : 등록된 자격증이 없습니다 -->
+			<span id="rslicense_no" th:if="${adto.aplicense == null or adto.aplicense.isEmpty()}">등록된 자격증이 없습니다</span>
+			<div id="rslicense_yes" th:if="${adto.aplicense != null and not #lists.isEmpty(adto.aplicense)}">
+				<ul>
+	                <li>
+						<span id="rslicense_one">자격증명</span>
+						<span id="rslicense_two" th:text="${adto.aplicense}" />
+	                </li>
+	                <li>
+						<span id="rslicense_one">발행기관</span>
+		                <span id="rslicense_two" th:text="${adto.aplicenseorg}" />
+					</li>
+	                <li>
+						<span id="rslicense_one">발행년도</span>
+	                	<span id="rslicense_two" th:text="${adto.aplicenseyear}" />
+	                </li>
+	            </ul>
+			</div>
 		</div>
 		<!-- 어학 능력 -->
-        <div style="border: 1px solid #ccc; width:500px;">
-			<p>어학능력</p>
-			<p th:if="${adto.aplanguage == null or adto.aplanguage.isEmpty()}" style="color:red;">등록된 어학능력이 없습니다</p>
-			<table th:if="${adto.aplanguage != null or not #lists.isEmpty(adto.aplanguage)}">
-			<p th:text="${adto.aplanguage}" />
-			<p th:text="${adto.aplanguagelevel}" />
+		<div id="rslanguage_content">
+			<span id="rslanguage_text">어학 능력</span>
+			<!-- 어학 없으면 -->
+			<span id="rslanguage_no" th:if="${adto.aplanguage == null or adto.aplanguage.isEmpty()}">등록된
+				어학능력이 없습니다
+			</span>
+			<!-- 어학 있으면 -->
+		<div id="rslanguage_yes" th:unless="${adto.aplanguage == null or adto.aplanguage.isEmpty()}">
+			<li>
+				<span id="rslanguage_one" >어학명</span>
+				<span id="rslanguage_two" th:text="${adto.aplanguage}" ></span>
+				<span id="rslanguage_one" >어학수준</span>
+				<span id="rslanguage_two" th:text="${adto.aplanguagelevel}"  ></span>
+			</li>
 		</div>
-		<div>
-			<a th:href="|/solo_applicant/home/1|">목록으로</a>
 		</div>
 	</div>
+		<a href="/solo_applicant/home">목록으로</a>
 </div>
-
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>

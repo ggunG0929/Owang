@@ -63,10 +63,17 @@ public class SoloApplicantController {
 
 	// 지원서 리스트
 	@RequestMapping("home/{page}")
-	String solo_recruit(Model mm, ApplicantDTO adto, 
+	String solo_recruit(Model mm, ApplicantDTO adto, PageData pd, 
 			 @PathVariable int page,HttpSession session) {
 		String sid = (String) session.getAttribute("sid");
-	
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		if (sid == null || solosession == null) {
+			pd.setMsg("개인회원만 이용가능합니다");
+			pd.setGoUrl("/");
+			return "solo_resume/alert";
+		}
+		
+		
 		adto.setSid(sid);
 		System.out.println(adto);
 		List<ApplicantDTO> appdata = samapper.applist(adto);
@@ -77,6 +84,8 @@ public class SoloApplicantController {
 
 		System.out.println("나오란망ㄹ야 : " + adto.getStart() + ", " +  adto.getLimit());
 		//System.out.println(appdata);
+		
+		
 		return "solo_applicant/home";
 	}
 
@@ -104,10 +113,12 @@ public class SoloApplicantController {
 			@PathVariable int id, PageData pd) {
 		String sid = (String) session.getAttribute("sid");
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		MCompanyDTO companyDTO = mcmapper.deatilCompany(cid);
 
 		// 공고 불러오기
 		RecruitDTO rcdto = recruitMapper.recruitDetail(id);
 		String recruitTitle = rcdto.getRecruitTitle();
+		String cname = companyDTO.getCname();
 		
 		// 내가 쓴 이력서 불러오기
 		List<SoloResumeDTO> data = rsmapper.resumelist(sid);
@@ -121,6 +132,7 @@ public class SoloApplicantController {
 
 	    mm.addAttribute("mainData", data);
 	    mm.addAttribute("recruitTitle", recruitTitle);
+	    mm.addAttribute("cname", cname);
 	    session.setAttribute("selectedResume", rdto);
 	    return "solo_applicant/submitform";
 	}

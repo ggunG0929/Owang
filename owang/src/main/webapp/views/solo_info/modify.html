@@ -14,126 +14,133 @@
 
 	</script>
 </head>
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" th:href="@{/css/solo_info/modify.css}">
 <body>
-	<header>
-		<div th:insert="~{header :: header}"></div>
-	</header>
-	<h1>solo/ModifyForm</h1>
-	[[${dto}]]
+<header>
+	<div th:insert="~{header :: header}"></div>
+</header>
+<div id="solo_info_modify">
+	<div id="modify_text">
+		<span>개인정보 수정</span>
+	</div>
 	<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
 		<input type="hidden" th:field="*{sid}" />
-		<table border="">
-
-			<tr>
-				<td>이름</td>
-				<td><input type="text" th:field="*{sname}" /></td>
-			</tr>
-			<tr id="zpassword">
-				<td>기존비밀번호</td>
-				<td>
-					<input type="password" th:value="*{spw}" id="spw" readonly />
-					<input type="button" value="비밀번호 변경" id="changePasswordButton" />
-				</td>
-			</tr>
-			<tr id="passwordChangeRow" style="display: none;">
-				<td>새 비밀번호</td>
-				<td><input type="password" th:field="*{spw}" id="newSpw" /></td>
-			</tr>
-			<tr id="passwordConfirmationRow" style="display: none;">
-				<td>비밀번호 확인</td>
-				<td><input type="password" name="spw2" id="spw2" /></td>
-			</tr>
-			<tr>
-				<td>주민등록 수정</td>
-				<td>
-					<input type="text" id="jumin" name="sjumin" placeholder="주민번호 앞 6자리입력" />
-					<input type="button" onclick="Birth()" value="생년월일 및 나이 수정" />
-				</td>
-			</tr>
-			<tr>
-				<td>생년월일</td>
-				<td><input type="text" th:field="*{sbirth}" id="birth" name="sbirth" required readonly /></td>
-			</tr>
-			<tr>
-				<td>나이</td>
-				<td><input type="number" th:field="*{sage}" id="age" name="sage" required readonly /></td>
-			</tr>
-			<tr>
-				<td>성별</td>
-				<td>
-					<label><input type="radio" name="sgender" value="남성" th:checked="${dto.sgender == '남성'}"> 남성</label>
-					<label><input type="radio" name="sgender" value="여성" th:checked="${dto.sgender == '여성'}"> 여성</label>
-				</td>
-			</tr>
-			<tr>
-				<td>전화번호</td>
-				<td><input type="text" th:field="*{sphone}" /></td>
-			</tr>
-			<tr>
-				<td>이메일</td>
-				<td><input type="text" th:field="*{semail}" /></td>
-				</td>
-
-			</tr>
-			<tr>
-				<td>주소</td>
-				<td><input type="text" th:field="*{saddress}" />
-				</td>
-			</tr>
-
-
-
-			<!-- 회사 이름 필드 -->
-			<tr id="companyNameMenu">
-				<td>회사 이름</td>
-				<td>
-					<input type="text" th:field="*{scompanyName}" list="company-list" class="company-list" />
-					<input type="hidden" name="cid" id="cid" />
-
-					<datalist id="company-list">
-						<th:block th:each="recruit : ${mainData}">
-							<option th:text="${recruit.cname}" class="company-list"
-								th:data-company-number="${recruit.cid}" />
-							<span th:text="|회사번호 ${recruit.ccall}|" class="company-list"></span>
-
-						</th:block>
-					</datalist>
-				</td>
-			</tr>
-
-			<!-- 회사 재직증명서 파일 업로드 필드 -->
-			<tr id="companyFileMenu">
-				<td>회사 재직증명서</td>
-				<td>
-					<th:block th:if="${dto.scompanyFile != null}">
-						<input type="hidden" th:field="*{scompanyFile}" readonly />
-						<input type="button" onclick="fileDelete()" th:value="|*{scompanyFile} 파일삭제|" />
-
-					</th:block>
-					<input th:unless="${dto.scompanyFile != null}" type="file" th:field="*{mmff}" id="mmff" onchange="validateFile()"/>
-					<div id="fileError" style="color: red;"></div>
-
-
-				</td>
-			</tr>
-
-			<tr>
-
-				<td colspan="2" align="center">
-					<input type="submit" value="수정" />
-				</td>
-				<td colspan="2" align="center">
-					<input type="reset" value="리셋" />
-				</td>
-				<td colspan="2" align="center">
-					<a href="/solo/solo_info">뒤로</a>
-				</td>
-			</tr>
-
-
-		</table>
+		<div id="info_list">
+			<!-- 기본 정보 -->
+			<div id="basic_info">
+				<div id="basic_info_text">기본정보</div>
+				<div id="basic_id">
+					<li>아이디</li>
+					<li th:text="${dto.sid}"></li>
+				</div>
+				<div id="basic_name">
+					<li>이름</li>
+					<input type="text" th:field="*{sname}" />
+				</div>
+				<div id="basic_sage">
+					<li>나이</li>
+					<input type="number" th:field="*{sage}" id="age" name="sage" required readonly />
+				</div>
+				<div id="basic_birth">
+					<li>생년월일</li>
+					<input type="text" th:field="*{sbirth}" id="birth" name="sbirth" required readonly />
+				</div>
+				<div id="basic_birth_modify">
+					<li>생년월일 수정</li>
+					<li>
+						<input type="text" id="jumin" name="sjumin" placeholder="주민번호 앞 6자리입력" />
+						<input type="button" onclick="Birth()" value="수정" />
+					</li>
+				</div>
+				<div id="basic_gender">
+					<li>성별</li>
+					<li>
+						<label><input type="radio" name="sgender" value="남성" th:checked="${dto.sgender == '남성'}">
+							남성</label>
+						<label><input type="radio" name="sgender" value="여성" th:checked="${dto.sgender == '여성'}">
+							여성</label>
+					</li>
+				</div>
+			</div>
+			<!-- 연락처 정보 -->
+			<div id="contact_info">
+				<div id="contact_info_text">연락처정보</div>
+				<div>
+					<li>전화번호</li>
+					<input type="text" th:field="*{sphone}" />
+				</div>
+				<div>
+					<li>이메일</li>
+					<input type="text" th:field="*{semail}" />
+				</div>
+				<div>
+					<li>주소</li>
+					<input type="text" th:field="*{saddress}" />
+				</div>
+			</div>
+			<!-- 재직 정보 -->
+			<div id="jaejik_info">
+				<div id="jaejik_info_text">재직정보</div>
+				<div id="companyNameMenu">
+					<li>재직회사</li>
+					<li>
+						<input type="text" th:field="*{scompanyName}" list="company-list" class="company-list" />
+						<input type="hidden" name="cid" id="cid" />
+			
+						<datalist id="company-list">
+							<th:block th:each="recruit : ${mainData}">
+								<option th:text="${recruit.cname}" class="company-list" th:data-company-number="${recruit.cid}" />
+								<span th:text="|회사번호 ${recruit.ccall}|" class="company-list"></span>
+			
+							</th:block>
+						</datalist>
+					</li>
+					</div>
+					<div id="companyFileMenu">
+						<li>재직증명서</li>
+						<li>
+							<th:block th:if="${dto.scompanyFile != null}">
+								<input type="hidden" th:field="*{scompanyFile}" readonly />
+								<input type="button" onclick="fileDelete()" th:value="|*{scompanyFile} 파일삭제|" />
+			
+							</th:block>
+							<input th:unless="${dto.scompanyFile != null}" type="file" th:field="*{mmff}" id="mmff"
+								onchange="validateFile()" />
+							<div id="fileError" style="color: red;"></div>
+						</li>
+					</div>
+				</div>
+				<div id="zpassword">
+					<div id="zpassword_text">비밀번호 변경</div>
+					<li>
+						<input type="password" th:value="*{spw}" id="spw" readonly />
+						<input type="button" value="비밀번호 변경" id="changePasswordButton" />
+						<button type="button" onclick="togglePassword()" id="pwseehide" }>
+							<span id="visibilityOnIcon" class="material-symbols-outlined">visibility</span>
+							<span id="visibilityOffIcon" class="material-symbols-outlined" style="display: none;">visibility_off</span>
+						</button>
+					</li>
+					</div>
+					<div id="passwordChangeRow" style="display: none;">
+						<li>새 비밀번호</li>
+						<li><input type="password" th:field="*{spw}" id="newSpw" /></li>
+					</div>
+					<div id="passwordConfirmationRow" style="display: none;">
+						<li>비밀번호 확인</li>
+						<li><input type="password" name="spw2" id="spw2" /></li>
+					</div>
+				</div>
+		<div id="modify_submit">
+			<td colspan="2" align="center">
+				<input type="submit" value="저장" />
+			</td>
+			<td colspan="2" align="center">
+				<input id="cancel" type="reset" value="취소" />
+			</td>
+		</div>
 	</form>
+	
 	<script>
 
 
@@ -229,6 +236,23 @@
 				}
 			}
 		}
+		
+	<!-- input type text <==> password -->
+function togglePassword() {
+  var passwordInput = document.getElementById("spw");
+  var visibilityOnIcon = document.getElementById("visibilityOnIcon");
+  var visibilityOffIcon = document.getElementById("visibilityOffIcon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    visibilityOnIcon.style.display = "none";
+    visibilityOffIcon.style.display = "inline";
+  } else {
+    passwordInput.type = "password";
+    visibilityOnIcon.style.display = "inline";
+    visibilityOffIcon.style.display = "none";
+  }
+}
 	</script>
 	
 	<footer>

@@ -40,11 +40,16 @@ public class SoloResumeController {
 	
 	// 이력서 리스트
 	@RequestMapping("home") // 리스트 임
-	String solo_resume(Model mm, SoloResumeDTO rdto, SoloDTO sdto, HttpSession session) {
+	String solo_resume(Model mm, SoloResumeDTO rdto, SoloDTO sdto, HttpSession session,PageData pd) {
 		// 이력서 총 개수
 		// 이게 우선 현재 로그인한 회원 세션(아이디만 넘김 sid) 가져옴
 		String sid = (String)session.getAttribute("sid");
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		if (sid == null || solosession == null) {
+			pd.setMsg("개인회원만 이용가능합니다");
+			pd.setGoUrl("/");
+			return "solo_resume/alert";
+		}
 		
 		System.out.println(rdto.rsid);
 		List<SoloResumeDTO> data = rsmapper.resumelist(sid);
@@ -93,6 +98,8 @@ public class SoloResumeController {
 			HttpServletRequest request) {
 
 		fileSave(rdto, request);
+		fileSave2(rdto, request);
+		
 		rsmapper.resumeinsert(rdto);
 		pd.setMsg("이력서가 등록되었습니다.");
 		pd.setGoUrl("home");
@@ -227,7 +234,50 @@ public class SoloResumeController {
 			
 			fos.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+		}
+		
+	}
+	// 파일 저장
+	void fileSave2(SoloResumeDTO rdto, HttpServletRequest request) {
+		
+		//파일 업로드 유무 확인
+		if(rdto.getRsmmff().isEmpty()) {
+			return;
+		}
+		
+		String path = request.getServletContext().getRealPath("applicantup");
+		// 이건 가상서버이다, 배포 시에는 realPath로 가져온다
+		
+		// 점 처리
+		int dot = rdto.getRsmmff().getOriginalFilename().lastIndexOf(".");
+		// 
+		String fDomain = rdto.getRsmmff().getOriginalFilename().substring(0, dot);
+		String ext = rdto.getRsmmff().getOriginalFilename().substring(dot);
+		
+		
+		rdto.setRsphoto(fDomain+ext); 
+		File rsmmff = new File(path+"\\"+rdto.getRsphoto());
+		int cnt = 1;
+		
+		while(rsmmff.exists()) {
+			
+			rdto.setRsphoto(fDomain+"_"+cnt+ext);
+			rsmmff = new File(path+"\\"+rdto.getRsphoto());
+			cnt++;
+		}
+		
+		
+		
+		try {
+			FileOutputStream fos = new FileOutputStream(rsmmff);
+			
+			fos.write(rdto.getRsmmff().getBytes());
+			
+			fos.close();
+		} catch (Exception e) {
+			
 			e.printStackTrace();
 		}
 		

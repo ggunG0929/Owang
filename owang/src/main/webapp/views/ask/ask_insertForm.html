@@ -7,64 +7,65 @@
 <link rel="stylesheet" th:href="@{/css/ask/ask.css}">
 </head>
 <body>
-<header>
-<div th:insert="~{header :: header}"></div>
-</header>
-
-<!--ask 사진-->
-<!--<img src="/css/images/ask.jpg" alt="ask_header" width="1200px" height="250px">-->
-<!--1:1문의 box 사진-->
-
-<h1 id="title">1:1 문의</h1>
-
-<div id="box">
-	<h3>문의하실 내용을 작성해주시면
-		확인 후 빠른 시일 내 답변드리도록 하겠습니다.</h3>
-	*욕설 폭언 성희롱 등의 내용이 포함된 경우 상담이 불가능 합니다.<br> 
-	📢 작성하신 문의글에 관리자 답변이 없는 경우 수정 및 삭제가 가능하며,<br> 
-		관리자가 답변을 작성한 경우에는 수정 및 삭제 기능이 제한됩니다.
-</div>			
-		<hr>
-		
-
-<div id="wrap">    
-	<form method="post" enctype="multipart/form-data" th:object="${askDTO}">
-		<table border="0">
-			<tr>
-				<td id="label">문의글 제목*</td>
-				<td><input type="text" th:field="*{title}" placeholder="※ 제목을 입력해주세요" required /></td>
-			</tr>
-			<tr>
-				<td id="label">작성자 ID *</td>
-				<td><input type="text" name="uid" th:value="${uid}" readonly /></td>
-			</tr>
+<div id="home">
+	<header>
+	<div th:insert="~{header :: header}"></div>
+	</header>
+	
+	<!--ask 사진-->
+	<!--<img src="/css/images/ask.jpg" alt="ask_header" width="1200px" height="250px">-->
+	<!--1:1문의 box 사진-->
+	
+	<h1 id="a_title">1:1 문의</h1>
+	
+	<div id="box">
+		<h3>문의하실 내용을 작성해주시면
+			확인 후 빠른 시일 내 답변드리도록 하겠습니다.</h3>
+		*욕설 폭언 성희롱 등의 내용이 포함된 경우 상담이 불가능 합니다.<br> 
+		📢 작성하신 문의글에 관리자 답변이 없는 경우 수정 및 삭제가 가능하며,<br> 
+			관리자가 답변을 작성한 경우에는 수정 및 삭제 기능이 제한됩니다.
+	</div>			
+			<hr>
 			
-			<tr>
-				<td id="label">사진첨부</td>
-				<td><input type="file" th:field="*{mmff}"/></td>
-			</tr>	
-			<tr>
-				<td id="label">문의 내용 *</td>
-				<td><textarea th:field="*{content}" rows="20" cols="100" required id="content"
-					placeholder="※ 내용을 입력해주세요" /></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-					<input type="submit" value="문의하기" id="saveButton"/>
-					<!--목록으로-->
-					
-						<a th:href="|/ask/list/${askDTO.page}|" id="list"><span>취소</span></a>
-					
-				</td>
-			</tr>
-		</table>
-	</form>
-</div>   
+	
+	<div id="wrap">    
+		<form method="post" enctype="multipart/form-data" th:object="${askDTO}">
+			<table border="0" id="ask_insert">
+				<tr>
+					<td id="label">문의글 제목*</td>
+					<td><input type="text" th:field="*{title}" 
+						placeholder="※ 제목을 입력해주세요" required  id=""/></td>
+				</tr>
+				<tr>
+					<td id="label">작성자 ID *</td>
+					<td><input type="text" name="uid" th:value="${uid}" readonly /></td>
+				</tr>
+				
+				<tr>
+					<td id="label">사진첨부</td>
+					<td><input type="file" th:field="*{mmff}"/></td>
+				</tr>	
+				<tr>
+					<td id="label">문의 내용 *</td>
+					<td><textarea th:field="*{content}" rows="20" cols="85" required id="content"
+						placeholder="※ 내용을 입력해주세요" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<input type="submit" value="문의하기" id="saveButton"/>
+						<!--목록으로-->
+							<a th:href="|/ask/list/${askDTO.page}|" id="list"><span>취소</span></a>
+						
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>   
 
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>
-    
+</div>    
     
 </body>
 </html>

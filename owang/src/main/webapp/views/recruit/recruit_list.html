@@ -6,35 +6,46 @@
    <title>board/list</title>
    <script src="https://code.jquery.com/jquery-3.7.1.js"
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/recruit/recruit.css}">
 </head>
 
 <body>
+<div id="home">		
    <header>
       <div th:insert="~{header :: header}"></div>
    </header>
-   <h1>recruit/list</h1>
-
+	
+	<div class="title_box">
+	   <h1>채용공고 </h1> 
+	   <br><br><br><br>
+	   <h3 id="p">다양한 채용정보와 새로운 채용소식을 오왕에서 만나보세요</h3>
+   </div>
+   
+<div class="wrap">
    <form action="/recruit/search" method="get">
-      <select name="searchOption">
+      <select name="searchOption" id="select">
          <option value="all">전체</option>
          <option value="title">제목</option>
          <option value="content">내용</option>
          <option value="name">회사 이름</option>
       </select>
-      <input type="text" name="keyword" placeholder="검색어 입력">
-      <button type="submit">검색</button>
+      <input type="text" name="keyword" placeholder="🔍 검색어를 입력하세요" id="search_input">
+      <button type="submit" class="dod">
+		  <i class="fa-solid fa-magnifying-glass fa-beat-fade" style="color:  rgb(45, 101, 242);">&nbsp검색</i>
+	  </button>
    </form>
 
    <!-- 탭 -->
    <ul class="tabs">
       <li><a href="/recruit/list/all/1">채용</a></li>
-      <li><a href="/recruit/list/1">채용 가능</a></li>
+      <li><a href="/recruit/list/1">채용 중</a></li>
       <li><a href="/recruit/list/close/1">채용 마감</a></li>
    </ul>
 
    <!-- 채용 가능 데이터 -->
    <h3>채용가능</h3>
-      <table border="">
+      <table border="" class="list_table">
          <tr>
             <td>번호</td>
             <td>제목</td>
@@ -42,7 +53,7 @@
             <td>채용시작일</td>
             <td>채용마감일</td>
             <td>조회수</td>
-            <td>기업아이디(본편에선제거)</td>
+<!--            <td>기업아이디(본편에선제거)</td>-->
             <td>공고누적수</td>
             
          </tr>
@@ -58,7 +69,7 @@
             <td th:text="${dto.regDate}" />
             <td th:text="${dto.realMagam}" />
             <td th:text="${dto.cnt}" />
-            <td th:text="${dto.cid}" />
+<!--            <td th:text="${dto.cid}" />-->
             <td th:text="${dto.appnum}" />
             
          </tr>
@@ -81,11 +92,13 @@
    <div align="right" th:if="${session['cid']}">
       <a th:href="|/recruit/insert/${recruitDTO.page}|">글쓰기</a>
    </div>
-   
+ </div>  
+ </div> 
    <footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>
     
+   
 </body>
 
 </html>

@@ -29,7 +29,7 @@ public class RecruitDTO {
 	public Date realMagam = new Date();
 	int recruitMagam;
 	int recruitMoney; // 급여
-	String recruitlocation; // 근무지역
+	String recruitLocation; // 근무지역
 	String searchOption, keyword;// 검색조건
 	int appnum;
 	
@@ -112,7 +112,7 @@ public class RecruitDTO {
 	public RecruitDTO(int recruitId, int start, int limit, int pageLimit, int page, int pageStart, int pageEnd,
 			int pageTotal, int cnt, int rtype, String recruitTitle, String recruitName, String recruitUpfile,
 			String recruitContent, String cid, String cname, String msg, String goUrl, boolean capproval, Date regDate,
-			Date realMagam, int recruitMagam, int recruitMoney, String recruitlocatoin, String searchOption,
+			Date realMagam, int recruitMagam, int recruitMoney, String recruitLocation, String searchOption,
 			String keyword, MultipartFile mmff, SimpleDateFormat sdf) {
 		super();
 		this.recruitId = recruitId;
@@ -138,7 +138,7 @@ public class RecruitDTO {
 		this.realMagam = realMagam;
 		this.recruitMagam = recruitMagam;
 		this.recruitMoney = recruitMoney;
-		this.recruitlocation = recruitlocation;
+		this.recruitLocation = recruitLocation;
 		this.searchOption = searchOption;
 		this.keyword = keyword;
 		this.mmff = mmff;

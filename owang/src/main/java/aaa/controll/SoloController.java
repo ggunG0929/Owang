@@ -53,9 +53,9 @@ public class SoloController {
 	@RequestMapping("solo_info")
 	String detail(Model mm, HttpSession session, PageData pd) {
 		String sid = (String) session.getAttribute("sid");
-
-		pd.setMsg("로그인해야 이용가능한 페이지입니다");
-		pd.setGoUrl("/login/main");
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		pd.setMsg("개인회원만 이용가능합니다");
+		pd.setGoUrl("/");
 
 		if (sid != null) { // 세선에서 값을 받으면
 			SoloDTO dto = sssmapper.detailSolo(sid);
@@ -216,11 +216,21 @@ public class SoloController {
 	PayService payS;
 
 	@RequestMapping("/product")
-	String product(Model mm, HttpSession session) {
+	String product(Model mm, HttpSession session,PageData pd) {
 		// 세션에서 id 가져옴
 		String sid = (String) session.getAttribute("sid");
 		// db정보 가져옴
 		SoloDTO soloinfo = sssmapper.detailSolo(sid);
+		
+		
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		if (sid == null || solosession == null) {
+			pd.setMsg("개인회원만 이용가능합니다");
+			pd.setGoUrl("/");
+			return "solo_resume/alert";
+		}
+		
+		
 		// db정보 가져온 김에 세션 업데이트
 		session.setAttribute("solosession", soloinfo);
 

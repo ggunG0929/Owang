@@ -9,7 +9,7 @@
 
 h1 {
     text-align: center;
-   	margin: 0;
+   	
 }
 
 /* 검색 폼 스타일 */
@@ -111,17 +111,19 @@ a:hover {
 	
 	<th:block th:replace="~{admin/adheader}"/>
 
-	<h2 th:text="${param.searchOption + ' 검색 결과 :'+ param.keyword}"></h2>
-	<form action="/admin_company/search" method="get">
+	<h1>전체회원검색</h1>
+	<form action="/admin_company/search" method="get" th:object="${MCompanyDTO}">
 	<select name="searchOption">
-		<option value="all">전체</option>
-		<option value="cname">기업 이름</option>
-		<option value="ccid">기업 아이디</option>
-		<option value="cceo">대표 이름</option>
-		<option value="ccall">내용</option>
+		<option th:selected="*{searchOption == 'all'}"  value="all">전체</option>
+		<option th:selected="*{searchOption == 'cname'}" value="cname">기업 이름</option>
+		<option th:selected="*{searchOption == 'ccid'}" value="ccid">기업 아이디</option>
+		<option th:selected="*{searchOption == 'cceo'}" value="cceo">대표 이름</option>
+		<option th:selected="*{searchOption == 'ccall'}" value="ccall">내용</option>
 	</select>
-	<input type="text" name="keyword" placeholder="검색어 입력">
+	<input type="text" name="keyword" th:field="*{keyword}" placeholder="검색어 입력">
 	<button type="submit">검색</button>
+	<br />
+	<span th:text="${' 검색 결과 :'+ param.keyword}"></span>
 	</form>
 	<table border="">
 		<tr>
@@ -188,7 +190,13 @@ a:hover {
 			</td>
 		</tr>
 	
+			
+		
+	
 	</table>
+	<a href="/admin_company/list/1">전체보기</a>
+			<a href="/admin_company/cRegList/1">승인기업</a>
+			<a href="/admin_company/cMiList/1">미승인기업</a>
 	
 </body>
 </html>

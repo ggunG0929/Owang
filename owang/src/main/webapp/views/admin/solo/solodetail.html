@@ -91,9 +91,6 @@ button:hover {
 
 <body>
    <th:block th:replace="~{admin/adheader}"/>
-   <h1>관리자메뉴</h1>
-
-
    <h1>개인 정보 상세</h1>
 
    <table border="">
@@ -158,14 +155,19 @@ button:hover {
          <td th:if="${dto.sinjueng==true}" th:text="승인완료"></td>
          <td th:unless="${dto.sinjueng==true}" th:text="미승인"></td>
       </tr>
-
+		<tr>
+			<td>회원삭제</td>
+			<td>
+				<a th:href="@{|/admin_solo/delete/${sid}|}" th:onclick="return confirm('[[${dto.sname}]]회원님을 삭제하시겠습니까?')"
+      			th:text="|${dto.sname}회원삭제|"/>			
+			</td>
+		</tr>
 
 
    </table>
 
 
-   <a th:href="@{|/admin_solo/delete/${sid}|}" th:onclick="return confirm('[[${dto.sname}]]회원님을 삭제하시겠습니까?')"
-      th:text="|${dto.sname}회원삭제|"></a>
+   
    <a href="/admin_solo/sololist/1">목록으로</a>
   <script>
 		function openImageInNewWindow() {

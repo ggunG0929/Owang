@@ -4,153 +4,96 @@
 <head>
    <meta charset="UTF-8">
    <title>리뷰 게시판</title>
-   <style>
-      /* 리뷰 게시판 스타일 */
-      table {
-         width: 100%;
-         border-collapse: collapse;
-      }
-
-      table,
-      th,
-      td {
-         border: 1px solid #ccc;
-      }
-
-      th,
-      td {
-         padding: 10px;
-         text-align: left;
-      }
-
-      th {
-         background-color: #f2f2f2;
-      }
-
-      /* 페이지네이션 스타일 */
-      .pagination {
-         margin-top: 20px;
-      }
-
-      .pagination ul {
-         list-style: none;
-         padding: 0;
-         text-align: center;
-      }
-
-      .pagination li {
-         display: inline-block;
-         margin: 0 5px;
-      }
-
-      .pagination a {
-         text-decoration: none;
-         padding: 5px 10px;
-         background-color: #007bff;
-         color: #fff;
-         border-radius: 3px;
-      }
-
-      .pagination a.active {
-         background-color: #555;
-         cursor: default;
-      }
-   </style>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // 아이콘 클릭 이벤트 핸들러
+    $(".ellipsis-icon").click(function() {
+        // 클릭된 아이콘의 부모 요소인 li에서만 하위 메뉴를 찾도록 수정
+        var reviewBtn = $(this).parent().find(".review_btn");
+        reviewBtn.toggle();
+    });
+});
+</script>
 </head>
-
+<link rel="stylesheet" th:href="@{/css/solo_review/home.css}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <body>
    <header>
       <div th:insert="~{header :: header}"></div>
    </header>
-      <h2>마이리뷰</h2>
-
-      <!-- 리뷰 목록 -->
-      <table border="1">
-         <thead>
-            <tr>
-               <th>번호</th>
-               <th>제목</th>            
-               <th>기업이름</th>
-               <th>장점</th>
-               <th>단점</th>
-               <th>작성일</th>
-               <th>수정</th>
-               <th>삭제</th>
-            </tr>
-         </thead>
-         
-         <tbody>
-            <!-- 리뷰 목록을 반복하여 표시 -->
-            <tr th:each="review, iterStat : ${mainData}">
-               <td th:text="${iterStat.count}"></td>
-               <td>
-
-                  <span th:text="${review.rvtitle}"></span>
-
-               </td>
-
-            
-               <td th:text="${review.cid}"></td>
-               <td th:text="${review.rvjang}"></td>
-               <td th:text="${review.rvdan}"></td>
-               <td th:text="${review.regDate}"></td>
-              <input type="hidden" th:value="${review.cid}" name="cid"/>
-              <!--<input type="hidden" th:value="${review.scid}" name="scid"/>-->
-
-            <td th:if="${session['sid'] == review.sid}">
-                  <a th:href="|/solo_review/modify/${review.cid}/${review.page}/${review.sid}|">수정하기</a>
-               </td>
-               <td th:if="${session.adminSession}">
-                  <a th:href="|/review/modify/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">수정하기</a>
-               </td>
-               <td th:if="${session['sid'] == review.sid}">
-                  <a th:href="|/solo_review/delete/${review.cid}/${review.page}/${review.sid}|">삭제하기</a>
-               </td>
-               <td th:if="${session.adminSession}">
-                  <a th:href="|/review/delete/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">삭제하기</a>
-               </td>
-               
-            </tr>
-         </tbody>
-      </table>
-
-      <!-- 페이지네이션 -->
-      <!--<div class="pagination">
-         <ul>
-             맨처음 페이지 링크 
-            <li th:if="${reviewDTO.pageStart > 1}">
-               <a th:href="${reviewDTO.page - reviewDTO.page}+1" th:text="'<<'" />
+<div id="solo_review_home"> 
+	<div id="review_ad">
+		<span>오왕에서 해당 기업에 대한 정보를 공유해보세요.</span>
+	</div>
+  	<div id="review_text">
+		<span>마이 리뷰</span>
+	</div>
+	<div id="review_none">
+    	<span th:if="${mainData.isEmpty()}">작성된 리뷰가 없습니다.</span>
+	</div>	
+	<div id="review_list" th:each="review, iterStat : ${mainData}">
+		<!-- 숫자 -->
+		<div id="review_content">
+    <li>
+        <span th:text="|No.${iterStat.count}|" />
+        <span th:text="${review.cname}" />
+        <span class="ellipsis-icon">
+			<span class="material-symbols-outlined">more_horiz</span>
+		</span>
+        <ul class="review_btn" style="display: none;">
+            <li th:if="${session['sid'] == review.sid}">
+                <a th:href="|/solo_review/modify/${review.cid}/${review.page}/${review.sid}|">수정하기</a>
+            </li>
+        	<li th:if="${session.adminSession}">
+                <a th:href="|/review/delete/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">삭제하기</a>
+            </li>
+            <li th:if="${session.adminSession}">
+                <a th:href="|/review/modify/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">수정하기</a>
+            </li>
+            <li th:if="${session['sid'] == review.sid}">
+                <a th:href="|/solo_review/delete/${review.cid}/${review.page}/${review.sid}|">삭제하기</a>
             </li>
 
-             이전 페이지 링크 
-            <li th:if="${reviewDTO.pageStart > 1}">
-               <a th:href="${reviewDTO.pageStart - 1}" th:text="'<'" />
-            </li>
+        </ul>
+			<li id="review_title">
+				<p class="material-symbols-outlined" style="transform: scaleX(-1); ">
+				format_quote
+				</p>
+				<p th:text="${review.rvtitle}" />
+				<p class="material-symbols-outlined">
+				format_quote
+				</p>
+			<li>
+				<span id="review_jang">장점</span>
+				<span th:text="${review.rvjang}" />
+			</li>
+			<li >
+				<span id="review_dan">단점</span>
+				<span th:text="${review.rvdan}" />
+			</li>
+			<li>
+				<span>작성일</span>
+				<span th:text="${#dates.format(review.regDate, 'yyyy-MM-dd HH:mm')}" />	
+			</li>
+		</div>
+		<!--<div id="review_btn">
 
-             페이지 번호 링크 
-            <li th:each="no : ${#numbers.sequence(reviewDTO.pageStart, reviewDTO.pageEnd)}">
-               <a th:if="${no==(reviewDTO.page)}" th:href="${no}" th:text="${no}" class="active" />
-               <a th:unless="${no==(reviewDTO.page)}" th:href="${no}" th:text="${no}" th:if="${no!=0}" />
-
-            </li>
-
-             다음 페이지 링크 
-            <li th:if="${reviewDTO.pageEnd < reviewDTO.pageTotal}">
-               <a th:href="${reviewDTO.pageEnd + 1}" th:text="'>'" />
-            </li>
-
-            <li th:if="${reviewDTO.pageEnd < reviewDTO.pageTotal}">
-               <a th:href="${reviewDTO.pageTotal}" th:text="'>>'" />
-            </li>
-
-         </ul>
-      </div>
-
-    <a th:if="${session['sid']}"
-     th:href="|/review/insert/${reviewDTO.cid}/${reviewDTO.page}|" >글쓰기</a>   -->
-
-
-
+			<span th:if="${session['sid'] == review.sid}">
+				<a th:href="|/solo_review/modify/${review.cid}/${review.page}/${review.sid}|">수정하기</a>
+			</span>
+			<span th:if="${session.adminSession}">
+				<a th:href="|/review/modify/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">수정하기</a>
+			</span>
+			<span th:if="${session['sid'] == review.sid}">
+				<a th:href="|/solo_review/delete/${review.cid}/${review.page}/${review.sid}|">삭제하기</a>
+			</span>
+			<span th:if="${session.adminSession}">
+				<a th:href="|/review/delete/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">삭제하기</a>
+			</span>
+		</div>-->
+	</div>
+</div>
 </body>
 
 </html>

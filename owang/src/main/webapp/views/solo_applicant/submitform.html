@@ -4,40 +4,51 @@
 <meta charset="UTF-8">
 <title>이력서 선택 페이지</title>
 </head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" th:href="@{/css/solo_applicant/submitform.css}">
 <body>
-   <header>
-      <div th:insert="~{header :: header}"></div>
-   </header>
-<h2>지원서 접수</h2>
-<h3>공고 제목: <span th:text="${recruitTitle}"></span></h3>
-
-<form name="rss" method="post">
-    <table border="">
-        <tr>
-            <td></td>
-            <td>no.</td>
-            <td>이력서 제목</td>
-            <td>최초 작성일</td>
-            <td>최종 수정일</td>
-        </tr>
-        <tr th:each="rdto, rstart : ${mainData}">
-            <td>
-                <input type="radio" name="rsid" th:value="${rdto.rsid}" required/>
-            </td>
-            <td th:text="${rstart.count}"></td>
-            <td width="200px;" align="left">
-                <a th:href="|/solo_resume/detail/${rdto.rsid}|" th:text="${rdto.rstitle}" />
-            </td>
-            <td th:text="${rdto.rsregdate}"></td>
-            <td th:text="${rdto.rsmoddate}"></td>
-        </tr>
-    </table>
-    <input type="submit" value="이력서 접수하기" />
-</form>
-
+<header>
+	<div th:insert="~{header :: header}"></div>
+</header>
+<div id="applicant_submit">
+  	<div id="applicant_submit_text">
+		<span>지원서 접수</span>
+	</div>
+	<div id="applicant_info">
+		<li>
+			<span class="material-symbols-outlined">corporate_fare
+			</span>
+			<span th:text="${cname}" />
+			<span th:text="${recruitTitle}" />
+		</li>
+	</div>
+	<div id="applicant_info">
+		<span>제출할 이력서를 선택하세요</span>
+	</div>
+	<form name="rss" method="post">
+		<div id="applicant_form">
+			<div id="form_head" th:each="rdto, rstart : ${mainData}">
+				<li>
+					<input type="radio" name="rsid" th:value="${rdto.rsid}" required />
+				</li>
+				<li th:text="${rstart.count}"></li>
+				<li width="200px;" align="left">
+					<a th:href="|/solo_resume/detail/${rdto.rsid}|" th:text="${rdto.rstitle}" />
+				</li>
+				<li>
+					<span>이력서 작성일</span>
+					<span th:text="${#dates.format(rdto.rsregdate, 'yyyy-MM-dd HH:mm')}"/></br>
+					<span>최근 수정일</span>
+					<span th:text="${#dates.format(rdto.rsmoddate, 'yyyy-MM-dd HH:mm')}"/>
+				</li>
+			</div>
+	    </div>
+	    <input type="submit" value="이력서 접수하기" />
+	</form>
+</div>
 <footer>
        <div th:insert="~{footer :: footer}"></div>
-    </footer>
+</footer>
     
     
 </body>

@@ -4,62 +4,73 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/recruit/recruit_modify.css}">
 </head>
 
 <body>
+<div id="home">	
 
-	<h2>수정페이지입니다 </h2> <!--연결성공-->
-
-</body>
 <header>
 	<div th:insert="~{header :: header}"></div>
 </header>
-[[${dto}]]
+
+<!--[[${dto}]]-->
+
+	<div class="title_box">
+	   <h1>공고수정</h1>
+	   <br><br><br><br>
+	   <h3 id="p" style="color:  rgb(45, 101, 242);;">[[${session['cid']}]]의 채용공고를 수정하실 수 있습니다.</h3>
+  	</div>
+   
+<div id="modify_wrap"> 
 <form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
 	<input type="hidden" th:field="*{recruitId}" />
 	<input type="hidden" th:field="*{page}" />
 	<input type="hidden" th:field="*{cid}" />
 	<input type="hidden" th:field="*{recruitUpfile}" />
 	<input type="hidden" th:value="${dto.recruitUpfile}" />
-	<table border="">
+	
+	<table border="0" id="modify_table">
 		<tr>
-			<td>수정-제목</td>
-			<td><input type="text" th:field="*{recruitTitle}" required /></td>
+			<td id="label">공고제목</td>
+			<td><input type="text" th:field="*{recruitTitle}" required  id="input_title"/></td>
 		</tr>
 	
 		<tr>
-			<td>파일</td>
+			<td id="label">파일</td>
 			<td><input type="file" th:field="*{mmff}" /></td>
 		</tr>
-		
-		<!--==================== 은별 추가 부분====================-->
-		<!--급여추가-->
 		<tr>
-			<td>급여</td>
+			<td id="label">급여</td>
 			<td>
 				<input type="radio" value="월급" th:field="*{recruitMtype}" required />
 				월급
 				<input type="radio" value="연봉" th:field="*{recruitMtype}" />
 				연봉
-				<input type="text" th:field="*{recruitMoney}" />
+				<input type="text" th:field="*{recruitMoney}" id="input_money"/>
 			</td>
 		</tr>
-		<!-- ==================== 은별 ====================-->
 		<tr>
-			<td>내용</td>
-			<td><textarea type="text" th:field="*{recruitContent}" rows="10" cols="30" required /></td>
+			<td id="label">상세내용</td>
+			<td><textarea type="text" th:field="*{recruitContent}" rows="30" cols="80" required 
+					id="textarea"/></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-				<input type="submit" value="수정" />
-
-				<a th:href="@{'/recruit/list/1'}">뒤로가기</a>
+				<input type="submit" value="수정하기" id="writeButton"/>
+				<!--뒤로-->
+				<a th:href="@{'/recruit/list/1'}" i class="fa-solid fa-reply" style="color: #000000;">
+					뒤로
+				</a>
 
 			</td>
 
 		</tr>
 	</table>
 
+</div>
+	
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>

@@ -47,7 +47,7 @@ public class RecruitController {
 
 	// path 정의 다같이 쓰는거라 위에 빼둠 받으시고 테스트할때 폴더 경로 바꾸시면되여!!
 	// 승우꺼
-	static String path = "E:\\BackEnd_hakwon\\ver1\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\up";
+	static String path = "E:\\BackEnd_hakwon\\ver1\\Spring_TeamVer_1\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\up";
 
 	@Resource
 	RecruitMapper recruitMapper;
@@ -203,8 +203,8 @@ public class RecruitController {
 
 				LocalDate currentDate = LocalDate.now();
 				if (!currentDate.isAfter(startDate) && !currentDate.isBefore(endDate)) {
-					map.put("title", "[마감] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
-					map.put("start", endDate.toString());
+					//map.put("title", "[마감] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
+					//map.put("start", endDate.toString());
 				} else {
 
 					map.put("title", "[모집중] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
@@ -369,10 +369,10 @@ public class RecruitController {
 
 			if (admin == null) {
 				// cid의 데이터 중 recruit테이블의 realMagam과 cdate가 지나지 않은 공고의 개수를 셈
-				int a = recruitMapper.recruitCnt(mcseDto.getCid(), mcseDto.getCdate());
-				if (a > 10) {
-					dto.setMsg("현재 채용 중인 공고는 10개를 초과할 수 없습니다.");
-					dto.setGoUrl("/recruit/list/1");
+				int a = recruitMapper.icompanyROpenCnt(mcseDto.getCid());
+				if (a >4) {
+					dto.setMsg("현재 채용 중인 공고는 5개를 초과할 수 없습니다.");
+					dto.setGoUrl("/company/list/"+mcseDto.getCid()+"/1");
 					return "recruit/recruit_alert";
 				}
 			}
@@ -389,6 +389,7 @@ public class RecruitController {
 			return "recruit/recruit_alert";
 		}
 	}
+
 
 	// 채용 삽입
 	@PostMapping("insert/{page}")

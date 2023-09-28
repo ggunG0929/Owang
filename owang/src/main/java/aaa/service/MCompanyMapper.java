@@ -18,7 +18,8 @@ public interface MCompanyMapper {
 		int idChk(String cid);
 		// 기업타입 가져오기
 		Integer getctype(String cid); 
-		
+		// 회사이름 가져오기
+				String getzzcname(String cid); 
 		// 게시글 상세보기
 		
 		//기업 정보 상세 수정 삭제 

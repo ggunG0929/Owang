@@ -13,6 +13,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select * from company where capproval = false  order by cno desc limit #{start}, #{limit}
 	</select>
 	
+	<select id="companyCapprovalList2" resultType="mcDTO" parameterType="mcDTO">
+		select * from company where capproval = true or ctype = 2 order by cno desc
+	</select>
+	
 	<select id="companyCapprovalList" resultType="mcDTO" parameterType="mcDTO">
 		select * from company where capproval = true or ctype = 2 order by cno desc limit #{start}, #{limit}
 	</select>

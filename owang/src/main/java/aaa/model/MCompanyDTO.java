@@ -39,6 +39,10 @@ public class MCompanyDTO {
 	boolean capproval;
 	Date cdeletedate;// 탈퇴일
 	
+	
+	
+	String searchOption, keyword;// 검색조건
+	
 	int start, limit = 10, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
 	
 	public void calc(int total) {

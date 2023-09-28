@@ -158,8 +158,12 @@
 		</tr>
 	
 	</table>
+	   	<a href="javascript:goBack()">이전 페이지로</a>
 	
+	
+   	
 	<script>
+	
     // 페이지가 로드될 때 실행
     document.addEventListener("DOMContentLoaded", function() {
         // 시작일과 마감일 input 요소 가져오기
@@ -191,7 +195,13 @@
                 endDateInput.value = ""; // 마감일을 비움
             }
         });
+        
+		
     });
+    
+    function goBack() {
+         	window.history.back();
+     	 }
 </script>
 
 </body>

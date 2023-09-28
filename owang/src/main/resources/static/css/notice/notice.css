@@ -5,6 +5,23 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
+#home{
+	font-family: 'Noto Sans KR', sans-serif;
+	background-color: white;
+ 	height: 100%; /* 기본값으로 설정되어 있음 */
+}
+
+.title_box{
+	border-bottom: 1px solid #111;
+	padding-bottom: 20px;
+	background-image: url("/css/images/loud.png");
+	background-position: right center;
+	background-repeat: no-repeat;
+	height:170px;
+	margin-top: 40px;
+}
+#p{margin-left: 20px;}
+
 
 #board_wrap{
     width: 1000px;
@@ -17,7 +34,7 @@ body {
     border-spacing: 0;
     border-collapse: collapse;
 }
-
+/*디테일 detail*/
 #detail_wrap{
     width: 1000px;
     height: auto;
@@ -28,8 +45,8 @@ body {
     border: 0;
     border-spacing: 0;
     border-collapse: collapse;
-    border-top: 3px solid black;
-    border-bottom: 3px solid black;
+    /*border-top: 3px solid black;*/
+    /*border-bottom: 3px solid black;*/
     align-items: center;
 }
 
@@ -43,7 +60,6 @@ body {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     
 }
-
 
 
 #row{
@@ -107,6 +123,7 @@ th{
 #detail_title,#detail_pname,#detail_reg,#detail_cnt{
 	text-align: left;
 	padding-left: 15px;
+	
 }
 
 /* 공지사항-insert*/
@@ -126,8 +143,24 @@ h1{
 
 }
 
+/*수정페이지*/
+/* #modi_pname, #modi_file,modi_filedel*/
 /* 공지사항-modify*/
-#modi_title, #modi_pname, #modi_file,modi_filedel{
+#modi_title{
 	float: left;
-	margin-left: 4px;
+	margin-left: 20px;
+	width: 360px;
+	padding: 3px;
+}
+
+#modi_filedel{
+	float: left;
+	margin-left: 20px;
+	padding: 3px;
+}
+
+#modi_content{
+	float: left;
+	margin-left: 20px;
+	padding: 3px;
 }

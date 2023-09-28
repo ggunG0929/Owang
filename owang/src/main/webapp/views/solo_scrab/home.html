@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>오왕</title>
 </head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link rel="stylesheet" th:href="@{/css/solo_scrab/home.css}">
 <header>
 	<div th:insert="~{header :: header}"></div>
@@ -21,7 +22,9 @@
 	</div>
 	<div id="gotorc" th:if="${appdata.isEmpty()}">
 		<a href="/recruit/list/1">채용공고 보러가기&nbsp
-		<i class="fa-solid fa-arrow-right"></i>
+			<span class="material-symbols-outlined">
+				arrow_forward
+			</span>
 		</a>
 	</div>	
 	<div id="sctotal">
@@ -30,6 +33,7 @@
 	<div id="scrab_list" th:if="${not appdata.isEmpty()}" th:each="scdto, astart : ${appdata}">
 		<div id="scdate">
 			<li>
+				<span class="material-symbols-outlined">bookmark</span>
 		 	 No.<span th:text="${astart.count}" />
 				<span th:text="${#dates.format(scdto.scrabdate, 'yyyy-MM-dd HH:mm')}" />
 			</li>
@@ -56,7 +60,7 @@
 			<li>
 				 <input type="hidden" th:value="${scdto.scid}" name="scid"/>
 				 <a th:href="'/solo_scrab/delete/' + ${scdto.scid}">
-					 <i class="fa-regular fa-trash-can"></i>
+					 <span class="material-symbols-outlined">delete</span>
 				 </a>
 			 </li>
 			 <!-- 공고 마감일자 -->

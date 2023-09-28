@@ -48,8 +48,16 @@ public class CompanyApplicantController {
 
 	// 기업회원 지원자 리스트
 	@RequestMapping("home/{page}")
-	String com_recruit(Model mm, ApplicantDTO adto, HttpSession session) {
+	String com_recruit(Model mm, ApplicantDTO adto, HttpSession session,PageData pd) {
 		String cid = (String) session.getAttribute("cid");
+		String sid = (String)session.getAttribute("sid");
+		
+		if (cid == null) {
+			pd.setMsg("기업회원만 이용가능합니다");
+			pd.setGoUrl("/");
+			return "solo_resume/alert";
+		}
+		
 		// 페이징
 		adto.calc(samapper.apptotal());
 		adto.setCid(cid);

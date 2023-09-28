@@ -7,6 +7,7 @@ body{
 	padding: 30px;
 	background-color: white;
  	height: 100%; /* 기본값으로 설정되어 있음 */
+ 	max-width: 1200px;
 }
 
 /* 이력서 관리 */
@@ -145,7 +146,7 @@ body{
 #resume_list li:nth-of-type(5){
 	padding: 50px 0 20px 0;
 	text-align: right;
-		transition: background-color 0.3s ease;	
+	transition: background-color 0.3s ease;	
 
 }
 
@@ -175,4 +176,11 @@ body{
 
 #resume_title{
 	font-size: 30px;
+}
+
+#resume_list .material-symbols-outlined{
+	font-size: 16px;
+	position: relative;
+	top:3px;
+	color: rgb(55, 63, 87);
 }

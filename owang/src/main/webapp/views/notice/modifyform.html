@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/css/notice/notice.css}">
+<link rel="stylesheet" th:href="@{/css/notice/notice_insert.css}">
 <title>Insert title here</title>
 <script>
 	function fileDelete(){
@@ -14,54 +14,64 @@
 </script>
 </head>
 <body>
-<header>
+<div id="home">		
+	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-<h2 style="text-align: center;"> 수정페이지 </h2>
-<div id="detail_wrap">
-<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
-	<input type="hidden" th:field="*{id}" />
-	<input type="hidden" th:field="*{page}" />
+	
+	<div class="title_box">
+        <h1>공지수정</h1> 
+        <br><br><br><br>
+        <h3 id="p" >공지사항을 수정하는 페이지입니다.</h3> 
+    </div><!--타이틀박스 끝 -->
+    
+<div id="insert_wrap">
+    <div id="insert_view">
+        <form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}" id="insert_table">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{page}" />
+            <table border="0" class="detail_table" id="insert_table">
+                <tr>
+                    <td id="label">공지제목</td>
+                    <td id="ttdd"><input type="text" th:field="*{title}" id="label_title"/></td>
+                </tr>
+                <!--<tr>
+                    <th>작성자</th>
+                    <td><input type="text" th:field="*{pname}" readonly id="modi_pname"/></td>
+                </tr>-->
+                <tr>
+                    <td id="label">파일</td>
+                    <td id="ttdd">
+                        <th:block th:if="${dto.upfile != null}"  id="label_file">	
+                            <!--원본-->
+                            <!--<input type="text" th:field="*{upfile}" readonly/>-->
+                            <!--hidden으로 수정하더라도 사진은 그대로-->
+                            <input type="hidden" th:field="*{upfile}" readonly id="label_file"/>
+                            <input type="button" onclick="fileDelete()" value="파일삭제" >
+                        </th:block>
+                        <input th:if="${dto.upfile == null}" type="file" th:field="*{noticemmf}" id="label_file"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="label">상세내용</td>
+                    <td><textarea th:field="*{content}" rows="30" cols="70" id="label_ta"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="수정" />
+                        <a th:href="|/notice/detail/${dto.page}/${dto.id}|" th:text="뒤로" id="modify_list"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
 
-<table border="" class="detail_table">
-		<tr>
-			<th>제목</th>
-			<td><input type="text" th:field="*{title}" id="modi_title"/></td>
-		</tr>
-		<tr>
-			<th>작성자</th>
-			<td><input type="text" th:field="*{pname}" readonly id="modi_pname"/></td>
-		</tr>
-		<tr>
-			<th>파일</th>
-			<td>
-				<th:block th:if="${dto.upfile != null}">	
-				<!--원본-->
-				<!--<input type="text" th:field="*{upfile}" readonly/>-->
-				<!--hidden으로 수정하더라도 사진은 그대로-->
-				<input type="hidden" th:field="*{upfile}" readonly/>
-				<input  type="button" onclick="fileDelete()" value="파일삭제" id="modi_filedel"/>
-				</th:block>
-				<input th:if="${dto.upfile == null}" type="file" th:field="*{noticemmf}" id="modi_file"/>
-			</td>
-		</tr>
-		<tr>
-			<th>내용</th>
-			<td><textarea th:field="*{content}"
-				rows="20" cols="70" /></td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center">
-				<input type="submit" value="수정" />
-				<a th:href="|/notice/detail/${dto.page}/${dto.id}|" th:text="뒤로" id="detail_list"/>
-			</td>
-		</tr>
-	</table>
-</div>	
+
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>
-
+ </div> <!--home끝--> 
 
 
 </body>

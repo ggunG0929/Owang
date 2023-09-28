@@ -49,9 +49,16 @@ public class SoloReviewController {
 	
 	// 리뷰 리스트
 	@RequestMapping("home")
-	String solo_review(Model mm, ReviewDTO dto, HttpSession session) {
+	String solo_review(Model mm, ReviewDTO dto, HttpSession session,PageData pd) {
 		String sid = (String) session.getAttribute("sid");
-	
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		if (sid == null || solosession == null) {
+			pd.setMsg("개인회원만 이용가능합니다");
+			pd.setGoUrl("/");
+			return "solo_resume/alert";
+		}
+		
+		
 		dto.setSid(sid);
 		System.out.println(dto);
 		List<ReviewDTO> mainData = rvmapper.soloreviewList(dto);

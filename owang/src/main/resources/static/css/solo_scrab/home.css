@@ -62,6 +62,12 @@ body{
 	color: rgb(98, 113, 138);
 }
 
+#scdate .material-symbols-outlined{
+	font-size: 18px;
+	position: relative;
+	top: 3px;
+}
+
 
 /* 기업 명 */
 #scdate li:nth-of-type(2) {
@@ -133,12 +139,22 @@ body{
 #scdelete li:nth-of-type(1) a{
 	text-decoration: none;
 	color: rgb(177, 177, 177);
+	font-weight: 200;
 		
+}
+
+#scdelete li:nth-of-type(1) a span{
+	font-weight: 250;
 }
 
 #scdelete li:nth-of-type(1) a:hover{
 	color: black;
 		
+}
+
+#scdelete li:nth-of-type(2) {
+	font-size: 15px;
+	color: rgb(177, 177, 177);	
 }
 
 /* 공고마감 안내 */
@@ -172,6 +188,11 @@ color: rgb(95, 99, 104);
 
 #gotorc a:hover {
     background-color: rgb(65, 70, 89);
+}
+
+#gotorc .material-symbols-outlined{
+	position: relative;
+	top: 7px;
 }
 
 #sctotal{

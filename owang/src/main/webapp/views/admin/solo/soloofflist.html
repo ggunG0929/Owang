@@ -10,7 +10,7 @@
 
 		h1 {
 			text-align: center;
-			margin: 0;
+			
 		}
 
 		/* 검색 폼 스타일 */
@@ -114,7 +114,7 @@
 
 <body>
 	<th:block th:replace="~{admin/adheader}"/>
-	<h2>일반회원관리</h2>
+	<h1>일반회원관리</h1>
 	<form  action="/admin_solo/search" method="get">
 		<select name="searchOption">
 
@@ -179,8 +179,9 @@
 		</tr>
 	</table>
 
-	<a href="/admin_solo/smanagement">목록으로</a>
 	<a href="/admin_solo/sololist/1">모든개인회원보기</a>
+	<a href="/admin_solo/soloonlist/1">프리미엄회원관리</a>
+	<a href="/admin_solo/soloofflist/1">일반회원관리</a>
 
 </body>
 

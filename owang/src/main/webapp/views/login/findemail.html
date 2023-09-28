@@ -14,7 +14,8 @@
 
         function startCountdown() {
             var count = 60; // 초기 카운트 설정 (60초)
-            $("#sendBtn").prop("disabled", true); // "인증번호 전송" 버튼 비활성화
+            // "인증번호 전송" 버튼 비활성화
+    $("#sendBtn").css("display", "none");
 
             // 카운트다운 시작
             countdown = setInterval(function () {
@@ -24,7 +25,7 @@
                 // 카운트가 0이 되면 타이머 종료하고 버튼 활성화
                 if (count < 0) {
                     clearInterval(countdown);
-                    $("#sendBtn").prop("disabled", false);
+                    $("#sendBtn").css("display", "inline-block");
                     $("#message").text(""); // 메시지 초기화
                 }
             }, 1000);
@@ -32,7 +33,7 @@
 
         function sendNumber() {
             // "인증번호 전송" 버튼 비활성화
-            $("#sendBtn").prop("disabled", true);
+              $("#sendBtn").css("display", "none");
 
             // 메시지 표시용 div 엘리먼트
             var messageDiv = $("#message");
@@ -80,7 +81,7 @@
 		
 	<h1>비밀번호 찾기</h1>
 	<div id="mail_input" name="mail_input">
-		<input type="text" name="mail" id="mail" th:value="${email}" readonly>
+		<input type="text" name="mail" id="mail" th:value="${email}" readonly/>
 		<button type="button" id="sendBtn" name="sendBtn" onclick="sendNumber()">인증번호전송</button>
 	</div>
 	<!-- 메시지를 표시할 div 엘리먼트 -->
@@ -88,7 +89,7 @@
 	<br>
 	
 	<div id="mail_number" name="mail_number" style="display: none">
-		<input type="text" name="number" id="number" placeholder="인증번호 입력">
+		<input type="text" name="number" id="number" placeholder="인증번호 입력"/>
 		<button type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">이메일 인증</button>
 
 	</div>
@@ -97,7 +98,11 @@
 		
 		</div>
 	</div>
-
+</body>
+<footer>
+       <div th:insert="~{footer :: footer}"></div>
+    </foote>
+    
 
 	
 

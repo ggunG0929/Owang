@@ -14,17 +14,39 @@
 
 
 <body>
-   
+	
+	
+	
+<div id="home">   
+	
+	
    <header>
       <div th:insert="~{header :: header}"></div>
    </header>
+   
+   <sidebar>
+       <div th:insert="~{sidebar :: sidebar}"></div>
+    </sidebar>
+    
     <a href="javascript:goBack()">뒤로</a>
-     
+     <div class="title_box">
+		   <h1 style="text-align: center;">공지사항 </h1> 
+		   <br><br><br><br>
+		   <h3 id="p">㈜오왕의 공지사항을 알려드립니다.</h3>
+  		 </div>
+    
+    
+    
+    
+    
+    
    <div class="board_wrap">
-        <div class="board_title">
+	         
+        
+        <!--<div class="board_title">
                <strong>공지사항</strong><br>
 			<p>㈜오왕의 공지사항을 알려드립니다.</p>
-        </div>
+        </div>-->
        
        <div style="text-align: right; margin-bottom: 20px;">
       	⚠️<strong> <a href="http://www.moel.go.kr/info/defaulter/defaulterList.do" target="_blank" style="color: #1876FB;">   
@@ -32,7 +54,7 @@
   		</div>
        
       <div class="board_list">
-         <table border="" >
+         <table border="0" >
             <trclass="top">
                <td class="num">번호</td>
                <td class="title">제목</td>
@@ -77,10 +99,12 @@
    </div>
    
    
+   
+   
    <footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>
     
-    
+</div>    
 </body>
 </html>

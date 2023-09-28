@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	
 	<!-- 개인리뷰 리스트 -->
 	<select id="soloreviewList" resultType="rrDTO" parameterType="rrDTO">
-		select * from review where sid = #{sid}
+		select * from review where sid = #{sid} order by regdate desc
 	</select>
 	
 

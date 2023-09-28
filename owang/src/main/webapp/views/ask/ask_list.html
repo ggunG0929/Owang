@@ -7,28 +7,27 @@
 	<title>질문게시판</title>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/ask/ask.css}">
 </head>
-<style>
-	
-</style>
-
 <body>
+<div id="home">
+	
 <script>
 	//뒤로가기
       function goBack() {
          window.history.back();
       }
 </script>
+
 	<header>
-		<div th:include="~{header :: header}"></div>
+		<div th:include="header :: header"></div>
 	</header>
 	<!--<h3>1:1 문의 게시판</h3>-->
-		<img src="/css/images/ask.jpg" alt="1:1문의" style="width: 100%; height: 300px;">
+		<img src="/css/images/ask.jpg" alt="1:1문의" style="width: 100%; height: 210px;">
 	<br/>
 	
 	<div id="read">
 		<strong style="color: red;">📢  읽어주세요!</strong><br/>
 		&nbsp&nbsp✔️ 1:1 게시판은 개인정보를 다루는 공간입니다. 따라서 본인이 작성한 글만 확인 가능합니다. <br/>
-		또한, 본인이 작성한 문의글에 관리자 답변이 달린 경우 수정 및 삭제 기능은 지원되지 않습니다.<br/>
+		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp또한, 본인이 작성한 문의글에 관리자 답변이 달린 경우 수정 및 삭제 기능은 지원되지 않습니다.<br/>
 		&nbsp&nbsp✔️ 관리자 답변 이전에는 수정 및 삭제 가능합니다. <br/>
 	</div>
 	
@@ -124,10 +123,11 @@ values
 (20, '답변입니다.', '관리자', '1111', '원숭이네 한정식 채용공고 검색 방법은 다음과 같습니다.', '2023-04-02', 0, 0, 1, 10);-->
 
 
+
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>
-
+</div>
 
 </body>
 

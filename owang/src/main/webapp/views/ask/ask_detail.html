@@ -13,12 +13,13 @@
       }
 </script>
 <body>
+<div id="home">	
    <header>
       <div th:insert="~{header :: header}"></div>
    </header>
                <a href="javascript:goBack()">뒤로</a>
                 <!--[[${askdto}]]-->
-<h1 id="title">글 보기</h1>
+<h1 id="a_title">게시글 확인</h1>
 <hr>
 
 <div id="wrap"> 
@@ -84,7 +85,7 @@
        <div th:insert="~{footer :: footer}"></div>
     </footer>
     
-    
+ </div>	   
 </body>
 
 </html>

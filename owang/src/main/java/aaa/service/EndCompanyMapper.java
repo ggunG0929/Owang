@@ -39,4 +39,12 @@ public interface EndCompanyMapper {
 	
 	// 1:1 내역 저장(아직안함)
 	int endaskInsert(AskDTO dto);
+	
+	RecruitDTO endrecruitone(String recruit_title);
+	
+	// 탈퇴한 기업의 공고 조회endRecruitRealList
+	List<RecruitDTO> endRecruitRealList(String cid);
+	
+	// 탈회한 기업의 공고 이력내역 조회
+	List<ApplicantDTO> endApplicantList(String cid, String rectuit_title);
 }

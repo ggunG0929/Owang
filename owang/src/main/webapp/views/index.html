@@ -9,6 +9,10 @@
     <header>
        <div th:insert="~{header :: header}"></div>
     </header>
+    <script>
+		location.href="/main"
+	</script>
+    
     <th:blcok th:if="${session.companysession}">
 	<h1>기업세션</h1>
 	[[${session.companysession}]]	

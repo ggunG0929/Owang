@@ -28,7 +28,7 @@ public interface RecruitMapper {
 	
 	int companyROpenCnt();
 	int companyRCloseCnt();
-
+	int icompanyROpenCnt(String cid);
 	// 조회수 증가
 	int recruitAddCont(int recruitId);
 

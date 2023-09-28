@@ -55,9 +55,14 @@ public class SoloScrabController {
 	// 스크랩 리스트
 	@RequestMapping("home/{page}")
 	String solo_scrab(Model mm, ScrabDTO scdto, 
-			 @PathVariable int page,HttpSession session) {
+			 @PathVariable int page,HttpSession session,PageData pd) {
 		String sid = (String) session.getAttribute("sid");
-	
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		if (sid == null || solosession == null) {
+			pd.setMsg("개인회원만 이용가능합니다");
+			pd.setGoUrl("/");
+			return "solo_resume/alert";
+		}
 		scdto.setSid(sid);
 		System.out.println(scdto);
 		List<ScrabDTO> appdata = scmapper.sclist(scdto);
@@ -91,7 +96,7 @@ public class SoloScrabController {
 	    scdto.setRecruitTitle(recruitDTO.getRecruitTitle());
 	    scdto.setRealMagam(recruitDTO.getRealMagam());
 	    scdto.setRecruitMoney(recruitDTO.getRecruitMoney());
-	    scdto.setRecruitLocation(recruitDTO.getRecruitlocation());
+	    scdto.setRecruitLocation(recruitDTO.getRecruitLocation());
 	    
 	    // 스크랩 정보 추가
 	    scmapper.scinsert(scdto);

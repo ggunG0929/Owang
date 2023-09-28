@@ -1,5 +1,6 @@
 package aaa.model;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,11 +14,8 @@ import lombok.Data;
 public class ReviewDTO {
 	String sid, cid, cname, rvtitle, rvjang, rvdan, msg, goUrl;
 	int rvid;
-	Date regDate = new Date();
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	public String getRegDate() {
-		return sdf.format(regDate);
-	}
+	Timestamp regDate;
+	
 	int start, limit = 5, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
 		
 		public void calc(int total) {

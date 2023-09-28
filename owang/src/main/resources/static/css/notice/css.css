@@ -6,6 +6,21 @@ ul, li{list-style: none;}
 /* initial : 상속받는 색깔을 그대로 따라가겠다입니다. */
 a{text-decoration: none;color: initial;}
 
+#home{
+	font-family: 'Noto Sans KR', sans-serif;
+	background-color: white;
+ 	height: 100%; /* 기본값으로 설정되어 있음 */
+}
+.title_box{
+	border-bottom: 1px solid #111;
+	padding-bottom: 20px;
+	background-image: url("/css/images/loud.png");
+	background-position: right center;
+	background-repeat: no-repeat;
+	height:170px;
+	margin-top: 40px;
+}
+#p{margin-left: 20px;}
 /* board_wrap : 게시판 가장 부모영역 가장외곽 영역*/
 .board_wrap{
     width: 880px;
@@ -89,253 +104,31 @@ html{
 
 .board_list .num{
     width: 10%;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
 }
 .board_list .title{
     width: 60%;
     text-align: left;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .board_list .title{text-align: center;}
 
 .board_list .writer{
     width: 10%;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
 }
 .board_list .date{
     width: 10%;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
 }
 .board_list .count{
     width: 10%;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-/* #### board_list : 게시판 내용 #### */
-
-
-/* board_page : 게시글 버튼영역  */
-.board_page{
-    margin-top: 30px;
-    text-align: center;
-
-    /* 부모가 font-size0이다 감오쥬? */
-    /* 자식 요소 수평배치할려고 하는거쥬? */
-    font-size: 0;
-}
-
-.board_page a{
-    display: inline-block;
-    border: 1px solid #ddd;
-    width: 32px;
-    height: 32px;
-
-    /* 요걸안주면 현재높이값보다 아래 설정맞추면서 준 */
-    /* 패딩값땜에 삐뚤어짐 그래서 높이보다 */
-    /* 패딩이 더 높으면 넘지마! 요런느낌 */
-    box-sizing: border-box;
-
-    /* 왼쪽겹쳐서 값안줘서 초기화 */
-    border-left: 0;
-
-    vertical-align: middle;
-    line-height: 100%;
-}
-
-.board_page a.bt{
-    padding-top: 10px;
-    font-size: 1.2rem;
-    letter-spacing: -1px;
-}
-
-.board_page a.num{
-    padding-top: 10px;
-    font-size: 1.4rem;
-}
-
-/*  a태그이면서 num에 클래스이면서 on에 클래스인 요론느낌 */
-.board_page a.num.on{
-    border-color: #000 ;
-    background-color: #000;
-    color: #fff;
-}
-
-.board_page a:first-child{
-    /* 아까 왼쪽 죽여서 값줌 첫번째만 */
-    border-left: 1px solid #ddd;
-}
-
-
-/* #### board_page : 게시글 버튼영역 #### */
-
-/* bt_wrap : 목록 수정 영역*/
-.bt_wrap{
-    margin-top: 30px;
-    text-align: center;
-}
-
-.bt_wrap a{
-    display: inline-block;
-    min-width: 80px;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 2px;
-    font-size: 1.4rem;
-}
-
-.bt_wrap a:first-child{margin-left: 0;}
-
-
-.bt_wrap a.on{
-    background-color: #000;
-    color: #fff;
-}
-
-
-/* ####   bt_wrap : 목록 수정 영역   #### */
-
-
-
-/* 여기서 부터는 게시글 영역 */
-/* .board_view : 게시글 보여지는 영역 */
-
-.board_view {
-    width: 100%;
-    border-top: 2px solid #000;
-}
-
-.board_view .title {
-    padding: 20px 15px;
-    border-bottom: 1px dashed #ddd;
-    font-size: 2rem;
-}
-
-.board_view .info {
-    padding: 15px;
-    border-bottom: 1px solid #999;
-    font-size: 0;
-}
-
-.board_view .info dl {
-    position: relative;
-    display: inline-block;
-    padding: 0 20px;
-}
-
-.board_view .info dl:first-child {
-    padding-left: 0;
-}
-
-.board_view .info dl::before {
-    /* 원래는 값넣는 용도로쓰지만 */
-    /* before쓸꺼면 필수태그 */
-    content: "";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    display: block;
-    width: 1px;
-    height: 13px;
-    background: #ddd;
-}
-
-.board_view .info dl:first-child::before {
-    display: none;
-}
-
-.board_view .info dl dt,
-.board_view .info dl dd {
-    display: inline-block;
-    font-size: 1.4rem;
-}
-
-
-
-.board_view .info dl dd {
-    margin-left: 10px;
-    color: #777;
-}
-
-.board_view .cont {
-    padding: 15px;
-    border-bottom: 1px solid #000;
-    line-height: 160%;
-    font-size: 1.4rem;
-}
-
-
-
-/* #### .board_view : 게시글 보여지는 영역 #### */
-
-/* .board_write : 게시글 작성영역 */
-
-.board_write{
-    border-top: 2px solid #000 ;
-}
-
-.board_write .title,
-.board_write .info{
-    padding: 15px;
-}
-
-.board_write .info{
-    border-top: 1px dashed #ddd;
-    border-bottom: 1px solid #000;
-    font-size: 0;
-}
-
-.board_write .cont{
-    border-bottom: 1px solid #000;
-}
-
-.board_write .info dl{
-    display: inline-block;
-    width: 50%;
-    vertical-align: middle;
-   
-}
-
-
-
-.board_write .title dt,
-.board_write .title dd,
-.board_write .info dt,
-.board_write .info dd{
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 1.4rem;
-}
-
-.board_write .title dt,
-.board_write .info dt{
-    width: 100px;
-}
-
-/* 가로길이에 따라서 달라지게 함수사용 */
-.board_write .title dd{
-    width: calc(100% - 100px);
-}
-
-.board_write .title dl{
-    font-size: 0;
-} 
-
-.board_write .title input[type="text"]{
-    width: 80%;
-    padding: 10px;
-    box-sizing: border-box;
- 
-}
-
-.board_write .cont textarea{
-    display: block;
-    width: 100%;
-    height: 300px;
-    padding: 15px;
-    box-sizing: border-box;
-    border: 0;
-    resize: vertical;
-}
-
-/* #### .board_write : 게시글 작성영역 ##### */

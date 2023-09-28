@@ -34,7 +34,7 @@
 				<a href="/login/logout">로그아웃</a>
 			</li>
 			<li id="menu-join" th:if="${session['cid'] == null and session['sid'] == null}">
-				<a href="/join/solo">회원가입</a>
+				<a href="/login/main">회원가입</a>
 			</li>
 			<!--<li><a href="/join/company">기업회원가입</a></li>-->
 		</div>	
@@ -76,7 +76,7 @@
                     <li><a href="/solo_applicant/home/1">지원서 관리</a></li>
                     <li><a href="/solo_scrab/home/1">마이 스크랩</a></li>
                     <li><a href="/solo_review/home">마이 리뷰</a></li>
-                    <li><a href="/solo/solo_info">개인 정보보기</a></li>
+                    <li><a href="/solo/solo_info">개인정보 보기</a></li>
                     <li><a href="/solo/product">결제내역</a></li>
                 </ul>
             </li>        
@@ -84,8 +84,8 @@
                 <ul id="menu-company-wrap"> 
                     <li id="menu-company"><a th:href="|/company/list/${session['cid']}/1|">공고 관리</a></li>
                     <li><a href="/company_applicant/home/1">지원자 관리</a></li>
-                    <li><a href="/company/mypage">기업 정보보기</a></li>
                     <li><a th:href="|/review/list/${session['cid']}/1|">기업 리뷰</a></li>
+                    <li><a href="/company/mypage">기업정보 보기</a></li>
                     <li><a href="/company/product">결제내역</a></li>
                 </ul>
             </li>
@@ -120,15 +120,15 @@
                 <li><a href="/solo_applicant/home/1">지원서 관리</a></li>
                 <li><a href="/solo_scrab/home/1">마이 스크랩</a></li>
                 <li><a href="/solo_review/home">마이 리뷰</a></li>
-                <li><a href="/solo/solo_info">개인 정보보기</a></li>
+                <li><a href="/solo/solo_info">개인정보 보기</a></li>
                 <li><a href="/solo/product">결제내역</a></li>
             </ul>
             <ul id="all-content-company">
 	 			<li>기업서비스</li>
                 <li id="menu-company"><a th:href="|/company/list/${session['cid']}/1|">공고 관리</a></li>
                 <li><a href="/company_applicant/home/1">지원자 관리</a></li>
-                <li><a href="/company/mypage">기업 정보보기</a></li>
                 <li><a th:href="|/review/list/${session['cid']}/1|">기업 리뷰</a></li>
+                <li><a href="/company/mypage">기업정보 보기</a></li>
                 <li><a href="/company/product">결제내역</a></li>
             </ul>       
             <ul id="all-content-custom">

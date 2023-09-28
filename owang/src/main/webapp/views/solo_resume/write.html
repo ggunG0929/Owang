@@ -13,10 +13,11 @@
       }
 </script>
 </head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link rel="stylesheet" th:href="@{/css/solo_resume/write.css}">
 <header>
 	<div th:insert="~{header :: header}"></div>
-</header>	
+</header>
 <style>
     #introduce, #license {
         display: none;
@@ -157,41 +158,15 @@ $("#file").on('change',function(){
   $(".upload-name").val(fileName);
 });
 </script>
-<style>
-.filebox .upload-name {
-    display: inline-block;
-    height: 30px;
-    padding: 0 5px;
-    vertical-align: middle;
-    border: 1px solid #dddddd;
-    width: 200px;
-    color: #999999;
-}
-.filebox label {
-    display: inline-block;
-    padding: 10px 10px;
-    color: #fff;
-    vertical-align: middle;
-    background-color: #999999;
-    cursor: pointer;
-    height: 15px;
-    margin-left: 10px;
-    font-size: 12px;
-}
-.filebox input[type="file"] {
-    position: absolute;
-    width: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 0;
-}
-</style>
 <body>
 <div id="resume_form">
 	<div id="resume_text">
-		<span>이력서 등록하기</span>
-	</div>
+		<span>
+			<span class="material-symbols-outlined">
+				edit_note
+			</span>
+			이력서 등록하기</span>
+		</div>
    <form method="post" enctype="multipart/form-data" th:object="${soloResumeDTO}">
    <!-- 이력서 제목 -->
     <div id="rstitle">
@@ -215,16 +190,16 @@ $("#file").on('change',function(){
 		</div>
 		<div id="resume_detail_info">
 			<li>
-			    <i class="fa-solid fa-house"></i>
-			    <span th:text="${solosession.saddress}" />
+				<span class="material-symbols-outlined">home</span>
+				<span th:text="${solosession.saddress}" />
 			</li>
 			<li>
-			    <i class="fa-solid fa-phone"></i>
-			    <span colspan="3" th:text="${solosession.sphone}" />
+				<span class="material-symbols-outlined">call</span>
+				<span colspan="3" th:text="${solosession.sphone}" />
 			</li>
 			<li>
-			    <i class="fa-solid fa-envelope"></i>
-			    <span colspan="3" th:text="${solosession.semail}" />
+				<span class="material-symbols-outlined">mail</span>
+				<span colspan="3" th:text="${solosession.semail}" />
 			</li>
 		</div>
 		<!-- 증명사진 미리보기 -->
@@ -252,13 +227,13 @@ $("#file").on('change',function(){
         <li>
             <label for="resumeCareerNew">
                 <input type="radio" name="rscareer" id="resumeCareerNew" value="신입" th:field="*{rscareer}" required />
-                	<span id="newguy">신입</span>
+                	<span id="newguy">신 입</span>
             </label>
         </li>
         <li>
             <label for="resumeCareerExperienced">
                 <input type="radio" name="rscareer" id="resumeCareerExperienced" value="경력" th:field="*{rscareer}"  required/>
-                	<span id="oldguy">경력</span>
+                	<span id="oldguy">경 력</span>
             </label>
         </li>
         <!-- 경력 관련 입력란 (기본적으로는 숨김) -->
@@ -316,7 +291,8 @@ $("#file").on('change',function(){
 		<span id="rsintroduce_text">자기소개서</span>
         <p id="rsintroduce_show">
             <button onclick="showForm()" class="btn_show" id="show">
-				<i class="fa-solid fa-plus"></i><span>추가</span>
+				<span class="material-symbols-outlined">add</span>
+				<span>추가</span>
 			</button>
         </p>
         <p id="introduce">
@@ -324,7 +300,8 @@ $("#file").on('change',function(){
 		</p>
         <p id="rsintroduce_hide">
 	        <button onclick="hideForm()" class="btn_hide" id="hide">
-				<i class="fa-solid fa-minus"></i><span>취소</span>
+				<span class="material-symbols-outlined">remove</span>
+				<span>삭제</span>  
 			</button>
 		</p>
     </div>
@@ -333,7 +310,8 @@ $("#file").on('change',function(){
 		<span id="rslicense_text">자격증</span>
         <div id="rslicense_show">
             <button onclick="showLicense()" class="btn_show" id="showli">
-				<i class="fa-solid fa-plus"></i><span>추가</span>
+				<span class="material-symbols-outlined">add</span>
+				<span>추가</span>
 			</button>
         </div>
         <div id="license">
@@ -352,7 +330,8 @@ $("#file").on('change',function(){
         </div>
         <div id="rslicense_hide">
 	        <button onclick="hideLicense()" class="btn_hide" id="hideli">
-				<i class="fa-solid fa-minus"></i><span>취소</span>
+				<span class="material-symbols-outlined">remove</span>
+				<span>삭제</span>
 			</button>
         </div>
     </div>
@@ -362,7 +341,8 @@ $("#file").on('change',function(){
 		<span id="rslanguage_text">어학 능력</span>
         <div id="rslanguage_show">
            <button onclick="showLanguage()" class="btn_show" id="showlg">
-				<i class="fa-solid fa-plus"></i><span>추가</span>   
+				<span class="material-symbols-outlined">add</span>
+				<span>추가</span>   
 		   </button>
     	</div>
 	    <div id="language" style="display:none;">
@@ -403,12 +383,14 @@ $("#file").on('change',function(){
 		</div>
         <div id="rslanguage_hide">
         	<button onclick="hideLanguage()" class="btn_hide" id="hidelg" style="display:none;">
-				<i class="fa-solid fa-minus"></i><span>취소</span>
+				<span class="material-symbols-outlined">remove</span>
+				<span>삭제</span>
 			</button>
         </div>
     </div>
     <div id="resume_submit">
 	    <input type="submit" value="이력서 등록" />
+	    <input id="cancel" type="reset" value="작성취소" />
 	</div>
     </form>
     <a href="javascript:goBack()">이전 페이지</a>

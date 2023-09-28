@@ -14,7 +14,7 @@
 		document.addEventListener('DOMContentLoaded', function () {
 			
 			// title 문자열 길이 제한 설정
-				var titleMaxLength = 25;
+				var titleMaxLength = 15;
 			var calendarEl = document.getElementById('calendar');
 
 			var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -51,24 +51,28 @@
 				    var eventTextColor = 'rgb(256, 256, 256)'; // 텍스트 색상 (기본값: 흰색)
 					var eventBackgroundColor = '';
 					
-					 // title 문자열 길이가 titleMaxLength를 초과하면 자르고 "..."을 추가
-				    if (eventTitle.length > titleMaxLength) {
-				        eventTitle = eventTitle.substring(0, titleMaxLength - 3) + "...";
-				    }
+				
 				    
 					
 					if (eventTitle.startsWith("[마감]")) {
 						eventBackgroundColor = 'white'; // "마감" 이벤트는 빨간색 배경
 						eventTextColor = 'red';
-					} else if (eventTitle.startsWith("[시작]")) {
+					} 
+					if (eventTitle.startsWith("[시작]")) {
 						eventBackgroundColor = 'white'; // "시작" 이벤트는 파란색 배경
 						eventTextColor = 'blue';
-					} else if (eventTitle.startsWith("[모집중]")){
+					}
+					if (eventTitle.startsWith("[모집중]")){
 						
 						eventBackgroundColor = 'white'; // "모집중" 이벤트는 파란색 배경
 						eventTextColor = 'green'; // 텍스트 색상을 검정색으로 변경
 						
 					}
+					
+						 // title 문자열 길이가 titleMaxLength를 초과하면 자르고 "..."을 추가
+				    if (eventTitle.length > titleMaxLength) {
+				        eventTitle = eventTitle.substring(0, titleMaxLength) + "...";
+				    }
 
 					// 이벤트의 내용과 배경색을 설정합니다.
 					return {
@@ -92,7 +96,7 @@
 				    // 생성한 URL로 이동합니다.
 				    window.location.href = detailURL;
 				}
-
+					
 			});
 
 			calendar.render();

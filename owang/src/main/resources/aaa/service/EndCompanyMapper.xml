@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <mapper namespace="aaa.service.EndCompanyMapper">
 <!-- 탈퇴 기업 조회 -->
 <select id="endCompanyList" parameterType="mcDTO" resultType="mcDTO">
-	 select * from endcompany limit #{start}, #{limit}
+	 select * from endcompany  order by cno desc limit #{start}, #{limit}
 </select>
 
 <select id="endCompanycnt" resultType="Integer" >
@@ -54,12 +54,12 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <insert id="endrecruitInsert" parameterType="recruitDTO">
 	insert into endrecruit(rtype,cname, recruit_title, cid, recruit_content,
 	recruit_upfile, reg_date, recruit_money, recruit_mtype,
-	recruit_magam , cnt, realMagam, deletedate )
+	recruit_magam , cnt, realMagam, deletedate, appnum )
 	values
 	(1, #{cname}, #{recruitTitle}, #{cid}, #{recruitContent},
 	#{recruitUpfile}, #{regDate},#{recruitMoney}, #{recruitMtype},
 	#{recruitMagam},0,
-	#{realMagam},sysdate())
+	#{realMagam},sysdate(), #{appnum})
 </insert>
 
 <!-- 탈퇴할 기업의 공고 조회 -->
@@ -75,5 +75,18 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 </insert>
 
 
+<!-- 탈퇴한 기업의 공고 조회 -->
+<select id="endRecruitRealList" resultType="recruitDTO"  parameterType="string">
+	select * from endrecruit where cid = #{cid}
+</select>
+
+<select id="endrecruitone" resultType="recruitDTO"  parameterType="string">
+	select * from endrecruit where recruit_title = #{rectuit_title}
+</select>
+
+<!--  탈회한 기업의 공고 이력내역 조회 -->
+<select id="endApplicantList" resultType="aDTO"  parameterType="String">
+	select * from endapplicant where cid = #{cid} and recruit_title = #{rectuit_title}
+</select>
 
 </mapper>

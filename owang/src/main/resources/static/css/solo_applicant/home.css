@@ -168,8 +168,20 @@ body{
     background-color: rgb(65, 70, 89);
 }
 
+#gotorc .material-symbols-outlined{
+	position: relative;
+	top: 7px;
+}
+
 #rctotal{
 	font-size: 15px;
 	margin-left: 60px;	
 	margin-bottom: 10px;
+}
+
+#rccontent .material-symbols-outlined{
+	font-size: 17px;
+	position: relative;
+	top:3px;
+	color: rgb(55, 63, 87);
 }

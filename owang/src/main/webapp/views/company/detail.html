@@ -4,130 +4,223 @@
 <head>
 	<meta charset="UTF-8">
 	<title>company/detail</title>
+	<link rel="stylesheet" th:href="@{/css/company/detail.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+	<style>
+	
+	</style>
 </head>
 
 <body>
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-	<container>
 
-		<h3>기업정보</h3>
-		<!-- 개인일때는 수정삭제가능ㄴ -->
-		<th:block th:if="${session.adminSession != null or session.cid == dto.cid}"><!--관리자거나, 동일회사거나--> 
-			<table border="">
+	<main class="content-box">
 
-				<tr>
-					<td>기업이름</td>
-					<td th:text="${dto.cname}" />
-				</tr>
-				<tr>
-					<td>대표자</td>
-					<td th:text="${dto.cceo}" />
-				</tr>
-				<tr>
-					<td>개업연월일</td>
-					<td th:text="${dto.cbuild}" />
-				</tr>
-				<tr>
-					<td>업종</td>
-					<td th:text="${dto.ccategory}" />
-				</tr>
-				<tr>
-					<td>직원수</td>
-					<td th:text="${dto.cstaff}" />
-				</tr>
-				<tr>
-					<td>한해 매출액</td>
-					<td th:text="|${dto.csales}(단위:백만원)|" />
-				</tr>
-				<tr>
-					<td>이메일</td>
-					<td th:text="${dto.cemail}" />
-				</tr>
-				<tr>
-					<td>본점소재지</td>
-					<td th:text="${dto.caddress}" />
-				</tr>
-				<tr>
-					<td>전화번호</td>
-					<td th:text="${dto.ccall}" />
-				</tr>
-				<tr th:if="${session.cid==dto.cid}">
-					<td>회원유형</td>
-					<td th:if="${dto.ctype == 2}" th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></td>
-					<td th:unless="${dto.ctype == 2}" th:text="일반회원"></td>
-				</tr>
-				<tr>
-					<td>기업인증여부</td>
-					<td th:if="${dto.capproval}" th:text="기업인증완료"></td>
-					<td th:unless="${dto.capproval}" th:text="기업미인증"></td>
-				</tr>
-				<tr>
-					<td>회사소개</td>
-					<td th:text="${dto.ccontent}" />
-				</tr>
-				<tr th:if="${session.cid == dto.cid}">
-					<th>사업자증명서</th>
-					<td><button onclick="openImageInNewWindow()">사업자등록증 확인</button></td>
-				</tr>
+		<div class="footer-box"> <!-- Container -->
+			<div class="description-box">
+				<section class="company-section">
+					<h1 style="font-size: 20px; margin-left: 10px; color: rgb(52 54 63);">기업페이지</h1>
+					<h1 style="font-size: 60px; color: rgb(52 54 63); margin-left: 20px;	margin-bottom: 55px;">
+						[[${dto.cname}]]</h1>
+					
+					<div class="sc-emDsmM bUigRG">
+						<hr>
+						<br>
+						<h2 id="zzh2">채용 중인 공고는 <span style="color: darkblue;"> [[${mainData.size}]]건입니다.</span></h2>
 
-			</table>
+						<th:block th:each="rdto, dtoStat : ${mainData}">
+							<div class="gldqWV">
 
-			<a href="/company/modify">수정</a>
-			<a href="/company/delete">삭제</a>
-		</th:block>
-		<th:block th:unless="${session.adminSession != null or session.cid == dto.cid}"><!--관리자도 아니고, 동일회사도 아닌것이요--> 
-			<table border="">
-			<table border="">
-				<tr>
-					<td>기업이름</td>
-					<td th:text="${dto.cname}" />
-				</tr>
-				<tr>
-					<td>본점소재지</td>
-					<td th:text="${dto.caddress}" />
-				</tr>
-				<tr>
-					<td>개업연월일</td>
-					<td th:text="${dto.cbuild}" />
-				</tr>
-				<tr>
-					<td>업종</td>
-					<td th:text="${dto.ccategory}" />
-				</tr>
-				<tr>
-					<td>직원수</td>
-					<td th:text="${dto.cstaff}" />
-				</tr>
-				<tr>
-					<td>한해 매출액</td>
-					<td th:text="|${dto.csales}(단위:백만원)|" />
-				</tr>
-				<tr>
-					<td>회사소개</td>
-					<td th:text="${dto.ccontent}" />
-				</tr>
-			</table>
+								<div class="recruitbox">
 
-		</th:block>
-		<h3>기업리뷰</h3>
+									<div class="rboxtext">
 
-		<a th:href="|/review/lo/${dto.cid}/1|">리뷰보러가기</a>
+										<div class="cWcLZK">
+											<div class="recruitdate"><span><i class="material-icons">zoom_in</i>조회 :
+													[[${rdto.cnt}]]회 </span> &nbsp; &nbsp;<span> <i
+														class="material-icons">contact_page</i>지원자 :
+													[[${rdto.appnum}]]명</span></div>
 
-		
-		<a href="javascript:goBack()">이전 페이지</a>
+											<th:block th:if="${session['sid']}">
+												<span class="blind">
 
-		<aside><!-- 회사프로필 -->
-			<div class="position_title_image">
-				<a href="|/company/${dto.cid}|">
-					<img src="https://cdn.jumpit.co.kr/sm/images/151241/20232701152751815_1001_1000.webp" alt="기업 로고">
-				</a>
+													<a th:href="|/solo_scrab/insert/${rdto.cid}/1/${rdto.recruitId}|"><i
+															id="zzz" class="material-icons">bookmark</i></a></span>
+
+											</th:block>
+										</div>
+										<a target="_blank" title="새창열림"
+											th:href="|/recruit/detail/${rdto.cid}/1/${rdto.recruitId}|">
+											<h2 class="recruittitle">[[${rdto.recruitTitle}]]</h2>
+											<ul class="dDbWka" style="color: rgb(207, 67, 67);">
+												<span th:if="${rdto.recruitMtype == '월급'}">월급 </span>
+												<span th:if="${rdto.recruitMtype == '연봉'}">연봉 </span>
+												<span style="font-weight: 800;">&nbsp;
+													[[${rdto.recruitMoney}]]만원</span></br>
+
+
+											</ul>
+											<ul class="dDbWka">
+
+												공고마감일 <span style="font-weight: 800;">&nbsp; [[${rdto.realMagam}]]
+												</span>
+											</ul>
+										</a>
+
+									</div>
+
+								</div>
+
+							</div>
+						</th:block>
+						<h3><span><a style="font-size: 20px; color: royalblue;     margin-left: 70%;"
+									th:href="|/company/list/${dto.cid}/1|">채용공고 더보기<i id="reviewzz"
+										class="material-icons">speaker_notes</i></a></span></h3>
+
+					</div>
+
+					<div class="gg">
+						<hr>
+
+
+
+						<th:block th:if="${session.adminSession != null or session.cid == dto.cid}">
+							<h2 id="zzh2">기업정보</h2>
+							<!-- 개인일때는 수정삭제가능ㄴ -->
+							<table border="">
+								<tr>
+									<td>기업이름</td>
+									<td th:text="${dto.cname}" />
+								</tr>
+								<tr>
+									<td>본점소재지</td>
+									<td th:text="${dto.caddress}" />
+								</tr>
+								<tr>
+									<td>개업연월일</td>
+									<td th:text="${dto.cbuild}" />
+								</tr>
+								<tr>
+									<td>업종</td>
+									<td th:text="${dto.ccategory}" />
+								</tr>
+								<tr>
+									<td>직원수</td>
+									<td th:text="${dto.cstaff}" />
+								</tr>
+								<tr>
+									<td>연간 매출액</td>
+									<td th:text="|${dto.csales}(단위:백만원)|" />
+								</tr>
+								<tr>
+									<td>회사소개</td>
+									<td th:text="${dto.ccontent}" />
+								</tr>
+							</table>
+							<!--관리자거나, 동일회사거나-->
+							<a href="/company/modify">수정</a>
+							<a href="/company/delete">삭제</a>
+							<hr>
+						</th:block>
+						<h2 id="zzh2">기업리뷰</h2>
+
+						<h3><span><a style="font-size: 20px; margin-left: 70%; color: royalblue;"
+									th:href="|/review/lo/${dto.cid}/1|">리뷰보러가기<i id="reviewzz"
+										class="material-icons">rate_review</i></a></span></h3>
+					</div>
+				</section>
+				<hr>
+				<section class="position-info" style="font-size: 22px;">
+					<h2 id="zzh2" class="hidden">기업 소개</h2>
+
+					<dl class="company-description">
+						<h3>
+							<dt class="company-introduction">회사소개</dt>
+						</h3>
+						<dd>
+							<th:table th:text="${dto.ccontent}" />
+						</dd>
+					</dl>
+
+					<dl class="company-benefits">
+						<h3>
+							<dt class="benefits-title">복지 및 혜택</dt>
+						</h3>
+						<dd>
+							<th:table th:text="${dto.cwelfare}" />
+						</dd>
+					</dl>
+
+				</section>
+
 			</div>
-			<h2>백엔드 개발자(Python, Django)</h2>
-			<p><a href="|/company/${dto.cid}|"></p>
-		</aside>
-	</container><!-- 컨테이너 -->
+
+			<aside class="main-aside">
+
+				<div class="position-details">
+					<div class="position-image">
+						<th:table th:unless="${dto.clogo==null}">
+
+							<img class="position-img" th:src="|/companylogoup/${dto.clogo}|" alt="기업 로고">
+
+						</th:table>
+						<th:table th:if="${dto.clogo==null}">
+							<img class="position-img" th:src="@{/companylogoup/basic.png}" alt="기업 로고">
+
+						</th:table>
+
+
+				
+
+
+					</div>
+					<h2 class="company-name">[[${dto.cname}]]</h2>
+					<span class="job-celebration">
+						<hr>
+
+						<a th:text="${dto.ccategory}" />
+					</span>
+					<span class="job-celebration">
+						<br>개업연월일
+
+						<a th:text="${dto.cbuild}" />
+					</span>
+
+					<span class="job-celebration"><br>직원수
+
+						<a th:text="${dto.cstaff}" />명
+					</span>
+					<span class="job-celebration"><br>연간 매출액
+
+						<a th:text="${dto.csales}" />,000,000원
+					</span>
+					<th:block th:if="${dto.capproval}">
+						<br><i style="color: rgb(45, 45, 255); font-size: 40px;"
+							class="material-icons">verified_user</i><span class="job-celebration">
+
+							</i>기업인증 완료
+
+						</span>
+					</th:block>
+					<th:block th:unless="${dto.capproval}">
+						<span class="job-celebration"><br>
+
+							기업미인증</span>
+					</th:block>
+
+				</div>
+
+			</aside>
+			<button class="zzzg"><a href="javascript:goBack()"><- 이전 페이지로</a></button>
+		</div>
+		
+		
+	</main>
+
+
 	<script>
 		function openImageInNewWindow() {
 			// 이미지 URL 설정
@@ -145,5 +238,9 @@
 
 	</script>
 </body>
+<footer>
+       <div th:insert="~{footer :: footer}"></div>
+    </foote>
+    
 
 </html>

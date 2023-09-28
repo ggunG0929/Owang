@@ -96,7 +96,15 @@ public class ReviewController {
 	}
 	
 	@RequestMapping("list/{cid}/{page}")
-	String hihi(@PathVariable String cid, Model mm, @PathVariable int page, HttpSession session, ReviewDTO dto) {
+	String hihi(@PathVariable String cid, Model mm, @PathVariable int page, HttpSession session, ReviewDTO dto,PageData pd) {
+		String sessioncid = (String) session.getAttribute("cid");
+		
+		if (sessioncid == null) {
+			pd.setMsg("기업회원만 이용가능합니다");
+			pd.setGoUrl("/");
+			return "solo_resume/alert";
+		}
+		
 		dto.calc(reviewMapper.reviewCnt(cid));
 		System.out.println(reviewMapper.reviewCnt(cid));
 		SoloDTO sdto = (SoloDTO) session.getAttribute("solosession");
@@ -147,11 +155,11 @@ public class ReviewController {
 	    
         if (cnt> 0&& sdto.getCid().equals(cid)) {
         	dto.setMsg("리뷰는 1회만 작성가능합니다.");
-	        dto.setGoUrl("/company/detail/" + dto.getCid());
+    	    dto.setGoUrl("/review/list/" + dto.getCid()+"/1");
 	        return "review/review_alert";
         }else if (cnt> 0&& !sdto.getCid().equals(cid)) {
         	dto.setMsg("재직중인 기업만 리뷰를 작성할 수 있습니다.");
-	        dto.setGoUrl("/company/detail/" + dto.getCid());
+	        dto.setGoUrl("/review/list/" + dto.getCid()+"/1");
 	        return "review/review_alert";
         }
 		if (sosession.isSinjueng() && sosession.getCid().equals(cid)) {
