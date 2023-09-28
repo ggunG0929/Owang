@@ -5,6 +5,12 @@
 	<meta charset="UTF-8">
 	<title>상품신청</title>
 	<style>
+		.product-temp {
+			text-align: center;
+			background-color: #fff;
+			padding: 100px 0;
+		}
+
 		table {
 			border-collapse: collapse;
 			border-top: 2px solid #000;
@@ -25,26 +31,33 @@
 			border-bottom: 1px solid #ddd;
 		}
 
-		button {
+		.btn-container {
+			margin: 20px 0;
+		}
+
+
+		.button {
+			display: inline-block;
 			padding: 10px 20px;
-			font-size: 16px;
 			cursor: pointer;
 			text-align: center;
 			text-decoration: none;
-			outline: none;
-			background-color: #007BFF;
-			color: #ffffff;
-			border: none;
+			background-color: #4dc8d9;
+			color: #fff;
 			border-radius: 5px;
-			transition: background-color 0.3s;
+			border: none;
 		}
 
-		button:hover {
-			background-color: #0056b3;
+		.button:hover {
+			background-color: #000;
 		}
 
 		.alct {
 			text-align: center;
+		}
+		
+		.alle {
+			text-align: left;
 		}
 
 		.price {
@@ -75,7 +88,7 @@
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-	<div style="display: flex; justify-content: space-between;">
+	<div class="product-temp">
 		<table>
 			<tr class="alct">
 				<td></td>
@@ -91,13 +104,13 @@
 						th:value="${dto.productId}" name="productRadio"> <!-- 개인 선택 -->
 				</td>
 				<td class="alct" th:text="${dto.productClient}"></td>
-				<td th:text="${dto.productName}"></td>
+				<td class="alle" th:text="${dto.productName}"></td>
 				<td class="price" th:text="${dto.formatPrice}"></td>
 			</tr>
 		</table>
-	</div>
-	<div style="text-align: center; margin-top: 20px;">
-		<button id="submitBtn">신청</button>
+		<div class="btn-container">
+			<button id="submitBtn" class="button">신청</button>
+		</div>
 	</div>
 	<footer>
 		<div th:insert="~{footer :: footer}"></div>
