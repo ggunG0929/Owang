@@ -263,4 +263,64 @@ input[type="text"] {
 }
 
 
+/* hover 효과 제목*/
+a.hoverTitle:hover {
+	color: #007bff;
+ 	position: relative;
+  display: inline-block;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #007bff; /* 기본 텍스트 색상 */
+  transition: color 0.3s, transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+   
+}
+ 
+
+a.hoverTitle:hover {
+  color: #007bff; /* hover 시 텍스트 색상 변경 */
+  transform: translateY(-4px); /* 위로 움직이는 효과 */
+}
+
+a.hoverTitle:active {
+  /* 클릭 시 애니메이션 추가 (예: rubberBand) */
+  animation-name: rubberBand;
+  animation-duration: 1s;
+}
+
+/* 검색창 왼쪽에 있어서 마진 왼쪽 줌!*/
+form{margin-left: 50px;}
+
+
+
+
+
+/* hover 효과 회사이름*/
+a.hoverCompany:hover {
+    color: #007bff;
+ 	position: relative;
+  display: inline-block;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #007bff; /* 기본 텍스트 색상 */
+  transition: color 0.3s, transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+   
+}
+ 
+a.hoverCompany:hover {
+  color: #007bff; /* hover 시 텍스트 색상 변경 */
+  transform: translateY(-4px); /* 위로 움직이는 효과 */
+}
+
+a.hoverCompany:active {
+  /* 클릭 시 애니메이션 추가 (예: rubberBand) */
+  animation-name: rubberBand;
+  animation-duration: 1s;
+}
+
+/* 현제페이지 굵게 */
+.on {
+    font-weight: bold; /* 굵게 만들기 */
+}
 

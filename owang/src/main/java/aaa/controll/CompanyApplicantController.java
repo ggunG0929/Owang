@@ -15,6 +15,7 @@ import aaa.model.RecruitDTO;
 import aaa.model.SoloDTO;
 import aaa.model.SoloResumeDTO;
 import aaa.service.CompanyApplicantMapper;
+import aaa.service.MCompanyMapper;
 import aaa.service.MailService;
 import aaa.service.RecruitMapper;
 import aaa.service.SoloApplicantMapper;
@@ -29,6 +30,9 @@ public class CompanyApplicantController {
 	
 	@Autowired
     MailService mailService;
+	
+	@Resource
+	MCompanyMapper mmmapper;
 	
 	@Resource
 	CompanyApplicantMapper camapper;
@@ -47,30 +51,33 @@ public class CompanyApplicantController {
 	SoloApplicantMapper samapper;
 
 	// 기업회원 지원자 리스트
-	@RequestMapping("home/{page}")
-	String com_recruit(Model mm, ApplicantDTO adto, HttpSession session,PageData pd) {
-		String cid = (String) session.getAttribute("cid");
-		String sid = (String)session.getAttribute("sid");
-		
-		if (cid == null) {
-			pd.setMsg("기업회원만 이용가능합니다");
-			pd.setGoUrl("/");
-			return "solo_resume/alert";
+		@RequestMapping("home/{page}")
+		String com_recruit(Model mm, ApplicantDTO adto, HttpSession session,PageData pd) {
+			String cid = (String) session.getAttribute("cid");
+			String sid = (String)session.getAttribute("sid");
+			
+			if (cid == null) {
+				pd.setMsg("기업회원만 이용가능합니다");
+				pd.setGoUrl("/");
+				return "solo_resume/alert";
+			}
+			
+			// 페이징
+			adto.calc(samapper.apptotal());
+			adto.setCid(cid);
+			System.out.println(adto);
+			List<ApplicantDTO> appdata = camapper.applist(adto);
+			List<ApplicantDTO> apppassdata = camapper.apppasslist(adto);
+			List<ApplicantDTO> appnonpassdata = camapper.appnonpasslist(adto);
+			mm.addAttribute("appdata", appdata);
+			mm.addAttribute("apppassdata", apppassdata);
+			mm.addAttribute("appnonpassdata", appnonpassdata);
+			String zzcname = mmmapper.getzzcname(cid);
+			mm.addAttribute("zzcname", zzcname); // "채용 마감" 탭 페이지 정보
+			System.out.println(appdata);
+			return "company_applicant/home";
 		}
-		
-		// 페이징
-		adto.calc(samapper.apptotal());
-		adto.setCid(cid);
-		System.out.println(adto);
-		List<ApplicantDTO> appdata = camapper.applist(adto);
-		List<ApplicantDTO> apppassdata = camapper.apppasslist(adto);
-		List<ApplicantDTO> appnonpassdata = camapper.appnonpasslist(adto);
-		mm.addAttribute("appdata", appdata);
-		mm.addAttribute("apppassdata", apppassdata);
-		mm.addAttribute("appnonpassdata", appnonpassdata);
-		System.out.println(appdata);
-		return "company_applicant/home";
-	}
+
 
 	// 이메일을 이미 보냈는지 여부를 추적하는 변수
 	boolean emailSent = false;

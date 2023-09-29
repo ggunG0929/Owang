@@ -123,12 +123,14 @@ input{
 
 
 #label2{
+	white-space: pre-wrap;
+	line-height: 2;
 	 width: 550px;
 	 height: 34px;
 	 margin-bottom: 20px;
 	 font-size: 16px;
 	 padding: 5px 10px 5px 10px;
-	 line-height: 12px;
+	 
 	 font-weight: inherit;
 	 border: 1px solid #000;
 	 border-radius: 0;
@@ -298,6 +300,11 @@ input[type="text"] {
 
 }
 
+
+
+
+
+
 #ask_table tr:not(:first-child) td {
     border-top: none; /* 가로선 스타일을 지정합니다. */
 }
@@ -364,3 +371,9 @@ input[type="text"] {
 /*.ask_table tr {
     border-top: 1px solid #ebebeb;
 }*/
+
+
+.on {
+    font-weight: bold; /* 굵게 만들기 */
+}
+

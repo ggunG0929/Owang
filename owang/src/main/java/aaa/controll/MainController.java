@@ -74,6 +74,7 @@ public class MainController {
 		// "채용 가능" 탭에 대한 페이지 정보 계산
 		RecruitDTO openDto = new RecruitDTO();
 		openDto.setPage(1);
+		openDto.setLimit(9);
 		openDto.calc(recruitMapper.companyROpenCnt());
 		List<RecruitDTO> openData = recruitMapper.companyROpen(openDto);
 

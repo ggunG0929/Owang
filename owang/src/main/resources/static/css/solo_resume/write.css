@@ -16,11 +16,23 @@ body{
 	text-align: left;
 	font-size: 30px;
 	font-weight: 400;
-	margin-bottom: 20px;
+	margin-bottom: -20px;
 	letter-spacing: 1px;
 	color: rgb(41, 46, 65);
 	position: relative;
 	right: 30px;
+}
+
+#rsessential{
+	margin: 0 auto;
+	width: 920px;
+	text-align: right;
+	font-weight: 400;
+	color: rgb(45, 101, 242);
+	position: relative;
+	right: 30px;
+	margin-bottom: 10px;
+
 }
 
 #resume_text .material-symbols-outlined {
@@ -181,7 +193,15 @@ body{
 	border-bottom: 1px solid #ccc;
 	display: inline-block;
 }
-
+#rstitle #title_twinkle{
+	color: rgb(45, 101, 242);
+	position: relative;
+	left: 10px;
+	width: 1px;
+	height: 1px;
+	margin: 0 auto;
+	bottom: 10px;
+}
 #rstitle span{
 	color: rgb(41, 46, 65);
 	margin-left: 10px;
@@ -198,6 +218,12 @@ body{
 	font-size: 25px;
 	padding: 15px;
 	border:1px solid #ccc;
+}
+
+#rstitle input::placeholder{
+	font-weight: 100;
+	font-size: 22px;
+	letter-spacing: 2px;
 }
 
 #rstitle input:focus{
@@ -217,6 +243,18 @@ body{
 	width: 800px;
 	padding: 40px 0; 
 	border-bottom: 1px solid #ccc;
+	margin-left: -20px;
+}
+
+#rscareer #career_twinkle{
+	color: rgb(45, 101, 242);
+	position: relative;
+	left: 60px;
+	width: 1px;
+	height: 1px;
+	margin: 0 auto;
+	bottom: 3px;
+	font-size: 28px;
 }
 
 #rscareer #rscareer_text{
@@ -255,6 +293,7 @@ body{
 #careerDetails{
 	padding: 25px 25px 0px 25px;
 }
+
 
 #careerDetails span{
 	margin-right: 10px;
@@ -303,8 +342,19 @@ body{
 	width: 800px;
 	padding: 40px 0; 
 	border-bottom: 1px solid #ccc;
+	margin-left: -15px;
 }
 
+#rsschool #school_twinkle{
+	color: rgb(45, 101, 242);
+	position: relative;
+	left: 40px;
+	width: 1px;
+	height: 1px;
+	margin: 0 auto;
+	bottom: 3px;
+	font-size: 28px;
+}
 #rsschool span{
 	margin-left: 40px;
 	font-size: 20px;
@@ -370,10 +420,10 @@ body{
 	margin-top: 20px;
 	margin-bottom: 10px;
 	width: 700px;
-	height: 120px;
+	height: 320px;
 	padding: 10px;
 	resize: none;
-	font-size: 20px;
+	font-size: 16px;
 	font-family: inherit;
 	border: 1px solid #ccc;
 }

@@ -93,38 +93,38 @@ public class AdminCompanyController {
 	}
 
 	// 공고 관리 페이지 ( 공고 리스트 )
-	@RequestMapping("/cmanagement/{page}")
-	String cmanagement(Model mm, RecruitDTO dto, @PathVariable("page") int page) {
+		@RequestMapping("/cmanagement/{page}")
+		String cmanagement(Model mm, RecruitDTO dto, @PathVariable("page") int page) {
 
-		// 날짜 포맷팅
-		Date today = new Date();
-		String day = rctCntDateFormat(today, 0);
-		String week = rctCntDateFormat(today, -7);
-		String month = rctCntDateFormat(today, -30);
-		String year = rctCntDateFormat(today, -365);
+			// 날짜 포맷팅
+			Date today = new Date();
+			String day = rctCntDateFormat(today, 0);
+			String week = rctCntDateFormat(today, -7);
+			String month = rctCntDateFormat(today, -30);
+			String year = rctCntDateFormat(today, -365);
 
-		// 기간별 도넛그래프 data
-		int todayRct = rcm.rctRangeRegCnt(day, day);
-		int weekRct = rcm.rctRangeRegCnt(week, day);
-		int monthRct = rcm.rctRangeRegCnt(month, day);
-		int yearRct = rcm.rctRangeRegCnt(year, day);
+			// 기간별 도넛그래프 data
+			int todayRct = rcm.rctRangeRegCnt(day, day);
+			int weekRct = rcm.rctRangeRegCnt(week, day);
+			int monthRct = rcm.rctRangeRegCnt(month, day);
+			int yearRct = rcm.rctRangeRegCnt(year, day);
 
-		// 1년간 월별 막대그래프 그릴 data
-		List<Map<String, Object>> graphData = rcm.rctRegCnt(year, day);
+			// 1년간 월별 막대그래프 그릴 data
+			List<Map<String, Object>> graphData = rcm.rctRegCnt(year, day);
 
-		// 공고테이블
-		dto.calc(rcm.recruitListCnt());
-		List<RecruitDTO> data = rcm.recruitList(dto);
+			// 공고테이블
+			dto.calc(rcm.recruitListCnt());
+			List<RecruitDTO> data = rcm.recruitList(dto);
 
-		mm.addAttribute("todayRct", todayRct);
-		mm.addAttribute("weekRct", weekRct);
-		mm.addAttribute("monthRct", monthRct);
-		mm.addAttribute("yearRct", yearRct);
-		mm.addAttribute("graphData", graphData);
-		mm.addAttribute("mainData", data);
-		
-		return "admin/company/cmanagement";
-	}
+			mm.addAttribute("todayRct", todayRct);
+			mm.addAttribute("weekRct", weekRct);
+			mm.addAttribute("monthRct", monthRct);
+			mm.addAttribute("yearRct", yearRct);
+			mm.addAttribute("graphData", graphData);
+			mm.addAttribute("mainData", data);
+			
+			return "admin/company/cmanagement";
+		}
 
 	// date형의 날짜, 변경할 일 수를 입력하면 계산해서 string형("yyyy-MM-dd")으로 반환
 	public String rctCntDateFormat(Date date, int valid) {

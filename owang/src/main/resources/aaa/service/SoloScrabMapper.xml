@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		SELECT *
 		FROM scrab
 		WHERE sid = #{sid}
-		
+		ORDER BY scrabdate DESC
 
 	</select>
 	

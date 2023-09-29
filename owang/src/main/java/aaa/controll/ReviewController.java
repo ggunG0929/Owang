@@ -96,23 +96,23 @@ public class ReviewController {
 	}
 	
 	@RequestMapping("list/{cid}/{page}")
-	String hihi(@PathVariable String cid, Model mm, @PathVariable int page, HttpSession session, ReviewDTO dto,PageData pd) {
+	String hihi(@PathVariable String cid, Model mm, @PathVariable int page, HttpSession session, ReviewDTO dto,
+			PageData pd) {
 		String sessioncid = (String) session.getAttribute("cid");
+
 		
-		if (sessioncid == null) {
-			pd.setMsg("기업회원만 이용가능합니다");
-			pd.setGoUrl("/");
-			return "solo_resume/alert";
-		}
-		
+		/// 리뷰수 세기
+		int reviewcount = reviewMapper.cccnt(cid);
+		String zzcname = mcMapper.getzzcname(cid);
 		dto.calc(reviewMapper.reviewCnt(cid));
 		System.out.println(reviewMapper.reviewCnt(cid));
 		SoloDTO sdto = (SoloDTO) session.getAttribute("solosession");
 		List<ReviewDTO> data = reviewMapper.reviewList(dto);
 		System.out.println(dto);
-		 System.out.println("sdto"+sdto);
+		System.out.println("sdto" + sdto);
 		mm.addAttribute("mainData", data);
-		
+		mm.addAttribute("zzcname", zzcname);
+		mm.addAttribute("revcount",reviewcount);
 		return "review/review_list";
 	}
 

@@ -10,9 +10,13 @@ import aaa.model.PaymentDTO;
 
 @Mapper
 public interface PayMapper {
+	
+	// 기업탈퇴 조회
+	List<PaymentDTO> endpay(String cid);
 
 	// 결제목록보기
 	List<PaymentDTO> list();
+	
 
 	// 결제상세보기
 	PaymentDTO detail(String impUid);

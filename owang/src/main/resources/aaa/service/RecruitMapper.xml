@@ -10,6 +10,8 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select * from recruit where reg_date &lt;= now() order by reg_date desc limit
 		#{start}, #{limit}
 	</select>
+	
+	
 
 	<select id="allrecruitList" resultType="recruitDTO"
 		parameterType="recruitDTO">
@@ -88,7 +90,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		recruit_magam , cnt, realMagam )
 		values
 		(1, #{cname}, #{recruitTitle}, #{cid}, #{recruitContent},
-		#{recruitUpfile}, #{regDate},#{recruitMoney}, #{recruitMtype}, #{recruitLocation},
+		#{recruitUpfile}, sysdate(),#{recruitMoney}, #{recruitMtype}, #{recruitLocation},
 		#{recruitMagam},0,
 		#{realMagam})
 	</insert>

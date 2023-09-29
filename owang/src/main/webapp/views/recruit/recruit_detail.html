@@ -53,6 +53,16 @@
 	            
 	         </td>
 	      </tr>
+	      
+	      <tr>
+	         <td>급여</td>
+	         <td>
+	            <span th:if="${dto.recruitMtype == '월급'}">월급</span>
+	            <span th:if="${dto.recruitMtype == '연봉'}">연봉</span>
+	            [[${dto.recruitMoney}]] 만원
+	         </td>
+	      </tr>
+	      
 	      <tr>
 	         <td>채용시작일</td>
 	         <td th:text="${dto.regDate}" />
@@ -65,6 +75,7 @@
 	         <td>조회수</td>
 	         <td th:text="${dto.cnt} + '건'"  />
 	      </tr>
+        
 	
 	      <tr th:if="${dto.recruitUpfile != null}">
 	
@@ -77,14 +88,7 @@
 	         </td>
 	      </tr>
 	      <!--급여추가-->
-	      <tr>
-	         <td>급여</td>
-	         <td>
-	            <span th:if="${dto.recruitMtype == '월급'}">월급</span>
-	            <span th:if="${dto.recruitMtype == '연봉'}">연봉</span>
-	            [[${dto.recruitMoney}]] 만원
-	         </td>
-	      </tr>
+	    
 	      <tr>
 	         <td id="content">상세내용</td>
 	         <td th:text="${dto.recruitContent}" id="content"/>

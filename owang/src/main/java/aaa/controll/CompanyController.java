@@ -24,6 +24,7 @@ import aaa.model.MCompanyDTO;
 import aaa.model.PageData;
 import aaa.model.PaymentResponseMember.Payment;
 import aaa.model.RecruitDTO;
+import aaa.model.ReviewDTO;
 import aaa.model.SoloDTO;
 import aaa.model.SoloResumeDTO;
 import aaa.service.CompanyApplicantMapper;
@@ -32,6 +33,7 @@ import aaa.service.MCompanyMapper;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
 import aaa.service.RecruitMapper;
+import aaa.service.ReviewMapper;
 import aaa.service.SoloApplicantMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,19 +55,23 @@ public class CompanyController {
 
 	@Resource
 	CompanyApplicantMapper applicantMapper;
+	
+	@Resource
+	ReviewMapper revzMapper;
 
 	@RequestMapping("/list/{cid}/{page}") //회사 공고페이지
 	String comRecruitList(Model mm, HttpSession session, RecruitDTO dto, @PathVariable("page") int page,
 			@PathVariable("cid") String cid,PageData pd) {
 		String sessioncid = (String) session.getAttribute("cid");
-
-		if (sessioncid == null) {
-			pd.setMsg("기업회원만 이용가능합니다");
-			pd.setGoUrl("/");
-			return "solo_resume/alert";
+		
+		
+		if (sessioncid != null && sessioncid.equals(cid)) {
+			int self = 1;
+			mm.addAttribute("self", self);
 		}
 		//회사이름가져오기
 		String zzcname = cccmapper.getzzcname(cid);
+		
 		// 오늘 날짜 보기
 		Date today = new Date();
 		// 데이터 상세보기
@@ -140,7 +146,6 @@ public class CompanyController {
 	}
 
 	// 기업
-
 	@RequestMapping("mypage")
 	String detaizlmy(Model mm, HttpSession session,PageData pd) {
 		String cid = (String) session.getAttribute("cid");
@@ -151,6 +156,8 @@ public class CompanyController {
 			pd.setGoUrl("/");
 			return "solo_resume/alert";
 		}
+		String zzcname = cccmapper.getzzcname(cid);
+		mm.addAttribute("zzcname", zzcname); // "채용 마감" 탭 페이지 정보
 		mm.addAttribute("dto", cccmapper.deatilCompany(cid));
 
 		return "company/detailmypage";
@@ -159,30 +166,34 @@ public class CompanyController {
 	// 채용 리스트
 		// 기업관리
 		// 기업정보상세보기
-		@RequestMapping("detail/{cid}")
-		String detail(@PathVariable String cid, MCompanyDTO cDTO, Model mm, RecruitDTO dto,HttpSession session) {
-			Date today = new Date();
-			//타입처리해주기
-			List<RecruitDTO> alldata = remapper.recruitCompanyDetail(dto);
-			Integer ctype = (int) cccmapper.getctype(cid);
-			for (RecruitDTO recruit : alldata) {
-				// 공고의 회사 타입 불러오기
-				Date ccdate = recruit.realMagam;
-				if (ccdate.before(today) || ctype == 1) {
-					recruit.setRtype(2);
-					remapper.updateRtype(recruit);
-				}else if(ctype == 2 && !ccdate.before(today)){
-					recruit.setRtype(1);
-					remapper.updateRtype(recruit);
-				}
+	@RequestMapping("detail/{cid}")
+	String detail(@PathVariable String cid,ReviewDTO rdto,MCompanyDTO cDTO, Model mm, RecruitDTO dto,HttpSession session) {
+		Date today = new Date();
+		//타입처리해주기
+		List<RecruitDTO> alldata = remapper.recruitCompanyDetail(dto);
+		Integer ctype = (int) cccmapper.getctype(cid);
+		for (RecruitDTO recruit : alldata) {
+			// 공고의 회사 타입 불러오기
+			Date ccdate = recruit.realMagam;
+			if (ccdate.before(today) || ctype == 1) {
+				recruit.setRtype(2);
+				remapper.updateRtype(recruit);
+			}else if(ctype == 2 && !ccdate.before(today)){
+				recruit.setRtype(1);
+				remapper.updateRtype(recruit);
 			}
-			List<RecruitDTO> openData = remapper.recruitCompanyOpen(cid);
-			System.out.println(openData);
-			mm.addAttribute("mainData", openData);
-			mm.addAttribute("dto", cccmapper.deatilCompany(cid));
-
-			return "company/detail";
 		}
+		//기업리뷰가져오기
+		int reviewcount = revzMapper.cccnt(cid);
+		List<RecruitDTO> openData = remapper.recruitCompanyOpen(cid);
+		List<ReviewDTO> revData = revzMapper.reviewzzList(cid);
+		System.out.println(openData);
+		mm.addAttribute("mainData", openData);
+		mm.addAttribute("dto", cccmapper.deatilCompany(cid));
+		mm.addAttribute("revData", revData);
+		mm.addAttribute("revcount",reviewcount);
+		return "company/detail";
+	}
 
 	// 기업정보수정
 

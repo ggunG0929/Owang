@@ -23,6 +23,8 @@
    </div>
    
 <div class="wrap">
+	<!--검색 div-->
+	<div class="search">
    <form action="/recruit/search" method="get">
       <select name="searchOption" id="select">
          <option value="all">전체</option>
@@ -35,6 +37,7 @@
 		  <i class="fa-solid fa-magnifying-glass fa-beat-fade" style="color:  rgb(45, 101, 242);">&nbsp검색</i>
 	  </button>
    </form>
+   </div>
 
    <!-- 탭 -->
    <ul class="tabs">
@@ -54,17 +57,17 @@
             <td>채용마감일</td>
             <td>조회수</td>
 <!--            <td>기업아이디(본편에선제거)</td>-->
-            <td>공고누적수</td>
+            <td>지원자수</td>
             
          </tr>
          <tr th:each="dto, dtoStat : ${openData}">
             <td th:text="${dtoStat.count + recruitDTO.start}" />
             <td>
                <a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|"
-                  th:text="${dto.recruitTitle}"></a>
+                  th:text="${dto.recruitTitle}" class= "hoverTitle"></a>
             </td>
             <td>
-               <a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
+               <a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}" class= "hoverCompany"></a>
             </td>
             <td th:text="${dto.regDate}" />
             <td th:text="${dto.realMagam}" />

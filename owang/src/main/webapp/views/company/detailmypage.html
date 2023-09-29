@@ -23,13 +23,15 @@
 		<div class="footer-box"> <!-- Container -->
 			
 
-			<h1 style="font-size: 55px; color: rgb(52 54 63); margin-left: 10px;	margin-bottom: 55px;">기업정보페이지</h1>
-
-
-
+			<h1 style="font-size: 20px; margin-left: 10px; color: rgb(52 54 63);">기업회원 정보페이지</h1>
+		<h1 style="font-size: 60px; color: rgb(52 54 63); margin-left: 20px;	margin-bottom: 55px;">
+	[[${zzcname}]]</h1>
+						<hr>
 			<!-- 개인일때는 수정삭제가능ㄴ -->
+			<br>
+			<br>
 			<table border="">
-
+		
 				<tr>
 					<th>기업이름</th>
 					<td th:text="${dto.cname}" />
@@ -65,7 +67,12 @@
 				</tr>
 				<tr>
 					<th>한해 매출액</th>
-					<td th:text="|${dto.csales}(단위:백만원)|" />
+				<td th:text="|${dto.formattedCsales}원|"></td>
+
+
+
+
+
 				</tr>
 				<tr>
 					<th>이메일</th>
@@ -91,11 +98,11 @@
 				</tr>
 				<tr>
 					<th>회사소개</th>
-					<td th:text="${dto.ccontent}" />
+					<td class="alot" th:text="${dto.ccontent}" />
 				</tr>
 				<tr>
 					<th>복지 및 혜택</th>
-					<td th:text="${dto.cwelfare}" />
+					<td class="alot" th:text="${dto.cwelfare}" />
 				</tr>
 				<tr th:if="${session.cid == dto.cid}">
 					<th>사업자증명서</th>

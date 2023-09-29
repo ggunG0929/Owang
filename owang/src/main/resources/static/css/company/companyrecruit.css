@@ -133,7 +133,14 @@ img.position-img {
 .bUigRG {
 	margin: 64px 0px 40px;
 }
-
+.zzh2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 30px;
+    background: #ff460a;
+    margin-right: 10px; /* 세로선과 텍스트 사이의 간격 조절 */
+}
 .bUigRG h2 {
 	margin-top: 10px;
 	margin-bottom: 5px;
@@ -165,7 +172,7 @@ img.position-img {
 
 
 	background: rgb(255, 255, 255);
-	cursor: pointer;
+	
 }
 
 .main-aside {
@@ -274,19 +281,20 @@ img.position-img {
 /* 모든 링크에서 밑줄 없애기 */
 a {
 	text-decoration: none;
+	color:rgb(0, 0, 0);
 }
 
 #zzz {
 	font-size: 35px;
-	color: gold;
+	color: rgb(255 120 0);
 
 
 
 }
 
 #zzz:hover {
-	font-size: 40px;
-	color: rgb(255, 255, 19);
+	
+	color: rgb(252, 171, 3);
 }
 
 .material-icons {

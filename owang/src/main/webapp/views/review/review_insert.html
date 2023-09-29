@@ -4,16 +4,23 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	<link rel="stylesheet" th:href="@{/css/review/insertmod.css}">
+	  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+	
 </head>
 
 <body>
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-	<h1> 리뷰 작성 페이지 </h1>
+	<main class="content-box">
+
+		<div class="footer-box"> <!-- Container -->
+	<h1 style="font-size: 55px; color: rgb(52 54 63); margin-left: 10px;	margin-bottom: 55px;">리뷰 작성</h1>
+
+	
 	<form action="" method="post" th:object="${reviewDTO}">
-		[[${reviewDTO}]]<br>
-		[[${mainData}]]<br>
+	
 		<input type="hidden" th:field="*{cid}" />
 		<table border="">
 			<tr>
@@ -49,22 +56,26 @@
 				<td><textarea type="text" rows="10" cols="30" th:field="*{rvdan}" required /></td>
 			</tr>
 			<tr align="center">
-				<td>
-					<a th:href="|/review/list/${reviewDTO.cid}/${reviewDTO.page}|">뒤로가기</a>
-				</td>
 				
-				<td>
+				
+				<td colspan="2">
 					<input type="submit" value="전송" /> 
 				</td>
 			</tr>
 
 		</table>
+		
+					
+						<a   th:href="|/review/list/${reviewDTO.cid}/${reviewDTO.page}|" #2D65F2; i class="fa-solid fa-reply" style=" margin-left: 80px; margin-top: 20px; color: #000000; font-size: 40px;" id="before"></a>
+					
+				
 	</form>
 
-	<footer>
-       <div th:insert="~{footer :: footer}"></div>
-    </footer>
+		</div>
+	</main>
     
 </body>
-
+<footer>
+       <div th:insert="~{footer :: footer}"></div>
+    </footer>
 </html>

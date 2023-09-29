@@ -26,8 +26,8 @@
 
 			<th:block th:if="${self == 1}">
 
-				<h3 style="margin-left: 65%;">채용중인 공고는 5개까지 작성가능합니다.</h3>
-				<h2 style="margin-left: 85%; color: #fff;"><a href="/recruit/insert/1">공고 등록<i id="zzz"
+				<h3 style="margin-left: 65%;">채용중인 공고는 <span style="color: #ff460a;">5개</span>까지 작성가능합니다.</h3>
+				<h2  style="margin-left: 82%;"><a id="zzz" href="/recruit/insert/1">공고 등록<i  
 							class="material-icons">edit</i></a></h2>
 			</th:block>
 			<hr>
@@ -86,9 +86,9 @@
 				<th:block th:each="rdto, dtoStat : ${closeData}">
 					<div class="gldqWV">
 
-						<div class="recruitbox">
+						<div  class="recruitbox">
 
-							<div class="rboxtext">
+							<div style="background-color: rgb(225, 225, 225);" class="rboxtext">
 
 								<div class="cWcLZK">
 									<div class="recruitdate"><span><i class="material-icons">zoom_in</i>조회 :
@@ -140,10 +140,21 @@
 				<a th:if="${closeDto.pageEnd < closeDto.pageTotal}" th:href="${closeDto.pageTotal}" th:text="'[맨끝]'"
 					class="pagination-link" />
 			</div>
-
+			<span><a style="margin-left: 0px; margin-top: 20px; color: #000000; font-size: 20px;"
+					href="javascript:goBack()"><i
+						style="margin-left: 0px; margin-top: 20px; color: #000000; font-size: 40px;"
+						class="material-icons">arrow_back</i>이전 페이지로</a></span>
 
 		</div>
 	</main>
+	
+<script>
+	
+		function goBack() {
+			window.history.back();
+		}
+
+	</script>
 </body>
 <footer>
        <div th:insert="~{footer :: footer}"></div>

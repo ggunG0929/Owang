@@ -12,6 +12,15 @@
 			font-family:  'Noto Sans KR', sans-serif;
 		}
 		
+		a{
+			color: black;
+			text-decoration: none;
+		}
+		
+		a:hover{
+			text-decoration: underline;
+		}
+		
 		/* 로그인 옆 슬라이드 */
 		.section {
 			box-sizing: border-box;
@@ -329,13 +338,13 @@
 		
 		#joinsolo{
 			border: none;
-			background-color: rgb(255, 99, 132);
+			background-color:#BD0606;
 			color: white;
 			
 		}
 		#joincom{
 			border: 1px solid ;
-			background-color: rgb(128, 128, 255);
+			background-color:#222edb;
 			color: white;
 			
 		}
@@ -426,9 +435,9 @@
 					<a>
 						<div class="textbox">
 
-							<p>첫번째 슬라이드 입니다.</p>
+							
 						</div>
-						<img src="https://cdn.jumpit.co.kr/home_contents/main_banner/20230919/v_home_img_mainbanner_1.png">
+						<img src="up/메인1.jpg" >
 					</a>
 				</li>
 				<li class="slideitem">
@@ -436,19 +445,20 @@
 
 						<div class="textbox">
 
-							<p>두번째 슬라이드 입니다.</p>
+							
 						</div>
-						<img src="https://cdn.jumpit.co.kr/home_contents/main_banner/20230919/v_home_img_mainbanner_2.png">
+						<img src="up/메인2.jpg" >
 					</a>
 				</li>
 				<li class="slideitem">
 					<a>
 
 						<div class="textbox">
-
-							<p>세번째 슬라이드 입니다.</p>
+							
+						
+							
 						</div>
-						<img src="up/변경3.png" style="  filter: brightness(50%);">
+						<img src="up/메인3.jpg" >
 					</a>
 				</li>
 
@@ -498,10 +508,10 @@
        <th:block th:if="${session['cid'] != null}">
 		   
             <div class="login_title">
-				
 				<p id="companytitle" th:text="|${session['companysession'].cname}+님 반가워요|"></p>
-				<span id="companyout" onclick=" window.location.href = '/login/logout'">로그아웃</button>
+				<span id="companyout" onclick=" window.location.href = '/login/logout'">로그아웃</span>
 			</div>
+			<p th:text="|${session['companysession'].cemail}|" style="clear: both;"/>
 			<div id="companySkil">
 				
 				<a th:href="|/recruit/insert/${recruitDTO.page}|">
@@ -522,8 +532,9 @@
 			
             <div class="login_title">
 				<p id="companytitle" th:text="|${session['solosession'].sname}+님 반가워요|"></p>
-				<span id="companyout" onclick=" window.location.href = '/login/logout'">로그아웃</button>
+				<span id="companyout" onclick=" window.location.href = '/login/logout'">로그아웃</span>
 			</div>
+			<p th:text="|${session['solosession'].semail}|" />
 			<div id="companySkil">
 				
 				<a href="/solo_resume/write">
@@ -599,7 +610,7 @@
 				let optiondata = selectedOption.getAttribute('data-url');
 				console.log(inputdata);
 				console.log(optiondata);
-				window.open(optiondata); // 올바른 URL을 가져와서 열도록 수정
+				window.open(optiondata);
 			} else {
 				alert("선택된 기업이 없습니다.");
 			}
@@ -725,10 +736,14 @@
 		<ul>
 			<th:block th:each="dto, dtoStat : ${openData}" th:count="9">
 				<li th:class="'item item' + ${dtoStat.index + 1}">
-					<div class="image" th:style="'background-image: url(up/' + ${dto.recruitUpfile} + ');'">사진</div>
+					
+					<div class="image" th:style="'background-image: url(up/작은채용.jpg);'"
+					  th:if="${dto.recruitUpfile == null}" >사진</div>
+					<div class="image" th:style="'background-image: url(up/' + ${dto.recruitUpfile} + ');'"
+					th:unless="${dto.recruitUpfile == null}">사진</div>
 					<div class="cont">
 						<strong th:text="${dto.recruitTitle}"></strong>
-						<p>내용이 들어갑니다.</p>
+						<p th:text="${dto.cname}" />
 						<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|">바로가기</a>
 					</div>
 				</li>

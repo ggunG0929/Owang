@@ -57,8 +57,13 @@
 		<div id="rcpass">   
 			<!-- 합격여부 -->
 			<li th:if="${adto.apcancel != 1}">
-			    <span th:if="${adto.apread == 0}">미열람</span>
-			    <span th:if="${adto.apread == 1 and adto.appass == 0}">열람완료</span>
+				<span th:if="${adto.apread == 0}">
+					<span class="material-symbols-outlined" style="color: rgb(45, 101, 242); font-size: 17px;">
+						check_circle
+					</span>
+					지원완료 &nbsp;<span style="font-size: 16px; color: #ccc; position: relative; bottom: 2px;">|</span>&nbsp; 미열람
+				</span>
+				<span th:if="${adto.apread == 1 and adto.appass == 0}">열람완료</span>
 			    <span th:if="${adto.apread == 1 and adto.appass == 1}" style="color: blue;">합격</span>
 			    <span th:if="${adto.appass == 2}" style="color: red;">불합격</span>
 			</li>

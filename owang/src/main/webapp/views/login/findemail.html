@@ -56,7 +56,7 @@
             });
         }
 		function confirmNumber() {
-			var number1 = $("#number").val();
+			var number1 = $("#number").val().trim(); // 입력 값에서 공백 제거
 			var number2 = $("#Confirm").val();
 			var csuserid = /*[[${csuserid}]]*/ null;
 			if (number1 == number2) {

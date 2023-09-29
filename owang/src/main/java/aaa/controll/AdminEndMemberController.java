@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import aaa.model.ApplicantDTO;
 import aaa.model.MCompanyDTO;
+import aaa.model.PaymentDTO;
 import aaa.model.RecruitDTO;
+import aaa.model.ReviewDTO;
 import aaa.model.SoloDTO;
 import aaa.service.AdminCompanyMapper;
 import aaa.service.AdminSolo;
 import aaa.service.EndCompanyMapper;
 import aaa.service.EndSoloMapper;
+import aaa.service.PayMapper;
+import aaa.service.ReviewMapper;
 import aaa.service.SoloMapper;
 import jakarta.annotation.Resource;
 
@@ -27,6 +31,12 @@ public class AdminEndMemberController {
 	
 	@Resource
 	EndCompanyMapper endCompanyMapper;
+	
+	@Resource
+	ReviewMapper reviewMapper;
+	
+	@Resource
+	PayMapper payMapper;
 	
 	// 개인탈퇴회원
 	@RequestMapping("endsolo/{page}")
@@ -57,21 +67,41 @@ public class AdminEndMemberController {
 	
 	// 기업 상세보기
 	@RequestMapping("endcompany/detail/{cid}")
-	String endCompanyDetail( Model mm, MCompanyDTO mdto,@PathVariable String cid) {
+	String endCompanyDetail( Model mm,
+			MCompanyDTO mdto,
+			@PathVariable String cid,
+			ReviewDTO redto) {
 		List<RecruitDTO> data = endCompanyMapper.endRecruitRealList(cid);
 		mm.addAttribute("mainData",data);
+		
+		redto.calc(reviewMapper.reviewCnt(cid));
+		System.out.println( reviewMapper.reviewCnt(cid) + "개수" );
+	
+		List<ReviewDTO> redata =reviewMapper.reviewList2(cid);
+		System.out.println(redata); 
+		mm.addAttribute("reData",redata);
+		
+		List<PaymentDTO> pay = payMapper.endpay(cid);
+		mm.addAttribute("pay",pay);
+		
 		return "admin/endmember/companyDetail";
 	}
 	
 	// 기업 지원자 상세보기
 	@RequestMapping("appnum/detail/{cid}/{recruit_title}")
-	String appnumDeatil( Model mm, MCompanyDTO mdto,@PathVariable String cid,@PathVariable String recruit_title,ApplicantDTO dto) {
+	String appnumDeatil( Model mm,
+			MCompanyDTO mdto,
+			@PathVariable String cid,
+			@PathVariable String recruit_title,
+			ApplicantDTO dto
+			) {
 		System.out.println("ApplicantDTO" + dto);
 		System.out.println("MCompanyDTO" + mdto);
 		RecruitDTO rdto = endCompanyMapper.endrecruitone(recruit_title);
 		
 		List<ApplicantDTO> adto = endCompanyMapper.endApplicantList(rdto.cid,rdto.recruitTitle);
 		mm.addAttribute("mainData",adto);
+
 		return "admin/endmember/appnum";
 	}
 	

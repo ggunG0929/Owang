@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>회원상품관리</title>
 </head>
+<link rel="stylesheet" th:href="@{/css/solo_payment/payment.css}">
 <script>
 	function goBack() {
 		window.history.back();
@@ -12,44 +13,55 @@
 </script>
 
 <body>
-	<header>
-		<div th:insert="~{header :: header}"></div>
-	</header>
-	<a href="javascript:goBack()">이전 페이지</a>
-	<!-- 유효기간이 오늘보다 이후일 경우 -->
-	<th:block th:if="${date != null}">
+<header>
+	<div th:insert="~{header :: header}"></div>
+</header>
+<!-- 유효기간이 오늘보다 이후일 경우 -->
+<div id="solo_payment">
+	<div id="have_product" th:if="${date != null}">
 		<h3>현재 적용중인 상품은 [[${#dates.format(date, 'yyyy-MM-dd')}]] 23시 59분까지 유효합니다.</h3>
-	</th:block>
-	<h1>회원 결제내역</h1>
-	<table border="">
+	</div>
+	<div id="payment_text">
+		<span>결제내역</span>		
+	</div>
+	<table id="payment_list">
 		<thead>
 			<tr>
-				<th>주문번호</th>
 				<th>상품명</th>
-				<th>결제금액</th>
-				<th>대행사</th>
+				<th>주문번호</th>
 				<th>결제일</th>
-				<th>상태</th>
+				<th>결제상태</th>
+				<th colspan="2">결제금액</th>
 				<th>결제문의</th>
 			</tr>
 		</thead>
 		<tbody>
 			<th:block th:if="${paymentData}!=null">
 				<tr th:each="payment : ${paymentData}">
-					<td th:text="${payment.imp_uid}"></td>
+					<!-- 상품명 -->
 					<td th:text="${payment.name}"></td>
+					<!-- 주문번호 -->			
+					<td th:text="${payment.imp_uid}"></td>
+					<!-- 결제일자 -->
+					<th:block th:unless="${payment.status=='완료'}">
+						<td th:text="${payment.cancelled_at}" ></td>
+						<td th:text="${payment.status}" th:style="${payment.status == '결제취소' ? 'color: rgb(255, 98, 98);' : (payment.status == '결제완료' ? 'color: rgb(75, 136, 250);' : (payment.status == '결제실패' ? 'color: rgb(102, 102, 102);' : ''))}"></td>
+					</th:block>
+					<!-- 결제금액 -->
 					<td th:text="${payment.formatAmount}"></td>
+					<!-- 대행사 -->
 					<td th:text="${payment.pg_provider}"></td>
+					<!--주문상태 -->
 					<th:block th:if="${payment.status=='완료'}">
 						<td th:text="${payment.paid_at}"></td>
 						<td><a th:href="${payment.receipt_url}"
 								onclick="window.open(this.href, '매출전표', 'width=450,height=450'); return false;"
 								target="_blank">완료</a></td>
-					</th:block>
-					<th:block th:unless="${payment.status=='완료'}">
-						<td th:text="${payment.cancelled_at}"></td>
-						<td th:text="${payment.status}"></td>
-					</th:block>
+					</th:block>		
+					
+					
+					
+					<!-- 결제문의 -->
 					<td><a th:href="|/ask/insert/1/${payment.imp_uid}|"
 							onclick="event.preventDefault(); alert('결제문의를 작성하셔야 해당 결제의 주문번호가 자동으로 첨부됩니다'); window.location.href = this.href;">결제문의</a>
 					</td>
@@ -62,6 +74,7 @@
 			</th:block>
 		</tbody>
 	</table>
+</div>
 	<footer>
 		<div th:insert="~{footer :: footer}"></div>
 	</footer>

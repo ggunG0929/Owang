@@ -132,6 +132,39 @@
 					</td>
 				</tr>
 			</table>
+			<h1>리뷰</h1>
+
+			<table>
+				<th>작성자</th>
+				<th>제목</th>
+				<th>장점</th>
+				<th>단점</th>
+
+				<tr th:each="dto : ${reData}">
+					<td th:text="${dto.sid}" />
+					<td th:text="${dto.rvtitle}" />
+					<td th:text="${dto.rvjang}" />
+					<td th:text="${dto.rvdan}" />
+				</tr>
+
+			</table>
+
+			<h1>결제</h1>
+
+			<table>
+				<th>거래번호</th>
+				<th>상품명</th>
+				<th>상품금액</th>
+				<th>결제요청</th>
+
+				<tr th:each="pay : ${pay}" th:if="${pay.amount > 0}">
+					<td th:text="${pay.impUid}" />
+					<td th:text="${pay.pname}" />
+					<td th:text="${pay.amount}" />
+					<td th:text="${pay.paidAt}" />
+
+				</tr>
+			</table>
 			<a href="javascript:goBack()">이전 페이지로</a>
 		</div>
 	</container>

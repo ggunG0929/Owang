@@ -59,7 +59,7 @@
 		<div id="scdelete">
 			<li>
 				 <input type="hidden" th:value="${scdto.scid}" name="scid"/>
-				 <a th:href="'/solo_scrab/delete/' + ${scdto.scid}">
+				 <a th:href="'/solo_scrab/delete/' + ${scdto.scid}" onclick="return confirm('삭제를 진행하시겠습니까?')">
 					 <span class="material-symbols-outlined">delete</span>
 				 </a>
 			 </li>

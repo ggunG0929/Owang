@@ -192,7 +192,7 @@ nav ul li ul{
     /* 하위 메뉴 위치조정 */
     margin-left: -20px;
     
-    box-shadow: 5px 5px 10px rgb(244, 246, 250); /* 그림자 설정 */
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2); /* 그림자 설정 */
     opacity: 0; /* 초기에 투명도를 0으로 설정 */
     visibility: hidden; /* 초기에 보이지 않도록 설정 */
     transition: opacity 0.2s ease, visibility 0s linear 0.2s; /* 투명도 전환에는 transition 적용 */
@@ -244,6 +244,7 @@ nav ul ul li a:hover {
     padding-top: 10px;
     padding-bottom: 2px;
 }
+
 #menu-member li{
 	list-style: none;
 	font-family:  'Noto Sans KR', sans-serif;
@@ -256,7 +257,7 @@ nav ul ul li a:hover {
 	color: rgb(55, 63, 87);
 	font-size: 15px;
 }
-	
+	/*
 #menu-member #menu-login::after{
 	content: "|";
 	font-size: 14px;
@@ -265,7 +266,7 @@ nav ul ul li a:hover {
 	position: relative;
 	bottom: 2px;
 }
-
+*/
 #menu-member span{
 	float: left;
 	color: rgb(55, 63, 87);

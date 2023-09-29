@@ -47,6 +47,12 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+#idemail{
+	margin-right: 50px;
+}
+#pwemail{
+	margin-right: 34px;
+}
 
 /* 인풋 스타일 */
 input[type="text"],input[type="email"],

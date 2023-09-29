@@ -148,8 +148,7 @@ function validateFile() {
 			<span>필수사항입니다</span>
 		</div>-->
         <span>이력서 제목</span>
-        <input type="text" th:field="*{rstitle}" required />
-        <input type="hidden" th:value="*{rstitle}" />
+		<input type="text" th:field="*{rstitle}" required id="rstitleInput"  maxlength="25" placeholder="제목은 20자 이내로 입력가능합니다."/>
     </div>
 	<div id="resume_info">
 		<input type="hidden" th:value="${solosession.sid}" name="sid" />
@@ -276,7 +275,7 @@ function validateFile() {
 			</button>
         </p>
         <p id="introduce" style="display: none;">
-			<textarea th:field="*{rsintroduce}" />
+			<textarea th:field="*{rsintroduce}" maxlength="300" placeholder="자기소개서는 300자 이내로 입력 가능합니다."/>
 		</p>
         <p id="rsintroduce_hide">
 	        <button onclick="hideForm()" class="btn_hide" id="hide" style="display: none;">
@@ -378,6 +377,18 @@ function validateFile() {
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>
-        
+<script>
+    var rstitleInput = document.getElementById("rstitleInput");
+
+    rstitleInput.addEventListener("input", function () {
+        var maxLength = 25;
+        if (rstitleInput.value.length > maxLength) {
+            rstitleInput.style.borderColor = "rgb(255, 98, 98)";
+        } else {
+            rstitleInput.style.borderColor = ""; // Reset to default border color
+        }
+    });
+    
+</script>         
 </body>
 </html>

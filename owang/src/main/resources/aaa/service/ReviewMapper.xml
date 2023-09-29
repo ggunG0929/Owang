@@ -9,7 +9,13 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select * from review where cid = #{cid}  order by regdate desc limit #{start}, #{limit}
 	</select>
 	
+	<select id="reviewzzList" resultType="rrDTO" parameterType="String">
+		select * from review where cid = #{cid}  order by regdate desc
+	</select>
 	
+	<select id="reviewList2" resultType="rrDTO" parameterType="string">
+		select * from review where cid = #{cid} 
+	</select>
 		
 	<select id="reviewCnt" resultType="Integer">
     	select count(*) from review where cid = #{cid}
@@ -48,6 +54,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	
 	<select id="ccnt" resultType="Integer">
     	select count(*) from review where sid = #{sid}
+	</select>
+	<select id="cccnt" resultType="Integer">
+    	select count(*) from review where cid = #{cid}
 	</select>
 	
 	<!-- 개인리뷰 리스트 -->

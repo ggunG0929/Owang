@@ -15,7 +15,9 @@ public interface ReviewMapper {
 
 	// 기업 회원 정리
 	List<ReviewDTO> reviewList(ReviewDTO dto);
-	
+	List<ReviewDTO> reviewList2(String cid);
+	//리뷰리스트
+	List<ReviewDTO> reviewzzList(String cid);
 	// 리뷰 페이지 계산
 	int reviewCnt(String cid);
 	
@@ -30,7 +32,8 @@ public interface ReviewMapper {
 	
 	// 리뷰 1개이상쓴사람
 	int ccnt(String sid);
-	
+	// 기업리뷰수
+	int cccnt(String cid);
 
 	// 개인 리뷰 리스트
 	List<ReviewDTO> soloreviewList(ReviewDTO dto);

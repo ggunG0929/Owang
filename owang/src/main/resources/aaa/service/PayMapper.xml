@@ -5,6 +5,10 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 
 <mapper namespace="aaa.service.PayMapper">
 
+<select id="endpay" parameterType="String" resultType="payDTO">
+	select * from payment where cid = #{cid}
+</select>
+
 	<select id="list" resultType="payDTO">
 		select * from payment order by
 		DATE(paid_at) desc

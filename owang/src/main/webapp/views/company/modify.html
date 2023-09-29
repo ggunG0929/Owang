@@ -15,7 +15,6 @@
 			frm.submit();
 		}
 	</script>
-
 	
 </head>
 
@@ -34,7 +33,7 @@
 				<input type="hidden" th:field="*{cid}" />
 				<table border="">
 					<tr>
-						<th>기업로고</th>
+						<th>기업수정</th>
 						<td>
 							<th:block th:if="${dto.clogo != null}">
 								<img id="logoImage" th:src="|/companylogoup/${dto.clogo}|" alt="기업 로고">

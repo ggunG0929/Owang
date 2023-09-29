@@ -22,7 +22,7 @@
 	<div id="resume_detail_wrap">
 		<!-- 이력서 제목 -->
 		<div id="rstitle">
-			<span class="material-symbols-outlined" style="transform: scaleX(-1);">format_quote</span>
+			<span class="material-symbols-outlined" style="transform: scaleX(-1)  scaleY(-1);">format_quote</span>
 			&nbsp;
 			<span th:text="${adto.aptitle}" />
 			&nbsp;
@@ -136,9 +136,15 @@
 				<span id="rslanguage_two" th:text="${adto.aplanguagelevel}"  ></span>
 			</li>
 		</div>
+		
 		</div>
+
 	</div>
-		<a href="/solo_applicant/home">목록으로</a>
+			<div id="rssubmit_date">
+			<span style="position: relative; z-index: 2;" th:text="${#dates.format(adto.apsubmitdate, 'yyyy년 MM월 dd일 지원완료')}" />
+			<img th:src="@{/css/images/stamp.png}" alt="Stamp Image" style="position: relative; z-index: 1; font-size: 16px;">
+		</div>
+	<a href="/solo_applicant/home">목록으로</a>
 </div>
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
