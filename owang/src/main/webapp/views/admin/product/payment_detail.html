@@ -147,11 +147,11 @@
 			<td th:text="${paymentData[0].status}" />
 				<!--결제실패-->
 			<th:block th:if="${paymentData[0].failed_at != '0'}">
-				<td colspan="2" th:text="'('+${paymentData[0].fail_reason+')'}" />
+				<td class="index" colspan="2" th:text="'('+${paymentData[0].fail_reason+')'}" />
 			</th:block>
 				<!--결제취소-->
 			<th:block th:if="${paymentData[0].cancelled_at != '0'}">
-				<td colspan="2" th:text="'('+${paymentData[0].cancel_reason+')'}" />
+				<td class="index" colspan="2" th:text="'('+${paymentData[0].cancel_reason+')'}" />
 			</th:block>
 			<!--결제취소버튼-->
 			<th:block th:if="${paymentData[0].cancelled_at == '0' and paymentData[0].failed_at == '0'}">
@@ -172,7 +172,7 @@
 			<th:block th:unless="${paymentData[0].cancelled_at == '0' and paymentData[0].failed_at == '0'}">
 				<td>0원</td>
 			</th:block>
-			<td>
+			<td class="index">
 				<span th:text="'= '+${paymentData[0].formatAmount}" />
 				<th:block th:if="${paymentData[0].failed_at != '0'}">
 					<span th:text="'- '+${paymentData[0].formatAmount}" />

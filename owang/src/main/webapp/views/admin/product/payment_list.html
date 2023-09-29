@@ -60,7 +60,6 @@
 		h1 {
 			width: 930px;
 			text-align: center;
-			font-size: 42px;
 		}
 
 		table {
@@ -78,6 +77,8 @@
 		}
 
 		th {
+			color: #fff;
+			background-color: #333;
 			padding: 8px;
 			border-bottom: 1px solid #999;
 		}
@@ -241,12 +242,12 @@
 			<p>총 [[${total}]]건, 총 [[${totalPages}]]페이지</p>
 			<table class="allpayment">
 				<tr>
-					<th>결제상태</th>
-					<th>거래번호</th>
+					<th style="width: 80px">결제상태</th>
+					<th style="width: 177px">거래번호</th>
 					<th class="id">회원아이디</th>
-					<th>상품명</th>
-					<th>상품금액</th>
-					<th>결제요청</th>
+					<th style="width: 204px">상품명</th>
+					<th style="width: 93px">상품금액</th>
+					<th style="width: 112px">결제요청</th>
 				</tr>
 				<th:block th:if="${paymentData != null}">
 					<tr th:each="payment : ${paymentData}">

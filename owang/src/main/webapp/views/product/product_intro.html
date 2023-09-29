@@ -6,24 +6,25 @@
 	<title>상품안내</title>
 	<style>
 		.product-temp {
+			font-family: 'Noto Sans KR', sans-serif;
 			text-align: center;
 			background-color: #fff;
 			padding: 100px 0;
 		}
 
-		.column {
-			display: flex;
-			justify-content: center;
+		#product-intro {
+			font-size: 0px;
 		}
 
 		#product-intro img {
-			width: 440px;
+			width: 800px;
 			height: auto;
 		}
 
 		.button-container {
 			text-align: center;
 			margin-top: 50px;
+			font-size: 16px;
 		}
 
 		.button {
@@ -32,14 +33,14 @@
 			cursor: pointer;
 			text-align: center;
 			text-decoration: none;
-			background-color: #4dc8d9;
+			background-color: rgb(106, 145, 244);
 			color: #fff;
 			border-radius: 5px;
 			border: none;
 		}
 
 		.button:hover {
-			background-color: #000;
+			background-color: rgb(65, 70, 89);
 		}
 	</style>
 </head>
@@ -49,20 +50,11 @@
 		<div th:insert="~{header :: header}"></div>
 	</header>
 	<div class="product-temp">
-
 		<div id="product-intro">
-			<div class="row">
-				<div class="column">
-					<img th:src="@{/css/images/prodinthanji1.jpg}" alt="상품안내1">
-					<img th:src="@{/css/images/prodinthanji2.jpg}" alt="상품안내2">
-				</div>
-			</div>
-			<div class="row">
-				<div class="column">
-					<img th:src="@{/css/images/prodinthanji3.jpg}" alt="상품안내3">
-					<img th:src="@{/css/images/prodinthanji4.jpg}" alt="상품안내4">
-				</div>
-			</div>
+			<img th:src="@{/css/images/prodinthanji1.jpg}" alt="상품안내1">
+			<img th:src="@{/css/images/prodinthanji2.jpg}" alt="상품안내2">
+			<img th:src="@{/css/images/prodinthanji3.jpg}" alt="상품안내3">
+			<img th:src="@{/css/images/prodinthanji4.jpg}" alt="상품안내4">
 			<div class="button-container">
 				<a href="/product/notice" class="button">상품신청하러가기 ></a>
 			</div>

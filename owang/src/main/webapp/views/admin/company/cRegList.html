@@ -1,210 +1,227 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-	/* 전체 페이지 스타일 */
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+		/* 전체 페이지 스타일 */
 
 
-h1 {
-    text-align: center;
+		h1 {
+			width: 930px;
+			text-align: center;
 
-}
+		}
 
-/* 검색 폼 스타일 */
-form {
-    text-align: center;
-    margin-bottom: 20px;
-}
+		/* 검색 폼 스타일 */
+		form {
+			text-align: center;
+			margin-bottom: 20px;
+		}
 
-select, input[type="text"], button {
-    padding: 5px;
-    margin: 5px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-}
+		select,
+		input[type="text"],
+		button {
+			padding: 5px;
+			margin: 5px;
+			border: 1px solid #ddd;
+			border-radius: 3px;
+		}
 
-/* 테이블 스타일 */
-table {
-    width: 1000px;
-    border-collapse: collapse;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
+		/* 테이블 스타일 */
+		table {
+			width: 910px;
+			margin: 0 10px 20px 10px;
+			border-collapse: collapse;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+		}
 
-th, td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-th{
-	text-align: center;
-}
-td:last-child{
-	text-align: center;
-}
+		th,
+		td {
+			padding: 10px;
+			text-align: left;
+			border: 1px solid #ddd;
+		}
 
-th {
-    background-color: #333;
-    color: #fff;
-}
+		th {
+			text-align: center;
+		}
 
-/* 링크 스타일 */
-a {
-    text-decoration: none;
-    color: #007bff;
-    transition: color 0.2s;
-}
+		td:last-child {
+			text-align: center;
+		}
 
-a:hover {
-    color: #0056b3;
-}
+		th {
+			background-color: #333;
+			color: #fff;
+		}
 
-/* 삭제 버튼 스타일 */
-.delete-button {
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 3px;
-}
+		/* 링크 스타일 */
+		a {
+			text-decoration: none;
+			color: #007bff;
+			transition: color 0.2s;
+		}
 
-.delete-button:hover {
-    background-color: #c82333;
-}
+		a:hover {
+			color: #0056b3;
+		}
 
-/* 페이지 네비게이션 스타일 */
-.pagination {
-    text-align: center;
-    margin-top: 20px;
-}
+		/* 삭제 버튼 스타일 */
+		.delete-button {
+			background-color: #dc3545;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+		}
 
-.pagination a {
-    text-decoration: none;
-    color: #007bff;
-    margin: 0 5px;
-}
+		.delete-button:hover {
+			background-color: #c82333;
+		}
 
-.pagination a.current {
-    font-weight: bold;
-}
+		/* 페이지 네비게이션 스타일 */
+		.pagination {
+			text-align: center;
+			margin-top: 20px;
+		}
 
-/* 링크 스타일 */
-a {
-    text-decoration: none;
-    color: #007bff;
-    transition: color 0.2s;
-}
+		.pagination a {
+			text-decoration: none;
+			color: #007bff;
+			margin: 0 5px;
+		}
 
-a:hover {
-    color: #0056b3;
-}
+		.pagination a.current {
+			font-weight: bold;
+		}
 
-</style>
+		/* 링크 스타일 */
+		a {
+			text-decoration: none;
+			color: #007bff;
+			transition: color 0.2s;
+		}
+
+		a:hover {
+			color: #0056b3;
+		}
+	</style>
 </head>
+
 <body>
-	<th:block th:replace="~{admin/adheader}"/>
+	<container id="container">
+		<th:block th:replace="~{admin/adheader}" />
+		<div class="main">
+			<h1>승인 기업</h1>
+			<form action="/admin_company/search" method="get">
+				<select name="searchOption">
+					<option value="all">전체</option>
+					<option value="cname">기업 이름</option>
+					<option value="ccid">기업 아이디</option>
+					<option value="cceo">대표 이름</option>
+					<option value="ccall">내용</option>
+				</select>
+				<input type="text" name="keyword" placeholder="검색어 입력">
+				<button type="submit">검색</button>
+			</form>
+			<table border="">
+				<tr>
+					<th>번호</th>
+					<th>기업 상세 페이지</th>
+					<th>기업아이디</th>
 
-	<h1>승인 기업</h1>
-	<form action="/admin_company/search" method="get">
-	<select name="searchOption">
-		<option value="all">전체</option>
-		<option value="cname">기업 이름</option>
-		<option value="ccid">기업 아이디</option>
-		<option value="cceo">대표 이름</option>
-		<option value="ccall">내용</option>
-	</select>
-	<input type="text" name="keyword" placeholder="검색어 입력">
-	<button type="submit">검색</button>
-	</form>
-	<table border="">
-		<tr>
-			<th>번호</th>
-			<th>기업 상세 페이지</th>
-			<th>기업아이디</th>
-			
-			
-			<th>회원 구분</th>
-			<th>간편 탈퇴</th>
-		</tr>
-		<tr th:each="dto, dtoStat : ${realData}">
-			<td th:text="${dtoStat.count + MCompanyDTO.start}"/>
-			<td >
-				<a th:href="|/admin_company/detail/${MCompanyDTO.page}/${dto.cno}|" th:text="${dto.cname}"></a>
-			</td>
-			<td th:text="${dto.cid}" >
-				
-			</td>
-			<td >
-				<span th:if="${dto.ctype == 2}" th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></span>
-				<span th:unless="${dto.ctype == 2}" th:text="일반회원"></span>
-			</td>
-		
-		
-			<td align="center">
-				<a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')" th:text="삭제">삭제</a>
 
-			</td>
-			
-		</tr>
-		<tr>
-			<td colspan="6" align="center">
-				<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
-				<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.page-MCompanyDTO.page}+1" th:text="'[처음]'"/>
-				
-				<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.pageStart - 1}" th:text="'[이전]'"/>			
-				<th:block th:each="no: ${#numbers.sequence(MCompanyDTO.pageStart, MCompanyDTO.pageEnd)}" >
-					<span th:if="${no==MCompanyDTO.page}" th:text="${no}"/>
-					<a th:unless="${no==MCompanyDTO.page}" th:href="${no}" th:text="${no}"/>
-				</th:block>
-				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageEnd + 1}" th:text="'[다음]'"/>
-				<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageTotal}" th:text="'[맨끝]'"/>
-			</td>
-		</tr>
-	
-	</table>
-		<a href="/admin_company/list/1">전체보기</a>
-	<a href="/admin_company/cRegList/1">승인기업</a>
-	<a href="/admin_company/cMiList/1">미승인기업</a>
-	
+					<th>회원 구분</th>
+					<th>간편 탈퇴</th>
+				</tr>
+				<tr th:each="dto, dtoStat : ${realData}">
+					<td th:text="${dtoStat.count + MCompanyDTO.start}" />
+					<td>
+						<a th:href="|/admin_company/detail/${MCompanyDTO.page}/${dto.cno}|" th:text="${dto.cname}"></a>
+					</td>
+					<td th:text="${dto.cid}">
+
+					</td>
+					<td>
+						<span th:if="${dto.ctype == 2}"
+							th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></span>
+						<span th:unless="${dto.ctype == 2}" th:text="일반회원"></span>
+					</td>
+
+
+					<td align="center">
+						<a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')"
+							th:text="삭제">삭제</a>
+
+					</td>
+
+				</tr>
+				<tr>
+					<td colspan="6" align="center">
+						<!-- 현재값에서 현재값 빼주고 더하기 1한거 -->
+						<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.page-MCompanyDTO.page}+1"
+							th:text="'[처음]'" />
+
+						<a th:if="${MCompanyDTO.pageStart > 1}" th:href="${MCompanyDTO.pageStart - 1}"
+							th:text="'[이전]'" />
+						<th:block th:each="no: ${#numbers.sequence(MCompanyDTO.pageStart, MCompanyDTO.pageEnd)}">
+							<span th:if="${no==MCompanyDTO.page}" th:text="${no}" />
+							<a th:unless="${no==MCompanyDTO.page}" th:href="${no}" th:text="${no}" />
+						</th:block>
+						<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageEnd + 1}"
+							th:text="'[다음]'" />
+						<a th:if="${MCompanyDTO.pageEnd < MCompanyDTO.pageTotal}" th:href="${MCompanyDTO.pageTotal}"
+							th:text="'[맨끝]'" />
+					</td>
+				</tr>
+
+			</table>
+			<a href="/admin_company/list/1">전체보기</a>
+			<a href="/admin_company/cRegList/1">승인기업</a>
+			<a href="/admin_company/cMiList/1">미승인기업</a>
+		</div>
+	</container>
 	<script>
-    // 페이지가 로드될 때 실행
-    document.addEventListener("DOMContentLoaded", function() {
-        // 시작일과 마감일 input 요소 가져오기
-        var startDateInput = document.querySelector('input[name="regDate"]');
-        var endDateInput = document.querySelector('input[name="realMagam"]');
-        
-        // 시작일 input 요소의 변경 이벤트 감지
-        startDateInput.addEventListener("change", function() {
-            // 시작일과 마감일의 값을 가져옴
-            var startDate = new Date(startDateInput.value);
-            var endDate = new Date(endDateInput.value);
-            
-            // 마감일이 시작일보다 빠른 경우
-            if (endDate < startDate) {
-                alert("마감일은 시작일 이후여야 합니다.");
-                endDateInput.value = ""; // 마감일을 비움
-            }
-        });
-        
-        // 마감일 input 요소의 변경 이벤트 감지
-        endDateInput.addEventListener("change", function() {
-            // 시작일과 마감일의 값을 가져옴
-            var startDate = new Date(startDateInput.value);
-            var endDate = new Date(endDateInput.value);
-            
-            // 마감일이 시작일보다 빠른 경우
-            if (endDate < startDate) {
-                alert("마감일은 시작일 이후여야 합니다.");
-                endDateInput.value = ""; // 마감일을 비움
-            }
-        });
-    });
-</script>
+		// 페이지가 로드될 때 실행
+		document.addEventListener("DOMContentLoaded", function () {
+			// 시작일과 마감일 input 요소 가져오기
+			var startDateInput = document.querySelector('input[name="regDate"]');
+			var endDateInput = document.querySelector('input[name="realMagam"]');
+
+			// 시작일 input 요소의 변경 이벤트 감지
+			startDateInput.addEventListener("change", function () {
+				// 시작일과 마감일의 값을 가져옴
+				var startDate = new Date(startDateInput.value);
+				var endDate = new Date(endDateInput.value);
+
+				// 마감일이 시작일보다 빠른 경우
+				if (endDate < startDate) {
+					alert("마감일은 시작일 이후여야 합니다.");
+					endDateInput.value = ""; // 마감일을 비움
+				}
+			});
+
+			// 마감일 input 요소의 변경 이벤트 감지
+			endDateInput.addEventListener("change", function () {
+				// 시작일과 마감일의 값을 가져옴
+				var startDate = new Date(startDateInput.value);
+				var endDate = new Date(endDateInput.value);
+
+				// 마감일이 시작일보다 빠른 경우
+				if (endDate < startDate) {
+					alert("마감일은 시작일 이후여야 합니다.");
+					endDateInput.value = ""; // 마감일을 비움
+				}
+			});
+		});
+	</script>
 
 </body>
+
 </html>

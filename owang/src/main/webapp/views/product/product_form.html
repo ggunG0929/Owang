@@ -104,6 +104,7 @@
 	</script>
 	<style>
 		.product-temp {
+			font-family: 'Noto Sans KR', sans-serif;
 			text-align: center;
 			background-color: #fff;
 			padding: 100px 0;
@@ -161,24 +162,29 @@
 			cursor: pointer;
 		}
 
+		button {
+			color: white;
+			background-color: rgb(158, 158, 158);
+			margin: 0 25px;
+		}
 
-		button:nth-child(1) {
-			background-color: #4caf50;
+		button:nth-child(1):hover {
+			background-color: #1F80D1;
 			color: white;
 		}
 
-		button:nth-child(2) {
-			background-color: #2196f3;
-			color: white;
+		button:nth-child(2):hover {
+			background-color: #00de5a;
+			color: #000;
 		}
 
-		button:nth-child(3) {
-			background-color: #ff9800;
-			color: white;
+		button:nth-child(3):hover {
+			background-color: #ffeb00;
+			color: #000;
 		}
 
-		button:hover {
-			background-color: #000;
+		.space {
+			padding: 0 50px;
 		}
 
 		.btn-container {
@@ -215,21 +221,6 @@
 		<h5>결제수단</h5>
 		<div class="btn-container">
 			<table>
-				<tr>
-					<td id="trans">
-						<img th:src="@{/css/images/product/bankpay.png}" alt="뱅크페이">
-					</td>
-					<td id="cardtotal">
-						<img th:src="@{/css/images/product/naverpay.png}" alt="네이버페이">
-						<img th:src="@{/css/images/product/hyundae.png}" alt="현대카드">
-						<img th:src="@{/css/images/product/paybook.png}" alt="페이북">
-						<img th:src="@{/css/images/product/tosspay.jpg}" alt="토스">
-						<img th:src="@{/css/images/product/samsungpay.png}" alt="삼성페이">
-					</td>
-					<td id="kakao">
-						<img th:src="@{/css/images/product/kakaopay.png}" alt="카카오페이">
-					</td>
-				</tr>
 				<form id="paymentForm" method="post" onsubmit="return false;">
 					<tr>
 						<td>
@@ -239,6 +230,17 @@
 						</td>
 					</tr>
 				</form>
+				<tr>
+					<td>
+						<img th:src="@{/css/images/product/bankpay.png}" alt="뱅크페이">
+						<span class="space"><img th:src="@{/css/images/product/naverpay.png}" alt="네이버페이">
+							<img th:src="@{/css/images/product/hyundae.png}" alt="현대카드">
+							<img th:src="@{/css/images/product/paybook.png}" alt="페이북">
+							<img th:src="@{/css/images/product/tosspay.jpg}" alt="토스">
+							<img th:src="@{/css/images/product/samsungpay.png}" alt="삼성페이">
+						</span><img th:src="@{/css/images/product/kakaopay.png}" alt="카카오페이">
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>

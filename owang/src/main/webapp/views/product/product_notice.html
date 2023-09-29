@@ -6,6 +6,7 @@
 	<title>상품신청</title>
 	<style>
 		.product-temp {
+			font-family: 'Noto Sans KR', sans-serif;
 			text-align: center;
 			background-color: #fff;
 			padding: 100px 0;
@@ -13,11 +14,18 @@
 
 		table {
 			border-collapse: collapse;
-			border-top: 2px solid #000;
-			margin: 0 auto;
+			border-top: 1px solid #ddd;
 		}
 
-		tr:not(:first-child):not(.space):hover {
+		#solotbl {
+			margin: 0 0 0 200px;
+		}
+
+		#comptbl {
+			margin: 0 200px 0 0;
+		}
+
+		tr:hover {
 			background-color: #e0e0e0;
 		}
 
@@ -32,7 +40,7 @@
 		}
 
 		.btn-container {
-			margin: 20px 0;
+			margin: 50px 0;
 		}
 
 
@@ -42,20 +50,20 @@
 			cursor: pointer;
 			text-align: center;
 			text-decoration: none;
-			background-color: #4dc8d9;
+			background-color: rgb(106, 145, 244);
 			color: #fff;
 			border-radius: 5px;
 			border: none;
 		}
 
 		.button:hover {
-			background-color: #000;
+			background-color: rgb(65, 70, 89);
 		}
 
 		.alct {
 			text-align: center;
 		}
-		
+
 		.alle {
 			text-align: left;
 		}
@@ -63,12 +71,19 @@
 		.price {
 			text-align: right;
 		}
+
+		.table-container {
+			display: flex;
+			justify-content: space-between;
+			margin: 20px auto;
+		}
 	</style>
 </head>
 
 <body>
 	<script th:inline="javascript">
 		document.addEventListener("DOMContentLoaded", function () {
+			// 신청버튼 클릭이벤트
 			var submitBtn = document.getElementById("submitBtn");
 			submitBtn.addEventListener("click", function () {
 				if (/*[[${pay}]]*/ "" != null) {
@@ -83,31 +98,52 @@
 					window.location.href = /*[[${goUrl}]]*/ "/";
 				}
 			});
+
+			// tr영역 클릭시 라디오버튼 체크
+			var soloRows = document.querySelectorAll('#solotbl tr');
+			var compRows = document.querySelectorAll('#comptbl tr');
+			soloRows.forEach(function (row) {
+				row.addEventListener("click", function () {
+					var radioBtn = this.querySelector('input[type="radio"]');
+					radioBtn.click();
+				});
+			});
+			compRows.forEach(function (row) {
+				row.addEventListener("click", function () {
+					var radioBtn = this.querySelector('input[type="radio"]');
+					radioBtn.click();
+				});
+			});
 		});
 	</script>
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
 	<div class="product-temp">
-		<table>
-			<tr class="alct">
-				<td></td>
-				<td>대상</td>
-				<td>상품명</td>
-				<td>금액</td>
-			</tr>
-			<tr th:each="dto : ${data}">
-				<td>
-					<input type="radio" th:if="${dto.productClient == '기업' and pay == 'comp'}"
-						th:value="${dto.productId}" name="productRadio"> <!-- 기업 선택 -->
-					<input type="radio" th:if="${dto.productClient == '개인' and pay == 'solo'}"
-						th:value="${dto.productId}" name="productRadio"> <!-- 개인 선택 -->
-				</td>
-				<td class="alct" th:text="${dto.productClient}"></td>
-				<td class="alle" th:text="${dto.productName}"></td>
-				<td class="price" th:text="${dto.formatPrice}"></td>
-			</tr>
-		</table>
+		<div class="table-container">
+			<table id="solotbl">
+				<tr th:each="dto : ${data}" th:if="${dto.productClient == '개인'}">
+					<td>
+						<input type="radio" th:if="${pay == 'solo'}" th:value="${dto.productId}" name="productRadio">
+						<!-- 개인 선택 -->
+					</td>
+					<td class="alct"><i class="fa-solid fa-user fa-lg" style="color: #f03200"></i></td>
+					<td class="alle" th:text="${dto.productName}"></td>
+					<td class="price" th:text="${dto.formatPrice}"></td>
+				</tr>
+			</table>
+			<table id="comptbl">
+				<tr th:each="dto : ${data}" th:if="${dto.productClient == '기업'}">
+					<td>
+						<input type="radio" th:if="${pay == 'comp'}" th:value="${dto.productId}" name="productRadio">
+						<!-- 기업 선택 -->
+					</td>
+					<td class="alct"><i class="fa-solid fa-building fa-lg" style="color: #222edb"></i></td>
+					<td class="alle" th:text="${dto.productName}"></td>
+					<td class="price" th:text="${dto.formatPrice}"></td>
+				</tr>
+			</table>
+		</div>
 		<div class="btn-container">
 			<button id="submitBtn" class="button">신청</button>
 		</div>

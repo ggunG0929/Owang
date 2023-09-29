@@ -9,9 +9,14 @@
 	<style>
 		.main {
 			padding-left: 20px;
-			margin-top: 100px;
+			margin-top: 35px;
 		}
-		
+
+		h1 {
+			width: 930px;
+			text-align: center;
+		}
+
 		.donut-container {
 			position: relative;
 			display: inline-block;
@@ -30,9 +35,74 @@
 			font-size: 50px;
 			margin: 0;
 		}
-		
+
 		#bar-container {
 			margin: 50px;
+		}
+
+		/* 테이블 스타일 */
+		table {
+			width: 910px;
+			border-collapse: collapse;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+		}
+
+		th,
+		td {
+			padding: 10px;
+			text-align: left;
+			border: 1px solid #ddd;
+		}
+
+		th {
+			text-align: center;
+			background-color: #333;
+			color: #fff;
+		}
+
+		/* 링크 스타일 */
+		a {
+			text-decoration: none;
+			color: #007bff;
+			transition: color 0.2s;
+		}
+
+		a:hover {
+			color: #0056b3;
+		}
+
+		/* 페이지 네비게이션 스타일 */
+		.pagination {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		.pagination a {
+			text-decoration: none;
+			color: #000;
+			margin: 0 5px;
+		}
+
+		.pagination .current {
+			font-weight: bold;
+			margin: 0 5px;
+		}
+
+		/* 링크 스타일 */
+		a {
+			text-decoration: none;
+			color: #000;
+			transition: color 0.2s;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+		.alct {
+			text-align: center;
 		}
 	</style>
 </head>
@@ -43,13 +113,13 @@
 			<div th:replace="~{admin/adheader}"></div>
 		</header>
 		<div class="main">
-
+			<h1>공고 현황</h1>
 			<div class="donut-container">
 				<div class="donut-label">
 					<p>[[${todayRct}]]</p>
 					<span>오늘</span>
 				</div>
-				<canvas id="donutDay" width="200" height="200"></canvas>
+				<canvas id="donutDay" width="280" height="200"></canvas>
 			</div>
 
 			<div class="donut-container">
@@ -57,7 +127,7 @@
 					<p>[[${weekRct}]]</p>
 					<span>이번주</span>
 				</div>
-				<canvas id="donutWeek" width="200" height="200"></canvas>
+				<canvas id="donutWeek" width="280" height="200"></canvas>
 			</div>
 
 			<div class="donut-container">
@@ -65,10 +135,52 @@
 					<p>[[${monthRct}]]</p>
 					<span>이번달</span>
 				</div>
-				<canvas id="donutMonth" width="200" height="200"></canvas>
+				<canvas id="donutMonth" width="280" height="200"></canvas>
 			</div>
 			<div id="bar-container">
-				<canvas id="barChart" width="600" height="300"></canvas>
+				<canvas id="barChart" width="800" height="300"></canvas>
+			</div>
+
+			<table border="" class="list_table">
+				<tr>
+					<th>번호</th>
+					<th>제목</td>
+					<th>회사 이름</td>
+					<th>채용시작일</th>
+					<th>채용마감일</th>
+					<th>조회</th>
+					<!--<th>기업아이디(본편에선제거)</td>-->
+					<th>지원</th>
+				</tr>
+				<tr th:each="dto, dtoStat : ${mainData}">
+					<td class="alct" th:text="${dtoStat.count + recruitDTO.start}" />
+					<td>
+						<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|"
+							th:text="${dto.recruitTitle}"></a>
+					</td>
+					<td class="alct">
+						<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}"></a>
+					</td>
+					<td th:text="${dto.regDate}" />
+					<td th:text="${dto.realMagam}" />
+					<td class="alct" th:text="${dto.cnt}" />
+					<!--  <td th:text="${dto.cid}" />-->
+					<td class="alct" th:text="${dto.appnum}" />
+				</tr>
+			</table>
+
+			<div class="pagination">
+				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.page - recruitDTO.page}+1"
+					th:text="'[처음]'" />
+				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.pageStart - 1}" th:text="'[이전]'" />
+				<th:block th:each="no: ${#numbers.sequence(recruitDTO.pageStart, recruitDTO.pageEnd)}">
+					<span th:if="${no==recruitDTO.page}" th:text="${no}" class="current" />
+					<a th:unless="${no==recruitDTO.page}" th:href="${no}" th:text="${no}" />
+				</th:block>
+				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageEnd + 1}"
+					th:text="'[다음]'" />
+				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageTotal}"
+					th:text="'[맨끝]'" />
 			</div>
 		</div>
 	</container>

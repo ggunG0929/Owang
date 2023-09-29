@@ -93,8 +93,9 @@ public class AdminCompanyController {
 	}
 
 	// 공고 관리 페이지 ( 공고 리스트 )
-	@RequestMapping("/cmanagement")
-	String cmanagement(Model mm) {
+	@RequestMapping("/cmanagement/{page}")
+	String cmanagement(Model mm, RecruitDTO dto, @PathVariable("page") int page) {
+
 		// 날짜 포맷팅
 		Date today = new Date();
 		String day = rctCntDateFormat(today, 0);
@@ -111,11 +112,16 @@ public class AdminCompanyController {
 		// 1년간 월별 막대그래프 그릴 data
 		List<Map<String, Object>> graphData = rcm.rctRegCnt(year, day);
 
+		// 공고테이블
+		dto.calc(rcm.recruitListCnt());
+		List<RecruitDTO> data = rcm.recruitList(dto);
+
 		mm.addAttribute("todayRct", todayRct);
 		mm.addAttribute("weekRct", weekRct);
 		mm.addAttribute("monthRct", monthRct);
 		mm.addAttribute("yearRct", yearRct);
 		mm.addAttribute("graphData", graphData);
+		mm.addAttribute("mainData", data);
 		
 		return "admin/company/cmanagement";
 	}
