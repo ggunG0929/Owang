@@ -11,6 +11,13 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		#{start}, #{limit}
 	</select>
 	
+
+<update id="updateRecruitMagam" parameterType="recruitDTO">
+    UPDATE recruit
+    SET recruit_magam = #{recruitMagam}
+    WHERE recruit_id = #{recruitId}
+</update>
+	
 	
 
 	<select id="allrecruitList" resultType="recruitDTO"

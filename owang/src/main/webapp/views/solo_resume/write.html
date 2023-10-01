@@ -207,6 +207,7 @@ $("#file").on('change',function(){
       <div id="resume_photo">
          <!-- 미리보기 이미지 -->
          <div id="resume_prev">
+            
             <img id="imagePreview" src="#" alt="미리보기 이미지" style="display: none;" >
          </div>
          <!-- 파일 첨부-->
@@ -244,8 +245,8 @@ $("#file").on('change',function(){
               </li>
               <li>
                  <span>근무 기간</span>
-               <input type="date" id="rsworkstart" th:field="*{rsworkstart}" />
-               <input type="date" id="rsworkend" th:field="*{rsworkend}"  />
+               <input type="date" id="rsworkstart" th:field="*{rsworkstart}"  th:max="${today}" />
+               <input type="date" id="rsworkend" th:field="*{rsworkend}" th:max="${today}" />
             </li>
               <li>
                  <span>담당 업무</span>
@@ -409,6 +410,34 @@ $("#file").on('change',function(){
             rstitleInput.style.borderColor = ""; // Reset to default border color
         }
     });
+    
+      document.addEventListener("DOMContentLoaded", function () {
+            var startDateInput = document.querySelector('input[name="rsworkstart"]');
+            var endDateInput = document.querySelector('input[name="rsworkend"]');
+            var imageInput = document.getElementById('imgfile');
+
+            startDateInput.addEventListener("change", function () {
+                var startDate = new Date(startDateInput.value);
+                var endDate = new Date(endDateInput.value);
+
+                if (endDate < startDate) {
+                    alert("마감일은 시작일 이후여야 합니다.");
+                    endDateInput.value = "";
+                }
+            });
+
+            endDateInput.addEventListener("change", function () {
+                var startDate = new Date(startDateInput.value);
+                var endDate = new Date(endDateInput.value);
+
+                if (endDate < startDate) {
+                    alert("마감일은 시작일 이후여야 합니다.");
+                    endDateInput.value = "";
+                }
+            });
+
+           
+        });
     
 </script>    
 </body>

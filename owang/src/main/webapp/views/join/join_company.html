@@ -9,6 +9,7 @@
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<link rel="stylesheet" th:href="@{/css/join/joincom.css}">
 	
+	
 </head>
 
 <body>
@@ -22,7 +23,7 @@
 			<div>
 				<button id="showTermsButton">이용약관 보기</button>
 			</div>
-			<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();">
+			<form method="post" enctype="multipart/form-data" onsubmit="return submitForm();" >
 				<div class="showTerm"><label><input type="radio" name="termsAgreement" required>이용약관동의</input>
 					</label></div>
 
@@ -127,6 +128,8 @@ TNH는 새로운 10년을 위해 솔루션 및 서비스를 고객 및 사용자
 			</form>
 
 			<script>
+			  
+				
 				function updateText(input) {
 					var csalesText = document.getElementById("csalesText");
 					var value = input.value;
@@ -159,14 +162,7 @@ TNH는 새로운 10년을 위해 솔루션 및 서비스를 고객 및 사용자
 						}
 					});
 				}
-				function submitForm() {
-					var checkcId = document.getElementById("checkcId").innerText;
-					if (checkcId === "이미 사용 중인 ID입니다.") {
-						alert("아이디 중복을 확인하세요.");
-						return false; // 양식 제출 방지
-					}
-					return true; // 양식 제출 허용
-				}
+			
 				document.getElementById('showTermsButton').addEventListener('click', function () {
 					// 이용약관 페이지를 팝업 창으로 엽니다.
 					var popup = window.open('cterms.html', '이용약관', 'width=600,height=400');
@@ -223,8 +219,157 @@ TNH는 새로운 10년을 위해 솔루션 및 서비스를 고객 및 사용자
 						}
 					}
 				}
+				///////////////////
+				
+	 	function validateID() {
+            var cidInput = document.getElementById("cid").value;
+            
+            var cidPattern = /^[a-zA-Z]{6,18}$/; // 6자 이상 13자 이하의 알파벳만 허용
 
-			</script>
+            if (!cidPattern.test(cidInput)) {
+                alert("아이디는 6자 이상 13자 이하의 알파벳만 허용합니다.");
+                
+                return false;
+            }
+
+            return true;
+        }
+
+        // 비밀번호 유효성 검사
+        function validatePassword() {
+            var cpwInput = document.getElementById("cpw").value;
+            var confirmPassword = document.getElementById("cpw2").value;
+            var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+            if (!passwordPattern.test(cpwInput)) {
+                alert("비밀번호는 최소 8글자 이상이어야 하며, 특수문자, 영어 소문자, 대문자, 숫자가 각각 하나 이상 포함되어야 합니다.");
+                
+                return false;
+            }
+            
+             if (cpwInput != cpw2Value) {
+                alert("비밀번호가 일치하지 않습니다.");
+                
+                
+                return false;
+            }
+
+            return true;
+        }
+
+       
+
+        // 전화번호 유효성 검사
+        function validatePhoneNumber() {
+            var ccallInput = document.getElementById("ccall");
+            var ccallValue = ccallInput.value;
+            var phoneNumberPattern = /^(\d{3}-\d{3}-\d{4}|\d{10})$/; // xxx-xxx-xxxx 또는 xxxxxxxxxx 형식
+
+            if (!phoneNumberPattern.test(ccallValue)) {
+                alert("올바른 전화번호 형식이 아닙니다. xxx-xxx-xxxx 또는 xxxxxxxxxx 형식으로 입력하세요.");
+                ccallInput.value = "";
+                return false;
+            }
+
+            return true;
+        }
+
+  
+        
+        
+
+        function updateText(input) {
+            var csalesText = document.getElementById("csalesText");
+            var value = input.value;
+
+            if (!isNaN(value) && value !== "") {
+                csalesText.innerText = value + "0000원";
+            } else {
+                csalesText.innerText = "null";
+            }
+        }
+
+        function checkDuplicateID() {
+            var cid = document.getElementById("cid").value;
+
+            $.ajax({
+                type: "POST",
+                url: "/join/checkcId",
+                data: "cid=" + cid,
+                error: function (response) {
+                    $("#checkcId").text("실패");
+                },
+                success: function (response) {
+                    if (response === "중복") {
+                        $("#checkcId").text("이미 사용 중인 ID입니다.");
+                    } else {
+                        $("#checkcId").text("사용 가능한 ID입니다.");
+                    }
+                }
+            });
+        }
+		 function submitForm() {
+			    
+			    
+			    
+			    var checkcId = document.getElementById("checkcId").innerText;
+			
+			    if (validateID() && validatePassword() && validatePhoneNumber() && checkcId === "사용 가능한 ID입니다.") {
+			        return true; // 양식 제출 방지
+			    } else {
+			        return false; // 양식 제출 허용
+			    }
+			}
+
+        function validateFile() {
+            var mmffInput = document.getElementById("mmff");
+            var fileError = document.getElementById("fileError");
+            var fileName = mmffInput.value;
+            var allowedExtensions = ["jpg", "png"];
+
+            if (fileName === "") {
+                // 파일이 선택되지 않은 경우
+                fileError.innerText = "파일을 선택하세요.";
+                mmffInput.value = ""; // 파일 입력란 초기화
+            } else {
+                var fileExtension = fileName.split('.').pop().toLowerCase();
+
+                if (allowedExtensions.indexOf(fileExtension) === -1) {
+                    // 파일 확장자가 허용되지 않는 경우
+                    mmffInput.value = ""; // 파일 입력란 초기화
+                    fileError.innerText = "지원되지 않는 파일 유형입니다. JPG 또는 PNG 파일을 업로드하세요.";
+                } else {
+                    fileError.innerText = ""; // 오류 메시지 초기화
+                }
+            }
+        }
+
+        function lovalidateFile() {
+            var lommffInput = document.getElementById("lommff");
+            var fileError = document.getElementById("fileError");
+            var fileName = lommffInput.value;
+            var allowedExtensions = ["jpg", "png"];
+
+            if (fileName === "") {
+                // 파일이 선택되지 않은 경우
+                fileError.innerText = "파일을 선택하세요.";
+                lommffInput.value = ""; // 파일 입력란 초기화
+            } else {
+                var fileExtension = fileName.split('.').pop().toLowerCase();
+
+                if (allowedExtensions.indexOf(fileExtension) === -1) {
+                    // 파일 확장자가 허용되지 않는 경우
+                    lommffInput.value = ""; // 파일 입력란 초기화
+                    fileError.innerText = "지원되지 않는 파일 유형입니다. JPG 또는 PNG 파일을 업로드하세요.";
+                } else {
+                    fileError.innerText = ""; // 오류 메시지 초기화
+                }
+            }
+        }
+
+				 	
+
+</script>
 </body>
 
 </html>

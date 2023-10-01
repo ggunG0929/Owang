@@ -16,6 +16,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="reviewList2" resultType="rrDTO" parameterType="string">
 		select * from review where cid = #{cid} 
 	</select>
+	<select id="reviewList3" resultType="rrDTO" parameterType="string">
+		select * from review where sid = #{sid} 
+	</select>
 		
 	<select id="reviewCnt" resultType="Integer">
     	select count(*) from review where cid = #{cid}

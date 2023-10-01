@@ -6,7 +6,8 @@
 	<title>Insert title here</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 	<style>
-		*{padding: 0;margin: 0;}
+		#cover{background-color: white}
+		
 		
 		body{
 			font-family:  'Noto Sans KR', sans-serif;
@@ -32,12 +33,15 @@
 		}
 
 		.section .slidewrap {
+		
 			box-sizing: border-box;
 			max-width: 800px;
 			padding: 16px;
 		}
 
 		.section .slidelist {
+			padding: 0;
+			margin: 0;
 			box-sizing: border-box;
 			white-space: nowrap;
 			font-size: 0;
@@ -58,6 +62,7 @@
 		}
 
 		.section .slidelist>li>a img {
+			border-radius: 8px ;
 			width: 100%;
 		}
 
@@ -177,8 +182,8 @@
 		.slide-pagelist {
 			width: 300px;
 			position: relative;
-			top: -60px;
-			left: 275px;
+			top: -70px;
+			left: 235px;
 		}
 
 		.slide-pagelist>li {
@@ -363,7 +368,7 @@
 		    font-size: 22px;
 		    font-weight: bolder;
 		    float: left;
-		    margin-bottom: 20px;
+		    margin: 0;
 		}
 		
 		#companyout {
@@ -373,10 +378,16 @@
 		    margin: inherit;
 		}
 		
+		.login_title{
+			justify-content: space-between;
+			align-items: baseline;
+			display: flex;
+		}
+		
 		#companySkil{
-			
+			flex-wrap: nowrap;
 			border-radius: 8px;
-			
+			align-items: center;
 			text-align: center;
 			width: 100%;
 		    padding: 20px 0px;
@@ -397,9 +408,14 @@
 			text-decoration: underline;
 		}
 		
+		#companySkil > a:nth-child(1) > p:nth-child(2){
+			margin-top: 0;
+		}
+		
 		/* 기업로그인 끝 */
 		
 		.divider {
+			position: absolute;
 		    border-right: 1px solid #333; /* 구분선의 스타일을 정의합니다. */
 		    margin: 0px; /* 좌우 여백을 조절할 수 있습니다. */
 		    height: 50px; /* 구분선의 높이를 조절할 수 있습니다. */
@@ -422,8 +438,8 @@
 <header >
 	<div th:insert="~{header :: header}"></div>
 </header>
-	
-	<div class="section">
+	<div id="cover">
+	<div class="section" style="margin: 0; padding: 0;">
 		<input type="radio" name="slide" id="slide01" checked>
 		<input type="radio" name="slide" id="slide02">
 		<input type="radio" name="slide" id="slide03">
@@ -494,9 +510,9 @@
 
 		<div class="LoginContent">
 		<th:block th:if="${session['cid'] == null && session['sid'] == null}">
-			<div class="login_title">
-				<p>회원가입/로그인하고</p>
-				<p>오왕의 다양한 혜택을 만나보세요.</p>
+			<div>
+				<pre style="font-family: 'Noto Sans KR', sans-serif; font-size: 16px;display: inline;">회원가입/로그인하고
+오왕의 다양한 혜택을 만나보세요.</pre>
 			</div>
 			<div>
 				<button onclick=" window.location.href = '/login/main'">로그인</button>
@@ -631,7 +647,7 @@
 				<li class="card">
 					<div class="img">
 
-						<img th:src="'companylogoup/기업기본이미지.png'" alt="img" draggable="false"
+						<img th:src="'companylogoup/기업기본이미지2.png'" alt="img" draggable="false"
 							th:if="${dto.clogo == null}">
 						<img th:src="'companylogoup/'+${dto.clogo}" alt="img" draggable="false"
 							th:unless="${dto.clogo == null}">
@@ -750,7 +766,7 @@
 			</th:block>
 		</ul>
 	</div>
-	
+	</div>
 	<footer>
 		<div th:insert="~{footer :: footer}"></div>
 	</footer>

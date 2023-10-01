@@ -123,8 +123,8 @@
 					<td th:text="${dto.cid}" />
 					<td>
 						<th:block th:if="${dto.appnum!=0}">
-							<a th:href="|/admin_member/appnum/detail/${dto.cid}/${dto.recruitTitle}|"
-								th:text="${dto.appnum}" />
+							 <a th:href="@{'/admin_member/appnum/detail/' + ${dto.cid} + '/' + ${#uris.escapePath(dto.recruitTitle)}}"
+               					th:text="${dto.appnum}" />
 						</th:block>
 						<th:block th:unless="${dto.appnum!=0}">
 							<span th:text="${dto.appnum}" />

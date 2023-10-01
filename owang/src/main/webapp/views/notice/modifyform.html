@@ -35,14 +35,14 @@
                     <td id="label">공지제목</td>
                     <td id="ttdd"><input type="text" th:field="*{title}" id="label_title"/></td>
                 </tr>
-                <!--<tr>
+                <tr>
                     <th>작성자</th>
                     <td><input type="text" th:field="*{pname}" readonly id="modi_pname"/></td>
-                </tr>-->
+                </tr>
                 <tr>
                     <td id="label">파일</td>
                     <td id="ttdd">
-                        <th:block th:if="${dto.upfile != null}"  id="label_file">	
+                        <th:block th:if="${dto.upfile != null}"  id="label_file" accept="bmp|png|gif|jpg|jpeg">	
                             <!--원본-->
                             <!--<input type="text" th:field="*{upfile}" readonly/>-->
                             <!--hidden으로 수정하더라도 사진은 그대로-->

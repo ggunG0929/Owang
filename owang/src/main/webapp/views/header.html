@@ -80,9 +80,10 @@
             </li>        
             <li>기업서비스
                 <ul id="menu-company-wrap"> 
-                    <li id="menu-company"><a th:href="|/company/list/${session['cid']}/1|">공고 관리</a></li>
+                    <li id="menu-company" th:if="${session['cid']}"><a th:href="|/company/list/${session['cid']}/1|">공고 관리</a></li>
                     <li><a href="/company_applicant/home/1">지원자 관리</a></li>
-                    <li><a th:href="|/review/list/${session['cid']}/1|">기업 리뷰</a></li>
+                    
+                    <li th:if="${session['cid']}"><a th:href="|/review/list/${session['cid']}/1|">기업 리뷰</a></li>
                     <li><a href="/company/mypage">기업정보 보기</a></li>
                     <li><a href="/company/product">결제내역</a></li>
                 </ul>

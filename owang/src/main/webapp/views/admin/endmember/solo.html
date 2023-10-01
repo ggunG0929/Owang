@@ -143,7 +143,9 @@
 				<tr th:each="dto, dtostat : ${endsoloData}">
 
 					<td th:text="${dto.sid}" />
-					<td th:text="${dto.sname}" />
+					<td  >
+						<a th:href="|/admin_member/endsolo/detail/${dto.sid}|" th:text="${dto.sname}"/>
+					</td>
 					<td th:text="${dto.sbirth}" />
 					<td th:text="${dto.sage}" />
 					<td th:text="${dto.sgender}" />

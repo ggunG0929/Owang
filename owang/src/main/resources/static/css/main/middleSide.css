@@ -35,6 +35,8 @@
   right: -22px;
 }
 .wrapper .carousel{
+  padding: 0;
+  margin: 0;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: calc((100% / 3) - 12px);
@@ -68,11 +70,12 @@
   scroll-snap-align: start;
   height: 342px;
   list-style: none;
-  background: #fff;
+  background: rgb(255, 255, 242);
   cursor: pointer;
   padding-bottom: 15px;
   flex-direction: column;
   border-radius: 8px;
+  border: 1px solid #ccc;
 }
 .carousel .card .img {
   background: #8B53FF;

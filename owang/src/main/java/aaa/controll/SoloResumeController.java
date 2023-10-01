@@ -2,6 +2,8 @@ package aaa.controll;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -87,7 +89,12 @@ public class SoloResumeController {
 		// 세션 가져옴
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 		
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String today = sdf.format(date);
+		
 		mm.addAttribute("solosession", solosession);
+		mm.addAttribute("today",today);
 		System.out.println(solosession);
 		return "solo_resume/write";
 	}

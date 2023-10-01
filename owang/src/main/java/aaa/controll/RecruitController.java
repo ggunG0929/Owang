@@ -5,11 +5,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-
+import java.util.Comparator;
 import java.util.Date;
 
 import java.util.LinkedHashMap;
@@ -35,6 +39,7 @@ import aaa.service.MCompanyMapper;
 import aaa.service.RecruitMapper;
 import aaa.service.SoloApplicantMapper;
 import aaa.service.SoloResumeMapper;
+
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -203,8 +208,9 @@ public class RecruitController {
 
 				LocalDate currentDate = LocalDate.now();
 				if (!currentDate.isAfter(startDate) && !currentDate.isBefore(endDate)) {
-					//map.put("title", "[마감] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
-					//map.put("start", endDate.toString());
+					// map.put("title", "[마감] " + recruitDTO.getRecruitTitle() + " " +
+					// recruitDTO.getCname());
+					// map.put("start", endDate.toString());
 				} else {
 
 					map.put("title", "[모집중] " + recruitDTO.getRecruitTitle() + " " + recruitDTO.getCname());
@@ -234,16 +240,17 @@ public class RecruitController {
 		dto.calc(recruitMapper.recruitListCnt());
 
 		List<RecruitDTO> alldata = recruitMapper.allrecruitList(dto);
-
+		LocalDateTime now = LocalDateTime.now();
 		for (RecruitDTO recruit : alldata) {
 			// 공고의 회사 타입 불러오기
 			Integer ctype = (int) crcMapper.getctype(recruit.getCid());
 			Date ccdate = recruit.realMagam;
-
+			LocalDate calcnow = LocalDate.now();
 			if (ccdate.before(today) || ctype == 1) {
 				recruit.setRtype(2);
 				recruitMapper.updateRtype(recruit);
 			}
+
 		}
 
 		// "채용 가능" 탭에 대한 페이지 정보 계산
@@ -251,6 +258,27 @@ public class RecruitController {
 		openDto.setPage(page);
 		openDto.calc(recruitMapper.companyROpenCnt());
 		List<RecruitDTO> openData = recruitMapper.companyROpen(openDto);
+
+		for (RecruitDTO recruit1 : openData) {
+			// 공고의 회사 타입 불러오기
+			Integer ctype = (int) crcMapper.getctype(recruit1.getCid());
+			Date ccdate = recruit1.realMagam;
+			LocalDate calcnow = LocalDate.now();
+			if (ccdate.before(today) || ctype == 1) {
+				recruit1.setRtype(2);
+				recruitMapper.updateRtype(recruit1);
+			}
+			
+			LocalDateTime deadline = LocalDateTime.parse(recruit1.getRealMagam() + "T23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+			Duration duration = Duration.between(now, deadline);
+			long daysRemaining = duration.toDays();
+			recruit1.setRecruitMagam((int) daysRemaining);
+			//System.out.println("아임커밍");
+			
+			recruitMapper.updateRecruitMagam(recruit1);
+				
+
+		}
 
 		mm.addAttribute("openData", openData);
 		mm.addAttribute("openDto", openDto); // "채용 가능" 탭 페이지 정보
@@ -268,7 +296,7 @@ public class RecruitController {
 		dto.calc(recruitMapper.recruitListCnt());
 
 		List<RecruitDTO> alldata = recruitMapper.allrecruitList(dto);
-
+		LocalDate calnow = LocalDate.now();
 		for (RecruitDTO recruit : alldata) {
 			// 공고의 회사 타입 불러오기
 			Integer ctype = (int) crcMapper.getctype(recruit.getCid());
@@ -278,6 +306,9 @@ public class RecruitController {
 				recruit.setRtype(2);
 				recruitMapper.updateRtype(recruit);
 			}
+	
+			
+
 		}
 
 		// "채용 마감" 탭에 대한 페이지 정보 계산
@@ -285,6 +316,16 @@ public class RecruitController {
 		closeDto.setPage(page);
 		closeDto.calc(recruitMapper.companyRCloseCnt());
 		List<RecruitDTO> closeData = recruitMapper.companyRClose(closeDto);
+		LocalDateTime now = LocalDateTime.now();
+		for (RecruitDTO recruitDTO : closeData) {
+			LocalDateTime deadline = LocalDateTime.parse(recruitDTO.getRealMagam() + "T23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+			Duration duration = Duration.between(now, deadline);
+			long daysRemaining = duration.toDays();
+			recruitDTO.setRecruitMagam((int) daysRemaining);
+			//System.out.println("아임커밍");
+			
+			recruitMapper.updateRecruitMagam(recruitDTO);
+		}
 
 		mm.addAttribute("closeData", closeData);
 		mm.addAttribute("closeDto", closeDto); // "채용 마감" 탭 페이지 정보
@@ -295,9 +336,28 @@ public class RecruitController {
 	@RequestMapping("list/all/{page}")
 	String open(Model mm, RecruitDTO dto, @PathVariable("page") int page) {
 		dto.calc(recruitMapper.recruitListCnt());
+		LocalDateTime now = LocalDateTime.now();
 		List<RecruitDTO> data = recruitMapper.recruitList(dto);
+		for (RecruitDTO recruitDTO : data) {
+			LocalDateTime deadline = LocalDateTime.parse(recruitDTO.getRealMagam() + "T23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+			Duration duration = Duration.between(now, deadline);
+			long daysRemaining = duration.toDays();
+			recruitDTO.setRecruitMagam((int) daysRemaining);
+			//System.out.println("아임커밍");
+			
+			recruitMapper.updateRecruitMagam(recruitDTO);
+		}
+		  // 오름차순 정렬
+	    List<RecruitDTO> ascendingData = new ArrayList<>(data);
+	    ascendingData.sort(Comparator.comparing(RecruitDTO::getRegDate));
 
+	    // 내림차순 정렬
+	    List<RecruitDTO> descendingData = new ArrayList<>(data);
+	    descendingData.sort(Comparator.comparing(RecruitDTO::getRegDate).reversed());
+		
 		mm.addAttribute("mainData", data);
+		mm.addAttribute("ascendingData", ascendingData); // 오름차순 정렬 데이터
+	    mm.addAttribute("descendingData", descendingData); // 내림차순 정렬 데이터
 
 		return "recruit/recruit_list3";
 	}
@@ -332,7 +392,7 @@ public class RecruitController {
 		if (dto == null) {
 			System.out.println("일루안빠졌나?");
 			dto = new RecruitDTO();
-			dto.setMsg("탈퇴한 기업 입니다.");
+			dto.setMsg("삭제된 공고 입니다.");
 			dto.setGoUrl("/solo_applicant/home/1");
 			mm.addAttribute("recruitDTO", dto);
 			return "recruit/recruit_alert";
@@ -370,9 +430,9 @@ public class RecruitController {
 			if (admin == null) {
 				// cid의 데이터 중 recruit테이블의 realMagam과 cdate가 지나지 않은 공고의 개수를 셈
 				int a = recruitMapper.icompanyROpenCnt(mcseDto.getCid());
-				if (a >4) {
+				if (a > 4) {
 					dto.setMsg("현재 채용 중인 공고는 5개를 초과할 수 없습니다.");
-					dto.setGoUrl("/company/list/"+mcseDto.getCid()+"/1");
+					dto.setGoUrl("/company/list/" + mcseDto.getCid() + "/1");
 					return "recruit/recruit_alert";
 				}
 			}
@@ -389,7 +449,6 @@ public class RecruitController {
 			return "recruit/recruit_alert";
 		}
 	}
-
 
 	// 채용 삽입
 	@PostMapping("insert/{page}")

@@ -198,7 +198,7 @@ public class AskController {
 		}
 
 		String path = request.getServletContext().getRealPath("askup");
-		//path = "C:\\Users\\콩쥐\\Desktop\\final\\fighting\\Spring_TeamVer_1\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\askup";
+		path = "C:\\Users\\콩쥐\\Desktop\\final\\fighting\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\askup";
 		
 		System.out.println(path);
 
@@ -381,7 +381,7 @@ public class AskController {
 		if (delDTO.getUpfile() != null) {// 파일이 있다면
 			// 시스템 경로를 문자열로 저장
 			String path = request.getServletContext().getRealPath("askup");
-			//path = "C:\\Users\\콩쥐\\Desktop\\final\\0912 Merge\\Spring_Team\\Spring_Team\\owang\\src\\main\\webapp\\askup";
+			path = "C:\\Users\\콩쥐\\Desktop\\final\\fighting\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\askup";
 
 			new File(path + "\\" + delDTO.getUpfile()).delete();
 

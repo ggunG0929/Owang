@@ -17,10 +17,21 @@
    <header>
       <div th:insert="~{header :: header}"></div>
    </header>
-               <a href="javascript:goBack()">뒤로</a>
+               <!--<a href="javascript:goBack()">뒤로</a>-->
                 <!--[[${askdto}]]-->
-<h1 id="a_title">게시글 확인</h1>
-<hr>
+<!--<h1 id="a_title">게시글 확인</h1>-->
+
+<div class="title_box">
+	<h1>게시글확인</h1>
+	<br><br><br><br>
+	<h4 id="p" >
+  			✔️ 1:1 게시판은 개인정보를 다루는 공간입니다. 따라서 본인이 작성한 글만 확인 가능합니다.<br>
+      		  또한, 본인이 작성한 문의글에 관리자 답변이 달린 경우 수정 및 삭제 기능은 지원되지 않습니다.<br>
+  			✔️ 관리자 답변 이전에는 수정 및 삭제 가능합니다.
+	   </h4>
+	   <br/>
+</div>
+
 
 <div id="wrap"> 
    <table border="0" id="ask_detail">
@@ -68,13 +79,18 @@
       <tr>
          <td colspan="2" align="right">
             <!-- 연결된 답글이 없을 경우만 삭제, 수정 가능  (type 1)-->
-            <div th:if="${type == '1'}">
+            <div th:if="${type == '1'}" class="detail_delmody">
                <a th:href="@{|/ask/delete/${askdto.page}/${askdto.id}|}" th:unless="${session.adminSession}" id="del">삭제</a>
                <a th:href="@{|/ask/modify/${askdto.page}/${askdto.id}|}" th:unless="${session.adminSession}" id="modi">수정</a>
                <!-- 관리자만 보임 -->
-               <a th:href="@{|/ask/reply/${askdto.page}/${askdto.id}|}" th:if="${session.adminSession}" id="re">답변하기</a>
+               <a th:href="@{|/ask/reply/${askdto.page}/${askdto.id}|}" th:if="${session.adminSession}" id="re">답변하기   ></a>
+     
             </div>
-            <a th:href="@{|/ask/list/${askdto.page}|}" id="delist">목록으로</a>
+            
+            <a th:href="@{|/ask/list/${askdto.page}|}"
+               		i class="fa-solid fa-list" id="detail_list"></a>
+           
+            
          </td>
       </tr>
    </table>

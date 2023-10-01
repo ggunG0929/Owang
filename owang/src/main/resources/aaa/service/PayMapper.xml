@@ -8,6 +8,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <select id="endpay" parameterType="String" resultType="payDTO">
 	select * from payment where cid = #{cid}
 </select>
+<select id="endpay2" parameterType="String" resultType="payDTO">
+	select * from payment where sid = #{sid}
+</select>
 
 	<select id="list" resultType="payDTO">
 		select * from payment order by
@@ -92,11 +95,11 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		cid = #{id}) AND end_date IS NULL
 	</select>
 	
-	<!-- 특정일에 해당하는 결제내역(0원 이상)의 개수 -->
+	<!-- 특정일에 해당하는 결제내역의 개수 -->
 	<select id="dayPayCnt">
 		SELECT COUNT(*)
 		FROM payment
-		WHERE DATE(paid_at) = #{date} AND amount > 0;
+		WHERE DATE(paid_at) = #{date};
 	</select>
 
 

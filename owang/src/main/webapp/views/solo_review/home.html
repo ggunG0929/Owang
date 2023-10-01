@@ -22,13 +22,17 @@ $(document).ready(function() {
    <header>
       <div th:insert="~{header :: header}"></div>
    </header>
-<div id="solo_review_home"> 
+<div id="solo_review_home">
+	
 	<div id="review_ad">
 		<span>오왕에서 해당 기업에 대한 정보를 공유해보세요.</span>
 	</div>
   	<div id="review_text">
 		<span>마이 리뷰</span>
 	</div>
+	<th:block th:if="${session.solosession.cid != null}">
+    	<a th:href="@{|/review/lo/${session.solosession.cid}/1|}">작성하기</a>
+	</th:block>
 	<div id="review_none">
     	<span th:if="${mainData.isEmpty()}">작성된 리뷰가 없습니다.</span>
 	</div>	

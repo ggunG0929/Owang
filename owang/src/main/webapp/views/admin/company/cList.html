@@ -158,6 +158,7 @@
 					<th>회원 삭제</th>
 
 				</tr>
+				[[${mainData.size()}]]
 				<tr th:each="dto, dtoStat : ${mainData}">
 					<td th:text="${dtoStat.count + MCompanyDTO.start}" />
 					<td>

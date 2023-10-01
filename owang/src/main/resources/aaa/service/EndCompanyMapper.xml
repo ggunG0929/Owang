@@ -80,8 +80,8 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	select * from endrecruit where cid = #{cid}
 </select>
 
-<select id="endrecruitone" resultType="recruitDTO"  parameterType="string">
-	select * from endrecruit where recruit_title = #{rectuit_title}
+<select id="endrecruitone" resultType="recruitDTO" parameterType="String">
+    select * from endrecruit where recruit_title = #{recruitTitle}
 </select>
 
 <!--  탈회한 기업의 공고 이력내역 조회 -->

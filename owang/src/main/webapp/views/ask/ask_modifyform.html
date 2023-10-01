@@ -12,33 +12,32 @@
 	}
 </script>
 
-
+`
 </head>
 <body>
 <div id="home">
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
-<h1 id="a_title">문의글 수정</h1>
+	
+<div class="title_box">
+	   <h1>문의글 수정</h1>  
+	   <br><br><br><br>
+	   <h3 id="p" >
 
-<div id="box">
-	<h3>문의하실 내용을 작성해주시면
-		확인 후 빠른 시일 내 답변드리도록 하겠습니다.</h3>
-	*욕설 폭언 성희롱 등의 내용이 포함된 경우 상담이 불가능 합니다.<br> 
-	📢 작성하신 문의글에 관리자 답변이 없는 경우 수정 및 삭제가 가능하며,<br> 
-		관리자가 답변을 작성한 경우에는 수정 및 삭제 기능이 제한됩니다.
-</div>			
-<hr>
+	   </h3>
+	   <br/>	
+   </div>	 <!--타이틀박스 끝  -->		
 
 <div id="wrap">   		
-	<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}">
+	<form name="frm" method="post" enctype="multipart/form-data" th:object="${dto}" id="insert_form">
 		<input type="hidden" th:field="*{id}" />
 		<input type="hidden" th:field="*{page}" />
 	
 	<table border="0" id="ask_modify">
 			<tr>
 				<td id="label">제목</td>
-				<td><input type="text" th:field="*{title}"
+				<td><input type="text" th:field="*{title}" pattern="^\S.*$" 
 					placeholder="※ 제목을 입력해주세요" required /></td>
 			</tr>
 			<tr>
@@ -58,7 +57,7 @@
 			</tr>
 			<tr>
 				<td id="label">내용</td>
-				<td><textarea th:field="*{content}" 
+				<td><textarea th:field="*{content}"  pattern="^\S.*$" 
 						rows="20" cols="100" required id="content"/></td>
 			</tr>
 			<tr>

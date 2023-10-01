@@ -14,10 +14,10 @@ body {
 .title_box{
 	border-bottom: 1px solid #111;
 	padding-bottom: 20px;
-	background-image: url("/css/images/loud.png");
+	background-image: url("/css/images/notice_img_remove.png");
 	background-position: right center;
 	background-repeat: no-repeat;
-	height:170px;
+	height:197px;
 	margin-top: 10px;
 }
 .title_box h1{

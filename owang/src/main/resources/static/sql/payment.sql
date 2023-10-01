@@ -1804,6 +1804,10 @@ INSERT INTO payment (sid, cid, imp_uid, pname, amount, paid_at) VALUES
 (null, 'company15', 'imp_639094405447', '[오왕]채용공고권 100일권', 100000, '2023-09-28'),
 ('user18', null, 'imp_790384248463', '[오왕]리뷰열람권 7일권', 15000, '2023-09-28');
 
+INSERT INTO payment (sid, cid, imp_uid, pname, amount, paid_at) VALUES 
+(null, 'company16', 'imp_583935754818', '[오왕]채용공고권 7일권', 15000, '2023-09-30');
+
+
 select * from payment;
 
 drop table payment;

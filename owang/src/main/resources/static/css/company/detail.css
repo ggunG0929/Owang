@@ -227,7 +227,7 @@
 			position: fixed;
 			z-index: 2;
 			right: calc((100% - 1060px) / 2);
-			top: 219px;
+			top: 150px;
 		}
 
 		.recruitdatebox {
