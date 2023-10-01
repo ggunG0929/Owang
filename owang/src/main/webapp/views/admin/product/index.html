@@ -11,7 +11,7 @@
 			padding-left: 35px;
 			margin-top: 100px;
 		}
-		
+
 		.grid-container {
 			display: grid;
 			grid-template-columns: repeat(2, 1fr);
@@ -32,6 +32,7 @@
 			justify-content: space-between;
 			cursor: pointer;
 		}
+
 		.card:hover {
 			background-color: rgba(0, 64, 0, 0.2);
 		}
@@ -93,7 +94,7 @@
 						<h3>재직회원 미승인</h3>
 					</div>
 					<div class="count"><span class="solo">[[${soloChk}]]</span>건</div>
-					<a class="link" href="/admin_solo/solocompany/1">바로가기></a>
+					<a>바로가기></a>
 				</div>
 				<div class="card" onclick="location.href='/ask/list/1';">
 					<div class="card-content">
@@ -101,7 +102,7 @@
 						<h3>문의 미답변</h3>
 					</div>
 					<div class="count"><span class="info">[[${askChk}]]</span>건</div>
-					<a class="link" href="/ask/list/1">바로가기></a>
+					<a>바로가기></a>
 				</div>
 				<div class="card" onclick="location.href='/admin_company/cMiList/1';">
 					<div class="card-content">
@@ -109,15 +110,15 @@
 						<h3>사업증명 미승인</h3>
 					</div>
 					<div class="count"><span class="comp">[[${compChk}]]</span>건</div>
-					<a class="link" href="/admin_company/cMiList/1">바로가기></a>
+					<a>바로가기></a>
 				</div>
-				<div class="card" onclick="location.href='/admin_product/payment/1';">
+				<div class="card" th:onclick="window.location.href='/admin_product/payment/1?from='+[[${today}]]+'&to='+[[${today}]]">
 					<div class="card-content">
 						<span class="material-symbols-outlined big">receipt_long</span>
 						<h3>오늘 결제건</h3>
 					</div>
 					<div class="count"><span class="info">[[${payChk}]]</span>건</div>
-					<a class="link" href="/admin_product/payment/1">바로가기></a>
+					<a>바로가기></a>
 				</div>
 			</div>
 		</div>

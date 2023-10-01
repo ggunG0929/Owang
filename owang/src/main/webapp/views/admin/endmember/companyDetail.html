@@ -157,11 +157,11 @@
 				<th>상품금액</th>
 				<th>결제요청</th>
 
-				<tr th:each="pay : ${pay}" th:if="${pay.amount > 0}">
-					<td th:text="${pay.impUid}" />
-					<td th:text="${pay.pname}" />
-					<td th:text="${pay.amount}" />
-					<td th:text="${pay.paidAt}" />
+				<tr th:each="pay : ${paymentData}" th:if="${pay.amount > 0}">
+					<td th:text="${pay.imp_uid}" />
+					<td th:text="${pay.name}" />
+					<td th:text="${pay.formatAmount}" />
+					<td th:text="${pay.started_at}" />
 
 				</tr>
 			</table>

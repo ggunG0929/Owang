@@ -92,11 +92,11 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		cid = #{id}) AND end_date IS NULL
 	</select>
 	
-	<!-- 특정일에 해당하는 결제내역의 개수 -->
+	<!-- 특정일에 해당하는 결제내역(0원 이상)의 개수 -->
 	<select id="dayPayCnt">
 		SELECT COUNT(*)
 		FROM payment
-		WHERE DATE(paid_at) = #{date};
+		WHERE DATE(paid_at) = #{date} AND amount > 0;
 	</select>
 
 

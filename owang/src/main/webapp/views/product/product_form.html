@@ -124,10 +124,6 @@
 			width: 550px;
 		}
 
-		img {
-			width: 50px;
-		}
-
 		table {
 			margin: 0 auto;
 		}
@@ -153,7 +149,7 @@
 			width: 120px;
 		}
 
-		button {
+		.btn-container button {
 			padding: 10px 20px;
 			font-size: 16px;
 			margin: 10px;
@@ -162,29 +158,25 @@
 			cursor: pointer;
 		}
 
-		button {
-			color: white;
-			background-color: rgb(158, 158, 158);
-			margin: 0 25px;
-		}
 
-		button:nth-child(1):hover {
+		.btn-container button:nth-child(1) {
 			background-color: #1F80D1;
 			color: white;
 		}
 
-		button:nth-child(2):hover {
+		.btn-container button:nth-child(2) {
 			background-color: #00de5a;
 			color: #000;
 		}
 
-		button:nth-child(3):hover {
+		.btn-container button:nth-child(3) {
 			background-color: #ffeb00;
 			color: #000;
 		}
 
-		.space {
-			padding: 0 50px;
+		.btn-container button:hover {
+			color: white;
+			background-color: rgb(65, 70, 89);
 		}
 
 		.btn-container {
@@ -205,7 +197,7 @@
 		<div id="prod-container">
 			<table>
 				<tr>
-					<td rowspan="3"><img id="prodlogo" th:src="@{/css/images/product/productlogo.jpg}" alt="오왕로고"></td>
+					<td rowspan="3"><img id="prodlogo" th:src="@{/css/images/productlogo.jpg}" alt="오왕로고"></td>
 					<td colspan="2" class="pname" th:text="${pdto.productName}" />
 				</tr>
 				<tr>
@@ -230,17 +222,6 @@
 						</td>
 					</tr>
 				</form>
-				<tr>
-					<td>
-						<img th:src="@{/css/images/product/bankpay.png}" alt="뱅크페이">
-						<span class="space"><img th:src="@{/css/images/product/naverpay.png}" alt="네이버페이">
-							<img th:src="@{/css/images/product/hyundae.png}" alt="현대카드">
-							<img th:src="@{/css/images/product/paybook.png}" alt="페이북">
-							<img th:src="@{/css/images/product/tosspay.jpg}" alt="토스">
-							<img th:src="@{/css/images/product/samsungpay.png}" alt="삼성페이">
-						</span><img th:src="@{/css/images/product/kakaopay.png}" alt="카카오페이">
-					</td>
-				</tr>
 			</table>
 		</div>
 	</div>

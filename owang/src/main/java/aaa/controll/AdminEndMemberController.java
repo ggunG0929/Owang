@@ -1,7 +1,9 @@
 package aaa.controll;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,11 +15,13 @@ import aaa.model.PaymentDTO;
 import aaa.model.RecruitDTO;
 import aaa.model.ReviewDTO;
 import aaa.model.SoloDTO;
+import aaa.model.PaymentResponseMember.Payment;
 import aaa.service.AdminCompanyMapper;
 import aaa.service.AdminSolo;
 import aaa.service.EndCompanyMapper;
 import aaa.service.EndSoloMapper;
 import aaa.service.PayMapper;
+import aaa.service.PayService;
 import aaa.service.ReviewMapper;
 import aaa.service.SoloMapper;
 import jakarta.annotation.Resource;
@@ -65,6 +69,9 @@ public class AdminEndMemberController {
 		return "admin/endmember/company";
 	}// 기업 리스트
 	
+	@Autowired
+	PayService payS;
+	
 	// 기업 상세보기
 	@RequestMapping("endcompany/detail/{cid}")
 	String endCompanyDetail( Model mm,
@@ -81,8 +88,11 @@ public class AdminEndMemberController {
 		System.out.println(redata); 
 		mm.addAttribute("reData",redata);
 		
-		List<PaymentDTO> pay = payMapper.endpay(cid);
-		mm.addAttribute("pay",pay);
+		List<String> impuidList = payMapper.impuids(cid);
+		if (!impuidList.isEmpty()) {
+			List<Payment> paymentData = payS.getPaymentData(impuidList);
+			mm.addAttribute("paymentData", paymentData);
+		}
 		
 		return "admin/endmember/companyDetail";
 	}

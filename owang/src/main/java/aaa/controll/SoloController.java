@@ -230,7 +230,6 @@ public class SoloController {
 			return "solo_resume/alert";
 		}
 		
-		
 		// db정보 가져온 김에 세션 업데이트
 		session.setAttribute("solosession", soloinfo);
 

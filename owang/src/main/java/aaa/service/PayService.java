@@ -157,7 +157,7 @@ public class PayService {
 		payment.setFormatAmount(String.format("%,d", payment.getAmount())+"원");
 		payment.setFormatCancle(String.format("%,d", payment.getCancel_amount())+"원");
 	}
-
+	
 	public void dataformat(PaymentResponseAll.Pagedpayment payment) {
 		// imp_uid로 db정보 검색해서 id 가져옴, 탈퇴회원의 경우 표시
 		String id = paym.idget(payment.getImp_uid());

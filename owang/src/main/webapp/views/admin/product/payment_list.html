@@ -196,10 +196,15 @@
 		<header>
 			<div th:replace="~{admin/adheader}"></div>
 		</header>
+
 		<div class="main">
 			<h1>결제 내역</h1>
 			<div class="btn-container">
 				<button onclick="alldays()">전체기간</button>
+			</div>
+			<div style="margin-bottom: 20px;">
+				<input type="text" name="searchKeyword" id="searchKeyword">
+				<input type="submit" value="검색" onclick="search()">
 			</div>
 			<form action="/admin_product/payment/1">
 				<div style="margin-bottom: 20px;">
@@ -239,15 +244,15 @@
 				<input type="hidden" name="endDate" th:value="${to}">
 				<button type="submit">해당기간 결제정산 보러가기 ></button>
 			</form>
-			<p>총 [[${total}]]건, 총 [[${totalPages}]]페이지</p>
+			<p th:if="${total!=null && totalPages!=null}">총 [[${total}]]건, 총 [[${totalPages}]]페이지</p>
 			<table class="allpayment">
 				<tr>
-					<th style="width: 80px">결제상태</th>
+					<th style="width: 81px">결제상태</th>
 					<th style="width: 177px">거래번호</th>
 					<th class="id">회원아이디</th>
 					<th style="width: 204px">상품명</th>
 					<th style="width: 93px">상품금액</th>
-					<th style="width: 112px">결제요청</th>
+					<th style="width: 183px">결제요청</th>
 				</tr>
 				<th:block th:if="${paymentData != null}">
 					<tr th:each="payment : ${paymentData}">
@@ -257,7 +262,7 @@
 								onclick="window.open(this.href, '결제내역상세', 'width=600,height=650');
                      return false;" target="_blank" />
 						</td>
-						<td class="id" th:text="${payment.id}"></td>
+						<td class="id" th:text="${payment.id}" />
 						<td th:text="${payment.name}"></td>
 						<td class="gprice" th:text="${payment.formatAmount}"></td>
 						<td class="alct" th:text="${payment.started_at}"></td>

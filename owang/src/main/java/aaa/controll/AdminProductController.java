@@ -190,8 +190,6 @@ public class AdminProductController {
 		ResponseEntity<PaymentResponseAll> responseEntity = restTemplate.getForEntity(apiUrl, PaymentResponseAll.class);
 		PaymentResponseAll responseBody = responseEntity.getBody();
 		if (responseBody.getCode() != 0 || responseBody.getResponse() == null) {
-			System.out.println("응답코드 : " + responseBody.getCode());
-			System.out.println("메시지 : " + responseBody.getMessage());
 			mm.addAttribute("errorMsg", responseBody.getMessage());
 		} else {
 			// 받아온 정보로 페이지처리
@@ -245,6 +243,22 @@ public class AdminProductController {
 		mm.addAttribute("paymentData", paymentData);
 		return "admin/product/payment_detail";
 	}
+	
+	// 아이디로 검색
+	@RequestMapping("/payment/sch/{id}")
+	String search(Model mm, @PathVariable String id) {
+		// 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴
+		List<String> impuidList = paym.impuids(id);
+		if (!impuidList.isEmpty()) {
+			List<Payment> paymentData = payS.getPaymentData(impuidList);
+			mm.addAttribute("paymentData", paymentData);
+		}else {
+			String errorMsg = "검색결과가 없습니다";
+			mm.addAttribute("errorMsg", errorMsg);
+		}
+		return "admin/product/payment_list";
+	}
+	
 
 	@Resource
 	SoloMapper sm;
@@ -328,11 +342,13 @@ public class AdminProductController {
 
 	@RequestMapping("/index")
 	String index(Model mm) {
+		String today = payS.dateformat(new Date());
 		int soloChk = asm.solocomListCnt();
 		int compChk = acm.adminAddMiCont();
 		int askChk = am.noReCnt();
 		int payChk = paym.dayPayCnt(payS.dateformat(new Date()));
 
+		mm.addAttribute("today", today);
 		mm.addAttribute("soloChk", soloChk);
 		mm.addAttribute("compChk", compChk);
 		mm.addAttribute("askChk", askChk);
