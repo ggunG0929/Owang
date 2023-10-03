@@ -108,9 +108,7 @@
 			</tr>
 			<tr>
 				<td class="index">아이디</td>
-				<td>
-					<a th:href="|/admin_product/payment/sch/${paymentData[0].id}|" 
-				th:text="${paymentData[0].id}" /></td>
+				<td th:text="${paymentData[0].id}" />
 				<td class="index">메일</td>
 				<td th:text="${paymentData[0].buyer_email}" />
 			</tr>

@@ -277,6 +277,32 @@
 			inputSd.addEventListener('input', function () {
 				inputEd.min = this.value;
 			});
+
+
+			const buttons = document.querySelectorAll('.btn-container button');
+			function setActiveButton(range) {
+				const selectedStartDate = new Date();
+				const selectedEndDate = new Date();
+
+				selectedStartDate.setDate(selectedStartDate.getDate() - (range - 1));
+
+				buttons.forEach(function (button) {
+					let buttonRange = parseInt(button.getAttribute('data-range'));
+					let buttonEndDate = new Date();
+					let buttonStartDate = new Date();
+					buttonStartDate.setDate(buttonStartDate.getDate() - (buttonRange - 1));
+
+					if (
+						selectedStartDate === buttonStartDate &&
+						selectedEndDate === buttonEndDate
+					) {
+						button.classList.add('active');
+					} else {
+						button.classList.remove('active');
+					}
+				});
+			}
+
 		});
 
 		// 최근 range 매출보기
@@ -290,7 +316,6 @@
 			// 서브밋
 			document.querySelector('form').submit();
 		}
-
 
 		// 그래프 데이터
 		let graphDatas = /*[[${graphData}]]*/ null;
@@ -370,7 +395,7 @@
 			});
 			if (currentWeekStart !== null) {
 				// 마지막 주의 데이터를 groupedData에 추가
-				let formattedDate = (currentWeekStart.getMonth() + 1) + "월 "
+				let formattedDate = currentWeekStart.getFullYear() + "년 " + (currentWeekStart.getMonth() + 1) + "월 "
 					+ (Math.ceil(currentWeekStart.getDate() / 7) + 1) + "주차(" + currentWeekStart.getDate() + "일~"
 					+ endDate.getDate() + "일)";
 				groupedData.push({date: formattedDate, totalAmount: weekTotal});
@@ -381,7 +406,7 @@
 				let currentWeekStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() - startDate.getDay());
 				let currentWeekEnd = new Date();
 				currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
-				firstData.date = (currentWeekStart.getMonth() + 1) + "월 "
+				firstData.date = currentWeekStart.getFullYear() + "년 " + (currentWeekStart.getMonth() + 1) + "월 "
 					+ (Math.ceil(currentWeekStart.getDate() / 7) + 1) + "주차("
 					+ startDate.getDate() + "일~" + (currentWeekEnd).getDate() + "일)";
 			}
@@ -410,14 +435,14 @@
 			});
 			if (currentMonth !== null) {
 				// 마지막 월의 데이터를 groupedData에 추가
-				let formattedDate = (currentMonth + 1) + "월( ~" + endDate.getDate() + "일)";
+				let formattedDate = endDate.getFullYear() + "년 " + (currentMonth + 1) + "월( ~" + endDate.getDate() + "일)";
 				groupedData.push({date: formattedDate, totalAmount: monthTotal});
 			}
 			// 첫 번째 주의 데이터를 수정
 			if (groupedData.length > 0) {
 				let firstData = groupedData[0];
 				let currentMonth = startDate.getMonth();
-				firstData.date = (currentMonth + 1) + "월(" + startDate.getDate() + "일~ )";
+				firstData.date = startDate.getFullYear() + "년 " + (currentMonth + 1) + "월(" + startDate.getDate() + "일~ )";
 			}
 
 			return groupedData;

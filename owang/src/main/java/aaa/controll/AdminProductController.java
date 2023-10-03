@@ -245,8 +245,8 @@ public class AdminProductController {
 	}
 	
 	// 아이디로 검색
-	@RequestMapping("/payment/sch/{id}")
-	String search(Model mm, @PathVariable String id) {
+	@RequestMapping("/payment/sch")
+	String search(Model mm, @RequestParam("searchKeyword") String id) {
 		// 아이디로 db의 impuid로 리스트를 만들어 가져오고, 서버에 보내 결제내역을 가져옴
 		List<String> impuidList = paym.impuids(id);
 		if (!impuidList.isEmpty()) {
@@ -256,7 +256,8 @@ public class AdminProductController {
 			String errorMsg = "검색결과가 없습니다";
 			mm.addAttribute("errorMsg", errorMsg);
 		}
-		return "admin/product/payment_list";
+		mm.addAttribute("id", id);
+		return "admin/product/payment_schlist";
 	}
 	
 

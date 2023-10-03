@@ -16,7 +16,13 @@
 			let inputSd = document.querySelector('input[name="from"]');
 			let inputEd = document.querySelector('input[name="to"]');
 			let inputPage = document.querySelector('input[name="page"]');
+			let alldaysButton = document.getElementById('alldays');
 
+			if (inputSd.value === "" && inputEd.value === "") {
+				alldaysButton.classList.add('active');
+			} else {
+				alldaysButton.classList.remove('active');
+			}
 			inputSd.addEventListener('input', function () {
 				inputEd.min = this.value;
 			});
@@ -48,8 +54,8 @@
 		function alldays() {
 			document.querySelector('input[name="from"]').value = '';
 			document.querySelector('input[name="to"]').value = '';
-			document.querySelector('form').submit();
-		}   
+			document.querySelector('.rangeform').submit();
+		}
 	</script>
 	<style>
 		.main {
@@ -132,20 +138,20 @@
 			border: 1px solid rgba(0, 64, 0, 0.6);
 		}
 
-		button {
-			margin: 5px 5px;
+		#alldays.active,
+		#alldays:hover {
+			border: 1px solid rgba(0, 64, 0, 1);
+			color: #000;
+			background-color: #f9f9f9;
+		}
+
+		#alldays {
+			margin-left: 15px;
 			padding: 6px 12px;
 			border: 1px solid rgba(0, 64, 0, 0.1);
 			border-radius: 4px;
 			cursor: pointer;
 			color: #999;
-		}
-
-		button.active,
-		button:hover {
-			border: 1px solid rgba(0, 64, 0, 1);
-			color: #000;
-			background-color: #f9f9f9;
 		}
 
 		form button {
@@ -188,6 +194,25 @@
 		.pagingtbl a {
 			padding: 0 5px;
 		}
+
+.form-container {
+  display: flex;
+  align-items: flex-end; /* 검색 버튼을 맨 아래로 정렬합니다. */
+  margin-bottom: 20px;
+}
+
+.form-container form {
+  display: flex;
+  flex-grow: 1;
+}
+
+.form-container form input[type="text"] {
+  flex-grow: 1; /* 입력 필드가 가능한 한 늘어나도록 설정합니다. */
+}
+
+.form-container form input[type="submit"] {
+  margin-left: 10px; /* 버튼과 입력 필드 사이에 여백을 추가합니다. */
+}
 	</style>
 </head>
 
@@ -199,14 +224,18 @@
 
 		<div class="main">
 			<h1>결제 내역</h1>
-			<div class="btn-container">
-				<button onclick="alldays()">전체기간</button>
-			</div>
-			<div style="margin-bottom: 20px;">
-				<input type="text" name="searchKeyword" id="searchKeyword">
-				<input type="submit" value="검색" onclick="search()">
-			</div>
-			<form action="/admin_product/payment/1">
+<div class="form-container">
+    <form action="/admin_product/payment/sch" method="post">
+        <input type="text" name="searchKeyword" id="searchKeyword" placeholder="아이디를 검색하세요">
+        <input type="submit" value="검색">
+    </form>
+    <form class="alter" action="/admin_product/graph" method="get">
+        <input type="hidden" name="startDate" th:value="${from}">
+        <input type="hidden" name="endDate" th:value="${to}">
+        <button type="submit">해당기간 결제정산 보러가기 ></button>
+    </form>
+</div>
+			<form action="/admin_product/payment/1" class="rangeform">
 				<div style="margin-bottom: 20px;">
 					<label for="status">결제상태</label>
 					<select name="status" id="status">
@@ -234,15 +263,13 @@
 					</select>
 				</div>
 				<div>
+					<div class="btn-container">
+						<button onclick="alldays()" id="alldays">전체기간</button>
+					</div>
 					<input type="date" name="from" id="from" th:value="${from}" th:max="${today}">~
 					<input type="date" name="to" id="to" th:value="${to}" th:max="${today}">
 					<input type="submit" value="검색">
 				</div>
-			</form>
-			<form class="alter" action="/admin_product/graph" method="get">
-				<input type="hidden" name="startDate" th:value="${from}">
-				<input type="hidden" name="endDate" th:value="${to}">
-				<button type="submit">해당기간 결제정산 보러가기 ></button>
 			</form>
 			<p th:if="${total!=null && totalPages!=null}">총 [[${total}]]건, 총 [[${totalPages}]]페이지</p>
 			<table class="allpayment">
@@ -323,12 +350,12 @@
 						<th:block th:unless="${from == null or to == null}">
 							<a th:if="${totalPages != 0 and nextPage < totalPages}"
 								th:href="|/admin_product/payment/${totalPages}?status=${status}&limit=${limit}&from=${from}&to=${to}&sorting=${sorting}|"
-								th:text="마지막" />
+								th:text="맨끝" />
 						</th:block>
 						<th:block th:if="${from == null or to == null}">
 							<a th:if="${totalPages != 0 and nextPage < totalPages}"
 								th:href="|/admin_product/payment/${totalPages}?status=${status}&limit=${limit}&sorting=${sorting}|"
-								th:text="마지막" /a>
+								th:text="맨끝" /a>
 						</th:block>
 					</td>
 				</tr>

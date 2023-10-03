@@ -9,16 +9,11 @@
 			font-family: 'Noto Sans KR', sans-serif;
 			text-align: center;
 			background-color: #fff;
-			padding: 100px 0;
+			padding: 40px 0;
 		}
 
 		#product-intro {
 			font-size: 0px;
-		}
-
-		#product-intro img {
-			width: 800px;
-			height: auto;
 		}
 
 		.button-container {
@@ -49,12 +44,14 @@
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
+
+	<remocon>
+		<div th:insert="~{remocon :: remocon}"></div>
+	</remocon>
+
 	<div class="product-temp">
 		<div id="product-intro">
-			<img th:src="@{/css/images/prodinthanji1.jpg}" alt="상품안내1">
-			<img th:src="@{/css/images/prodinthanji2.jpg}" alt="상품안내2">
-			<img th:src="@{/css/images/prodinthanji3.jpg}" alt="상품안내3">
-			<img th:src="@{/css/images/prodinthanji4.jpg}" alt="상품안내4">
+			<img th:src="@{/css/images/productintro.jpg}" alt="상품안내">
 			<div class="button-container">
 				<a href="/product/notice" class="button">상품신청하러가기 ></a>
 			</div>

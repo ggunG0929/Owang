@@ -16,6 +16,7 @@ public interface ReviewMapper {
 	// 기업 회원 정리
 	List<ReviewDTO> reviewList(ReviewDTO dto);
 	List<ReviewDTO> reviewList2(String cid);
+	List<ReviewDTO> reviewList3(String sid);
 	//리뷰리스트
 	List<ReviewDTO> reviewzzList(String cid);
 	// 리뷰 페이지 계산

@@ -13,6 +13,7 @@ public interface PayMapper {
 	
 	// 기업탈퇴 조회
 	List<PaymentDTO> endpay(String cid);
+	List<PaymentDTO> endpay2(String sid);
 
 	// 결제목록보기
 	List<PaymentDTO> list();

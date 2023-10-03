@@ -33,8 +33,8 @@
 			cursor: pointer;
 		}
 
-		.card:hover {
-			background-color: rgba(0, 64, 0, 0.2);
+		.card:hover .count{
+			  transform: translateY(-10px); /* 위로 움직이는 효과 */
 		}
 
 		.card-content {
@@ -115,7 +115,7 @@
 				<div class="card" th:onclick="window.location.href='/admin_product/payment/1?from='+[[${today}]]+'&to='+[[${today}]]">
 					<div class="card-content">
 						<span class="material-symbols-outlined big">receipt_long</span>
-						<h3>오늘 결제건</h3>
+						<h3>오늘 결제완료</h3>
 					</div>
 					<div class="count"><span class="info">[[${payChk}]]</span>건</div>
 					<a>바로가기></a>

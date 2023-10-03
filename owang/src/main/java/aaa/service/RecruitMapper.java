@@ -11,6 +11,9 @@ import aaa.model.RecruitDTO;
 
 @Mapper
 public interface RecruitMapper {
+	// 마감타입
+	void updateRecruitMagam(RecruitDTO dto);
+	
 	// 게시글 정렬
 	List<RecruitDTO> recruitList(RecruitDTO dto);
 

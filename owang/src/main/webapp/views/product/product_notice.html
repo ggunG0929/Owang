@@ -9,7 +9,13 @@
 			font-family: 'Noto Sans KR', sans-serif;
 			text-align: center;
 			background-color: #fff;
-			padding: 100px 0;
+			padding: 40px 0;
+		}
+
+		.table-container {
+			display: flex;
+			justify-content: space-between;
+			margin: 40px auto;
 		}
 
 		table {
@@ -18,11 +24,11 @@
 		}
 
 		#solotbl {
-			margin: 0 0 0 200px;
+			margin: 40px 0 40px 110px;
 		}
 
 		#comptbl {
-			margin: 0 200px 0 0;
+			margin: 40px 110px 40px 0;
 		}
 
 		tr:hover {
@@ -40,9 +46,8 @@
 		}
 
 		.btn-container {
-			margin: 50px 0;
+			margin: 40px 0;
 		}
-
 
 		.button {
 			display: inline-block;
@@ -70,12 +75,6 @@
 
 		.price {
 			text-align: right;
-		}
-
-		.table-container {
-			display: flex;
-			justify-content: space-between;
-			margin: 20px auto;
 		}
 	</style>
 </head>
@@ -119,7 +118,14 @@
 	<header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
+
+	<remocon>
+		<div th:insert="~{remocon :: remocon}"></div>
+	</remocon>
+
 	<div class="product-temp">
+		<h1>상품신청</h1>
+		
 		<div class="table-container">
 			<table id="solotbl">
 				<tr th:each="dto : ${data}" th:if="${dto.productClient == '개인'}">
@@ -127,27 +133,32 @@
 						<input type="radio" th:if="${pay == 'solo'}" th:value="${dto.productId}" name="productRadio">
 						<!-- 개인 선택 -->
 					</td>
-					<td class="alct"><i class="fa-solid fa-user fa-lg" style="color: #f03200"></i></td>
-					<td class="alle" th:text="${dto.productName}"></td>
-					<td class="price" th:text="${dto.formatPrice}"></td>
+					<td class="alct" style="width: 33px;"><i class="fa-solid fa-user fa-lg" style="color: #f03200"></i>
+					</td>
+					<td class="alle" style="width: 185px;" th:text="${dto.productName}"></td>
+					<td class="price" style="width: 90px;" th:text="${dto.formatPrice}"></td>
 				</tr>
 			</table>
+			
 			<table id="comptbl">
 				<tr th:each="dto : ${data}" th:if="${dto.productClient == '기업'}">
 					<td>
 						<input type="radio" th:if="${pay == 'comp'}" th:value="${dto.productId}" name="productRadio">
 						<!-- 기업 선택 -->
 					</td>
-					<td class="alct"><i class="fa-solid fa-building fa-lg" style="color: #222edb"></i></td>
-					<td class="alle" th:text="${dto.productName}"></td>
-					<td class="price" th:text="${dto.formatPrice}"></td>
+					<td class="alct" style="width: 33px;"><i class="fa-solid fa-building fa-lg"
+							style="color: #222edb"></i></td>
+					<td class="alle" style="width: 185px;" th:text="${dto.productName}"></td>
+					<td class="price" style="width: 90px;" th:text="${dto.formatPrice}"></td>
 				</tr>
 			</table>
 		</div>
+		
 		<div class="btn-container">
 			<button id="submitBtn" class="button">신청</button>
 		</div>
 	</div>
+	
 	<footer>
 		<div th:insert="~{footer :: footer}"></div>
 	</footer>
