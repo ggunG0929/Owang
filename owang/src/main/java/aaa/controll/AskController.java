@@ -40,6 +40,8 @@ public class AskController {
 		String cid = (String) session.getAttribute("cid");
 		AdminDTO adto = (AdminDTO) session.getAttribute("adminSession");
 		String zuserid;
+		
+		
 		if (sid == null) {
 			zuserid = cid;
 		} else {
@@ -48,6 +50,14 @@ public class AskController {
 		dto.calc(mapper.listCnt());
 		dto.setPname(zuserid);
 		System.out.println("askdto" + dto);
+		
+		 if (sid == null && cid == null && adto == null) {
+		        dto.setMsg("회원만 이용 가능합니다");
+		        dto.setGoUrl("/");
+		        return "ask/ask_alert";
+		 }
+
+		
 	
 		
 		//값을 리스트로받아 그다음에
@@ -198,7 +208,7 @@ public class AskController {
 		}
 
 		String path = request.getServletContext().getRealPath("askup");
-		path = "C:\\Users\\콩쥐\\Desktop\\final\\fighting\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\askup";
+		//path = "C:\\Users\\콩쥐\\Desktop\\final\\fighting\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\askup";
 		
 		System.out.println(path);
 
@@ -381,7 +391,7 @@ public class AskController {
 		if (delDTO.getUpfile() != null) {// 파일이 있다면
 			// 시스템 경로를 문자열로 저장
 			String path = request.getServletContext().getRealPath("askup");
-			path = "C:\\Users\\콩쥐\\Desktop\\final\\fighting\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\askup";
+			//path = "C:\\Users\\콩쥐\\Desktop\\final\\fighting\\Spring_TeamVer_1\\owang\\src\\main\\webapp\\askup";
 
 			new File(path + "\\" + delDTO.getUpfile()).delete();
 

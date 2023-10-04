@@ -140,12 +140,12 @@ public class AdminCompanyController {
 	@RequestMapping("list/{page}")
 	String list(Model mm, MCompanyDTO dto) {
 
-		dto.calc(adminMapper.adminAddCont());
 
+		dto.calc(adminMapper.adminAddAllCnt());
 		List<MCompanyDTO> data = adminMapper.adminCompanyList(dto);
-		System.out.println(adminMapper.companyList(dto));
+		System.out.println(data.size());
 		mm.addAttribute("mainData", data);
-		mm.addAttribute("realData", adminMapper.companyCapprovalList(dto));
+		//mm.addAttribute("realData", adminMapper.companyCapprovalList(dto));
 		return "/admin/company/cList";
 	}// 기업 리스트
 

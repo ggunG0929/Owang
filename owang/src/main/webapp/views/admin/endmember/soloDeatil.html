@@ -104,7 +104,7 @@
 		<div class="main">
 			
 			<h1>리뷰</h1>
-
+			
 			<table>
 				<th>작성자</th>
 				<th>제목</th>
@@ -121,22 +121,22 @@
 			</table>
 
 			<h1>결제</h1>
-
+		
 			<table>
 				<th>거래번호</th>
 				<th>상품명</th>
 				<th>상품금액</th>
 				<th>결제요청</th>
-
-				<tr th:each="pay : ${pay}" th:if="${pay.amount > 0}">
-					<td th:text="${pay.impUid}" />
-					<td th:text="${pay.pname}" />
-					<td th:text="${pay.amount}" />
-					<td th:text="${pay.paidAt}" />
+	
+				<tr th:each="pay : ${paymentData}" th:if="${pay.amount > 0}">
+					<td th:text="${pay.imp_uid}" />
+					<td th:text="${pay.name}" />
+					<td th:text="${pay.formatAmount}" />
+					<td th:text="${pay.started_at}" />
 
 				</tr>
 			</table>
-			<a href="javascript:goBack()">이전 페이지로</a>
+			<a href="javascript:goBack()" style="margin-left: 10px;">이전 페이지로</a>
 		</div>
 	</container>
 

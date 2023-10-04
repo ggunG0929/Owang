@@ -24,10 +24,15 @@ public interface AdminCompanyMapper {
 	// 기업 등록 전체 회원 정리
 	List<MCompanyDTO> companyCapprovalList2(MCompanyDTO dto);
 	
+	// 재훈추가 - 신규가입기업
+	List<MCompanyDTO> companyNewIn(MCompanyDTO dto);
+	
 	List<MCompanyDTO> join(MCompanyDTO dto);
 
 	// 기업 인증회원 페이지 계산
 	int adminAddCont();
+	// 기업 전체 페이지 계산
+	int adminAddAllCnt();
 	// 기업 미인증회원 페이지 계산
 	int adminAddMiCont();
 	

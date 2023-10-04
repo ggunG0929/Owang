@@ -107,7 +107,7 @@
 	<container id="container">
 		
 		<th:block th:replace="~{admin/adheader}" />
-		[[${mainData}]]
+		
 		<div class="main">
 			<h2>지원내역</h2>
 
@@ -133,7 +133,7 @@
 					<td th:text="${dto.saddress}" />
 				</tr>
 			</table>
-			<a href="javascript:goBack()">이전 페이지로</a>
+			<a href="javascript:goBack()" style="margin-left: 10px;">이전 페이지로</a>
 		</div>
 	</container>
 	<script>

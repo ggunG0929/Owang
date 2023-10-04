@@ -30,11 +30,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import aaa.model.AdminDTO;
+import aaa.model.ApplicantDTO;
 import aaa.model.MCompanyDTO;
 import aaa.model.RecruitDTO;
 import aaa.model.SoloDTO;
 import aaa.model.SoloResumeDTO;
 import aaa.service.AdminCompanyMapper;
+import aaa.service.CompanyApplicantMapper;
 import aaa.service.MCompanyMapper;
 import aaa.service.RecruitMapper;
 import aaa.service.SoloApplicantMapper;
@@ -68,6 +70,9 @@ public class RecruitController {
 
 	@Resource
 	SoloApplicantMapper applicantMapper;
+	
+	@Resource
+	CompanyApplicantMapper camapper;
 
 	@GetMapping("/search")
 	public String search(@RequestParam("keyword") String keyword, @RequestParam("searchOption") String searchOption,
@@ -467,6 +472,10 @@ public class RecruitController {
 		dto.setCname(mc.getCname());
 		dto.setCid(mcseDto.getCid());
 
+		
+		// 재훈 추가		
+		dto.setClogo(mc.getClogo());
+		dto.setRecruitId(recruitMapper.recruitMaxId() + 1);
 		dto.setRecruitId(recruitMapper.recruitMaxId() + 1);
 
 		// System.out.println(dto);
@@ -523,26 +532,48 @@ public class RecruitController {
 	}// 파일삭제
 
 	@RequestMapping("delete/{page}/{id}")
-	String delete(RecruitDTO dto, HttpServletRequest request, @PathVariable int id) {
-		// 삭제전 세션이나 기업의 아이디 비번이 맞냐 로직을 넣어야할듯합니다.
-		// 혹은 conform이엿나로 도 가능(alert인데 삭제할지 취소할지 묻는거입니다)
-		// 일단 삭제이벤트 생성
+	String delete(RecruitDTO dto, HttpServletRequest request, @PathVariable int id,HttpSession session) {
+		String cid = (String) session.getAttribute("cid");
 		RecruitDTO rdto = recruitMapper.recruitDetail(id);
 		System.out.println(dto);
 		dto.setMsg("삭제실패");
-		dto.setGoUrl("/recruit/detail/" + dto.getPage() + "/" + id);
+		dto.setGoUrl("/recruit/detail/" +dto.getCid()+"/"+ dto.getPage() + "/" + id);
+		
+		if (cid==null) {
+			int cnt = recruitMapper.recruitDelete(id);
+			System.out.println("deleteTest" + cnt);
 
-		// 일단 dto가안와서 page에있는 id로 죽임 form으로 넘긴게안이라서 올방법을 일단 못찾음
-		int cnt = recruitMapper.recruitDelete(id);
-		System.out.println("deleteTest" + cnt);
-
-		if (cnt > 0) {
-			fileDeleteModule(rdto, request);
-			System.out.println();
-			System.out.println(rdto);
-			dto.setMsg("삭제되었습니다.");
-			dto.setGoUrl("/recruit/list/1");
+			if (cnt > 0) {
+				fileDeleteModule(rdto, request);
+				System.out.println();
+				System.out.println(rdto);
+				dto.setMsg("삭제되었습니다.");
+				dto.setGoUrl("/recruit/list/1");
+			}
 		}
+		
+		List<ApplicantDTO> appfind = camapper.appfind(cid);
+		System.out.println("이력서 조회"+appfind.size());
+		if (appfind.size() > 0) {
+			dto.setMsg("조회 안된 이력서가 "+appfind.size()+"건 존재합니다");
+			dto.setGoUrl("/company_applicant/home/1");
+			
+		}else {
+			
+			// 일단 dto가안와서 page에있는 id로 죽임 form으로 넘긴게안이라서 올방법을 일단 못찾음
+			int cnt = recruitMapper.recruitDelete(id);
+			System.out.println("deleteTest" + cnt);
+
+			if (cnt > 0) {
+				fileDeleteModule(rdto, request);
+				System.out.println();
+				System.out.println(rdto);
+				dto.setMsg("삭제되었습니다.");
+				dto.setGoUrl("/recruit/list/1");
+			}
+			
+		}
+	
 
 		return "recruit/recruit_alert";
 	}

@@ -15,6 +15,10 @@
 	<div th:insert="~{header :: header}"></div>
 </header>
 
+<remocon>
+   <div th:insert="~{remocon :: remocon}"></div>
+</remocon>
+
 <!--[[${dto}]]-->
 
 	<div class="title_box">
@@ -34,7 +38,8 @@
 	<table border="0" id="modify_table">
 		<tr>
 			<td id="label">공고제목</td>
-			<td><input type="text" th:field="*{recruitTitle}" required  id="input_title"/></td>
+			<td><input type="text" th:field="*{recruitTitle}" 
+				pattern="^\S.*$" 	required  id="input_title"/></td>
 		</tr>
 	
 		<tr>
@@ -52,6 +57,21 @@
 			</td>
 		</tr>
 		<tr>
+			<!--<td id="label">근무지역</td>
+			<td>
+				<select th:field="*{recruitLocation}" name="recruitLocation">
+					<option value="서울특별시">서울특별시</option>
+					<option value="경기도">경기도</option>
+					<option value="부산광역시">부산광역시</option>
+					<option value="대구광역시">대구광역시</option>
+					<option value="인천광역시">인천광역시</option>
+					<option value="광주광역시">광주광역시</option>
+					<option value="대전광역시">대전광역시</option>
+					<option value="제주도">제주도</option>
+				</select>
+			</td>-->
+		</tr>
+		<tr>
 			<td id="label">상세내용</td>
 			<td><textarea type="text" th:field="*{recruitContent}" rows="30" cols="80" required 
 					id="textarea"/></td>
@@ -61,7 +81,7 @@
 				<input type="submit" value="수정하기" id="writeButton"/>
 				<!--뒤로-->
 				<a th:href="@{'/recruit/list/1'}" i class="fa-solid fa-reply" style="color: #000000;">
-					뒤로
+					
 				</a>
 
 			</td>

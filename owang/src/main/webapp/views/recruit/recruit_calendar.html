@@ -68,12 +68,12 @@
 						eventTextColor = 'green'; // 텍스트 색상을 검정색으로 변경
 						
 					}
-					
+					/*
 						 // title 문자열 길이가 titleMaxLength를 초과하면 자르고 "..."을 추가
 				    if (eventTitle.length > titleMaxLength) {
 				        eventTitle = eventTitle.substring(0, titleMaxLength) + "...";
 				    }
-
+					*/
 					// 이벤트의 내용과 배경색을 설정합니다.
 					return {
 						
@@ -116,10 +116,33 @@
 			margin-top: 20px;
 			cursor: pointer;
 			color: black;
+		    left: 0px;
+		    max-width: 100%;
+		    overflow: hidden;
+		    right: 0px;
+		    vertical-align: top;
+			
 		}
 		
 		fc-event-main{
 			color: black;
+		}
+		
+		.fc-event > div{
+		    display: flex;
+		    padding: 3px 0;
+		    background-color: white;
+		    color: green;
+		    align-items: center;
+		}
+		
+		.fc-h-event .fc-event-title {
+		    display: inline-block;
+		    left: 0px;
+		    max-width: 100%;
+		    overflow: hidden;
+		    right: 0px;
+		    vertical-align: top;
 		}
 	</style>
 </head>

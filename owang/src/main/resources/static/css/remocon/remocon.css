@@ -1,4 +1,4 @@
-
+/*안접히는 리모콘바*/
 
 /*아이콘생성*/
 .menu ::before{
@@ -9,10 +9,10 @@
 }
 
 
-.menu label::before{ content: '\e5d2'; }/* 메뉴 */
-.menu li:nth-child(1) a::before{ content: '\e88a'; } /* home */
-.menu li:nth-child(2) a::before{ content: '\e8ef'; } /* 공고보러가기 */
-.menu li:nth-child(3) a::before{ content: '\ef49'; } /* 공지사항*/
+.menu label{ content: '\e5d2'; }/* 메뉴 */
+.menu li:nth-child(1) { content: '\e88a'; } /* home */
+.menu li:nth-child(2) { content: '\e8ef'; } /* 공고보러가기 */
+.menu li:nth-child(3) { content: '\ef49'; } /* 공지사항*/
 .menu li:nth-child(4) a::before{ content: '\e5d8'; } /* UP */
 
 
@@ -27,20 +27,21 @@
 
 /* aside */
 .menu {
+	z-index: 3;
   display: block;
   width: 60px;
-  background-color:rgb(0, 64,0);
+  /*background-color:rgb(0, 64,0);*/
+  background-color:rgb(75, 136, 250);
   color: #fff;
   border-radius: 22px;
   padding: 9px;
   box-sizing: border-box;
   overflow: hidden; /* 반응형 애니메이션용 */
   transition: all 0.5s ease; /* 반응형 애니메이션 */
+
   position: fixed; /*스크롤 내리면 따라오게*/
-  top : 337px;
+  top: 25px;
   right : 45px; /* 화면 오른쪽 끝에 고정 */
-  
- 
 }
 
 
@@ -77,15 +78,33 @@
 }
 .menu label::before{ content: '\e5d2'; }/* 메뉴 */
 .menu li:nth-child(1) a::before{ content: '\e88a'; } /* home */
-.menu li:nth-child(2) a::before{ content: '\e8ef'; } /* 공고보러가기 */
+.menu li:nth-child(2) a::before{ content: '\ea40'; } /* 공고보러가기 */
 .menu li:nth-child(3) a::before{ content: '\ef49'; } /* 공지사항*/
 .menu li:nth-child(4) a::before{ content: '\e5d8'; } /* UP */
-.menu li:nth-child(5) a::before{ content: '\e87d'; } 
-.menu li:nth-child(6) a::before{ content: '\e8b8'; }
+.menu li:nth-child(5) a::before{ 
+	
+	
+	} /* 카카오톡상ㅅ담 */
+
+ .kakao{
+	 background-image: url("/css/images/kakaoy.png");
+	 height: 24px;
+	 background-size : contain;
+	 background-repeat:no-repeat ; 
+ }
+
+/* .kakao에 대한 호버 효과를 완전히 제거합니다. */
+.kakao:hover {
+    background-image: url("/css/images/kakaoy.png"); /* 호버 시 배경 이미지 그대로 유지 */
+    /* 다른 스타일 변경 없음 */
+    color: inherit; /* 글자색을 상속값으로 설정 */
+} 
+
+
 
 #expand-menu { /* 체크박스 폼 요소 감춤 */
   display: none;
-              }
+ }
 
 
 

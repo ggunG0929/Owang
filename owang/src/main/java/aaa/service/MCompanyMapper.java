@@ -3,12 +3,14 @@ package aaa.service;
 
 
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import aaa.model.MCompanyDTO;
 
 @Mapper
 public interface MCompanyMapper {
-
+		List<MCompanyDTO> clogoList();
 		//기업입력
 		void insertCompany(MCompanyDTO company);
 		//기업 로그인
@@ -18,8 +20,10 @@ public interface MCompanyMapper {
 		int idChk(String cid);
 		// 기업타입 가져오기
 		Integer getctype(String cid); 
+		
 		// 회사이름 가져오기
-				String getzzcname(String cid); 
+		String getzzcname(String cid); 
+		
 		// 게시글 상세보기
 		
 		//기업 정보 상세 수정 삭제 
@@ -42,6 +46,9 @@ public interface MCompanyMapper {
 		int findpwComp(String fid, String femail);
 		int modifycpw(String cid, String cpw); 
 		String findemail(String userid);
+		
+		// 공고 진행중 개수조회
+		
 		
 }
 

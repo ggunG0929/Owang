@@ -8,6 +8,7 @@ body{
 	background-color: white;
  	height: 100%; /* 기본값으로 설정되어 있음 */
  	max-width: 1200px;
+ 	padding-bottom: 100px;
 }
 
 /* 이력서 관리 */
@@ -60,9 +61,9 @@ body{
 
 /* 이력서등록하기 */
 #rswrite{
-	margin-top:30px;
-	margin-right: 60px;
-	padding-bottom: 70px;
+    margin-top: 50px;
+    margin-right: 60px;
+    padding-bottom: 30px
 }
 
 #rswrite a{
@@ -82,7 +83,8 @@ body{
 #rstotal{
 	font-size: 15px;
 	margin-left: 60px;
-	margin-bottom: 10px;	
+	margin-bottom: 10px;
+    margin-top: 50px;	
 	
 }
 

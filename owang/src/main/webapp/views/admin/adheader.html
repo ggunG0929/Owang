@@ -10,11 +10,16 @@
 	<link rel="stylesheet" th:href="@{/css/header/styleadminside.css}">
 	<!-- 로고에 인덱스 링크 넣었습니다 -->
 	<div align="center" class="logo" onclick="location.href='/admin_product/index';">
-		<img src="/css/images/owang.png" alt="logo">
-		<h2 align="center">관리자<br />
+		<img src="/css/images/owang.png" alt="logo" style="cursor: pointer;">
+		<h2 align="center" style="cursor: pointer;">관리자<br />
 
 		</h2>
 
+	</div>
+	<hr style="color: white;"/>
+	<div onclick="location.href='/'" align="center" class="logo" style="padding-bottom: 10px;padding-top: 10px;">
+		<img src="/css/images/logo2_remove.png" alt="" style="background-color: white; cursor: pointer;" />
+		<h3 style="position: relative;right: -20px;cursor: pointer;">메인화면</h3>
 	</div>
 
 	<ul class="links">

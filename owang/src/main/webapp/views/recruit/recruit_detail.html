@@ -19,6 +19,11 @@
       <div th:insert="~{header :: header}"></div>
    </header>
    
+   <remocon>
+       <div th:insert="~{remocon :: remocon}"></div>
+    </remocon>
+    
+   
 <!--   [[${dto}]]
    [[${dto.recruitId}]]
    [[${dto.recruitTitle}]]-->
@@ -75,13 +80,17 @@
 	         <td>조회수</td>
 	         <td th:text="${dto.cnt} + '회'"  />
 	      </tr>
+	      <!--<tr th:if="${dto.recruitLocation != null}">
+   			 <td>근무지역</td>
+    		 <td th:text="${dto.recruitLocation}" />
+		  </tr>-->
         
 	
 	      <tr th:if="${dto.recruitUpfile != null}">
 	
 	         <td>파일</td>
 	         <td>
-	            <img th:if="${dto.img}" th:src="|/up/${dto.recruitUpfile}|" />
+	            <img th:if="${dto.img}" th:src="|/up/${dto.recruitUpfile}|"  style="max-width: 800px;"/>
 	            <a th:unless="${dto.img}" th:text="${dto.recruitUpfile}"
 	               th:href="|/recruit/download/${dto.recruitUpfile}|">
 	               <!-- 생각해보니 다운로드가 필요없음.. 일단 냅두겠습닏. -->
@@ -102,7 +111,8 @@
 	            </th:block>
 	              <th:block th:if="${session.adminSession != null or session.cid == dto.cid}">
 					<!--삭제-->
-	               <a th:href="|/recruit/delete/${dto.page}/${dto.recruitId}|" i class="fa-solid fa-trash-can" id="detail_del"/></a>
+	               <a th:href="|/recruit/delete/${dto.page}/${dto.recruitId}|" i class="fa-solid fa-trash-can" id="detail_del"
+	               			onclick="return confirm('정말로 삭제하시겠습니까?')"/></a>
 	               
 	            </th:block>
 				

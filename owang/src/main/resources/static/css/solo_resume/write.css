@@ -337,6 +337,13 @@ body{
 	margin-top: 20px;
 }
 
+#careerDetails li:nth-of-type(3) input{
+	width: 675px;
+ 	height: 50px;
+ 	margin-top: 10px;
+ 	font-size: 16px;
+	}
+
 /* 최종 학력 */
 #rsschool{
 	width: 800px;
@@ -426,6 +433,12 @@ body{
 	font-size: 16px;
 	font-family: inherit;
 	border: 1px solid #ccc;
+}
+
+#rsintroduce textarea::placeholder{
+	position: absolute;
+	top: 10px;
+	font-size: 16px;;
 }
 
 #rsintroduce textarea:focus{

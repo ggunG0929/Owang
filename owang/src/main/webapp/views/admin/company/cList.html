@@ -64,6 +64,12 @@
 		th {
 			text-align: center;
 		}
+		td:nth-child(5){
+			text-align: center;
+		}
+		td:nth-child(6){
+			text-align: center;
+		}
 
 		td:last-child {
 			text-align: center;
@@ -147,18 +153,20 @@
 				<input type="text" name="keyword" placeholder="검색어 입력">
 				<button type="submit">검색</button>
 			</form>
+			
 			<table border="">
 				<tr>
 					<th>번호</th>
 					<th>기업페이지</th>
 					<th>기업아이디</th>
-
 					<th>회원 구분</th>
+					<th>수락 여부</th>
 					<th>간편 수락</th>
 					<th>회원 삭제</th>
+					
 
 				</tr>
-				[[${mainData.size()}]]
+				
 				<tr th:each="dto, dtoStat : ${mainData}">
 					<td th:text="${dtoStat.count + MCompanyDTO.start}" />
 					<td>
@@ -171,6 +179,10 @@
 						<span th:if="${dto.ctype == 2}"
 							th:text="|유료회원 마감일:${#dates.format(dto.cdate, 'yyyy-MM-dd')}|"></span>
 						<span th:unless="${dto.ctype == 2}" th:text="일반회원"></span>
+					</td>
+					<td>
+						    <span th:if="${dto.capproval}">O</span>
+    						<span th:unless="${dto.capproval}">X</span>
 					</td>
 
 					<td>
@@ -203,7 +215,7 @@
 				</tr>
 
 			</table>
-			<a href="/admin_company/list/1">전체보기</a>
+			<a href="/admin_company/list/1" style="margin-left: 10px;">전체보기</a>
 			<a href="/admin_company/cRegList/1">승인기업</a>
 			<a href="/admin_company/cMiList/1">미승인기업</a>
 		</div>

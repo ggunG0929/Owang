@@ -29,6 +29,10 @@
 			border: 1px solid #ddd;
 			border-radius: 5px;
 			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+			
+			opacity: 1; /* 초기에 표시되도록 설정 */
+   			visibility: visible; /* 초기에 표시되도록 설정 */
+		    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 		}
 
 		th,
@@ -63,6 +67,8 @@
 
 		/* 버튼 스타일 */
 		button {
+			margin-left: 10px;
+			margin-bottom: 10px;
 			background-color: #007bff;
 			color: #fff;
 			border: none;
@@ -72,6 +78,7 @@
 		}
 
 		button:hover {
+			
 			background-color: #0056b3;
 		}
 
@@ -95,15 +102,38 @@
 			border-radius: 5px;
 			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 		}
+		 .hidden {
+			 opacity: 0;
+   			 visibility: collapse;
+   			  
+        	
+        }
+
+        .show {
+            display: table;
+        }
 	</style>
+	 <script>
+        function toggleTable(id) {
+            var table = document.getElementById(id);
+            if (table.classList.contains("hidden")) {
+                table.classList.remove("hidden");
+                table.classList.add("show");
+            } else {
+                table.classList.remove("show");
+                table.classList.add("hidden");
+            }
+        }
+    </script>
 </head>
 
 <body>
 	<container id="container">
 		<th:block th:replace="~{admin/adheader}" />
 		<div class="main">
-			<h1>공고 리스트 조회</h1>
-			<table border="">
+			<h1>공고 리스트</h1>
+			<button onclick="toggleTable('mainTable')">공고리스트 접기/열기</button>
+			<table border="" id="mainTable" class="show">
 				<tr>
 
 					<th>제목</th>
@@ -111,7 +141,7 @@
 					<th>채용시작일</th>
 					<th>채용마감일</th>
 					<th>조회수</th>
-					<th>기업아이디(본편에선제거)</th>
+					<th>기업아이디</th>
 					<th>지원 목록</th>
 				</tr>
 				<tr th:each="dto : ${mainData}">
@@ -133,8 +163,8 @@
 				</tr>
 			</table>
 			<h1>리뷰</h1>
-
-			<table>
+			<button onclick="toggleTable('review')">리뷰 접기/열기</button>
+			<table id="review">
 				<th>작성자</th>
 				<th>제목</th>
 				<th>장점</th>
@@ -150,8 +180,8 @@
 			</table>
 
 			<h1>결제</h1>
-
-			<table>
+			<button onclick="toggleTable('pay')">결제 접기/열기</button>
+			<table id="pay">
 				<th>거래번호</th>
 				<th>상품명</th>
 				<th>상품금액</th>
@@ -165,7 +195,7 @@
 
 				</tr>
 			</table>
-			<a href="javascript:goBack()">이전 페이지로</a>
+			<a href="javascript:goBack()" style="margin-left: 10px;">이전 페이지로</a>
 		</div>
 	</container>
 

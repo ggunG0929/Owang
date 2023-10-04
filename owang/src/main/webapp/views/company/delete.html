@@ -14,13 +14,13 @@
 
 <div class="container">
     <h1>Delete</h1>
-    <h5 style="font-size: 20px; color: rgb(52 54 63); margin-left: 20px;	">삭제를 원하시면 비밀번호를 입력해주세요</h5>
+    <h5 style="font-size: 20px; color: rgb(52 54 63); margin-left: 20px;   ">삭제를 원하시면 비밀번호를 입력해주세요</h5>
     <form method="post">
         <input type="hidden" th:value="${cid}" name="cid"/>
         <table>
             <tr>
                 <td style="font-size: 20px;">비밀번호</td>
-                <td><input type="text" name="cpw"/></td>
+                <td><input type="password" name="cpw"/></td>
             </tr>
             <tr>
                 <td colspan="2" align="center" class="btn-container">

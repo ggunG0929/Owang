@@ -86,7 +86,7 @@ body{
 	letter-spacing: 5px;
 }
 
-#review_jang textarea{
+#review_jang input{
 	border: 1px solid #ccc;
 	font-size: 18px;
 	padding: 5px;
@@ -95,13 +95,12 @@ body{
 	padding-left: 15px;
 	font-family: 'Noto Sans KR', sans-serif;
 	position: relative;
-	top: 17px;
 	width: 520px;	
 	letter-spacing: 2px;
 
 }
 
-#review_jang textarea:focus{
+#review_jang input:focus{
 	outline: none;
 	border: 1px solid rgb(111, 121, 164);
 }
@@ -114,7 +113,7 @@ body{
 	letter-spacing: 5px;
 }
 
-#review_dan textarea{
+#review_dan input{
 	border: 1px solid #ccc;
 	font-size: 18px;
 	padding: 5px;
@@ -123,12 +122,11 @@ body{
 	padding-left: 15px;
 	font-family: 'Noto Sans KR', sans-serif;
 	position: relative;
-	top: 17px;
 	width: 520px;	
 	letter-spacing: 2px;
 }
 
-#review_dan textarea:focus{
+#review_dan input:focus{
 	outline: none;
 	border: 1px solid rgb(111, 121, 164);
 }

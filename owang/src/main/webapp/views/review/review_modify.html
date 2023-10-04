@@ -13,6 +13,10 @@
 <header>
 		<div th:insert="~{header :: header}"></div>
 	</header>
+<remocon>
+   <div th:insert="~{remocon :: remocon}"></div>
+</remocon>
+	
 	<main class="content-box">
 
 		<div class="footer-box"> <!-- Container -->
@@ -37,7 +41,7 @@
 		</tr>
 		<tr>
 			<td>기업 단점</td>
-			<td><textarea type="text"  rows="10" cols="30"   th:field="*{rvdan}" required/></td>
+			<td><textarea type="text"  rows="10" cols="30" th:field="*{rvdan}" required/></td>
 		</tr>
 			<tr align="center">
 				

@@ -18,7 +18,7 @@
 </script>
 <div id="home">	
 	<header>
-		<div th:insert="~{header :: header}"></div>
+		<div th:include="header :: header"></div>
 	</header>
 	
 	<remocon>
@@ -27,8 +27,8 @@
 	
 	<div class="title_box">
 	   <h1>1:1 문의</h1>  
-	   <br><br><br><br>
-	   <h4 id="p" >
+	   <br>
+	   <h4 id="p">
   			✔️ 1:1 게시판은 개인정보를 다루는 공간입니다. 따라서 본인이 작성한 글만 확인 가능합니다.<br>
       		  또한, 본인이 작성한 문의글에 관리자 답변이 달린 경우 수정 및 삭제 기능은 지원되지 않습니다.<br>
   			✔️ 관리자 답변 이전에는 수정 및 삭제 가능합니다.
@@ -113,15 +113,7 @@
 		</tr>
 	</table>
 	
-	
-	
-	
-	
-	
 		
-
-	
-	
 	
 	</div>
 <!--<a href="javascript:goBack()">이전 페이지</a>-->

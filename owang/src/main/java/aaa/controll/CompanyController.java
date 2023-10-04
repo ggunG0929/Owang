@@ -238,9 +238,16 @@ public class CompanyController {
 	// 개인정보삭제
 
 	@GetMapping("delete")
-	String delete(HttpSession session, Model mm, ApplicantDTO adto) {
-
+	String delete(HttpSession session, Model mm, ApplicantDTO adto,RecruitDTO dto,PageData pd) {
 		String cid = (String) session.getAttribute("cid");
+		List<RecruitDTO> openData = remapper.recruitCompanyOpen(cid);
+		System.out.println("ㅎㅇ"+openData.size());
+		if(openData.size() > 0) {
+			pd.setMsg("진행중가 공고가 있을 시 삭제가 불가능합니다.");
+			pd.setGoUrl("/company/list/"+cid +"/1");
+			return "join/join_alert";
+		}
+		
 		mm.addAttribute("cid", cid);
 
 		return "company/delete";
@@ -252,6 +259,9 @@ public class CompanyController {
 
 		pd.setMsg("삭제실패");
 		pd.setGoUrl("/company/delete");
+		
+		
+		
 		// 탈퇴할 기업 조회
 		MCompanyDTO byedto = cccmapper.deatilCompany(dto.getCid());
 		

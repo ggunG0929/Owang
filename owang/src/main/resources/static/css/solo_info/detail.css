@@ -4,11 +4,11 @@ body{
 
 #solo_info_detail{
 	font-family: 'Noto Sans KR', sans-serif;
-	padding: 30px;
+	padding-top: 30px;
 	background-color: white;
  	height: 100%; /* 기본값으로 설정되어 있음 */
  	max-width: 1200px;
- 	padding-bottom: 50px;
+ 	
 }
 
 /* 개인정보 보기 텍스트 */
@@ -17,7 +17,7 @@ body{
 	color: rgb(55, 63, 87);
 	font-weight: 450;
 	margin-top: 50px;
-	margin-left: 140px;
+	margin-left: 170px;
 	margin-bottom: -8px;
 }
 

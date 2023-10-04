@@ -99,7 +99,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="dayPayCnt">
 		SELECT COUNT(*)
 		FROM payment
-		WHERE DATE(paid_at) = #{date};
+		WHERE DATE(paid_at) = #{date} and amount > 0
 	</select>
 
 

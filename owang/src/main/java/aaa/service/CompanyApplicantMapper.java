@@ -34,5 +34,7 @@ public interface CompanyApplicantMapper {
 		
 		// 지원자 불합격
 		int appnonpass(int ano);
+		
+		List<ApplicantDTO> appfind(String cid);
 }
 

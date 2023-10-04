@@ -1,7 +1,5 @@
 @charset "UTF-8";
 
-*{margin: 0;padding: 0;}
-
 ul, li{list-style: none;}
 /* initial : 상속받는 색깔을 그대로 따라가겠다입니다. */
 a{text-decoration: none;color: initial;}
@@ -136,4 +134,50 @@ html{
     font-weight: bold; /* 굵게 만들기 */
 }
 
+
+/*list-페이지처리 페이징처리*/
+
+.pagination-container {
+	text-align: center;
+	margin-top: 20px;
+	height:45px;
+	border: none;
+	
+}
+
+.pagination-link {
+	text-decoration: none;
+	padding: 5px 10px;
+	background-color: #333;
+	color: #fff;
+	border-radius: 5px;
+	margin: 0 5px;
+	
+	/* 페이지 번호 간격 조절 */
+}
+
+.pagination-current {
+	text-decoration: none;
+	padding: 5px 10px;
+	background-color: rgb(197 213 255);
+	color: rgb(0, 0, 0);
+	font-weight: 800;
+	margin: 0 5px;
+	/* 페이지 번호 간격 조절 */
+	border-radius: 5px;
+}
+
+/*임금체불*/
+.imgeum{
+	text-align: right;
+	margin-bottom: 20px;
+}
+
+#imgeum{
+	background-color:rgb(197 213 255);
+	border: 1px solid rgb(197 213 255);
+	padding: 10px;
+	border-radius: 5px;
+	margin-bottom: 25px;
+}
 

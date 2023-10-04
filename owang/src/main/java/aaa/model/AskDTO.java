@@ -76,13 +76,25 @@ public class AskDTO {
 		return upfile;
 	}
 	
+	/*그림*/
+	/*public boolean isImg() {
+		if(getUpfile()==null) {
+			return false;
+		}
+		return Pattern.matches(".{1,}[.](bmp|png|gif|jpg|jpeg)", upfile.toLowerCase());
+	}*/
+	
 	
 	public boolean isImg() {
 		if(getUpfile()==null) {
 			return false;
 		}
-		return Pattern.matches(".{1,}[.](bmp|png|gif|jpg|jpeg)", upfile.toLowerCase());
+		return Pattern.matches(".{1,}[.](bmp|png|gif|jpg|jpeg|hwp|pdf|hwpx)", upfile.toLowerCase());
 	}
+	
+	
+	
+	
 	
 	
 	

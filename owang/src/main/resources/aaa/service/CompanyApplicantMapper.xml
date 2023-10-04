@@ -68,4 +68,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="apptotal" resultType="Integer">
 		select count(*) from applicant where cid = #{cid}
 	</select>
+	
+	<!-- 공고 삭제전  -->
+	<select id="appfind"  resultType="aDTO"  parameterType="String">
+		select * from applicant where cid = #{cid} and apcancel IS NULL and appass IS NULL
+	</select>
 </mapper>

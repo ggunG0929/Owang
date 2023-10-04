@@ -55,9 +55,7 @@
 			text-align: center;
 		}
 
-		td:nth-child(8) {
-			font-size: 14px;
-		}
+	
 
 		th {
 			background-color: #333;
@@ -122,7 +120,7 @@
 	<container id="container">
 		<th:block th:replace="~{admin/adheader}" />
 		<div class="main">
-			<h2>개인 탈퇴 회원</h2>
+			<h2 style="margin-left: 10px;">개인 탈퇴 회원</h2>
 			<span th:if="${endsoloData.isEmpty()}">
 				<h3>개인 탈퇴 회원이 존재하지 않습니다.</h3>
 			</span>
@@ -131,12 +129,12 @@
 
 					<th>아이디</th>
 					<th>이름</th>
-					<th>생일</th>
+					
 					<th>나이</th>
 					<th>성별</th>
 					<th>전화번호</th>
 					<th>이메일</th>
-					<th>주소</th>
+					
 					<th>가입일자</th>
 					<th>탈퇴일자</th>
 				</tr>
@@ -147,27 +145,20 @@
 						<a th:href="|/admin_member/endsolo/detail/${dto.sid}|" th:text="${dto.sname}"/>
 					</td>
 					<td th:text="${dto.sbirth}" />
-					<td th:text="${dto.sage}" />
+					
 					<td th:text="${dto.sgender}" />
 					<td th:text="${dto.sphone}" />
 					<td th:text="${dto.semail}" />
-					<td th:text="${dto.saddress}" />
-					<td th:text="${#dates.format(dto.sjoindate, 'yyyy-MM-dd')}" />
-					<td th:text="${#dates.format(dto.sdeletedate, 'yyyy-MM-dd')}" />
+					<td th:text="${#dates.format(dto.sjoindate, 'yy-MM-dd')}" />
+					<td th:text="${#dates.format(dto.sdeletedate, 'yy-MM-dd')}" />
 				</tr>
 				<tr>
 					<td colspan="11" align="center">
-						<a th:if="${soloDTO.pageStart > 1}" th:href="${soloDTO.page-soloDTO.page}+1"
-							th:text="'[이전페이지]'" />
 
-						<a th:if="${soloDTO.pageStart < soloDTO.page}" th:href="${soloDTO.page - 1}" th:text="'[이전]'" />
-						<th:block th:each="no: ${#numbers.sequence(soloDTO.pageStart, soloDTO.pageEnd)}">
-							<span th:if="${no==soloDTO.page}" th:text="${no}" />
-							<a th:unless="${no==soloDTO.page}" th:href="${no}" th:text="${no}" />
-						</th:block>
-						<a th:if="${soloDTO.page < soloDTO.pageEnd}" th:href="${soloDTO.page + 1}" th:text="'[다음]'" />
-						<a th:if="${soloDTO.pageEnd < soloDTO.pageTotal}" th:href="${soloDTO.pageTotal}"
-							th:text="'[다음페이지]'" />
+						
+							<span  th:text="${page}" />
+					
+						
 					</td>
 				</tr>
 			</table>

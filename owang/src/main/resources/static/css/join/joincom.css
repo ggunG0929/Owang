@@ -1,9 +1,5 @@
 
 /*    개인회원가입       */
-td>div {
-	background-color: #ff0;
-	color: rgb(0, 0, 0);
-}
 
 
 .container{
@@ -12,6 +8,22 @@ td>div {
 	
 	padding-bottom: 50px;
 	padding-top: 50px;
+}
+#mail_number{ margin-top: 10px;}
+#sendBtn{
+	margin-left: 20px;
+}
+#cemail{
+	
+	 width: 60%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+.zzmessage {
+	background-color: #ff0;
+	color: rgb(0, 0, 0);
 }
 
 .join {
@@ -61,10 +73,7 @@ th {
     color: #333;
 }
 
-td>div {
-	background-color: #ff0;
-	color: rgb(0, 0, 0);
-}
+
 #cid , #jumin{
 	margin-right:20px;
 }
@@ -107,6 +116,10 @@ input[type="submit"] {
     display: inline-block; /* 높이를 일치시키기 위해 inline-block으로 변경 */
     vertical-align: middle; /* 상하 중앙 정렬 */
     
+}
+
+#firstNumber, #secondNumber, #thirdNumber{
+	width: 50px;	
 }
 input[type="submit"]{
 	width:200px;

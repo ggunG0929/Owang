@@ -298,6 +298,14 @@ body{
 #careerDetails li:nth-of-type(3){
 	margin-top: 20px;
 }
+#careerDetails li:nth-of-type(3) input{
+	width: 675px;
+ 	height: 50px;
+ 	margin-top: 10px;
+ 	font-size: 16px;
+	}
+
+
 
 /* 최종 학력 */
 #rsschool{
@@ -355,6 +363,31 @@ body{
 	margin-left: 38px;
 	font-size: 20px;
 	color: rgb(41, 46, 65);
+}
+
+#rsintroduce input{
+	margin: 0 auto;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	width: 700px;
+	height: 320px;
+	padding: 10px;
+	resize: none;
+	font-size: 16px;
+	font-family: inherit;
+	border: 1px solid #ccc;
+}
+
+#rsintroduce input::placeholder{
+	position: absolute;
+	top: 10px;
+	font-size: 16px;;
+}
+
+
+#rsintroduce input:focus{
+	outline: none;
+	border: 1px solid rgb(111, 121, 164);
 }
 
 /* 소개 상자*/

@@ -88,13 +88,12 @@ public class SoloResumeController {
 			 HttpSession session, Model mm) {
 		// 세션 가져옴
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
-		
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String today = sdf.format(date);
 		
+		mm.addAttribute("today", today);
 		mm.addAttribute("solosession", solosession);
-		mm.addAttribute("today",today);
 		System.out.println(solosession);
 		return "solo_resume/write";
 	}
@@ -120,6 +119,10 @@ public class SoloResumeController {
 		
 		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
 		SoloResumeDTO sdto = rsmapper.resumedetail(rdto.rsid, solosession.sid);
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String today = sdf.format(date);
+		mm.addAttribute("today", today);
 		mm.addAttribute("solosession", solosession);
 		mm.addAttribute("sdto", sdto);
 		System.out.println(sdto);

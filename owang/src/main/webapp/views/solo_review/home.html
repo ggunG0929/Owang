@@ -22,17 +22,17 @@ $(document).ready(function() {
    <header>
       <div th:insert="~{header :: header}"></div>
    </header>
-<div id="solo_review_home">
-	
+   <remocon>
+	       <div th:insert="~{remocon :: remocon}"></div>
+    
+    	</remocon>
+<div id="solo_review_home"> 
 	<div id="review_ad">
 		<span>오왕에서 해당 기업에 대한 정보를 공유해보세요.</span>
 	</div>
   	<div id="review_text">
 		<span>마이 리뷰</span>
 	</div>
-	<th:block th:if="${session.solosession.cid != null}">
-    	<a th:href="@{|/review/lo/${session.solosession.cid}/1|}">작성하기</a>
-	</th:block>
 	<div id="review_none">
     	<span th:if="${mainData.isEmpty()}">작성된 리뷰가 없습니다.</span>
 	</div>	
@@ -56,7 +56,7 @@ $(document).ready(function() {
                 <a th:href="|/review/modify/${reviewDTO.cid}/${reviewDTO.page}/${review.sid}|">수정하기</a>
             </li>
             <li th:if="${session['sid'] == review.sid}">
-                <a th:href="|/solo_review/delete/${review.cid}/${review.page}/${review.sid}|">삭제하기</a>
+                <a th:href="|/solo_review/delete/${review.cid}/${review.page}/${review.sid}|" onclick="return confirm('리뷰를 삭제하시겠습니까?');">삭제하기</a>
             </li>
 
         </ul>
@@ -98,6 +98,9 @@ $(document).ready(function() {
 		</div>-->
 	</div>
 </div>
+	<footer>
+       <div th:insert="~{footer :: footer}"></div>
+    </footer>
 </body>
 
 </html>

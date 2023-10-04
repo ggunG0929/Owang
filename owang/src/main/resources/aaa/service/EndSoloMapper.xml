@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 <mapper namespace="aaa.service.EndSoloMapper">
 	
 <select id="endSoloList" resultType="soloDTO">
-   	 	select * from endsolo
+   	 	select * from endsolo order by sno desc
 </select>
 	
 <select id="endSolocnt" resultType="Integer" >

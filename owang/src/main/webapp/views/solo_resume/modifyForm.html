@@ -58,26 +58,7 @@
         document.getElementById("hidelg").style.display = "none";
         document.getElementById("showlg").style.display = "block";
     }
-    document.addEventListener('DOMContentLoaded', function() {
-        // 경력 선택 라디오 버튼
-        var careerRadio = document.querySelectorAll('input[name="rscareer"]');
-        // 경력 관련 입력란들을 감싸는 div
-        var careerDetailsDiv = document.getElementById('careerDetails');
 
-        // 경력 선택 라디오 버튼의 변경 이벤트를 감지
-        careerRadio.forEach(function(radio) {
-            radio.addEventListener('change', function() {
-                if (radio.value === '경력') {
-                    // '경력' 선택 시 입력란 나타냄
-                    careerDetailsDiv.style.display = 'block';
-                } else {
-                    // '신입' 선택 시 입력란 숨김
-                    careerDetailsDiv.style.display = 'none';
-                }
-            });
-        });
-    });
-    
     // 이력서 증명사진 jpg png로만
 function validateFile() {
          var mmffInput = document.getElementById("rsmmff");
@@ -133,6 +114,9 @@ function validateFile() {
 <header>
 	<div th:insert="~{header :: header}"></div>
 </header>
+<remocon>
+   <div th:insert="~{remocon :: remocon}"></div>
+</remocon>
 <body>
 <div id="resume_form">
 	<div id="resume_text">
@@ -148,7 +132,7 @@ function validateFile() {
 			<span>필수사항입니다</span>
 		</div>-->
         <span>이력서 제목</span>
-		<input type="text" th:field="*{rstitle}" required id="rstitleInput"  maxlength="25" placeholder="제목은 20자 이내로 입력가능합니다."/>
+      <input type="text" th:field="*{rstitle}" required id="rstitleInput"  maxlength="25" placeholder="제목을 입력해주세요 (25자 이내) " pattern="^\S.*$" />
     </div>
 	<div id="resume_info">
 		<input type="hidden" th:value="${solosession.sid}" name="sid" />
@@ -198,42 +182,43 @@ function validateFile() {
 
 
     <!-- 경력 사항 -->
-    <div id="rscareer">
-		<!--<div id="rscareer_essential">
-			<span>필수사항입니다</span>
-		</div>-->
-        <span id="rscareer_text">경력</span>
-        <li>
-            <label for="resumeCareerNew">
-                <input type="radio" name="rscareer" id="resumeCareerNew" value="신입" th:field="*{rscareer}" required />
-                	<span id="newguy">신입</span>
-            </label>
-        </li>
-        <li>
-            <label for="resumeCareerExperienced">
-                <input type="radio" name="rscareer" id="resumeCareerExperienced" value="경력" th:field="*{rscareer}"  required/>
-                	<span id="oldguy">경력</span>
-            </label>
-        </li>
-        <!-- 경력 관련 입력란 (기본적으로는 숨김) -->
-	    <div id="careerDetails" style="display: none;">
-			<ul>
+			<div id="rscareer">
+				<span id="rscareer_text">경력</span>
 				<li>
-			        <span>회사명</span>
-			        <input type="text" id="rscompany" th:field="*{rscompany}" onchange="printCareer()"/></td>
-		        </li>
-		        <li>
-		        	<span>근무 기간</span>
-					<input type="date" id="rsworkstart" th:field="*{rsworkstart}" />
-					<input type="date" id="rsworkend" th:field="*{rsworkend}"  />
+					<label for="resumeCareerNew">
+						<input type="radio" name="rscareer" id="resumeCareerNew" value="신입" th:field="*{rscareer}"
+							required />
+						<span id="newguy">신 입</span>
+					</label>
 				</li>
-		        <li>
-		           <span>담당 업무</span>
-		           <textarea id="rswork" th:field="*{rswork}" onchange="printCareer()" />
-		        </li>
-			</ul>
-	    </div>
-    </div>
+				<li>
+					<label for="resumeCareerExperienced">
+						<input type="radio" name="rscareer" id="resumeCareerExperienced" value="경력"
+							th:field="*{rscareer}" required />
+						<span id="oldguy">경 력</span>
+					</label>
+				</li>
+				<!-- 경력 관련 입력란 -->
+				<div id="careerDetails" style="display: none;">
+					<ul>
+						<li>
+							<span>회사명</span>
+							<input type="text" id="rscompany" th:field="*{rscompany}" onchange="printCareer()"
+								pattern="^\S.*$" />
+						</li>
+						<li>
+							<span>근무 기간</span>
+							<input type="date" id="rsworkstart" th:field="*{rsworkstart}" th:max="${today}" />
+							<input type="date" id="rsworkend" th:field="*{rsworkend}" th:max="${today}" />
+						</li>
+						<li>
+							<span>담당 업무</span></br>
+							<input id="rswork" th:field="*{rswork}" onchange="printCareer()" maxlength="30"
+								maxpattern="^\S.*$" placeholder="담당했던 업무를 간략하게 기술해주세요 (30자 이내)" />
+						</li>
+					</ul>
+				</div>
+			</div>
 
     
     <!-- 학력 -->
@@ -368,7 +353,7 @@ function validateFile() {
         </div>
     </div>
     <div id="resume_submit">
-	    <input type="submit" value="저장" />
+	    <input type="submit" value="저장" onclick="return confirm('이력서를 저장하시겠습니까?');" />
 	</div>
     </form>
     <a href="javascript:goBack()">이전 페이지</a>
@@ -377,9 +362,10 @@ function validateFile() {
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>
+    
 <script>
     var rstitleInput = document.getElementById("rstitleInput");
-
+	
     rstitleInput.addEventListener("input", function () {
         var maxLength = 25;
         if (rstitleInput.value.length > maxLength) {
@@ -389,6 +375,91 @@ function validateFile() {
         }
     });
     
-</script>         
+    // 자격증
+     document.getElementById('rslicense').addEventListener('input', function () {
+        var rslicenseorgField = document.getElementById('rslicenseorg');
+        var rslicenseyearField = document.getElementById('rslicenseyear');
+        if (this.value.trim() !== '') {
+            rslicenseorgField.setAttribute('required', 'required');
+            rslicenseyearField.setAttribute('required', 'required');
+        } else {
+            rslicenseorgField.removeAttribute('required');
+            rslicenseyearField.removeAttribute('required');
+        }
+    });
+    // 
+     function printCareer() {
+        var rscompanyField = document.getElementById('rscompany');
+        var rsworkstartField = document.getElementById('rsworkstart');
+        var rsworkendField = document.getElementById('rsworkend');
+        var rsworkField = document.getElementById('rswork');
+        
+        if (rscompanyField.value.trim() !== '') {
+            rsworkstartField.setAttribute('required', 'required');
+            rsworkendField.setAttribute('required', 'required');
+            rsworkField.setAttribute('required', 'required');
+        } else {
+            rsworkstartField.removeAttribute('required');
+            rsworkendField.removeAttribute('required');
+            rsworkField.removeAttribute('required');
+        }
+    }
+    
+    // 입력 필드 요소 가져오기
+    var rsworkstartInput = document.getElementById("rsworkstart");
+    var rsworkendInput = document.getElementById("rsworkend");
+
+    // 입력값이 변경될 때마다 비교 함수 실행
+    rsworkstartInput.addEventListener("change", compareDates);
+    rsworkendInput.addEventListener("change", compareDates);
+
+    function compareDates() {
+        // 입력값 가져오기
+        var rsworkstartValue = new Date(rsworkstartInput.value);
+        var rsworkendValue = new Date(rsworkendInput.value);
+
+        // 날짜 비교
+        if (rsworkstartValue > rsworkendValue) {
+            // rsworkstart가 rsworkend보다 클 경우 alert 띄우기
+            alert("근무시작일은 근무종료일 이전이어야 합니다.");
+            rsworkendInput.value = "";
+        }
+    }
+    
+    const rscompanya = document.getElementById("rscompany");
+		const rsworkstarta = document.getElementById("rsworkstart");
+		const rsworkenda = document.getElementById("rsworkend");
+		document.addEventListener('DOMContentLoaded', function () {
+			// 경력 선택 라디오 버튼
+			var careerRadio = document.querySelectorAll('input[name="rscareer"]');
+			// 경력 관련 입력란들을 감싸는 div
+			var careerDetailsDiv = document.getElementById('careerDetails');
+
+			// 경력 선택 라디오 버튼의 변경 이벤트를 감지
+			careerRadio.forEach(function (radio) {
+				radio.addEventListener('change', function () {
+					if (radio.value === '경력') {
+						// '경력' 선택 시 입력란 나타냄
+						careerDetailsDiv.style.display = 'block';
+						rscompanya.required = true;
+						rsworkstarta.required = true;
+						rsworkenda.required = true;
+
+
+					} else {
+						// '신입' 선택 시 입력란 숨김
+						careerDetailsDiv.style.display = 'none';
+						rscompanya.removeAttribute("required");
+						rsworkstarta.removeAttribute("required");
+						rsworkenda.removeAttribute("required");
+
+
+
+					}
+				});
+			});
+		});
+    
+</script>          
 </body>
 </html>

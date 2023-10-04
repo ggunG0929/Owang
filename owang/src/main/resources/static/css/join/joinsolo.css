@@ -1,6 +1,6 @@
 
 /*    개인회원가입       */
-td>div {
+.zzmessage {
 	background-color: #ff0;
 	color: rgb(0, 0, 0);
 }
@@ -60,10 +60,6 @@ th {
     color: #333;
 }
 
-td>div {
-	background-color: #ff0;
-	color: rgb(0, 0, 0);
-}
 #sid , #jumin{
 	margin-right:20px;
 }
@@ -76,6 +72,12 @@ td>div {
 	color: red;
 }
 /* 텍스트 입력 필드 스타일 */
+#email{
+	 width: 40%;
+}
+#sendBtn{
+	margin-left: 20px;
+}
 input[type="text"],
 input[type="password"],
 input[type="number"] {
@@ -86,7 +88,12 @@ input[type="number"] {
     border-radius: 5px;
     outline: none;
 }
+#mail_number{ margin-top: 10px;}
 
+
+#firstNumber, #secondNumber, #thirdNumber{
+	width: 50px;	
+}
 /* 버튼 스타일 - 호버 효과 추가 */
 button:hover,
 input[type="button"]:hover,

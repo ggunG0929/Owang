@@ -79,7 +79,12 @@ public class SoloScrabController {
 
 	    // 개인세션 불러오기
 	    String sid = (String) session.getAttribute("sid");
-
+		SoloDTO solosession = (SoloDTO) session.getAttribute("solosession");
+		if (sid == null || solosession == null) {
+			pd.setMsg("개인회원만 이용가능합니다");
+			pd.setGoUrl("/");
+			return "solo_resume/alert";
+		}
 	    // 개인 정보 설정
 	    scdto.setSid(sid);
 

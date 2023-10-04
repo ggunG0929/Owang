@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	select * from company where cid = #{userid}
 </select>
 
+
 <update id="modifffy" parameterType="mcDTO">
 		update company set 
 		cname = #{cname},cemail = #{cemail}, cbuild= #{cbuild}, ccategory= #{ccategory}, ccompanyFile= #{ccompanyFile},

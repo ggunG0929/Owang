@@ -17,6 +17,12 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 		select * from company where capproval = true or ctype = 2 order by cno desc
 	</select>
 	
+	<!-- 재훈추가 - 신규입점기업 -->
+	<select id="companyNewIn" resultType="mcDTO" parameterType="mcDTO">
+		select * from company order by cdate asc
+	</select>
+	
+	
 	<select id="companyCapprovalList" resultType="mcDTO" parameterType="mcDTO">
 		select * from company where capproval = true or ctype = 2 order by cno desc limit #{start}, #{limit}
 	</select>
@@ -30,7 +36,9 @@ PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
 	<select id="adminAddMiCont" resultType="Integer">
 		select count(*) from company where capproval = false
 	</select>
-	
+	<select id="adminAddAllCnt" resultType="Integer">
+		select count(*) from company
+	</select>
 
 	<select id="adminCDetail">
 		select * from company where cno = #{cno}

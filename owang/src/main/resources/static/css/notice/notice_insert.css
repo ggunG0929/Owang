@@ -2,7 +2,7 @@
 
 @charset "UTF-8";
 /*notice-insert 따로 판거*/
-*{margin: 0;padding: 0;}
+
 body {
   font-family: 'Noto Sans KR', sans-serif;
 }
@@ -151,6 +151,7 @@ body {
     color: #fff;
     text-align: center;
     text-decoration: none;
+    cursor: pointer;
      
 }
 
@@ -164,4 +165,36 @@ body {
 	text-decoration: none; /* 밑줄 없애기 */
 	background-color: red;
 	float: right;
+}
+
+
+/* 수정 - 수정하기 버튼*/
+
+.ele{
+	justify-content: center;
+	/*margin-right: 10px;*/
+	 padding: 10px; /* 버튼 간 간격을 조절 */
+	 text-align: center;
+} 
+/*수정-뒤로가기버튼*/
+
+.ele2{
+	/*margin-right: 10px;*/
+	 padding: 10px; /* 버튼 간 간격을 조절 */
+	 text-align: right;
+	 margin-right: 140px;
+} 
+
+#detail_modi{
+	border: 1px solid black;
+	width: 66px;
+	height: 31px	;
+	line-height: 32px;
+	color: black;
+	border-radius: 5px;
+	background-color: #fff;
+	padding: 4px;
+	font-size: 14px;
+	margin-top: 15px;
+	text-decoration: none;	
 }

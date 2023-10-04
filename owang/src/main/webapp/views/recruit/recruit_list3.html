@@ -25,16 +25,19 @@
 </head>
 
 <body>
-	<remocon>
-		<div th:insert="~{remocon :: remocon}"></div>
-	</remocon>
+
 	<div id="home">
 		<header>
 			<div th:insert="~{header :: header}"></div>
 		</header>
+		
+		<remocon>
+      		 <div th:insert="~{remocon :: remocon}"></div>
+   		 </remocon>
+    
 		<div class="title_box">
 			<h1>채용공고 </h1>
-			<br><br><br><br>
+			<br>
 			<h3 id="p">다양한 채용정보와 새로운 채용소식을 오왕에서 만나보세요</h3>
 		</div>
 		<div class="wrap"><!--컨텐츠 div 시작-->
@@ -47,7 +50,7 @@
 						<option value="content">공고내용</option>
 						<option value="name">회사이름</option>
 					</select>
-					<input type="text" name="keyword" placeholder="🔍 검색어를 입력하세요" id="search_input">
+					<input type="text" name="keyword" placeholder="🔍 검색어를 입력하세요" id="search_input" pattern="^\S.*$">
 					<button type="submit" class="dod">
 						<i class="fa-solid fa-magnifying-glass fa-beat-fade"
 							style="color:  rgb(45, 101, 242);">&nbsp검색</i>
@@ -56,71 +59,98 @@
 			</div><!--검색 div 끝-->
 			<!-- 탭 -->
 			<ul class="tabs">
-				<li><a href="/recruit/list/all/1" class="scrollable_menu"> 채용 </a></li>
+				<li><a href="/recruit/list/all/1" class="scrollable_menu">전체 공고 </a></li>
 				<li><a href="/recruit/list/1" class="scrollable_menu">채용중</a></li>
 				<li><a href="/recruit/list/close/1" class="scrollable_menu">채용 마감</a></li>
 			</ul>
 			<!-- 채용 마감 데이터-->
-			<table border="" class="list_table" id="data-table">
+			<table border="0" class="list_table" id="data-table">
 				<tr>
 					<th>번호</th>
 					<th>제목</th>
-					<th>회사 이름</th>
 					<th>채용시작일</th>
+					<th>~</th>
 					<th class="sortable-header" onclick="toggleSortOrder()">
 						채용마감일
 						<span class="dropdown-icon"></span>
 					</th>
-					<th>조회수</th>
-					<th>
-						지원자수
-					</th>
+					<th>회사이름</th>
 				</tr>
 				<tr th:each="dto, dtoStat : ${mainData}">
 					<td th:text="${dtoStat.count + recruitDTO.start}" />
-					<td>
+					<!--제목 부분만 왼쪽정렬-->
+					<td id="list_title_left">
 						<a th:href="|/recruit/detail/${dto.cid}/${recruitDTO.page}/${dto.recruitId}|"
-							th:text="|${dto.recruitTitle} + ${dto.recruitMagam}|" class="hoverTitle"></a>
+							th:text="|${dto.recruitTitle} D ${dto.recruitMagam}|" class="hoverTitle"></a> <br>
+						
+						조회수 : [[${dto.cnt}]]	&nbsp &nbsp 지원자수 : [[${dto.appnum}]]
 					</td>
-					<td>
+					
+					<td th:text="${dto.regDate}" id="chae_start" />
+					<td th:text="'&tilde;'"></td>
+					<td th:text="${dto.realMagam}" id="chae_end"/>
+					<td >
 						<a th:href="'/company/detail/' + ${dto.cid}" th:text="${dto.cname}" class="hoverCompany"></a>
 					</td>
-					<td th:text="${dto.regDate}" />
-					<td th:text="${dto.realMagam}" />
-					<td th:text="${dto.cnt}" />
-					<td th:text="${dto.appnum}" />
+
 				</tr>
 			</table>
 			<!-- 페이지 네비게이션 - "채용 마감" 탭 -->
-			<div id="closePageNav" class="tab-content">
-				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.page - recruitDTO.page}+1"
-					th:text="'[처음]'" />
-				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.pageStart - 1}" th:text="'[이전]'" />
+			
+			<div id="closePageNav" class="pagination-container">
+			<!--<div id="closePageNav" class="tab-content">-->
+				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.page - recruitDTO.page}+1" class="pagination-link"
+					th:text="'<<'" />
+				<a th:if="${recruitDTO.pageStart > 1}" th:href="${recruitDTO.pageStart - 1}" class="pagination-link" 
+				th:text="'<'" />
 				<th:block th:each="no: ${#numbers.sequence(recruitDTO.pageStart, recruitDTO.pageEnd)}">
-					<span th:if="${no==recruitDTO.page}" th:text="${no}" class="on" />
-					<a th:unless="${no==recruitDTO.page}" th:href="${no}" th:text="${no}" />
+					<span th:if="${no==recruitDTO.page}" 
+						class="pagination-current" th:text="${no}"/>
+					<a th:unless="${no==recruitDTO.page}" 
+						class="pagination-link" th:href="${no}" th:text="${no}" />
 				</th:block>
 				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageEnd + 1}"
-					th:text="'[다음]'" />
+					th:text="'>'" class="pagination-link"/>
 				<a th:if="${recruitDTO.pageEnd < recruitDTO.pageTotal}" th:href="${recruitDTO.pageTotal}"
-					th:text="'[맨끝]'" />
+					th:text="'>>'" class="pagination-link"/>
 			</div>
 			<!-- 글쓰기 버튼 -->
 			<div align="right" th:if="${session['cid']}">
-				<a th:href="|/recruit/insert/${recruitDTO.page}|">
-					글쓰기 &nbsp;<i class="fa-solid fa-pen" style="color: #000000;"></i>
+				<a th:href="|/recruit/insert/${recruitDTO.page}|" i class="fa-solid fa-pen">
+					글쓰기 &nbsp
 				</a>
 			</div>
+			
+			 <!-- ==============================-->
+  	
+  		
+   			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		</div> <!--컨텐츠 끝-->
 		<footer>
 			<div th:insert="~{footer :: footer}"></div>
 		</footer>
 	</div>
+	
+	
+	
+	
+	
+	
 	<script>
     // 초기 정렬 방향 설정
     var sortOrder = 'asc';
     var primarySortColumn = 4; // 기본 정렬 기준: 채용마감일
-    var secondarySortColumn = 6; // 보조 정렬 기준: 지원자수
+    var secondarySortColumn = 5; // 보조 정렬 기준: 회사이름으로변경
 
     function toggleSortOrder() {
         // 테이블 헤더 열(채용마감일)을 클릭할 때마다 정렬 방향 변경
@@ -140,7 +170,7 @@
     function toggleSecondarySort() {
         // 보조 정렬 기준을 변경
         if (secondarySortColumn === primarySortColumn) {
-            secondarySortColumn = 6; // 보조 정렬 기준: 지원자수
+            secondarySortColumn = 5; // 보조 정렬 기준: 지원자수
         } else {
             secondarySortColumn = primarySortColumn;
         }

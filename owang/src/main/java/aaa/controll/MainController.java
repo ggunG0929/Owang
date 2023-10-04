@@ -74,24 +74,34 @@ public class MainController {
 		// "채용 가능" 탭에 대한 페이지 정보 계산
 		RecruitDTO openDto = new RecruitDTO();
 		openDto.setPage(1);
-		openDto.setLimit(9);
+		
 		openDto.calc(recruitMapper.companyROpenCnt());
-		List<RecruitDTO> openData = recruitMapper.companyROpen(openDto);
-
+		// 지원자수가 많은순으로 정렬
+		List<RecruitDTO> openData = recruitMapper.companyROpenHOT(openDto);
+		
+		
 		mm.addAttribute("openData", openData);
 		mm.addAttribute("openDto", openDto); // "채용 가능" 탭 페이지 정보
-		
-		////////////공고리스트 끝  /////////////////
+
+		//////////// 공고리스트 끝 /////////////////
 		
 		////////////기업 리스트 시작  /////////////////
 		mdto.setPage(1);
 		mdto.calc(adminMapper.adminAddCont());
+		mdto.setLimit(9);
 		//System.out.println(mdto);
 		List<MCompanyDTO> mdata = adminMapper.adminCompanyList(mdto);
+		
 		mm.addAttribute("mdata",mdata);
-		mm.addAttribute("realData", adminMapper.companyCapprovalList2(mdto));
+		
+		// 신규입점기업
+		mm.addAttribute("realData", adminMapper.companyNewIn(mdto));
 		 
 		////////////기업 리스트 시작  /////////////////
+		
+		
+		
+		
 		return "main";
 	}
 	

@@ -9,6 +9,9 @@
 <header>
 	<div th:insert="~{header :: header}"></div>
 </header>
+<remocon>
+   <div th:insert="~{remocon :: remocon}"></div>
+</remocon>
 <body>
 <div id="resume_detail">
 	<div id="resume_text">
@@ -125,7 +128,8 @@
 				어학능력이 없습니다
 			</span>
 			<!-- 어학 있으면 -->
-		<div id="rslanguage_yes" th:unless="${rdto.rslanguage == null or rdto.rslanguage.isEmpty()}">
+		<div id="rslanguage_yes" th:unless="${rdto.rslanguage == null or rdto.rslanguage.isEmpty()}"
+				style="list-style: none;">
 			<li>
 				<span id="rslanguage_one" >어학명</span>
 				<span id="rslanguage_two" th:text="${rdto.rslanguage}" ></span>

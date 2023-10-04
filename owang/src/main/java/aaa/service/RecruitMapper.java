@@ -25,6 +25,9 @@ public interface RecruitMapper {
 
 	List<RecruitDTO> companyROpen(RecruitDTO dto);
 	List<RecruitDTO> companyRClose(RecruitDTO dto);
+	
+	// 재훈 추가
+	List<RecruitDTO> companyROpenHOT(RecruitDTO dto);
 
 	// 게시글 페이지 계산
 	int recruitListCnt();

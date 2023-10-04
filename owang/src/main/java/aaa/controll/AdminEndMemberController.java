@@ -1,7 +1,7 @@
 package aaa.controll;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +17,14 @@ import aaa.model.PaymentResponseMember.Payment;
 import aaa.model.RecruitDTO;
 import aaa.model.ReviewDTO;
 import aaa.model.SoloDTO;
-import aaa.service.AdminCompanyMapper;
-import aaa.service.AdminSolo;
+
+
 import aaa.service.EndCompanyMapper;
 import aaa.service.EndSoloMapper;
 import aaa.service.PayMapper;
 import aaa.service.PayService;
 import aaa.service.ReviewMapper;
-import aaa.service.SoloMapper;
+
 import jakarta.annotation.Resource;
 
 @Controller
@@ -61,12 +61,15 @@ public class AdminEndMemberController {
 	@RequestMapping("endsolo/detail/{cid}")
 	String endsolodetail(@PathVariable String cid, Model mm) {
 
-		List<PaymentDTO> pay = payMapper.endpay2(cid);
-		mm.addAttribute("pay", pay);
-
 		List<ReviewDTO> redata = reviewMapper.reviewList3(cid);
 		System.out.println(redata);
 		mm.addAttribute("reData", redata);
+
+		List<String> impuidList = payMapper.impuids(cid);
+		if (!impuidList.isEmpty()) {
+			List<Payment> paymentData = payS.getPaymentData(impuidList);
+			mm.addAttribute("paymentData", paymentData);
+		}
 
 		return "admin/endmember/soloDeatil";
 	}

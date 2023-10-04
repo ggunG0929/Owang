@@ -28,8 +28,6 @@
    		<div th:insert="~{remocon :: remocon}"></div>
 	</remocon>
 	
-    
- 
     <div id="detail_wrap">
         <div id="detail_view">
             <div class="area_tit">
@@ -45,7 +43,7 @@
             <div class="inner"> <!--이너-->
                 
                 <div class="wrap_img" th:if="${ndto.upfile != null}"> <!--이미지-->	
-                    <img th:if="${ndto.img}" th:src="|/up/${ndto.upfile}|"/ id="detail_img">
+                    <img th:if="${ndto.img}" th:src="|/up/${ndto.upfile}|"/ id="detail_img" >
                     <a th:unless="${ndto.img}" th:text="${ndto.upfile}"></a>
                 </div>
                
@@ -64,7 +62,7 @@
 	            <a th:href="|/notice/delete/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}" id="detail_del">삭제</a>
 	            <a th:href="|/notice/modify/${ndto.page}/${ndto.id}|" th:if="${session.adminSession}" id="detail_modi">수정</a>
 	            <a th:href="|/notice/notice/${ndto.page}|" id="detail_list">목록</a>
-    			</div>
+			</div>
     		
         </div><!-- 뷰 끝 -->	
         

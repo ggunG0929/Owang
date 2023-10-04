@@ -12,6 +12,10 @@
 		<div th:insert="~{header :: header}"></div>
 	</header>
 	
+	<remocon>
+       <div th:insert="~{remocon :: remocon}"></div>
+    </remocon>
+	
 	<!--ask 사진-->
 	<!--<img src="/css/images/ask.jpg" alt="ask_header" width="1200px" height="250px">-->
 	<!--1:1문의 box 사진-->
@@ -19,7 +23,7 @@
 		
 	<div class="title_box">
 	   <h1>1:1 문의</h1>  
-	   <br><br><br><br>
+	   <br>
 	   <h3 id="p" >
   			문의하실 내용을 작성해주시면 확인 후 빠른 시일 내 답변드리도록 하겠습니다.<br> 
 	   </h3>
@@ -46,8 +50,8 @@
 				</tr>	
 				<tr>
 					<td id="label">문의 내용 *</td>
-					<td><textarea th:field="*{content}" rows="20" cols="85" required id="content"  pattern=".*\S.*"
-						placeholder="※ 문의하실 내용을 입력해주세요" /></td>
+					<td><textarea th:field="*{content}" rows="20" cols="85"  id="content" 
+						placeholder="※ 문의하실 내용을 입력해주세요" required/></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center">
@@ -60,7 +64,9 @@
 			</table>
 		</form>
 	</div>   
-
+	
+	
+	
 	<footer>
        <div th:insert="~{footer :: footer}"></div>
     </footer>

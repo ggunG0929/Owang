@@ -141,12 +141,21 @@ table button {
 table button:hover {
     background-color: rgb(0, 0, 134);
 }
+
+td:nth-child(5){
+	max-width: 100px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 </style>
 </head>
 <body>
 	<header>
    <div th:insert="~{header :: header}"></div>
 </header>
+<remocon>
+       <div th:insert="~{remocon :: remocon}"></div>
+    </remocon>
 <main class="content-box">
 	
 		<div class="footer-box"> <!-- Container -->

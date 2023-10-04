@@ -19,7 +19,7 @@ public class RecruitDTO {
 	
 	int recruitId, start, limit = 10, pageLimit = 4, page, pageStart, pageEnd, pageTotal, cnt;
 	int rtype;
-	public String recruitTitle, recruitName, recruitUpfile, recruitContent, cid, cname;
+	public String recruitTitle, recruitName, recruitUpfile, recruitContent, cid, cname, clogo;
 	String recruitMtype; //월급
 	String msg, goUrl;
 	boolean capproval;
@@ -28,10 +28,22 @@ public class RecruitDTO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public Date realMagam = new Date();
 	int recruitMagam;
-	int recruitMoney; // 급여
+	int recruitMoney; // 급여f
 	String recruitLocation; // 근무지역
 	String searchOption, keyword;// 검색조건
 	int appnum;
+
+	
+    private int dayLeft; // 남은 날짜
+
+    // Getter와 Setter 메서드 추가
+    public int getDayLeft() {
+        return dayLeft;
+    }
+
+    public void setDayLeft(int dayLeft) {
+        this.dayLeft = dayLeft;
+    }
 	
 	// 중간일 계산 조건 sql에 없어도됨
 	boolean recruiting;
