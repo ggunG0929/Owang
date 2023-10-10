@@ -155,9 +155,9 @@
 					</td>
 				</tr>
 				<tr th:unless="${dto.scompanyFile == null ||  dto.scompanyFile == ''}">
-					<th>재직인증승인</th>
-					<td th:if="${dto.sinjueng==true}" th:text="승인완료"></td>
-					<td th:unless="${dto.sinjueng==true}" th:text="미승인"></td>
+					<th>재직인증</th>
+					<td th:if="${dto.sinjueng==true}" th:text="인증완료"></td>
+					<td th:unless="${dto.sinjueng==true}" th:text="미인증"></td>
 				</tr>
 				<tr>
 					<td>회원삭제</td>

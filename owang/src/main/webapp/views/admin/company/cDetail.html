@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>수락버튼등장</title>
+	<title>승인버튼등장</title>
 	<script>
 		function fileDelete() {
 
@@ -101,7 +101,7 @@
 	<container id="container">
 		<th:block th:replace="~{admin/adheader}" />
 		<div class="main">
-			<h1>기업 수락 상세 보기</h1>
+			<h1>기업 승인 상세 보기</h1>
 			<table border="">
 				<tr>
 					<td>기업이름</td>
@@ -158,9 +158,9 @@
 					<td th:unless="${dto.ctype == 2}" th:text="일반회원"></td>
 				</tr>
 				<tr>
-					<td>기업인증여부</td>
-					<td th:if="${dto.capproval}" th:text="기업인증완료"></td>
-					<td th:unless="${dto.capproval}" th:text="기업미인증"></td>
+					<td>사업자승인여부</td>
+					<td th:if="${dto.capproval}" th:text="사업자승인완료"></td>
+					<td th:unless="${dto.capproval}" th:text="사업자미승인"></td>
 				</tr>
 				<tr>
 					<td>내용</td>
@@ -180,11 +180,11 @@
 					</th:block>
 				</tr>
 				<tr th:if="${dto.capproval == false}">
-					<td>수락버튼</td>
+					<td>승인버튼</td>
 					<td>
 						<!--<a th:href="|/admin_company/checkId/{dto.cno}|" th:onclick="return confirm('회원가입을 [[${dto.cno}]] 허락하시겠습니까?')" th:text="수락"></a>-->
 						<a th:href="@{|/admin_company/checkId/${dto.cno}|}" onclick="return confirm('회원가입을 허락하시겠습니까?')"
-							th:text="수락"></a>
+							th:text="승인"></a>
 					</td>
 				</tr>
 				<tr>

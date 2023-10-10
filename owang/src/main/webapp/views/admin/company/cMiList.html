@@ -137,7 +137,7 @@
 					<th>기업페이지</th>
 					<th>기업아이디</th>
 					<th>회원 구분</th>
-					<th>간편 수락</th>
+					<th>간편 승인</th>
 					<th>회원 삭제</th>
 				</tr>
 				<tr th:each="dto, dtoStat : ${mainData}">
@@ -154,7 +154,7 @@
 					</td>
 					<td>
 						<a th:href="@{|/admin_company/checkId/${dto.cno}|}" onclick="return confirm('회원가입을 허락하시겠습니까?')"
-							th:text="수락"></a>
+							th:text="승인"></a>
 					</td>
 					<td align="center">
 						<a th:href="'/admin_company/delete/' + ${dto.cno}" onclick="return confirm('회원삭제를 진행하시겠습니까?')"
